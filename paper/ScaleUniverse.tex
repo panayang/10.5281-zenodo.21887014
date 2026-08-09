@@ -87,8 +87,8 @@ Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson �
 哪些是仍需外部输入的物理假设。
 
 \medskip
-\noindent\textbf{形式化规模：}524 条定理、9192 行 Lean 代码；
-312 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
+\noindent\textbf{形式化规模：}544 条定理、9710 行 Lean 代码；
+332 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
 （\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
 无 \texttt{sorryAx}。
 \end{abstract}
@@ -932,7 +932,7 @@ QCD 的系数正是这样：在每个夸克阈值处跳变。本框架\emph{定�
 但\textbf{不定出数值}——$\Phi$ 的具体形式（如 $11N_c-2N_f$）仍是输入。
 这一步只把借来的东西从"一个数"缩小为"一个泛函"，没有消灭它。
 
-\section{回归 III：粒子标度与寿命的动量依赖}
+\section{回归 III：粒子标度与寿命的动量依赖}\label{sec:particles}
 
 激发携带自己的时钟，其单位由静止能标 $m$ 设定；实验室使用另一套单位，
 由总能量 $E=\sqrt{p^2+m^2}$ 设定。寿命是内部“滴答”的纯数目；
@@ -1617,8 +1617,17 @@ F(x,y) = [D_x,D_y] - D_{[x,y]} .
 \end{theorem}
 \end{mdframed}
 
-于是 $n$ 不再被挑选：方向就是代数，它们的个数就是那个代数的维数。
-选基是便利而非公理（\texttt{transport\_determined\_by\_generators}）。
+于是 $n$ 不再被手工挑选。选基是便利而非公理
+（\texttt{transport\_determined\_by\_generators}）。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{更正（见第 \ref{sec:dimension} 节）。}我曾写"方向\emph{就是}代数，
+其个数就是代数的维数"。代数被定名之后这句话可以核验，而它是\textbf{假的}：
+$\dim\mathfrak{so}(3,1)=6$，而时空有 $4$ 个方向。
+方向是代数所\textbf{作用}的空间——它的定义表示——不是代数本身。
+但什么也没丢：$\mathfrak{so}(k,1)$ 带有一个典范的 $k+1$ 维表示，
+故定名代数仍然定住了 $n$，即 $k+1$。
+\end{mdframed}
 
 \begin{remark}[诚实的界限]
 本节导出的是"方向\emph{是}代数元素"以及"其个数\emph{是}代数的维数"。
@@ -2896,6 +2905,211 @@ rotation\_iff\_variation}
 但\textbf{那条物理解读撤回}。取代它的是本节：转动由单一花样的\emph{变化}携带。
 \leanline{Axes.multiplet\_flatness\_needs\_per\_direction\_scalings}
 
+\section{最后两项输入究竟是什么}\label{sec:dimension}
+
+剩下两项：$n=4$ 靠一个判断，标度量值自由。
+去追它们之间的关系时，翻出了夹在中间、且一直被我混淆的第三件事，故先说它。
+
+\subsection{方向是表示，不是代数}
+
+第 \ref{sec:direction} 节去掉指标集时宣称：\textbf{方向就是代数，其个数就是代数的维数}。
+代数定名之后这句话可核验，而它\textbf{失败了}。
+
+\begin{theorem}[代数严格大于方向集]\label{thm:algbig}
+$\dim\mathfrak{so}(3,1) = 6 > 4 = n$。
+故方向\textbf{不是}代数，而是代数所作用的空间——定义表示。
+\leanline{Dimension.algebra\_bigger\_than\_directions}
+\end{theorem}
+
+更正不损失什么，反而有所得。$\mathfrak{so}(k,1)$ 带一个典范的 $k+1$ 维定义表示。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{故代数一旦定名，$n$ 就不再是一项额外输入——它是 $k+1$，
+剩下要定的只有 $k$。}\textbf{两项输入合并为一项}，
+这是"两个未决项是否相关"这个问题的前一半答案。
+\leanline{Dimension.rep\_dim\_determined}
+\end{mdframed}
+
+\subsection{两条同形的自匹配条件，答案不同}
+
+第 \ref{sec:slice} 节用的条件是：耦合生成的转动与 A4 所标记的方向同样多，
+\[
+\dim\Lambda^2\mathfrak p = \dim\mathfrak p \iff \frac{k(k-1)}{2}=k \iff k=3 .
+\]
+把方向与代数区分开之后，\emph{第二条}同形条件浮现出来——要求代数与它作用的对象一样大：
+\[
+\dim\mathfrak{so}(k,1) = k+1 \iff \frac{k(k+1)}{2}=k+1 \iff k=2 .
+\]
+
+\begin{theorem}[两条条件给出不同答案]\label{thm:twocond}
+$k=3$ 满足前者而不满足后者；$k=2$ 满足后者而不满足前者。
+\leanline{Dimension.rot\_matches\_scale\_iff, alg\_matches\_rep\_iff,
+two\_matching\_conditions\_differ}
+\end{theorem}
+
+\textbf{所以"要求结构与自身匹配"在说清\emph{哪个}指标集须匹配\emph{哪个}之前是不良定的。}
+把这一点明说出来是本小节的要点：数值巧合恰恰藏在这种缝隙里。
+
+框架确实能在两者间决断：A4 按\textbf{方向}指派标度，而那些方向是缩放扇区 $\mathfrak p$；
+第 \ref{sec:gauge} 节使一切可观测标签都是它们之间的花样。
+故可用的标签是 $\mathfrak p$ 的，而需要标签的是耦合生成的 $\Lambda^2\mathfrak p$。
+第二条比较的是代数与其表示，而\textbf{框架并不要求这两者相等}——
+Lorentz 代数是六维而时空是四维，这不构成任何缺陷。
+
+于是 $k=3$ 成立，$n=4$ 随之，而它所依赖的判断现在被尖锐地陈述为：
+\emph{A4 提供的标签必须足以标记耦合生成的转动}。
+这是\textbf{一条关于可观测性的假设}，不是数值偏好。
+
+\subsection{自由的量值不是缺陷}
+
+标度花样是一个矢量；方向是转动规范，量值未定。这看起来像第二项松动的输入。它不是同一类东西。
+
+\begin{theorem}[一切都对花样齐次，故比值不变]\label{thm:ratio}
+$\text{wedge}(cv, cw) = c^2\,\text{wedge}(v,w)$，
+故一切转动标签的\emph{比值}在重标度下\textbf{不变}。
+\leanline{Dimension.wedge\_smul\_both, wedge\_ratio\_invariant,
+only\_ratios\_are\_fixed}
+\end{theorem}
+
+而比值正是框架所预言的东西——第 \ref{sec:spectrum} 节的换算表、
+第 \ref{sec:particle} 节的离散度、引力那些数——没有一个会动。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{量值不是一项缺失的预言：它是预言被表达于其中的\emph{单位}。}
+一个无量纲理论必须恰好携带一个这样的数，而本框架恰好携带一个——\textbf{这是可能的最少}。
+理论把一切定到一个总体因子，而定不了那个因子，是因为它\emph{不可能}定——
+再没有别的东西可以用来表达它。
+\end{mdframed}
+
+\subsection{两项自由在何处相遇}
+
+$k$ 离散、量值连续，故它们不是同一项自由。但它们由一条换算相连，
+而这正是"$n$ 应当与标度有关"这个直觉成立的意义。
+
+秩一对称空间在径向坐标下体积按 $e^{(k-1)r}$ 增长，而径向坐标\emph{就是}标度坐标
+（第 \ref{sec:algebra} 节）。故在该体积中均匀分布的群体，其阈值密度是每单位径向 $k-1$，
+而实测密度是每单位对数能量；两者差一个根的归一化 $\alpha$，而那正是自由的量值：
+\[
+\rho \cdot \alpha = k - 1 .
+\]
+
+\begin{theorem}[密度--归一化换算]\label{thm:dennorm}
+$k=3$ 时 $\rho\alpha = 2$；代回即返回输入。
+\leanline{Dimension.density\_normalization\_relation, normalization\_returns\_input}
+\end{theorem}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{这是换算，不是预言}——一个方程一个未知数，正是第 \ref{sec:crosscheck} 节
+记录过的陷阱。它\emph{确实}确立的是：\textbf{两项剩余自由并不独立}——
+定住 $k$ 就把 $\rho$ 的测量变成对归一化的确定，反之亦然。
+
+它还额外依赖"缺陷在对称空间体积中均匀分布"这一条，而本文没有任何定理提供它。
+\textbf{已登记为假设，未被夹带。}
+\end{mdframed}
+
+\begin{remark}[输入清单现状]
+代数族——已导出（实秩一，加一条引用的分类）；
+$n$——不再独立，代数定名后即 $k+1$；
+$k=3$——一条判断，已在上文尖锐陈述；
+量值——不是同种意义的输入，它是单位，而无量纲理论恰需一个。
+\end{remark}
+
+\section{A7，以及立场转变所迫的一次审计}\label{sec:locus}
+
+两件事在此了结。第一件是一条一直以"判断"之名在干活的公设，此处把它扶正并命名。
+第二件是一次审计——若不做，一个反驳我便无法回答。
+
+\subsection{A7（可观测性），作为公设}
+
+第 \ref{sec:dimension} 节把最后一项数值输入压到一步：
+\emph{A4 提供的标签必须足以标记耦合生成的转动}。
+它同时表明这种形状的条件\emph{不止一条}且彼此不合，
+所以这一步是关于\textbf{什么算可观测}的\emph{选择}，不是算术。
+
+\textbf{这是一项哲学承诺，而且没有从其余六条公理推导出它的前景}——
+它就是每个物理理论都必须在某处对"什么算一次观测"所做的那种承诺。故予以扶正：
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{A7（可观测性）。}耦合生成的每一个结构，都携带公理所提供的标签。
+\end{mdframed}
+
+\begin{theorem}[给定 A7，$k=3$ 是定理]\label{thm:a7}
+且 $n=4$ 随之，因为定理 \ref{thm:algbig} 已经使 $n$ 不再是独立输入。
+而 A7 是一条真实的限制：它在其他任何维数上都不成立，故非平凡。
+\leanline{Locus.three\_from\_observability, observability\_fails\_elsewhere,
+observability\_iff\_three}
+\end{theorem}
+
+\textbf{这是对一项主张的降级，不是对一项结果的升级}：
+原先被呈现为"几乎已导出"的东西，现在公开地是第七条公理。
+框架的输入是 A1--A7 加一个单位，这是诚实的记账。
+
+\subsection{反驳}
+
+本纲领的立场发生过转变：它从试图复现每一个粒子开始，
+终于第 \ref{sec:emergence} 节"物种清单是某一截面的性质"。反驳是：
+先前那些面向相互作用的结果是在旧立场下写的，可能已与新立场不一致——
+
+\begin{quote}
+假如有任何基本相互作用是标度不变的，那就等于承认存在标度不变的粒子及其性质；
+而且这与"相互作用只在能标下降后才分离"的图像矛盾。
+\end{quote}
+
+\textbf{这个反驳在形式上是对的}，而审计有一个伤亡和一项实质收获。
+
+\textbf{存活的部分。}开发中每一项面向相互作用的结果，
+都是关于某个量\emph{如何随标度变化}的陈述，而非关于某个标度不变的相互作用：
+第 \ref{sec:running} 节的跑动、第 \ref{sec:qcd} 节的渐近自由与量纲嬗变、
+第 \ref{sec:particles} 节的动量依赖寿命、暗物质的探测失效。
+\textbf{没有一条断言相互作用在标度上是任何固定的东西。}
+
+\begin{theorem}[没有标度不变的相互作用可供承认]\label{thm:noinv}
+耦合在标度上恒定，当且仅当其缺陷密度为零——即无物可分辨的退化情形，
+而不是一种基本力。
+\leanline{Locus.no\_scale\_invariant\_interaction,
+constant\_coupling\_iff\_no\_content}
+\end{theorem}
+
+\textbf{伤亡。}第 \ref{sec:charges}、\ref{sec:particle} 节给缺陷指派拓扑标签，
+而同伦类\emph{就是}标度不变的。这与第 \ref{sec:emergence} 节存在真实张力，
+也正是该反驳的真正靶心。
+
+\subsection{解药一直在文件里}
+
+第 \ref{sec:axis} 节：完全简并的标度花样什么也不区分，\textbf{完全不支持任何缺陷}。
+第 \ref{sec:gauge} 节：其稳定化子是全部，故无任何多重态可分辨。
+而下面这条：两个各向同性花样恒平行，故也不生成任何转动。
+
+\begin{theorem}[各向同性轨迹上没有任何标签]\label{thm:iso}
+各向同性 $\Rightarrow$ 无转动标签、无区分方向；
+连同上述两条，\textbf{各向同性轨迹不携带任何种类的标签}。
+而非零转动标签\textbf{强制}花样各向异性。
+\leanline{Locus.isotropic\_no\_rotation, labels\_require\_anisotropy,
+everything\_switches\_on\_together, particle\_locus\_is\_anisotropic}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\begin{center}
+各向同性花样 $\longrightarrow$ 无序参量、无荷、无多重态、无转动：什么也不被区分\\[3pt]
+各向异性花样 $\longrightarrow$ 序参量出现，荷、多重态与曲率随之一并出现
+\end{center}
+\textbf{而花样是否各向同性，是一个标度相关的事实。}
+\end{mdframed}
+
+于是那些拓扑标签\textbf{不是}世界的标度不变性质。
+它们是\emph{各向异性轨迹}的性质，在各向同性破缺的那个标度上诞生——
+而且是\textbf{一并}诞生的，因为它们同源。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{这就是"相互作用随能标下降而分离"，是导出的而非假设的}；
+而第 \ref{sec:emergence} 节没有被违反：某标度上存在什么，仍然取决于该标度。
+\end{mdframed}
+
+\textbf{适用域更正备案。}第 \ref{sec:charges}、\ref{sec:particle} 节应被读作描述
+\emph{各向异性轨迹}。定理不变，其定义域现在被写明。
+第 \ref{sec:frame} 节早已把各向同性情形降格为度规扇区的一个轨迹——
+同一降格现在也适用于荷，这是我此前没注意到的一处自洽。
+
 \section{自我审查：已发现的思维污染}\label{sec:audit}
 
 本节是对整个体系的一次不设辩护的复查，按"基础建构"与"目标问题"两条线。
@@ -2965,9 +3179,17 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
       第 \ref{sec:invariant} 节把它导出为 $\kappa(x,y)=\tau(xy)$，
       而 $\kron$ 真正提供的那条性质（输运下不变）成为定理。
       需要的只是一个迹，比度规弱得多。
-\item \textbf{$n=4$ 依赖一个判断}（新登记）。第 \ref{sec:slice} 节证明
-      $k=3$ 是楔积与方向同维的唯一解；但"框架要求生成的转动必须带方向标签"
-      这一步是物理判断，不是形式推演。有它则 $n=4$，没有它则 $n$ 自由。
+\item \sout{\textbf{$k=3$ 依赖一个判断}} \textbf{已扶正为公理 A7}——
+      第 \ref{sec:locus} 节。它不再伪装成"几乎已导出"，
+      而是公开的第七条公理，内容是关于什么算可观测的哲学承诺。
+      \textbf{这是降级，不是升级。}原文如下：第 \ref{sec:dimension} 节表明
+      同形的自匹配条件\emph{不止一条}且答案不同（$k=3$ 与 $k=2$），
+      故须说明\emph{哪个}指标集匹配\emph{哪个}。框架选的是
+      "A4 的标签须足以标记耦合生成的转动"——一条关于可观测性的假设。
+      注意 $n$ 本身\textbf{已不再是独立输入}：代数定名后 $n=k+1$。
+
+\item \textbf{缺陷在对称空间体积中均匀分布}（新登记）。
+      第 \ref{sec:dimension} 节的 $\rho\alpha = k-1$ 换算依赖它，而无定理提供。
 
 \item \sout{\textbf{单轴／双轴两难}} \textbf{已消解}——第 \ref{sec:axes} 节表明
       那个两难来自把"一个矢量与自身的楔积为零"误读为"单轴不带转动"。
@@ -3037,7 +3259,7 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \ref{thm:detfail}、\ref{thm:dm}、\ref{thm:diss}、\ref{thm:desitter}、
 \ref{thm:h}、\ref{thm:arrow}、\ref{thm:null}、\ref{thm:massive}、
 \ref{thm:cov}、\ref{thm:covfield}、\ref{thm:sing}、\ref{thm:singcurv}、
-\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:newc}、\ref{thm:nouniv}、\ref{thm:wedge}、\ref{thm:uniax}、\ref{thm:three}、\ref{thm:rotvar}、\ref{thm:wound}、\ref{thm:noax2}、\ref{thm:stabpos}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
+\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:newc}、\ref{thm:nouniv}、\ref{thm:wedge}、\ref{thm:uniax}、\ref{thm:three}、\ref{thm:rotvar}、\ref{thm:wound}、\ref{thm:noax2}、\ref{thm:stabpos}、\ref{thm:algbig}、\ref{thm:twocond}、\ref{thm:ratio}、\ref{thm:dennorm}、\ref{thm:a7}、\ref{thm:noinv}、\ref{thm:iso}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
 
 \paragraph{尚未完成——本纲领当前最薄弱之处。}
 这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
@@ -3166,15 +3388,17 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Particle.lean}   & 14 & 标签结构（单轴，适用域见 \S\ref{sec:slice}）；离散度检验 \\
 \texttt{Slice.lean}      & 14 & 广延即标签；转动是楔积；$k=3$ 唯一 \\
 \texttt{Axes.lean}       & 10 & 两难消解；轴数被迫为一 \\
+\texttt{Dimension.lean}  & 10 & 方向是表示；比值不变；量值即单位 \\
+\texttt{Locus.lean}      & 10 & A7 扶正；标签只活在各向异性轨迹上 \\
 \midrule
-\textbf{合计}             & \textbf{524} & 9192 行 Lean 代码 \\
+\textbf{合计}             & \textbf{544} & 9710 行 Lean 代码 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \subsection{公理审计}
 
-对 312 条主定理执行 \texttt{\#print axioms}，结果全部落在
+对 332 条主定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -3205,7 +3429,7 @@ Newton 引力是标度响应律的线性化；
 时间箭头是有限分辨率的必然产物；
 而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
 
-这些不是隐喻。它们是 524 条经机器检验、零 \texttt{sorry} 的定理。
+这些不是隐喻。它们是 544 条经机器检验、零 \texttt{sorry} 的定理。
 它们成立的前提是本文列出的六条公理与第 \ref{sec:scope} 节明示的物理输入；
 这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
 能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}

@@ -482,6 +482,32 @@ namespace ScaleUniverse.Verify
 #print axioms ScaleUniverse.Axes.axis_stabilizer_nontrivial
 #print axioms ScaleUniverse.Axes.multiplet_flatness_needs_per_direction_scalings
 
+/-! ## Sector LII — the last two inputs -/
+
+#print axioms ScaleUniverse.Dimension.algebra_bigger_than_directions
+#print axioms ScaleUniverse.Dimension.rep_dim_determined
+#print axioms ScaleUniverse.Dimension.rot_matches_scale_iff
+#print axioms ScaleUniverse.Dimension.alg_matches_rep_iff
+#print axioms ScaleUniverse.Dimension.two_matching_conditions_differ
+#print axioms ScaleUniverse.Dimension.wedge_smul_both
+#print axioms ScaleUniverse.Dimension.wedge_ratio_invariant
+#print axioms ScaleUniverse.Dimension.only_ratios_are_fixed
+#print axioms ScaleUniverse.Dimension.density_normalization_relation
+#print axioms ScaleUniverse.Dimension.normalization_returns_input
+
+/-! ## Sector LIII — A7, and the locus audit -/
+
+#print axioms ScaleUniverse.Locus.three_from_observability
+#print axioms ScaleUniverse.Locus.observability_fails_elsewhere
+#print axioms ScaleUniverse.Locus.observability_iff_three
+#print axioms ScaleUniverse.Locus.no_scale_invariant_interaction
+#print axioms ScaleUniverse.Locus.constant_coupling_iff_no_content
+#print axioms ScaleUniverse.Locus.isotropic_pair_parallel
+#print axioms ScaleUniverse.Locus.isotropic_no_rotation
+#print axioms ScaleUniverse.Locus.labels_require_anisotropy
+#print axioms ScaleUniverse.Locus.everything_switches_on_together
+#print axioms ScaleUniverse.Locus.particle_locus_is_anisotropic
+
 /-! ## Sector IX — light -/
 
 #print axioms ScaleUniverse.Light.isNull_iff_bare

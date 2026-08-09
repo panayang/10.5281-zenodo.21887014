@@ -96,6 +96,13 @@ shape of a statistics label but nothing here derives spin or the
 spin–statistics connection, and it is not called spin.  The identification of
 `π₁` of a projective order parameter with `ℤ/2` is standard topology, cited in
 the same way as the rank-one classification.
+
+**Domain (see `Locus.lean`).**  The label structure describes the
+**anisotropic** locus.  Where the scale pattern is isotropic there is no order
+parameter, no charge, no multiplet and no rotation — the labels do not exist,
+rather than taking trivial values.  They appear together at the scale where
+isotropy breaks, which is why they are not scale-invariant properties despite
+being homotopy invariants.
 -/
 import ScaleUniverse.Algebra
 import ScaleUniverse.Charges

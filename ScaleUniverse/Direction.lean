@@ -32,8 +32,15 @@ comparison algebra, and transporting along it is linear in it.  Then:
   the hypothesis: this is a statement about flat transports, not a derivation
   that commuting directions are flat.
 
-So `n` is no longer chosen: the directions are the algebra, and their number is
-whatever that algebra's dimension is.  Choosing a basis is a convenience, not
+So `n` is no longer chosen by hand.
+
+**Correction (see `Dimension.lean`).**  I wrote that the directions *are* the
+algebra and `n` is that algebra's dimension.  With the algebra now named that is
+checkable, and it is **false**: `dim so(3,1) = 6` while spacetime has `4`
+directions.  The directions are the space the algebra **acts on** — its defining
+representation — not the algebra.  Nothing is lost: `so(k,1)` carries a
+canonical `k+1`-dimensional representation, so naming the algebra still fixes
+`n`, as `k + 1`.  Choosing a basis is a convenience, not
 an axiom — `transport_determined_by_generators` says a transport is fixed by
 its values on any additively generating set.
 

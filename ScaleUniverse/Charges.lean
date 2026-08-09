@@ -34,6 +34,14 @@ many values, alongside an unconfined integer charge.  The framework does not
 derive that the finite group is `SU(3)`'s centre or that the integer is
 electric charge; what it derives is that there must be exactly these two kinds,
 and that precisely one of them is confined.
+
+**Domain (see `Locus.lean`).**  These charges describe the **anisotropic**
+locus.  A fully degenerate scale pattern supports no order parameter
+(`Axis.isotropic_no_order_parameter`), hence no defect and no charge; and
+whether the pattern is degenerate is a scale-dependent fact.  So the labels
+below are not scale-invariant properties of the world — they come into existence
+where isotropy breaks, together with the multiplets and the curvature, since all
+three have one source.
 -/
 import Mathlib.Algebra.Group.Defs
 import Mathlib.Data.Int.Basic

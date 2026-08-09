@@ -49,3 +49,5 @@ import ScaleUniverse.Algebra
 import ScaleUniverse.Particle
 import ScaleUniverse.Slice
 import ScaleUniverse.Axes
+import ScaleUniverse.Dimension
+import ScaleUniverse.Locus
