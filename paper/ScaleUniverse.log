@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.7.10)  9 AUG 2026 19:39
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.7.10)  9 AUG 2026 20:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -847,12 +847,13 @@ LaTeX Font Info:    Font shape `TU/DejaVuSansMono(0)/m/n' will be
 (Font)              scaled to size 8.50006pt on input line 91.
  (./ScaleUniverse.toc [1
 
-] [2] [3])
+] [2] [3]
+LaTeX Font Info:    Font shape `TU/DejaVuSansMono(0)/m/n' will be
+(Font)              scaled to size 9.30756pt on input line 106.
+)
 \tf@toc=\write4
 \openout4 = `ScaleUniverse.toc'.
 
-LaTeX Font Info:    Font shape `TU/DejaVuSansMono(0)/m/n' will be
-(Font)              scaled to size 9.30756pt on input line 118.
  [4]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
@@ -860,14 +861,13 @@ Package mdframed Info: mdframed detected package amsthm
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 160.
+ [5]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 170.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 179.
- [5]
-Package mdframed Info: Not enough space on this page on input line 192.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 194.
@@ -902,29 +902,33 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 335.
 
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 358.
 [8]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
+(mdframed)              on input line 358.
+ [9]
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
 (mdframed)              on input line 430.
- [9] [10] [11]
+ [10] [11]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 619.
-
+Package mdframed Info: Box was splittet wrong
+ starting loop to iterate the splitting point
+(mdframed)              on input line 625.
+ [12]
 Overfull \hbox (13.34842pt too wide) in paragraph at lines 631--631
 []\TU/TeXGyrePagella(0)/m/n/10 Lean \TU/FandolSong-Regular(0)/m/n/10 出 处：| \TU/
 DejaVuSansMono(0)/m/n/10 Frame.DirScale.isotropic_reciprocal_forces_flat, isotr
 opic_reciprocal_metric_bare 
  []
 
-[12]
+[13]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 691.
- [13] [14]
+ [14]
 Underfull \hbox (badness 10000) in paragraph at lines 778--778
 []\TU/TeXGyrePagella(0)/m/n/10 Lean \TU/FandolSong-Regular(0)/m/n/10 出 处：| \TU/
 DejaVuSansMono(0)/m/n/10 Transport.transport_unique_iff_stabilizer_trivial,
@@ -978,13 +982,16 @@ Package mdframed Info: mdframed detected package amsthm
  changed the theorem header of amsthm
 (mdframed)              on input line 1153.
  [20]
+Package mdframed Info: Not enough space on this page on input line 1159.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 1178.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 1228.
- [21] [22]
+ [21]
+Package mdframed Info: Not enough space on this page on input line 1231.
+ [22]
 Underfull \hbox (badness 10000) in paragraph at lines 1321--1321
 []\TU/TeXGyrePagella(0)/m/n/10 Lean \TU/FandolSong-Regular(0)/m/n/10 出 处：| \TU/
 DejaVuSansMono(0)/m/n/10 Color.BlockMonodromy.constituent_charge_fraction, cons
@@ -998,13 +1005,10 @@ Package mdframed Info: mdframed detected package amsthm
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 1390.
- [24]
+ [24] [25]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 1506.
-Package mdframed Info: Not enough space on this page on input line 1511.
- [25]
-Package mdframed Info: Not enough space on this page on input line 1511.
 
 Underfull \hbox (badness 10000) in paragraph at lines 1532--1532
 []\TU/TeXGyrePagella(0)/m/n/10 Lean \TU/FandolSong-Regular(0)/m/n/10 出 处：| \TU/
@@ -1056,6 +1060,13 @@ full_frame,
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 1824.
+
+Package mdframed Warning: You got a bad break
+(mdframed)                because the last box will be empty
+(mdframed)                you have to change it manually
+(mdframed)                by changing the text, the space
+(mdframed)                or something else on input line 1831.
+
 [30]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
@@ -1067,10 +1078,11 @@ DejaVuSansMono(0)/m/n/10 Precession.coeff_reciprocal, coeff_isotropic, isotropi
 c_is_third,
  []
 
+[31]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 1910.
-[31]
+
 Overfull \hbox (18.46588pt too wide) in paragraph at lines 1945--1945
 []\TU/TeXGyrePagella(0)/m/n/10 Lean \TU/FandolSong-Regular(0)/m/n/10 出 处：| \TU/
 DejaVuSansMono(0)/m/n/10 Schwarzschild.vacuum_log_derivative, Schwarzschild.vac
@@ -1080,6 +1092,7 @@ uum_iff_scale_sum_stationary
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 1948.
+[32]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 1975.
@@ -1090,11 +1103,10 @@ DejaVuSansMono(0)/m/n/10 ColorAudit.identification_fails_baryon, ColorAudit.ide
 ntification_fails_charge 
  []
 
-[32]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 2013.
- [33]
+[33]
 Overfull \hbox (13.34837pt too wide) in paragraph at lines 2068--2068
 []\TU/TeXGyrePagella(0)/m/n/10 Lean \TU/FandolSong-Regular(0)/m/n/10 出 处：| \TU/
 DejaVuSansMono(0)/m/n/10 Emergence.content_eq_of_no_threshold, Emergence.conten
@@ -1228,7 +1240,38 @@ Package mdframed Info: mdframed detected package amsthm
  changed the theorem header of amsthm
 (mdframed)              on input line 2443.
  [40]
-Overfull \hbox (3.11348pt too wide) in paragraph at lines 2508--2508
+LaTeX Font Info:    Trying to load font information for U+euf on input line 250
+7.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/ueuf.fd
+File: ueuf.fd 2013/01/14 v3.01 Euler Fraktur
+)
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 2523.
+
+Underfull \hbox (badness 10000) in paragraph at lines 2540--2540
+[]\TU/TeXGyrePagella(0)/m/n/10 Lean \TU/FandolSong-Regular(0)/m/n/10 出 处：| \TU/
+DejaVuSansMono(0)/m/n/10 Algebra.boosts_commute_iff_parallel, no_two_dimensiona
+l_commuting_family,
+ []
+
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 2558.
+[41]
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 2629.
+ [42]
+Package mdframed Info: Not enough space on this page on input line 2636.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 2666.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 2688.
+ [43]
+Overfull \hbox (3.11348pt too wide) in paragraph at lines 2720--2720
 []\TU/TeXGyrePagella(0)/m/n/10 Lean \TU/FandolSong-Regular(0)/m/n/10 出 处：| \TU/
 DejaVuSansMono(0)/m/n/10 MassAudit.mass_law_underdetermined, MassAudit.both_law
 s_antiparticle_degenerate 
@@ -1236,15 +1279,15 @@ s_antiparticle_degenerate
 
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 2511.
+(mdframed)              on input line 2723.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 2530.
-[41] [42] [43] [44]
-Overfull \vbox (132.56604pt too high) has occurred while \output is active []
+(mdframed)              on input line 2742.
+[44] [45] [46] [47] [48]
+Overfull \vbox (163.84586pt too high) has occurred while \output is active []
 
 
-[45] [46] (./ScaleUniverse.aux)
+[49] [50] (./ScaleUniverse.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2022/08/05>
@@ -1254,15 +1297,15 @@ L3 programming layer <2022/08/05>
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `ScaleUniverse.out' has not changed.
-(rerunfilecheck)             Checksum: DE61FF19E62C079E02F5BC0379DE8530;14070.
+(rerunfilecheck)             Checksum: 058220DC65A255DAB92A8B2598814BF7;15564.
  ) 
 Here is how much of TeX's memory you used:
- 16617 strings out of 468006
- 383583 string characters out of 5432520
- 853776 words of memory out of 6000000
- 45257 multiletter control sequences out of 15000+600000
- 637181 words of font info for 144 fonts, out of 8000000 for 9000
+ 16655 strings out of 468006
+ 384256 string characters out of 5432520
+ 845883 words of memory out of 6000000
+ 45285 multiletter control sequences out of 15000+600000
+ 637913 words of font info for 150 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 74i,10n,93p,1618b,631s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 74i,10n,93p,1772b,586s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on ScaleUniverse.pdf (46 pages).
+Output written on ScaleUniverse.pdf (50 pages).

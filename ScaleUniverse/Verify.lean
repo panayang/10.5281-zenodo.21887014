@@ -421,6 +421,38 @@ namespace ScaleUniverse.Verify
 #print axioms ScaleUniverse.Dynamics.larger_multiplet_fewer_generators
 #print axioms ScaleUniverse.Dynamics.multiplet_change_needs_pattern_change
 
+/-! ## Sector XLVIII — which algebra: real rank one -/
+
+#print axioms ScaleUniverse.Algebra.scaling_rotation_orthogonal
+#print axioms ScaleUniverse.Algebra.boost_isScaling
+#print axioms ScaleUniverse.Algebra.boost_add
+#print axioms ScaleUniverse.Algebra.boost_smul
+#print axioms ScaleUniverse.Algebra.boost_mul_succ_succ
+#print axioms ScaleUniverse.Algebra.boost_bracket_spatial
+#print axioms ScaleUniverse.Algebra.boosts_commute_iff_parallel
+#print axioms ScaleUniverse.Algebra.commuting_boosts_lie_on_a_line
+#print axioms ScaleUniverse.Algebra.commuting_family_one_parameter
+#print axioms ScaleUniverse.Algebra.no_two_dimensional_commuting_family
+#print axioms ScaleUniverse.Algebra.commuting_drifts_proportional
+#print axioms ScaleUniverse.Algebra.boost_eq_zero_iff
+
+/-! ## Sector XLIX — the particle model the algebra allows -/
+
+#print axioms ScaleUniverse.Particle.boost_injective
+#print axioms ScaleUniverse.Particle.pattern_is_one_vector
+#print axioms ScaleUniverse.Particle.mixture_second_moment
+#print axioms ScaleUniverse.Particle.mixture_cvSq_ge_one
+#print axioms ScaleUniverse.Particle.mixture_cvSq_eq_one_iff
+#print axioms ScaleUniverse.Particle.observed_disfavours_higher_rank
+#print axioms ScaleUniverse.Particle.rate_value_not_fixed
+#print axioms ScaleUniverse.Particle.block_two_valued
+#print axioms ScaleUniverse.Particle.block_cannot_be_three_valued
+#print axioms ScaleUniverse.Particle.block_self_inverse
+#print axioms ScaleUniverse.Particle.two_odd_make_even
+#print axioms ScaleUniverse.Particle.hedgehog_conserved_in_splitting
+#print axioms ScaleUniverse.Particle.no_further_label
+#print axioms ScaleUniverse.Particle.particle_label_structure
+
 /-! ## Sector IX — light -/
 
 #print axioms ScaleUniverse.Light.isNull_iff_bare

@@ -45,3 +45,5 @@ import ScaleUniverse.CrossCheck
 import ScaleUniverse.Expressive
 import ScaleUniverse.Coupling
 import ScaleUniverse.Dynamics
+import ScaleUniverse.Algebra
+import ScaleUniverse.Particle

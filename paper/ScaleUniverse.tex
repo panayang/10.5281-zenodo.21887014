@@ -87,8 +87,8 @@ Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson �
 哪些是仍需外部输入的物理假设。
 
 \medskip
-\noindent\textbf{形式化规模：}462 条定理、7974 行 Lean 代码；
-263 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
+\noindent\textbf{形式化规模：}496 条定理、8640 行 Lean 代码；
+289 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
 （\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
 无 \texttt{sorryAx}。
 \end{abstract}
@@ -2484,6 +2484,218 @@ multiplet\_change\_needs\_pattern\_change}
 标度花样仍然是输入。
 \end{remark}
 
+\section{到底是哪个代数：公理逼出实秩一}\label{sec:algebra}
+
+第 \ref{sec:direction} 节把输入从"$n$ 个交换标签 $+$ 平直度规 $+$ 号差"压到"一个代数"，
+然后停在那里：它没说是\emph{哪个}代数。这是此后最尖锐的未决项，
+而下游全在等它——交叉积、$\beta$ 函数的结构、量子扇区的任何定量陈述。
+
+结果是：\textbf{两条早已证过、且当初并非为此而证的定理，合起来把候选压进了一份有限的分类清单。}
+
+\subsection{分裂是典范的，不是表示的选择}
+
+第 \ref{sec:coupling} 节把缩放定义为对称算子、转动定义为反称算子。
+转置是相对某个形式取的，所以这看起来像偷偷塞进了一个度规。它没有：
+第 \ref{sec:invariant} 节已从一个迹导出形式 $\kappa(x,y)=\tau(xy)$。
+
+\begin{theorem}[两扇区在导出的形式下正交]\label{thm:orth}
+$S$ 对称、$A$ 反称 $\Rightarrow$ $\operatorname{tr}(SA)=0$，
+仅用 $\operatorname{tr}(X^{\mathsf T})=\operatorname{tr}X$ 与
+$\operatorname{tr}(XY)=\operatorname{tr}(YX)$。
+故标度／转动分解在框架\emph{自己拥有}的形式下正交——
+连同定理 \ref{thm:cartan} 的括号关系，这恰是一个\textbf{Cartan 分解}
+$\mathfrak g = \mathfrak k \oplus \mathfrak p$。
+\leanline{Algebra.scaling\_rotation\_orthogonal}
+\end{theorem}
+
+\subsection{公理逼出实秩一}
+
+两条分别为别的目的证过的结论：
+
+\begin{itemize}[leftmargin=1.6em]
+\item 定理 \ref{thm:onedir}：相互对易的缩放不生成转动。
+      故一族两两对易的缩放，就是一组可以\textbf{同时指定而不产生曲率}的标度方向；
+      这样的极大族即 $\mathfrak p$ 的极大交换子代数，其维数按定义就是\textbf{实秩}。
+\item 定理 \ref{thm:sig}：漂移是\emph{一个}线性泛函。标度只沿\textbf{一个}方向跑，
+      故只有\textbf{一个}标度坐标。
+\end{itemize}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\[
+\boxed{\ \text{实秩} = 1\ }
+\]
+这是框架\emph{对自己}施加的约束，不是为了让什么对上而选的。
+\end{mdframed}
+
+\begin{theorem}[两个推促的括号是空间转动]\label{thm:bbr}
+$[K_v,K_w]$ 在空间块上是 $v_iw_j-v_jw_i$，其余分量为零。
+这就是定理 \ref{thm:ss} 在 Lorentz 族上的显式形式，也就是 Thomas--Wigner 转动。
+\leanline{Algebra.boost\_bracket\_spatial}
+\end{theorem}
+
+\begin{theorem}[两个推促对易 $\iff$ 方向平行]\label{thm:rank1}
+故\textbf{不存在二维的相互对易缩放族}：缩放扇区的极大交换子代数是一条\emph{直线}。
+实秩一是算出来的，不是断言的。
+\leanline{Algebra.boosts\_commute\_iff\_parallel,
+no\_two\_dimensional\_commuting\_family, commuting\_boosts\_lie\_on\_a\_line}
+\end{theorem}
+
+\begin{theorem}[两个"秩一"是同一句话]\label{thm:samefact}
+一族对易缩放所诱导的漂移两两成比例。
+故第 \ref{sec:signature} 节的"一个漂移泛函"与耦合的"一个对易缩放"，
+是 Cartan 分解两侧对同一事实的两次读数。
+\leanline{Algebra.commuting\_drifts\_proportional, boost\_drift}
+\end{theorem}
+
+\subsection{这剩下什么}
+
+实秩一的实单李代数是被完全分类的，清单很短：
+\[
+\mathfrak{so}(n,1),\quad \mathfrak{su}(n,1),\quad \mathfrak{sp}(n,1),\quad \mathfrak{f}_{4(-20)} .
+\]
+它们的对称空间分别是实、复、四元数、八元数双曲空间。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{这条分类是李理论的定理，不是本文的推导，此处\emph{未被证明}。}
+它是引用，并已登记进第 \ref{sec:audit} 节的污染表作为外部输入。
+本文证明的是\emph{筛掉}这份清单的那条约束，以及 $\mathfrak{so}(n,1)$ 满足它。
+\end{mdframed}
+
+四者之中，$\mathfrak{so}(n,1)$ 是标度为\textbf{实}比值的那一个；
+其余三者要求标度带复、四元数或八元数结构，而 A3 不提供——
+那里的标度是量值之比，且第 \ref{sec:axis} 节已发现读数是无向的实数。
+\textbf{于是框架指向 Lorentz 族，而它是从耗散加耦合走到那里的。}
+
+\subsection{三个等着的项目随之落地}
+
+\begin{enumerate}[leftmargin=1.8em]
+\item \textbf{交叉积。}秩一意味着 Iwasawa 分解的交换部分是一维的，
+      故在交叉积中作用的群是 $\mathbb R$ 而非 $\mathbb R^k$。
+      \textbf{这正是第 \ref{sec:exact} 小节单独一个平移 $U$ 就够用的原因}——
+      那本来看起来只是建模上的省事。
+      \leanline{Algebra.commuting\_family\_one\_parameter, boost\_add, boost\_smul}
+\item \textbf{$\beta$ 函数。}秩一根系至多有两个正根 $\alpha,2\alpha$，
+      故至多\textbf{两个}标度权重。（随分类一并引用。）
+\item \textbf{双曲几何，未被塞入。}秩一对称空间就是双曲空间，
+      其 Lorentz 形式即反德西特，标度坐标是径向方向，重整化流沿它跑。
+      \textbf{这不是放进去的，这就是秩一本身。}
+\end{enumerate}
+
+\begin{remark}[诚实的界限]
+这导出的是\emph{族}，不是维数：$n=4$ 仍未被预言，这里没有任何东西挑出它。
+分类是引用来的。而从"一个漂移泛函"到"一维极大交换子代数"这一步是一个
+\emph{物理认定}——认定独立的对易缩放就是独立的标度坐标——不是形式推演；
+它被明写在外面，没有藏进任何证明里（在 Lorentz 模型\emph{内部}它是定理 \ref{thm:samefact}）。
+\end{remark}
+
+\section{代数允许的粒子模型}\label{sec:particle}
+
+第 \ref{sec:algebra} 节定住了族。三项此前自由的输入随之被约束，本节把它推到头。
+
+目标\emph{刻意}不是量子场论。第 \ref{sec:emergence} 节已论证物种清单是标度轴上某一截面的性质，
+故复现它不是检验。这个层级的框架能被要求的是\textbf{标签结构}：
+一个粒子是一份什么样的清单，以及两个相加会怎样。
+
+\subsection{标度花样坍缩为一个矢量}
+
+\begin{theorem}[缩放被方向矢量忠实标记]\label{thm:binj}
+$\text{boost}\,v = \text{boost}\,w \Rightarrow v = w$。
+连同定理 \ref{thm:rank1}，A4 的 $n$ 个独立单位被压成\textbf{一个矢量}，
+在转动意义下压成\textbf{一个量值}。
+\leanline{Particle.boost\_injective, pattern\_is\_one\_vector}
+\end{theorem}
+
+这是对一项长期输入的大幅削减——从 $n$ 个自由函数到一个数加一个方向——
+但\textbf{不是消除}：那个量值仍然自由。已登记。
+
+\subsection{恰好一个阈值速率，而这是可检验的}
+
+第 \ref{sec:spectrum} 节由 A5 论证阈值是恒速率过程，得到 $\mathrm{CV}=1$。
+秩一从结构上给出同一结论，而且尖锐得多，因为它规定了\emph{能有几个}速率。
+
+秩一根系只有一个根，故只有\textbf{一个}指数速率。秩二以上会有多个根、多个速率，
+从而是若干恒速率过程的交错——一个指数\emph{混合}。而混合必然过离散：
+
+\begin{theorem}[恒等式]\label{thm:mix}
+$p a^2 + (1-p) b^2 - (pa+(1-p)b)^2 = p(1-p)(a-b)^2$。纯代数。
+\leanline{Particle.mixture\_second\_moment}
+\end{theorem}
+
+\begin{theorem}[任何两速率混合都有 $\mathrm{CV}^2 \geq 1$]\label{thm:mixge}
+且\textbf{取等当且仅当两速率相同}——即恰好在秩一的情形。
+\leanline{Particle.mixture\_cvSq\_ge\_one, mixture\_cvSq\_eq\_one\_iff}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+于是预言从"一个目标值"升级为\textbf{双侧陈述}：秩一给 $\mathrm{CV}^2=1$，
+任何更高秩给 $\mathrm{CV}^2>1$。
+观测值 $\mathrm{CV}^2=0.875$ \textbf{在一以下}，
+故\textbf{质量谱是反对更高秩代数的证据}。
+这是对代数本身的第一个检验，而它来自粒子谱。
+\leanline{Particle.observed\_disfavours\_higher\_rank}
+\end{mdframed}
+
+\begin{remark}[代数\emph{不}定的东西]
+速率的\emph{数值}。把根的半和换算成"每单位对数能量的密度"需要一个根的归一化，
+而框架不提供。故 $\rho\approx 0.86$ 仍是测量值，预言是关于\textbf{离散度}而非密度。
+形式陈述：混合的 $\mathrm{CV}^2$ 在两个分量均值同时缩放下不变。
+\leanline{Particle.rate\_value\_not\_fixed}
+\end{remark}
+
+\subsection{禁闭荷是二值的，这结清了 \texorpdfstring{\texttt{ColorAudit}}{ColorAudit}}
+
+第 \ref{sec:charges} 节给每个点缺陷两个拓扑标签——某个有限群 $B$ 中的块荷，
+与整数刺猬荷——并让 $B$ 自由。
+
+\textbf{代数把它定死了。}序参量是标度轴，因标度是比值而无向（第 \ref{sec:axis} 节），
+故它是缩放扇区中过原点的一条直线，即实射影空间；其环路类构成 $\mathbb Z/2$。
+
+\begin{theorem}[禁闭荷恰取两个值，且三值不可能]\label{thm:blk2}
+$|B| = 2 \neq 3$。
+\leanline{Particle.block\_two\_valued, block\_cannot\_be\_three\_valued,
+block\_self\_inverse}
+\end{theorem}
+
+第 \ref{sec:coloraudit} 节把"此荷给 2 而数据要 3"记为一个未获解释的失败。
+\textbf{它不再是未获解释的}：块群是 $\mathbb Z/2$，因为序参量是射影的，所以 3 从来就不在供给里。
+色\textbf{确定}不是这个量子数，而且没有任何修补能让它是——
+这正是第 \ref{sec:emergence} 节说它应该是的：一个截面的特征。
+
+\subsection{一个粒子是什么}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+一个粒子 $=$ 一个\textbf{阈值} $\in\mathbb R$、一个 $\mathbb Z/2$ \textbf{标签}、
+一个\textbf{整数荷} $\in\mathbb Z$。\textbf{框架不提供第四个槽位。}
+\leanline{Particle.no\_further\_label, particle\_label\_structure}
+\end{mdframed}
+
+复合把它们相加，选择定则由此直接给出：
+
+\begin{theorem}[两个奇复合成偶]\label{thm:odd}
+两个 $\mathbb Z/2$-奇缺陷复合出平凡块标签。仅凭群，无需动力学。
+\leanline{Particle.two\_odd\_make\_even}
+\end{theorem}
+
+\begin{theorem}[整数荷在任何分裂中精确守恒]\label{thm:qcons}
+这是一个恒等式，故没有任何动力学能违反它。
+\leanline{Particle.hedgehog\_conserved\_in\_splitting}
+\end{theorem}
+
+整数荷是非禁闭的（定理 \ref{thm:onecharge}）且精确守恒。
+在观测到的世界里，恰有\emph{一个}内禀量子数同时具备这两条性质——\textbf{电荷}：
+色被禁闭，弱同位旋被破缺，重子数与轻子数有反常。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{这是结构上的吻合，而且被作为吻合陈述，不是对电磁学的推导。}
+\end{mdframed}
+
+\begin{remark}[诚实的界限]
+没有质量、没有耦合常数、没有代结构，也没有任何理由给出整数荷的具体取值。
+$\mathbb Z/2$ 标签具有统计标签的\emph{形状}，但此处没有任何东西推导出自旋
+或自旋--统计联系，故它\textbf{不被称作自旋}。
+"射影序参量的 $\pi_1$ 是 $\mathbb Z/2$"是标准拓扑，与秩一分类同样属于引用。
+\end{remark}
+
 \section{自我审查：已发现的思维污染}\label{sec:audit}
 
 本节是对整个体系的一次不设辩护的复查，按"基础建构"与"目标问题"两条线。
@@ -2553,6 +2765,12 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
       第 \ref{sec:invariant} 节把它导出为 $\kappa(x,y)=\tau(xy)$，
       而 $\kron$ 真正提供的那条性质（输运下不变）成为定理。
       需要的只是一个迹，比度规弱得多。
+\item \textbf{实秩一的分类定理是外部输入}（新登记）。第 \ref{sec:algebra} 节
+      证明了公理强制实秩 $=1$，并算出 $\mathfrak{so}(n,1)$ 满足它；
+      但"实秩一的实单李代数只有四族"这条\emph{分类}是李理论的定理，
+      本文未证，纯属引用。若该引用有误，第 \ref{sec:algebra} 节的
+      "指向 Lorentz 族"就失效，而秩 $=1$ 这条约束本身仍然成立。
+
 \item \textbf{维数 $n$ 仍是给定的}（部分解决）。第 \ref{sec:direction} 节去掉了
       指标集——方向\emph{就是}代数元素，个数即代数维数——并揭穿 A1 的
       "两两交换"其实是在假设方向平直。但\emph{哪个}代数仍是输入，故 $n=4$ 未被预言。
@@ -2607,7 +2825,7 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \ref{thm:detfail}、\ref{thm:dm}、\ref{thm:diss}、\ref{thm:desitter}、
 \ref{thm:h}、\ref{thm:arrow}、\ref{thm:null}、\ref{thm:massive}、
 \ref{thm:cov}、\ref{thm:covfield}、\ref{thm:sing}、\ref{thm:singcurv}、
-\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
+\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
 
 \paragraph{尚未完成——本纲领当前最薄弱之处。}
 这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
@@ -2732,15 +2950,17 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Expressive.lean} & 10 & 表达力边界：可观测 $\iff$ 差（部分被超越） \\
 \texttt{Coupling.lean}   & 11 & 两次缩放生成转动；耦合被词义强制 \\
 \texttt{Dynamics.lean}   & 12 & 守恒出自 Bianchi；多重态内部平直 \\
+\texttt{Algebra.lean}    & 12 & 实秩一；耦合筛出 Lorentz 族 \\
+\texttt{Particle.lean}   & 14 & 标签结构 $(\mathbb R,\mathbb Z/2,\mathbb Z)$；离散度检验 \\
 \midrule
-\textbf{合计}             & \textbf{462} & 7974 行 Lean 代码 \\
+\textbf{合计}             & \textbf{496} & 8640 行 Lean 代码 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \subsection{公理审计}
 
-对 263 条主定理执行 \texttt{\#print axioms}，结果全部落在
+对 289 条主定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -2771,7 +2991,7 @@ Newton 引力是标度响应律的线性化；
 时间箭头是有限分辨率的必然产物；
 而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
 
-这些不是隐喻。它们是 462 条经机器检验、零 \texttt{sorry} 的定理。
+这些不是隐喻。它们是 496 条经机器检验、零 \texttt{sorry} 的定理。
 它们成立的前提是本文列出的六条公理与第 \ref{sec:scope} 节明示的物理输入；
 这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
 能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}
