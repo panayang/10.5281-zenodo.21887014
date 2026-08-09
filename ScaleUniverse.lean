@@ -47,3 +47,5 @@ import ScaleUniverse.Coupling
 import ScaleUniverse.Dynamics
 import ScaleUniverse.Algebra
 import ScaleUniverse.Particle
+import ScaleUniverse.Slice
+import ScaleUniverse.Axes

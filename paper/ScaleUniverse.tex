@@ -87,8 +87,8 @@ Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson �
 哪些是仍需外部输入的物理假设。
 
 \medskip
-\noindent\textbf{形式化规模：}496 条定理、8640 行 Lean 代码；
-289 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
+\noindent\textbf{形式化规模：}524 条定理、9192 行 Lean 代码；
+312 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
 （\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
 无 \texttt{sorryAx}。
 \end{abstract}
@@ -2696,6 +2696,206 @@ $\mathbb Z/2$ 标签具有统计标签的\emph{形状}，但此处没有任何�
 "射影序参量的 $\pi_1$ 是 $\mathbb Z/2$"是标准拓扑，与秩一分类同样属于引用。
 \end{remark}
 
+\section{广延的代价、转动是什么、以及为什么是三}\label{sec:slice}
+
+三个问题，而它们互相咬合。
+
+\subsection{标签泛滥是覆盖范围的代价，不是结构的证据}
+
+值得认真对待的警告是：标准模型的那套装置——色、代、弱同位旋、禁闭机制——
+可能根本不是结构，而是把一个\emph{截面局部}的描述广延到一段标度范围上时
+被\textbf{迫}写下的东西。这是可形式化的，此处证明。
+
+第 \ref{sec:emergence} 节说标度 $t$ 处的内容是 $\{k \mid \mu_k \le t\}$，
+第 \ref{sec:rg} 节说描述在阈值之间是\emph{精确}的。
+故单一标度上有效的描述只需要该标度的内容；
+而跨范围有效的描述必须携带在下端\textbf{不可分辨}的内容的标签。
+
+\begin{theorem}[跨越阈值即强制新标签]\label{thm:newc}
+范围内有任何阈值，广延描述就必须携带局部描述不需要的标签；
+而这个超出量随范围\textbf{单调增长}。
+反之，不含阈值的范围代价为零。
+\leanline{Slice.newContent\_nonempty\_of\_threshold, newContent\_mono,
+newContent\_empty\_of\_no\_threshold}
+\end{theorem}
+
+\begin{theorem}[没有在所有标度上都够用的标签集]\label{thm:nouniv}
+任何标度之上都还有未分辨的内容，故任何固定标签集终将不足。
+\textbf{在所有标度上都有效的形式体系并不存在}，而它的不存在是定理，不是谁的巧思不够。
+\leanline{Slice.no\_finite\_universal\_labelling, label\_count\_measures\_range}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{一个形式体系携带的标签数量，度量的是它覆盖的对数范围，不是物理的深度。}
+用一套形式覆盖三十个 e-fold，就必须为这三十个 e-fold 中任何地方出现过的东西备好标签，
+而其中绝大多数在任一给定标度上并未实现。
+这恰是壳外内容、规范冗余、以及"只在虚过程中存在的物种"的形状。
+\end{mdframed}
+
+这并\emph{不}反驳标准模型。它说的是：标准模型的标签数是关于它\emph{范围}的证据，
+而复现这个数目不是目标——这正是第 \ref{sec:emergence} 节主张过、本节证明了的事。
+
+\subsection{转动的原生量是楔积——而这打破了上一节}
+
+框架自己的量很少：阈值、$\mathbb Z/2$ 标签、整数荷、标度量值。
+转动不在其中，然而第 \ref{sec:coupling} 节生产它。它原生地是什么？
+
+定理 \ref{thm:bbr} 已经回答：两个缩放生成的转动是 $v_iw_j - v_jw_i$，
+即它们方向的\textbf{楔积}。故转动标签在这里\emph{不是}独立量子数——
+它是标度结构的函数，没有自由度。
+
+\begin{theorem}[楔积是真正的二形式，且平行时为零]\label{thm:wedge}
+反称、双线性，且 $\text{wedge}\,v\,w = 0 \iff v \parallel w$。
+\leanline{Slice.wedge\_eq\_bracket, wedge\_antisymm, wedge\_bilinear\_left,
+wedge\_eq\_zero\_iff\_parallel}
+\end{theorem}
+
+\begin{theorem}[均匀花样不携带转动标签]\label{thm:uniax}
+$\text{wedge}\,v\,v = 0$：一个矢量与\emph{自身}的楔积为零。
+故\textbf{均匀}（不随位置变化的）标度花样转动标签恒为零。
+\leanline{Slice.homogeneous\_carries\_no\_rotation, rotation\_requires\_biaxial}
+\end{theorem}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{更正（见第 \ref{sec:axes} 节）。}我原先把这条定理命名为
+"单轴不携带转动"并据此提出一个两难。\textbf{那个读法是错的，在此撤回。}
+定理讲的是一个矢量与\emph{自身}的楔积，故它说的是\textbf{恒定}花样不生成转动；
+而"单轴"指标度只取一个不同的\emph{值}，完全是另一回事。
+第 \ref{sec:axes} 节表明转动由花样的\emph{变化}携带，
+从而绕数缺陷必然带转动，且更多轴根本不可得。
+第 \ref{sec:particle} 节的标签因此无需限缩。
+\end{mdframed}
+
+\subsection{为什么是三个空间方向}
+
+第 \ref{sec:algebra} 节导出了族而不是维数。这里是结构所能提供的唯一一条论证，
+连同它的确切强度。
+
+A4 只提供一种标签：\textbf{方向}。
+第 \ref{sec:gauge} 节使一切可观测标签都是方向间的简并花样。
+第 \ref{sec:coupling} 节使一切转动都是两个方向的楔积。
+故缩放生成的转动\emph{当且仅当}楔积空间与方向空间同维时才带有方向标签：
+\[
+\dim \Lambda^2\mathbb R^k = k \iff \frac{k(k-1)}{2} = k \iff k = 3 .
+\]
+
+\begin{theorem}[三是唯一解]\label{thm:three}
+$k(k-1)/2 = k$ 的唯一正解是 $k=3$。
+$k>3$ 时楔积严格多于方向，故有转动不带方向标签；
+$k<3$ 时转动扇区退化。
+\leanline{Slice.wedge\_dim\_eq\_iff, three\_is\_unique,
+more\_wedges\_than\_directions, fewer\_wedges\_than\_directions}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{$k=3$ 是耦合在公理所提供的标签上闭合的唯一维数}，给出 $n = k+1 = 4$。
+\end{mdframed}
+
+\begin{remark}[这有多强]
+算术是定理。而承载物理的那一步——框架\emph{要求}它生成的转动带方向标签，
+而不只是\emph{允许}某些转动不带标签——是一个\textbf{判断}，
+与第 \ref{sec:algebra} 节的秩一认定同类。
+它被明写在外面并已登记，没有藏进任何证明。
+\textbf{有它，$n=4$；没有它，$n$ 仍然自由。}
+\end{remark}
+
+值得一提的自洽：$k=3$ 也正是 $\mathfrak{so}(3)\cong\mathfrak{su}(2)$、
+转动群获得双覆盖的地方——而那正是第 \ref{sec:particle} 节 $\mathbb Z/2$ 的来源。
+\textbf{维数与那个标签同源。}
+
+\section{两难消解，而且更多轴不可得}\label{sec:axes}
+
+第 \ref{sec:slice} 节把一个两难称作框架最尖锐的未决问题。
+\textbf{那个两难建立在一处误读上，而误读是我的。}
+
+定理 \ref{thm:uniax} 证的是 $\text{wedge}\,v\,v=0$——一个矢量与\emph{自身}的楔积。
+我把它读成"单轴花样不携带转动"。但\emph{单轴}指标度只取一个不同的\textbf{值}，
+不是只有一个\textbf{方向}；而定理讲的是一个\emph{矢量}，不是一根轴。
+$\text{wedge}\,v\,v=0$ 实际说的是：\textbf{均匀}花样不生成转动。
+那是关于恒定性的陈述，不是关于轴数的。
+
+\textbf{这是"标量代替方向性"的第五次}——继第 \ref{sec:frame}、\ref{sec:axis}、
+\ref{sec:coupling} 节与第 \ref{sec:dynamics} 节撤回的那处解读之后。
+值得记下的是：这次它\textbf{挺过了一次形式化和一版论文}——定理本身是真的，
+错的只是它的名字和我的注解。
+
+\subsection{转动是花样与其自身变化的楔积}
+
+定理 \ref{thm:binj} 说标度花样是\emph{单个}矢量 $v$。
+故在任一处 $v\wedge v = 0$，转动标签只能来自花样在\textbf{不同位置取不同值}。
+
+\begin{theorem}[转动需要变化，且只需要变化]\label{thm:rotvar}
+非零转动标签强制花样的两个值不平行；反之，值处处平行的花样处处不生成转动。
+\leanline{Axes.rotation\_needs\_variation, combable\_no\_rotation,
+rotation\_iff\_variation}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{角动量在这里是 $v\wedge\nabla v$：标度矢量与其自身变化的楔积。}
+它\textbf{不是}一个位形在某点所具有的属性。
+\end{mdframed}
+
+而这恰好\emph{有利于}框架地消解了两难，因为缺陷\emph{正是}花样并非处处平行的位形——
+这就是绕数的含义：
+
+\begin{theorem}[绕数缺陷必然携带转动]\label{thm:wound}
+取两个不平行值的花样有非零转动标签；
+反之，无转动的位形可梳，故拓扑平凡。
+\leanline{Axes.wound\_carries\_rotation, rotationless\_is\_trivial}
+\end{theorem}
+
+\textbf{框架禁止带拓扑荷而转动标签为零的缺陷。}
+观测上，从未见过基本的带电自旋零粒子——带电 $\pi$ 介子是复合的。
+作为吻合陈述，并附带保留：此处"基本"本身就是标度相关的（第 \ref{sec:emergence} 节）。
+
+\subsection{更多轴不是不受青睐，而是不可得}
+
+要求是：没有充分论证不得排除双轴乃至更多轴。论证如下，而且很短。
+
+\textbf{"单轴／双轴"是\emph{张量}序参量的词汇}——
+向列相有一个对称张量，其不同本征值的个数就是轴数。
+\textbf{本框架的序参量不是张量。}实秩一强制标度花样是单个\textbf{矢量}
+（定理 \ref{thm:rank1}、\ref{thm:binj}），
+而矢量只有一个量值和一个方向，别无其他。
+\textbf{没有第二个本征值可以与第一个不同。}
+
+\begin{theorem}[任何第二个缩放要么是同一根轴，要么是一次变化]\label{thm:noax2}
+给定花样 $v$，任何另一个缩放 $w$ 要么是 $v$ 的倍数（同一根轴），
+要么与之有非零楔积——那它就不是第二根轴，而是一次\emph{变化}，表现为转动。
+\textbf{没有第三种可能。}故"有几根轴"的答案是\textbf{一根}，且非选择所致。
+\leanline{Axes.no\_second\_axis, axis\_or\_variation}
+\end{theorem}
+
+\begin{theorem}[花样的稳定化子是正维数的]\label{thm:stabpos}
+一个非平凡转动生成元湮灭该花样。这正是\emph{单轴}序参量的标志。
+\leanline{Axes.axis\_stabilizer\_nontrivial}
+\end{theorem}
+
+而这一点让整件事扣上了。\textbf{连续}稳定化子正是使序参量空间有非平凡 $\pi_2$、
+从而有点缺陷的东西；双轴或完全各向异性的花样有\textbf{离散}稳定化子，
+而李群模离散子群的 $\pi_2=0$，故\textbf{根本没有点缺陷，也没有整数荷}。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\begin{center}
+单轴 $\longrightarrow$ 连续稳定化子 $\longrightarrow$ 点缺陷、整数荷\\[2pt]
+双轴及以上 $\longrightarrow$ 离散稳定化子 $\longrightarrow$ 无点缺陷、无 $\mathbb Z$
+\end{center}
+\textbf{第 \ref{sec:particle} 节的整数荷只在单轴情形存在，而实秩一使单轴成为唯一情形。}
+两件事互相印证，这正是那组标签成立的原因。
+\end{mdframed}
+
+（$\pi_2(S^n)$ 与"李群模离散子群的 $\pi_2$ 为零"是标准拓扑，
+与秩一分类同等地属于引用。此处证明的是代数那一半：
+花样是单个矢量，且其稳定化子正维数。）
+
+\subsection{这在别处的代价}
+
+第 \ref{sec:dynamics} 节把定理注解为"多重态内部平直"。
+它的 \texttt{Realizes} 前提\textbf{按方向}指派缩放算子，而实秩一不提供这个——
+它提供一个矢量、一个缩放。定理对满足其前提者仍成立，
+但\textbf{那条物理解读撤回}。取代它的是本节：转动由单一花样的\emph{变化}携带。
+\leanline{Axes.multiplet\_flatness\_needs\_per\_direction\_scalings}
+
 \section{自我审查：已发现的思维污染}\label{sec:audit}
 
 本节是对整个体系的一次不设辩护的复查，按"基础建构"与"目标问题"两条线。
@@ -2765,6 +2965,18 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
       第 \ref{sec:invariant} 节把它导出为 $\kappa(x,y)=\tau(xy)$，
       而 $\kron$ 真正提供的那条性质（输运下不变）成为定理。
       需要的只是一个迹，比度规弱得多。
+\item \textbf{$n=4$ 依赖一个判断}（新登记）。第 \ref{sec:slice} 节证明
+      $k=3$ 是楔积与方向同维的唯一解；但"框架要求生成的转动必须带方向标签"
+      这一步是物理判断，不是形式推演。有它则 $n=4$，没有它则 $n$ 自由。
+
+\item \sout{\textbf{单轴／双轴两难}} \textbf{已消解}——第 \ref{sec:axes} 节表明
+      那个两难来自把"一个矢量与自身的楔积为零"误读为"单轴不带转动"。
+      转动由花样的\emph{变化}携带，绕数缺陷必然带转动；
+      而实秩一使花样成为单个矢量，故更多轴根本不可得。
+      第 \ref{sec:particle} 节的标签无需限缩。
+      \textbf{同一个"标量替代方向性"的错误已出现五次}，而这一次
+      \textbf{挺过了一次形式化与一版论文}。
+
 \item \textbf{实秩一的分类定理是外部输入}（新登记）。第 \ref{sec:algebra} 节
       证明了公理强制实秩 $=1$，并算出 $\mathfrak{so}(n,1)$ 满足它；
       但"实秩一的实单李代数只有四族"这条\emph{分类}是李理论的定理，
@@ -2825,7 +3037,7 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \ref{thm:detfail}、\ref{thm:dm}、\ref{thm:diss}、\ref{thm:desitter}、
 \ref{thm:h}、\ref{thm:arrow}、\ref{thm:null}、\ref{thm:massive}、
 \ref{thm:cov}、\ref{thm:covfield}、\ref{thm:sing}、\ref{thm:singcurv}、
-\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
+\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:newc}、\ref{thm:nouniv}、\ref{thm:wedge}、\ref{thm:uniax}、\ref{thm:three}、\ref{thm:rotvar}、\ref{thm:wound}、\ref{thm:noax2}、\ref{thm:stabpos}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
 
 \paragraph{尚未完成——本纲领当前最薄弱之处。}
 这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
@@ -2951,16 +3163,18 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Coupling.lean}   & 11 & 两次缩放生成转动；耦合被词义强制 \\
 \texttt{Dynamics.lean}   & 12 & 守恒出自 Bianchi；多重态内部平直 \\
 \texttt{Algebra.lean}    & 12 & 实秩一；耦合筛出 Lorentz 族 \\
-\texttt{Particle.lean}   & 14 & 标签结构 $(\mathbb R,\mathbb Z/2,\mathbb Z)$；离散度检验 \\
+\texttt{Particle.lean}   & 14 & 标签结构（单轴，适用域见 \S\ref{sec:slice}）；离散度检验 \\
+\texttt{Slice.lean}      & 14 & 广延即标签；转动是楔积；$k=3$ 唯一 \\
+\texttt{Axes.lean}       & 10 & 两难消解；轴数被迫为一 \\
 \midrule
-\textbf{合计}             & \textbf{496} & 8640 行 Lean 代码 \\
+\textbf{合计}             & \textbf{524} & 9192 行 Lean 代码 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \subsection{公理审计}
 
-对 289 条主定理执行 \texttt{\#print axioms}，结果全部落在
+对 312 条主定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -2991,7 +3205,7 @@ Newton 引力是标度响应律的线性化；
 时间箭头是有限分辨率的必然产物；
 而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
 
-这些不是隐喻。它们是 496 条经机器检验、零 \texttt{sorry} 的定理。
+这些不是隐喻。它们是 524 条经机器检验、零 \texttt{sorry} 的定理。
 它们成立的前提是本文列出的六条公理与第 \ref{sec:scope} 节明示的物理输入；
 这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
 能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}

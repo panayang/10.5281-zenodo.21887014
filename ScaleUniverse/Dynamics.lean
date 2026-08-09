@@ -64,8 +64,16 @@ block of the directional scale: `a` and `b` are related iff `s a = s b`.
 `Coupling.bracket_self` says a scaling brackets to zero with itself.  Put them
 together:
 
-* `same_multiplet_no_rotation` — **two directions in the same multiplet generate
-  no rotation.**
+* `same_multiplet_no_rotation` — two directions in the same multiplet generate
+  no rotation, **given** a per-direction assignment of scaling operators.
+
+**Scope correction (see `Axes.lean`).**  The `Realizes` hypothesis assigns one
+scaling operator per direction, determined by that direction's scale value.
+Real rank one does not supply that: it supplies one vector and one scaling
+(`Particle.pattern_is_one_vector`).  The theorems below are true of anything
+meeting the hypothesis; the gloss "multiplets are internally flat" as a
+statement about this framework is **withdrawn**.  What replaces it is
+`Axes.lean`: rotation is carried by the *variation* of the single pattern.
 
 Curvature is generated only *between* multiplets, never inside one.  Gauge
 structure and geometry were previously two unrelated outputs of the scale

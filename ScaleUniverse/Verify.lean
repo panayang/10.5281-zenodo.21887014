@@ -453,6 +453,35 @@ namespace ScaleUniverse.Verify
 #print axioms ScaleUniverse.Particle.no_further_label
 #print axioms ScaleUniverse.Particle.particle_label_structure
 
+/-! ## Sector L — slice artifacts, rotation, and why three -/
+
+#print axioms ScaleUniverse.Slice.newContent_nonempty_of_threshold
+#print axioms ScaleUniverse.Slice.newContent_mono
+#print axioms ScaleUniverse.Slice.newContent_empty_of_no_threshold
+#print axioms ScaleUniverse.Slice.no_finite_universal_labelling
+#print axioms ScaleUniverse.Slice.label_count_measures_range
+#print axioms ScaleUniverse.Slice.wedge_eq_bracket
+#print axioms ScaleUniverse.Slice.wedge_bilinear_left
+#print axioms ScaleUniverse.Slice.wedge_eq_zero_iff_parallel
+#print axioms ScaleUniverse.Slice.homogeneous_carries_no_rotation
+#print axioms ScaleUniverse.Slice.rotation_requires_biaxial
+#print axioms ScaleUniverse.Slice.wedge_dim_eq_iff
+#print axioms ScaleUniverse.Slice.three_is_unique
+#print axioms ScaleUniverse.Slice.more_wedges_than_directions
+#print axioms ScaleUniverse.Slice.fewer_wedges_than_directions
+
+/-! ## Sector LI — the axis question, settled -/
+
+#print axioms ScaleUniverse.Axes.rotation_needs_variation
+#print axioms ScaleUniverse.Axes.combable_no_rotation
+#print axioms ScaleUniverse.Axes.wound_carries_rotation
+#print axioms ScaleUniverse.Axes.rotationless_is_trivial
+#print axioms ScaleUniverse.Axes.rotation_iff_variation
+#print axioms ScaleUniverse.Axes.no_second_axis
+#print axioms ScaleUniverse.Axes.axis_or_variation
+#print axioms ScaleUniverse.Axes.axis_stabilizer_nontrivial
+#print axioms ScaleUniverse.Axes.multiplet_flatness_needs_per_direction_scalings
+
 /-! ## Sector IX — light -/
 
 #print axioms ScaleUniverse.Light.isNull_iff_bare
