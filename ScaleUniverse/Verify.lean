@@ -233,6 +233,169 @@ namespace ScaleUniverse.Verify
 #print axioms ScaleUniverse.MassAudit.both_laws_antiparticle_degenerate
 #print axioms ScaleUniverse.MassAudit.massQuad_ratio_not_constant
 
+/-! ## Sector XXVIII — rebuilt foundation: the scale/rotation split is canonical -/
+
+#print axioms ScaleUniverse.Foundation.scale_mul
+#print axioms ScaleUniverse.Foundation.scale_commutator
+#print axioms ScaleUniverse.Foundation.curvature_is_scale_invisible
+#print axioms ScaleUniverse.Foundation.scale_eq_iff_differ_by_rotation
+#print axioms ScaleUniverse.Foundation.commutator_eq_one_of_comm
+#print axioms ScaleUniverse.Foundation.comm_of_scale_injective
+
+/-! ## Sector XXIX — signature derived from dissipation -/
+
+#print axioms ScaleUniverse.Signature.codim_ker_eq_one
+#print axioms ScaleUniverse.Signature.no_time_of_no_drift
+#print axioms ScaleUniverse.Signature.spatial_eq_top_of_no_drift
+#print axioms ScaleUniverse.Signature.spatial_ne_top_of_drift
+#print axioms ScaleUniverse.Signature.spatial_smul
+#print axioms ScaleUniverse.Signature.signature_from_dissipation
+
+/-! ## Sector XXX — the bookkeeping form derived from a trace -/
+
+#print axioms ScaleUniverse.Invariant.Trace.form_symm
+#print axioms ScaleUniverse.Invariant.Trace.form_invariant
+#print axioms ScaleUniverse.Invariant.Trace.form_ad_skew
+#print axioms ScaleUniverse.Invariant.Trace.form_add_left
+
+/-! ## Sector XXXI — quantitative gravity: the isotropic sector gets half -/
+
+#print axioms ScaleUniverse.Deflection.iso_is_exactly_half
+#print axioms ScaleUniverse.Deflection.iso_ratio_half
+#print axioms ScaleUniverse.Deflection.missing_half
+#print axioms ScaleUniverse.Deflection.solarObs_value
+#print axioms ScaleUniverse.Deflection.solarIso_value
+#print axioms ScaleUniverse.Deflection.iso_fails_by_far
+
+/-! ## Sector XXXII — directions are the algebra; A1's hidden flatness -/
+
+#print axioms ScaleUniverse.Direction.DirTransport.curv_antisymm
+#print axioms ScaleUniverse.Direction.DirTransport.flat_iff_lie_hom
+#print axioms ScaleUniverse.Direction.DirTransport.curv_of_abelian
+#print axioms ScaleUniverse.Direction.DirTransport.commute_iff_bracket_acts_trivially
+#print axioms ScaleUniverse.Direction.DirTransport.transport_determined_by_generators
+
+/-! ## Sector XXXIII — the other half of light deflection -/
+
+#print axioms ScaleUniverse.PPN.gamma_zero_is_isotropic
+#print axioms ScaleUniverse.PPN.gamma_one_is_observed
+#print axioms ScaleUniverse.PPN.reciprocal_expansion
+#print axioms ScaleUniverse.PPN.gamma_eq_one_of_reciprocal
+#print axioms ScaleUniverse.PPN.gamma_eq_one_first_order
+#print axioms ScaleUniverse.PPN.deflection_reciprocal_eq_observed
+#print axioms ScaleUniverse.PPN.halves_equal
+
+/-! ## Sector XXXIV — defect codimension: the framework predicts strings -/
+
+#print axioms ScaleUniverse.Codimension.pointlike_iff_two_dim
+#print axioms ScaleUniverse.Codimension.three_dim_gives_strings
+#print axioms ScaleUniverse.Codimension.pointlike_forces_three
+#print axioms ScaleUniverse.Codimension.no_pointlike_in_four
+#print axioms ScaleUniverse.Codimension.string_mass_not_topological
+#print axioms ScaleUniverse.Codimension.stringMass_strictMono
+#print axioms ScaleUniverse.Codimension.extended_or_low_dimensional
+
+/-! ## Sector XXXV — reciprocity fixed by asymptotic flatness -/
+
+#print axioms ScaleUniverse.Vacuum.const_of_deriv_zero_and_vanishing
+#print axioms ScaleUniverse.Vacuum.reciprocity_of_asymptotic_flatness
+#print axioms ScaleUniverse.Vacuum.scale_product_eq_one
+#print axioms ScaleUniverse.Vacuum.product_constant_without_flatness
+#print axioms ScaleUniverse.Vacuum.tr_area_element_constant
+
+/-! ## Sector XXXVI — point particles restored by the directional scale -/
+
+#print axioms ScaleUniverse.Axis.bareForm_neg
+#print axioms ScaleUniverse.Axis.physForm_neg
+#print axioms ScaleUniverse.Axis.neg_indistinguishable
+#print axioms ScaleUniverse.Axis.isotropic_no_order_parameter
+#print axioms ScaleUniverse.Axis.nondegenerate_full_frame
+#print axioms ScaleUniverse.Axis.uniaxial_stabilizer
+#print axioms ScaleUniverse.Axis.uniaxial_axis_distinguished
+
+/-! ## Sector XXXVII — two topological charges, one confined -/
+
+#print axioms ScaleUniverse.Charges.DefectCharge.block_confined
+#print axioms ScaleUniverse.Charges.DefectCharge.hedgehog_free
+#print axioms ScaleUniverse.Charges.DefectCharge.exactly_one_confined
+#print axioms ScaleUniverse.Charges.DefectCharge.charges_independent
+#print axioms ScaleUniverse.Charges.DefectCharge.observable_pair_any_hedgehog
+
+/-! ## Sector XXXVIII — Mercury perihelion -/
+
+#print axioms ScaleUniverse.Precession.coeff_reciprocal
+#print axioms ScaleUniverse.Precession.coeff_isotropic
+#print axioms ScaleUniverse.Precession.isotropic_is_third
+#print axioms ScaleUniverse.Precession.mercury_value
+#print axioms ScaleUniverse.Precession.mercury_isotropic_value
+
+/-! ## Sector XXXIX — audit: the colour block is not the spatial block -/
+
+#print axioms ScaleUniverse.ColorAudit.identification_predicts_two
+#print axioms ScaleUniverse.ColorAudit.identification_fails_baryon
+#print axioms ScaleUniverse.ColorAudit.identification_fails_charge
+#print axioms ScaleUniverse.ColorAudit.spatial_block_is_not_colour_block
+#print axioms ScaleUniverse.ColorAudit.three_matches_charge
+
+/-! ## Sector XL — the Ricci cancellation closing the gravity chain -/
+
+#print axioms ScaleUniverse.Schwarzschild.ricci_combination
+#print axioms ScaleUniverse.Schwarzschild.vacuum_log_derivative
+#print axioms ScaleUniverse.Schwarzschild.scale_sum_derivative_zero
+#print axioms ScaleUniverse.Schwarzschild.vacuum_iff_scale_sum_stationary
+#print axioms ScaleUniverse.Schwarzschild.area_element_stationary
+
+/-! ## Sector XLI — gravity closed: Ricci from the connection -/
+
+#print axioms ScaleUniverse.RicciDiag.ricciTT_eq
+#print axioms ScaleUniverse.RicciDiag.ricciRR_eq
+#print axioms ScaleUniverse.RicciDiag.gravity_chain
+#print axioms ScaleUniverse.RicciDiag.area_stationary_derived
+
+/-! ## Sector XLII — content is a slice: no fundamental particles -/
+
+#print axioms ScaleUniverse.Emergence.resolved_mono
+#print axioms ScaleUniverse.Emergence.content_never_complete
+#print axioms ScaleUniverse.Emergence.always_more_above
+#print axioms ScaleUniverse.Emergence.no_fundamental_list
+#print axioms ScaleUniverse.Emergence.mass_iff_threshold
+#print axioms ScaleUniverse.Emergence.mass_mono
+#print axioms ScaleUniverse.Emergence.content_eq_of_no_threshold
+#print axioms ScaleUniverse.Emergence.content_changes_only_at_threshold
+
+/-! ## Sector XLIII — the threshold-structure prediction and its data test -/
+
+#print axioms ScaleUniverse.Spectrum.mass_threshold_inverse
+#print axioms ScaleUniverse.Spectrum.equal_gaps_variance_zero
+#print axioms ScaleUniverse.Spectrum.observed_cvSq_value
+#print axioms ScaleUniverse.Spectrum.meanGap_value
+#print axioms ScaleUniverse.Spectrum.observed_not_geometric
+#print axioms ScaleUniverse.Spectrum.observed_within_scale_invariant_range
+#print axioms ScaleUniverse.Spectrum.densityFromGaps_value
+#print axioms ScaleUniverse.Spectrum.density_gap_inverse
+
+/-! ## Sector XLIV — audit: the proposed cross-sector test does not exist -/
+
+#print axioms ScaleUniverse.CrossCheck.rhoAll_value
+#print axioms ScaleUniverse.CrossCheck.rhoQuark_value
+#print axioms ScaleUniverse.CrossCheck.densities_differ
+#print axioms ScaleUniverse.CrossCheck.density_ratio_near_two
+#print axioms ScaleUniverse.CrossCheck.sector_relation_is_identity
+#print axioms ScaleUniverse.CrossCheck.no_second_determination
+#print axioms ScaleUniverse.CrossCheck.quarkCvSq_value
+#print axioms ScaleUniverse.CrossCheck.quark_not_geometric
+
+/-! ## Sector XLV — what the framework can express at all -/
+
+#print axioms ScaleUniverse.Expressive.invariant_factors
+#print axioms ScaleUniverse.Expressive.diffPattern_invariant
+#print axioms ScaleUniverse.Expressive.invariant_iff_diffPattern
+#print axioms ScaleUniverse.Expressive.eval_not_invariant
+#print axioms ScaleUniverse.Expressive.scale_says_nothing_about_rotation
+#print axioms ScaleUniverse.Expressive.rotation_says_nothing_about_scale
+#print axioms ScaleUniverse.Expressive.channels_independent
+#print axioms ScaleUniverse.Expressive.neither_channel_complete
+
 /-! ## Sector IX — light -/
 
 #print axioms ScaleUniverse.Light.isNull_iff_bare

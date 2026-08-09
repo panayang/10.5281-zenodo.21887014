@@ -21,6 +21,7 @@
             urlcolor=blue!55!black]{hyperref}
 \usepackage{enumitem}
 \usepackage{mdframed}
+\usepackage[normalem]{ulem}
 
 \linespread{1.15}
 \setlength{\emergencystretch}{2em}
@@ -86,8 +87,8 @@ Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson �
 哪些是仍需外部输入的物理假设。
 
 \medskip
-\noindent\textbf{形式化规模：}280 条定理、4645 行 Lean 代码；
-128 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
+\noindent\textbf{形式化规模：}438 条定理、7466 行 Lean 代码；
+231 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
 （\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
 无 \texttt{sorryAx}。
 \end{abstract}
@@ -203,6 +204,88 @@ $\sigma$ 只在相差一个全局常数的意义下有定义：基准单位的�
 
 A5 正是“完全无量纲化”的精确含义，我们将在定理 \ref{thm:fiducial} 中证明它
 对全部几何量严格成立。
+
+\section{地基重建：拆分不是一个选择}\label{sec:foundation}
+
+自我审查（第 \ref{sec:audit} 节）指出 A1 白送了太多东西：一组方向、一个维数 $n$、
+以及一个随后在干实活的平直度规 $\kron$。更糟的是有两处本该被\emph{导出}的结论被\emph{假设}了：
+输运可拆为"标度部分"与"转动部分"；且标度部分是可交换、可积的，而转动部分承载全部曲率。
+
+本节把这两处假设去掉。方法是问：\textbf{在没有坐标纸垫底的情况下，一次标度比较究竟是什么？}
+
+把一切剥掉，剩下的是：局域单位的比较可以复合、复合有结合律、每次比较都可撤销。
+那就是一个\textbf{群} $\Gamma$——再多的东西没有，再少又不够。
+
+于是整个拆分由一个观察落地。\textbf{标度是一种相乘的量。}
+先按 $a$ 比再按 $b$ 比，必须与先 $b$ 后 $a$ 给出相同的\emph{标度}，因为标度是比值而比值可交换。
+所以一次比较所携带的标度，恰是它在 $\Gamma$ 的\emph{最大交换商}——即交换化——中的像。
+\textbf{这里没有选择}：交换化是唯一的泛性交换商。
+
+\begin{theorem}[对易子不携带标度]\label{thm:scalecomm}
+$\mathrm{scale}(ghg^{-1}h^{-1}) = 1$，无条件成立。
+\textbf{不可交换性对标度是隐形的。}
+\leanline{Foundation.scale\_commutator}
+\end{theorem}
+
+\begin{theorem}[曲率必然对标度隐形]\label{thm:curvinvis}
+由第 \ref{sec:conn} 节，曲率\emph{就是}两次输运的对易子；
+与定理 \ref{thm:scalecomm} 合起来，曲率的标度必然平凡。
+
+第 \ref{sec:conn} 节的定理 \ref{thm:rotpart} 只在\emph{假设}了拆分之后才证明这一点。
+这里拆分不是假设——它是交换化——结论被\textbf{逼出来}。
+\leanline{Foundation.curvature\_is\_scale\_invisible}
+\end{theorem}
+
+\begin{theorem}[拆分是一个划分，不是一种分解方式]\label{thm:splitcanon}
+两次比较携带相同标度，当且仅当它们相差一个纯转动（对易子子群中的元素）。
+故"标度部分"与"转动部分"不是按某种约定挑出的两个分量，
+而是一个典范商的两侧。
+\leanline{Foundation.scale\_eq\_iff\_differ\_by\_rotation}
+\end{theorem}
+
+物理读法正是本纲领一直想要、此前却无法辩护的那一句：
+\textbf{引力恰好住在标度看不见的地方。}
+
+\section{时间就是标度正在跑的那个方向}\label{sec:signature}
+
+审查把 Lorentz 号差列为无解释的输入。\emph{把它当作输入本身就是惯性}——
+在度规为原始量的理论里它才是输入，而这里度规不是原始量。
+
+换个问法：在一个内容只有标度的世界里，\emph{什么可能挑出一个方向}？
+候选只有一个。A6 说宇宙耗散：标度在\emph{漂移}。而漂移有方向。
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{时间是标度确实在变的那个方向；空间是标度不变的那些方向。}
+\end{mdframed}
+
+\begin{theorem}[号差形状 $1+(n-1)$]\label{thm:sig}
+非零漂移的值域是一维的，故由秩—零化度定理其核的余维恰为一。
+\textbf{恰好一个方向被挑出，其余全部不被挑出}——这正是 Lorentz 形状，
+由耗散得到而非公设。
+\leanline{Signature.codim\_ker\_eq\_one}
+\end{theorem}
+
+\begin{theorem}[没有耗散就没有时间]\label{thm:notime}
+若标度不漂移，则每个方向都是空间的：没有任何方向被挑出，也就根本没有时间方向。
+\textbf{时间不是理论被赠予的一个维度——它就是宇宙开放这件事。}
+\leanline{Signature.no\_time\_of\_no\_drift,
+Signature.spatial\_eq\_top\_of\_no\_drift, Signature.spatial\_ne\_top\_of\_drift}
+\end{theorem}
+
+\begin{theorem}[时空拆分与基准无关]\label{thm:sigfid}
+把漂移整体重标（这是基准的改变，由 A5 不可观测）不改变空间子空间。
+故时空的划分是基准无关的，正如任何物理陈述都必须如此。
+\leanline{Signature.spatial\_smul, Signature.drift\_direction\_unique}
+\end{theorem}
+
+号差因此不是钦定的 $(-,+,+,+)$。它是 $1+(n-1)$，
+因为漂移是\emph{一个}线性泛函；而它之所以存在，只是因为宇宙是开放的。
+\textbf{A5 与 A6 联手做了原先由公设 $\eta$ 做的事。}
+
+\begin{remark}[仍未导出]
+维数 $n$ 本身，以及使那个被挑出的方向为\emph{类时}（而非仅仅"被挑出"）的符号约定，
+仍是输入。
+\end{remark}
 
 \section{非交换基底：量子力学的回归}\label{sec:nc}
 
@@ -1392,6 +1475,847 @@ g^{-2}(t)=g^{-2}(t_0)+\kappa\rho\,(t-t_0),
 借来的系数由此变成一个缺陷密度——一个计数，而 $11N_c-2N_f$ 本来也是一个计数。
 仍未导出的是密度的\emph{数值}。
 
+\section{记账度规也不是公设}\label{sec:invariant}
+
+审查的第一条最要命：A1 宣称 Kronecker $\kron$"不携带物理"，
+然后 \texttt{Conformal.lean} 用它升降指标、定义给出 Ricci 的缩并。
+一个平直度规被白送进来，随后在干实活。
+
+第 \ref{sec:foundation} 节已说明拆分不是选择。把同一个问题对 $\kron$ 问一遍：
+\textbf{比较代数上有没有什么典范的东西可以充当记账形式？}
+
+有，而且它需要的比度规少得多。设代数带一个\emph{迹}——一个满足
+$\tau(xy)=\tau(yx)$ 的线性泛函。这比内积弱得多：无正定性、无非退化性、
+无基的选择；它在任何矩阵代数上都是典范的，而且这就够了。
+
+\begin{theorem}[记账形式由迹给出且对称]\label{thm:formsymm}
+$\kappa(x,y):=\tau(xy)$ 仅凭迹性质即为对称。
+\leanline{Invariant.Trace.form\_symm}
+\end{theorem}
+
+\begin{theorem}[不变性——$\kron$ 真正在提供的那条性质]\label{thm:forminv}
+\[
+\kappa([z,x],y)+\kappa(x,[z,y])=0 .
+\]
+那些其对易子\emph{就是}曲率的输运（第 \ref{sec:conn} 节）保持这个形式。
+这正是被公设的平直度规在 \texttt{Conformal.lean} 中所扮演的角色，
+而在这里它是关于任意迹的一条\emph{定理}。
+\leanline{Invariant.Trace.form\_invariant, Invariant.Trace.form\_ad\_skew}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+三个各自独立的输入——一组方向、一个平直度规 $\kron$、一个号差 $\eta$——
+现在压缩成一个：\textbf{一个带迹的比较代数}。
+号差出自耗散（第 \ref{sec:signature} 节），拆分出自交换化（第 \ref{sec:foundation} 节），
+形式出自迹（本节）。
+\end{mdframed}
+
+\begin{remark}[压缩不是推导]
+\emph{维数}仍然是那个代数的维数，仍是输入。本节不假装相反。
+\end{remark}
+
+\section{光线偏折：各向同性扇区恰好只给一半}\label{sec:deflection}
+
+范围声明里"定量引力效应仍未导出"这句话挂了好几版。本节导出一个，
+而结果是一次\emph{失败}——一次尺寸可精确测量的失败，
+这比一次成功更有用，因为它说清了方向性标度必须补上多少。
+
+光线偏折是因为它穿过标度不同的区域。在\textbf{各向同性}扇区
+（旧的标量公理，现已知是 A4 的退化轨迹）里，全部效应来自单个标量 $\sigma=-\Phi$，
+掠射偏折为 $\alpha_{\text{iso}}=2GM/(bc^2)$；而实测值是它的两倍
+$\alpha_{\text{obs}}=4GM/(bc^2)$。
+
+\begin{theorem}[恰好一半]\label{thm:half}
+$2\,\alpha_{\text{iso}} = \alpha_{\text{obs}}$，且缺失的那一半恰等于
+各向同性扇区能给出的那一半。
+\leanline{Deflection.iso\_is\_exactly\_half, Deflection.missing\_half,
+Deflection.iso\_ratio\_half}
+\end{theorem}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{各向同性扇区不是近似地错，而是错了恰好一个因子 2。}
+缺失的一半是\emph{空间}标度各向异性的贡献——
+正是第 \ref{sec:frame} 节证明标量标度\emph{根本无法表示}的那部分。
+于是这个因子 2 就是同一件事以数字的形式出现：
+两半分别是时间标度与空间标度，而只有一个标度的理论永远只能提供其中一半。
+\end{mdframed}
+
+\subsection{掠日光线的数值}
+
+取 $G=6.674\times10^{-11}$、$M_\odot=1.989\times10^{30}$ kg、
+$b=R_\odot=6.957\times10^{8}$ m、$c=2.998\times10^{8}$ m/s：
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+ & 预言 & 实测（VLBI）\\
+\midrule
+观测支 $4GM/bc^2$          & $1.7515''$ & $1.7509\pm0.0002''$ \\
+各向同性扇区 $2GM/bc^2$    & $0.8758''$ & —— \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\leanline{Deflection.solarObs\_value, Deflection.solarIso\_value,
+Deflection.solar\_ratio, Deflection.iso\_fails\_by\_far}
+
+观测支与实测符合到约 $0.04\%$；而各向同性扇区差了 $0.87''$，
+是 VLBI 误差的四千倍。这不是建模精度问题，是结构性问题。
+
+\textbf{本节的地位：} 这是本文最尖锐的定量陈述，
+而它是对标量公理的\emph{反驳}，不是对任何东西的确认。
+方向性扇区要给出缺失的一半，仍需完成各向异性曲率的具体计算——那尚未完成。
+本节确立的是\textbf{剩余欠债的精确大小}。
+
+\section{方向不是给定的：方向就是代数}\label{sec:direction}
+
+最后一个未解决的地基输入是维数 $n$，以及 A1 附赠的指标集 $\mathrm{Fin}\,n$。
+本节把指标集去掉。而在过程中发现，A1 夹带的\emph{不止}一个维数。
+
+看 A1 到底说了什么：有 $n$ 个导子 $\dd_0,\dots,\dd_{n-1}$，它们\textbf{两两交换}。
+这里被假设的是两件事，不是一件。指标集是显眼的那件。
+隐藏的那件是\emph{交换性}，而它并不无辜：
+\textbf{相互交换的方向就是平直的坐标方向}。
+A1 假设了方向结构的平直性，然后从一个另行公设的 $\kron$ 里把曲率再引进来——
+这正是 $\kron$ 非公设不可的原因。
+
+把指标集丢掉。方向不是标签，而是比较代数的元素，输运对它是线性的。于是：
+
+\begin{theorem}[曲率即输运不尊重括号的程度]\label{thm:dircurv}
+\[
+F(x,y) = [D_x,D_y] - D_{[x,y]} .
+\]
+没有任何外部的东西参与定义——无指标集、无度规、无号差。
+（对比第 \ref{sec:conn} 节的 $F$，那里需要一个联络一形式和一个平直 $\kron$ 来升降指标。）
+\leanline{Direction.DirTransport.curv, curv\_antisymm}
+\end{theorem}
+
+\begin{theorem}[平直 $\iff$ 输运是 Lie 映射]\label{thm:flatlie}
+输运无曲率，当且仅当它把方向的括号送到输运的对易子。
+曲率是这件事的\emph{唯一}障碍。
+\leanline{Direction.DirTransport.flat\_iff\_lie\_hom}
+\end{theorem}
+
+\begin{theorem}[旧理论是交换情形]\label{thm:abcase}
+当方向代数交换时，曲率退化为纯对易子 $[D_x,D_y]$——
+即第 \ref{sec:conn} 节所计算的对象。
+\leanline{Direction.DirTransport.curv\_of\_abelian}
+\end{theorem}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\begin{theorem}[揭穿]\label{thm:expose}
+对平直输运，"诸方向相互交换"（A1 的要求）\emph{等价于}"括号平凡地作用"。
+
+\textbf{A1 并非只是选了一个指标集：它假设了方向代数是交换的，
+也就是假设了方向是平直的。}
+这正是随后必须另行公设一个平直度规 $\kron$ 的原因——
+平直性已经在方向层面被手工放入，曲率只好从外面再引进来。
+\leanline{Direction.DirTransport.commute\_iff\_bracket\_acts\_trivially}
+\end{theorem}
+\end{mdframed}
+
+于是 $n$ 不再被挑选：方向就是代数，它们的个数就是那个代数的维数。
+选基是便利而非公理（\texttt{transport\_determined\_by\_generators}）。
+
+\begin{remark}[诚实的界限]
+本节导出的是"方向\emph{是}代数元素"以及"其个数\emph{是}代数的维数"。
+它\emph{没有}导出是\emph{哪个}代数，因而不预言 $n=4$。
+输入从"$n$ 个交换标签 $+$ 平直度规 $+$ 号差"变成"一个代数"；
+这是压缩加上一个隐藏平直性假设的移除，不是维数的推导。
+\end{remark}
+
+\section{把另一半付清}\label{sec:ppn}
+
+第 \ref{sec:deflection} 节把欠债定得很精确：各向同性扇区给出 $2GM/bc^2$，
+实测是 $4GM/bc^2$，缺失的一半必须来自\emph{空间}标度。本节付清它，
+而付款来自一条已经证过的关系。
+
+掠射偏折对时间与径向两个单位分别依赖，标准参数化把这依赖记进一个数：
+以 $g_{tt}=-(1-2\mu)$、$g_{rr}=1+2\gamma\mu$ 计，
+\[
+\alpha = \frac{2GM}{bc^2}\,(1+\gamma).
+\]
+$\gamma=0$ 是各向同性扇区（只有时间标度），$\gamma=1$ 是实测值。
+于是全部欠债化为一个问题：\textbf{什么定住 $\gamma$？}
+
+第 \ref{sec:frame} 节已经回答过。Schwarzschild 关系在标度语言中是
+$s_t\cdot s_r=1$——时间与径向单位互为倒数——而
+定理 \ref{thm:frameflat} 证明标量标度不平直化就无法满足它。
+互为倒数即 $g_{tt}g_{rr}=-1$，即径向因子是时间因子的逆。把那个逆展开，
+线性系数就被逼定了：
+
+\begin{theorem}[定住系数的展开]\label{thm:recexp}
+\[
+(1-2\mu)^{-1} = 1 + 2\mu + \frac{4\mu^2}{1-2\mu},
+\]
+是恒等式而非近似。$\mu$ 的系数是 $2$，即 $\gamma=1$；余项被显式写出而非丢弃。
+\leanline{PPN.reciprocal\_expansion, PPN.gamma\_eq\_one\_of\_reciprocal,
+PPN.gamma\_eq\_one\_first\_order}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{倒数条件强制 $\gamma=1$，而 $\gamma=1$ 给出实测偏折。}
+各向同性扇区拿不出的那一半就是径向标度，而它的大小从来就不自由。
+\leanline{PPN.deflection\_reciprocal\_eq\_observed, PPN.halves\_equal}
+\end{mdframed}
+
+Cassini 把 $\gamma$ 限制在 $1$ 的约 $2\times10^{-5}$ 之内。
+本框架的倒数条件预言 $\gamma=1$ 且\textbf{无自由参数}，
+故这是一次真实且目前成功的检验——检验的是\emph{方向性}扇区，
+各向同性扇区此前已被排除。
+
+\begin{remark}[结清到什么程度]
+缺失的一半不再是无解释的：它是径向标度，其大小由倒数关系强制而非拟合。
+第 \ref{sec:deflection} 节的欠债在\textbf{系数层面}已结清。
+仍未做的是逐分量曲率计算，那才能说明场方程\emph{产生}一个互为倒数的位形；
+在这里，倒数性是被描述的解的性质，还不是从源导出的推论。
+\end{remark}
+
+\section{三维中的绕数缺陷究竟是什么}\label{sec:codim}
+
+试图从代数定住维数 $n$，结果撞出的是 \texttt{Defect.lean} 的一个问题，
+而这个问题比维数本身更有意思。
+
+第 \ref{sec:defect} 节说："绕任一\emph{包围一个点}的闭合回路一周，标度可能不闭合"。
+在\emph{二维}空间里这句话没问题——回路确实包围一个点。
+\textbf{在三维里它是错的}：三维空间中的回路不包围一个点，它包围一条\emph{线}。
+回路能探测的是余维为二的轨迹，而三维中余维二是一维的。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{所以三维空间中的圆值标度不产生点粒子，它产生\emph{弦}。}
+
+这是被逼出来的，不是选的。标度是\emph{一个}数——一个比值——
+所以它定义的场是圆值的，其缺陷由回路分类。
+框架里没有第二个标度可以让缺陷在三维中成为点。
+这个结论要么被接受，要么框架得改。
+\end{mdframed}
+
+\begin{theorem}[缺陷维数]\label{thm:defectdim}
+$d$ 维空间中绕数缺陷的维数是 $d-2$。故
+点状绕数缺陷\textbf{要求恰好二维空间}，即一个 $2+1$ 世界；
+而在我们的三维中，缺陷是一维的。
+\leanline{Codimension.pointlike\_iff\_two\_dim, three\_dim\_gives\_strings,
+Codimension.no\_pointlike\_in\_four}
+\end{theorem}
+
+结合第 \ref{sec:signature} 节（漂移给出恰好一个时间方向），时空维数是空间维数加一，
+于是两种情形被截然分开：\textbf{点状激发 $\Rightarrow$ $2+1$ 世界；
+$3+1$ 世界 $\Rightarrow$ 激发是一维的}。二者不可兼得。
+
+\subsection{这独立地解释了质量律为何不确定}
+
+\begin{theorem}[绕数不决定质量]\label{thm:strmass}
+一维缺陷的质量是张力乘长度。绕数相同而长度不同的两个缺陷质量不同，
+故\textbf{没有任何仅依赖绕数的函数能充当质量律}。
+\leanline{Codimension.string\_mass\_not\_topological,
+Codimension.stringMass\_strictMono}
+\end{theorem}
+
+这条从缺陷的\emph{几何}出发，独立地抵达了第 \ref{sec:audit} 节
+由考察候选律得到的同一结论，并且解释了\emph{原因}：
+\textbf{那个对象是有广延的，而拓扑从未度量过它的广延。}
+两条互不相干的路线得到同一个结果，这提高了那次撤回的可信度。
+
+\subsection{框架现在面临的选择}
+
+要么基本激发是有广延的——那么第 \ref{sec:defect} 节的点图景必须换成弦图景，
+质量谱不是塔；要么标度不是圆值的——那么第 \ref{sec:defect} 节的离散标度不变性
+与第 \ref{sec:color} 节的块单值性都要作废。
+
+\textbf{我们记录这个析取而不做选择}，因为已证的东西还不足以判定它。
+\leanline{Codimension.extended\_or\_low\_dimensional}
+
+\begin{remark}[风险]
+这是一个真实的预言，也是一次真实的风险。本框架按目前的构造说：
+$3+1$ 维中的基本激发是\emph{一维的广延对象}。
+若这是错的，圆值标度就是错的，\texttt{Defect.lean} 与 \texttt{Color.lean} 随之作废。
+（"回路探测余维二"这条本身是标准拓扑事实，此处作为输入而非证明。）
+\end{remark}
+
+\section{倒数关系的那个常数从哪来}\label{sec:vacuum}
+
+第 \ref{sec:ppn} 节让倒数条件 $s_ts_r=1$ 补上了偏折的另一半，
+但把倒数性本身留成了"被描述的解的性质"。本节关掉这个缺口中\emph{能}关掉的那半。
+
+真空条件并不直接给出 $s_ts_r=1$。它给出更弱的东西：
+时间与径向对数标度之\emph{和}的导数为零，故 $s_ts_r$ 是\emph{常数}。
+从"常数"到"一"是另一步，而那一步才有物理内容：它是\textbf{渐近平直性}——
+远离源处什么也没有，故局域单位必须与基准一致。
+
+\begin{theorem}[渐近平直性定住倒数关系]\label{thm:recip}
+若 $\sigma_t+\sigma_r$ 导数为零且在远处为零，则它处处为零，即 $s_t\cdot s_r=1$。
+那个常数不是拟合的：它由公理允许的唯一边界条件定住——
+由 A5，"远处"恰恰就是基准的意思。
+\leanline{Vacuum.reciprocity\_of\_asymptotic\_flatness, Vacuum.scale\_product\_eq\_one}
+\end{theorem}
+
+\begin{theorem}[边界条件在干实活]\label{thm:noflat}
+去掉边界条件，标度乘积只是\emph{某个}常数，而任何常数都与真空方程相容。
+故渐近平直性不是约定。
+\leanline{Vacuum.product\_constant\_without\_flatness}
+\end{theorem}
+
+物理读法：\textbf{真空中引力只是用时间标度换径向标度，
+在 $t$--$r$ 平面里不制造任何标度}——该平面的面元恒为一。
+\leanline{Vacuum.tr\_area\_element\_constant}
+
+\begin{remark}[结清到什么程度]
+\emph{已导出}：给定"真空使标度和为常数"这一后果，倒数性仅由渐近平直性即可推出，
+无需任何进一步选择。\emph{未导出}：真空场方程蕴含该和为常数——
+那是标准的 Ricci 组合 $R_{tt}/A+R_{rr}/B=0$，此处作为输入；
+形式化它需要对角拟设的曲率计算，那仍是引力扇区唯一未完成的一块。
+\end{remark}
+
+\section{点粒子回来了，而"比值"就是原因}\label{sec:axis}
+
+第 \ref{sec:codim} 节断言三维中框架的缺陷是弦而非点。
+那个结论用的是 \texttt{Defect.lean} 的\emph{标量}圆值标度——
+而在公理提供方向性标度的地方使用标量标度，
+正是第 \ref{sec:frame} 节早已诊断过的那个错误。\textbf{它被犯了第二次。}
+
+A4 给的不是一个标度，是\emph{每个方向一个}标度。
+所以一点上的位形不是一个相位，而是\emph{标度在各方向上的花样}，
+场取值于这种花样的空间。那个空间不是圆，其缺陷也不只由回路分类。
+
+决定性的性质是被逼出来的，而逼出它的恰恰是当初让标量图景显得不可避免的那件事：
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{标度是长度之比，所以它看不见方向的取向。}
+把方向反过来，一切标度读数不变。
+\end{mdframed}
+
+\begin{theorem}[标度读数是偶的]\label{thm:even}
+$Q(-v)=Q(v)$，对裸形式与被测形式都成立；
+因而\textbf{没有任何标度测量能把一个方向与它的反向区分开}。
+\leanline{Axis.bareForm\_neg, Axis.physForm\_neg, Axis.neg\_indistinguishable}
+\end{theorem}
+
+于是序参量是一条\textbf{无取向的轴}——一个射影对象，不是矢量。
+而射影序参量众所周知同时携带两类缺陷：二阶的线缺陷，
+以及\textbf{带整数荷的点缺陷}。
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{点粒子回来了，而它们回来是因为标度是一个比值。}
+\end{mdframed}
+
+\subsection{哪种花样支撑序参量}
+
+\begin{theorem}[三种花样]\label{thm:patterns}
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item \emph{完全简并}（各向同性，即旧标量公理）：一切重标号都是对称性，
+      没有任何东西逐点变化，\textbf{不支撑任何缺陷}；
+\item \emph{完全非简并}：无内禀对称性，序参量是一整个标架；
+\item \emph{单轴}（一个方向被挑出，其余简并）：对称性恰为块内重标号，
+      序参量是\emph{一条无取向的轴}——正是携带点缺陷的那种位形。
+\end{enumerate}
+\leanline{Axis.isotropic\_no\_order\_parameter, Axis.nondegenerate\_full\_frame,
+Axis.uniaxial\_stabilizer, Axis.uniaxial\_axis\_distinguished}
+\end{theorem}
+
+\begin{remark}[作为输入而非证明]
+"三维中无取向轴场的 $\pi_2=\mathbb{Z}$、$\pi_1=\mathbb{Z}_2$，
+故有整数荷点缺陷与二阶弦"是标准拓扑结论，此处作为输入。
+框架提供的是\emph{射影性}，而点缺陷正是从射影性来的。
+\end{remark}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{更正记录。} 第 \ref{sec:codim} 节的定理对\emph{圆值}标度仍然成立，
+被撤回的是"它们描述\emph{本}框架"这一主张：
+在 A4 的方向性标度下它们不描述本框架，框架终究预言点粒子。
+
+同一处替换（把方向性的东西当成标量的）已经犯了两次。
+本节留档，以免犯第三次。
+\end{mdframed}
+
+\section{两个拓扑荷，只有一个被禁闭}\label{sec:charges}
+
+第 \ref{sec:axis} 节让点粒子回来了：单轴标度花样的序参量是一条无取向的轴，
+而这种序参量携带两类互不相同的缺陷。于是框架面临一个此前未曾面对的问题——
+第 \ref{sec:color} 节的荷与点缺陷的荷是\emph{同一个}量子数，还是两个？
+
+是两个，而它们的差别才是有意思的地方。
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{块荷}是绕一圈后简并方向所经历的置换。它住在一个\emph{有限}群里，
+      而它正是第 \ref{sec:color} 节所约束的那个：位形可观测当且仅当标号闭合。
+\item \textbf{刺猬荷}是轴在包围球面上的整数缠绕数。它住在 $\mathbb{Z}$ 里，
+      而\textbf{没有任何东西约束它}。
+\end{itemize}
+
+\begin{theorem}[恰好一个被禁闭]\label{thm:onecharge}
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item 非平凡块荷不可单独观测；
+\item \textbf{每一个}整数刺猬荷都被某个可观测态携带。
+\end{enumerate}
+\leanline{Charges.DefectCharge.block\_confined, hedgehog\_free,
+exactly\_one\_confined}
+\end{theorem}
+
+\begin{theorem}[两个荷相互独立]\label{thm:indep}
+固定块荷不定住刺猬荷，反之亦然。它们是两个真正独立的量子数，
+不是同一个的两种读法。
+\leanline{Charges.DefectCharge.charges\_independent,
+observable\_pair\_any\_hedgehog}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+这份不对称不是放进去的。它来自两个荷住在\emph{同一个}序参量的\emph{不同}同伦群里：
+有限的那个来自回路，整数的那个来自球面，
+而可观测性条件——要求\emph{标号}闭合——只看得见前者。
+
+由此得到的图案正是观测到的那个：\textbf{一个取有限多个值、被禁闭的荷，
+外加一个不被禁闭的整数荷。}
+\end{mdframed}
+
+框架\emph{未}导出那个有限群是 $SU(3)$ 的中心，也未导出那个整数是电荷；
+它导出的是：\textbf{必然恰有这两类荷，且恰有一个被禁闭}。
+
+\section{第二个数字：水星}\label{sec:precession}
+
+第 \ref{sec:deflection}、\ref{sec:ppn} 节给出一个定量结果，
+并证明各向同性扇区差了 2 倍。一个数字有巧合风险。
+本节给出第二个、性质不同的数字，而各向同性扇区在其上差了 \textbf{3 倍}——
+差的倍数不同，这才是有用的地方：两处偏差无法被同一个重标度同时吸收。
+
+近日点进动（每轨道）的标准参数化为
+\[
+\Delta\phi = \frac{2-\beta+2\gamma}{3}\cdot\frac{6\pi GM}{a(1-e^2)c^2}.
+\]
+$\gamma$ 就是第 \ref{sec:ppn} 节被倒数条件 $s_ts_r=1$ 强制为 $1$ 的那个空间标度权重；
+$\beta$ 度量时间标度的非线性，在 A6$'$ 的标度响应下为 $1$。
+
+\begin{theorem}[系数]\label{thm:precoeff}
+$\gamma=\beta=1$ 给出系数 $1$；各向同性扇区（$\gamma=0$）给出 $1/3$。
+系数对 $\gamma$ 是仿射的，斜率 $2/3$。
+\leanline{Precession.coeff\_reciprocal, coeff\_isotropic, isotropic\_is\_third,
+coeff\_affine\_in\_gamma}
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+ & 预言 & 实测 \\
+\midrule
+倒数扇区（$\gamma=1$） & $42.99''/$世纪 & $42.98\pm0.04''/$世纪 \\
+各向同性扇区（$\gamma=0$） & $14.33''/$世纪 & —— \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\leanline{Precession.mercury\_value, Precession.mercury\_isotropic\_value}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{真正重要的一致性检验。} 各向同性扇区在光线偏折上差 $2$ 倍，
+在近日点进动上差 $3$ 倍。\emph{倍数不同}，而两者都由在\emph{同一个}参数化中
+令 $\gamma=0$ 得到。\textbf{一个缺失成分——空间标度——同时解释两处偏差，
+且没有任何可调余地。}
+\end{mdframed}
+
+\section{使倒数关系得以成立的那次相消}\label{sec:cancel}
+
+第 \ref{sec:vacuum} 节由两件事导出 $s_t\cdot s_r=1$：真空使标度和为常数，
+以及渐近平直性定住那个常数。后者已证；前者被标注为输入——
+"标准的 Ricci 组合"——它是引力链条上最后一个未证的环节。
+本节证明其中\emph{带内容}的那部分。
+
+把度规写成 A4 的方向性形式，只有时间与径向单位随 $r$ 变，
+$A=e^{2\sigma_t}$、$B=e^{2\sigma_r}$。相关的两个 Ricci 分量各自都很乱：
+二阶导数、二次项、看不出结构。但取那个特定组合 $R_{tt}/A+R_{rr}/B$，
+\textbf{所有难看的东西全部相消}：
+
+\begin{theorem}[相消]\label{thm:cancel}
+\[
+\frac{R_{tt}}{A}+\frac{R_{rr}}{B} \;=\; \frac{1}{rB}\Bigl(\frac{A'}{A}+\frac{B'}{B}\Bigr).
+\]
+二阶导数彼此抵消，二次项也彼此抵消——对\emph{一切} $A,B$ 精确成立。
+剩下的是一个全对数导数。
+\leanline{Schwarzschild.ricci\_combination}
+\end{theorem}
+
+这就是真空何以对 $AB$ 有话可说的原因，也是倒数关系存在的全部理由。
+
+\begin{theorem}[真空 $\Rightarrow$ 标度和驻定]\label{thm:vacstat}
+$R_{tt}=R_{rr}=0$ 强制 $A'/A+B'/B=0$（因前因子 $1/rB$ 永不为零），
+在标度变量下即 $\sigma_t'+\sigma_r'=0$——
+这恰是第 \ref{sec:vacuum} 节所需的那条假设。
+\leanline{Schwarzschild.vacuum\_log\_derivative,
+Schwarzschild.vacuum\_iff\_scale\_sum\_stationary}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+相消的那个组合恰是按 $t$--$r$ 块的逆度规加权的组合。
+所以真空方程限制在该块上只说了一件事：\textbf{那里的面元是驻定的}；
+它对时间标度与径向标度\emph{各自}如何分布只字未提。
+这正是"真空中引力只是拿一个换另一个"的精确含义。
+\leanline{Schwarzschild.area\_element\_stationary}
+\end{mdframed}
+
+\paragraph{链条现状。} 引力扇区现在跑通为：
+Ricci 分量（输入）$\to$ 相消（\emph{本节已证}）$\to$ 标度和为常数（已证）
+$\to$ 渐近平直性（已证，第 \ref{sec:vacuum} 节）$\to$ $s_ts_r=1$
+$\to$ $\gamma=1$（已证，第 \ref{sec:ppn} 节）$\to$ 偏折 $1.7515''$ 与进动 $42.99''$（已证）。
+
+仍为输入的只剩两个 Ricci 表达式本身，它们来自对角拟设的 Levi-Civita 联络；
+那一步是机械的，而\emph{本节证明的这一步才是有非平凡事情发生的地方}。
+
+\section{审查：色荷的块不是空间的块}\label{sec:coloraudit}
+
+第 \ref{sec:axis} 节靠"序参量是无取向轴"让点缺陷回来，
+而那要求\textbf{单轴}花样：一个方向被挑出，其余简并。
+在三维空间中，简并的那部分恰有\textbf{两个}成员。
+
+第 \ref{sec:color} 节则证明：块大小为 $n$ 时束缚态有 $n$ 个组分、电荷成 $1/n$。
+
+把两者放在一起，很诱人做一个认同：\emph{色荷的块就是空间简并块}。
+那会是个漂亮结果——色将成为几何的推论而非输入。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{它是错的，本节记录原因。}
+
+三维中的单轴块大小为二。于是该认同预言\textbf{两组分}束缚态与\textbf{二分之一}电荷。
+而重子有三个组分，夸克电荷成三分之一。
+该认同因此被\emph{排除}——不是被削弱，是被排除，而且差得不近。
+\leanline{ColorAudit.identification\_fails\_baryon,
+ColorAudit.identification\_fails\_charge}
+\end{mdframed}
+
+幸存与不幸存：
+
+\begin{itemize}[leftmargin=1.6em]
+\item 第 \ref{sec:color} 节\textbf{未受影响}。它的定理是关于大小为 $n$ 的简并块的，
+      对每个 $n$ 都对；它一直就说 $n$ 是输入。
+\item 被排除的是那条\emph{把 $n$ 从空间标度花样导出来}的路线。该路线给出 $n=2$，被证伪。
+\item 因此，若框架要有色，色\textbf{不是}空间方向的置换，
+      它必须来自框架目前尚不包含的结构。
+\end{itemize}
+
+这同时消除了一个未曾言明的隐忧：若该认同成立，色将是时空对称性而非内禀对称性，
+而那正是 Coleman--Mandula 所禁止的混合。\textbf{框架没能产生它，是预期结果而非意外。}
+
+\section{引力扇区闭合}\label{sec:riccidiag}
+
+第 \ref{sec:cancel} 节证明了相消，但把两个 Ricci 分量当作给定。本节把它们导出来，
+引力扇区从此从度规一路跑到实测数字，中间不留假设。
+
+对角度规 $-A(r)dt^2+B(r)dr^2+r^2d\Omega^2$ 的联络系数由 Levi-Civita 公式给出，
+对角情形下每个符号都是一行计算。由它们按
+$R_{ab}=\dd_c\Gamma^c_{ab}-\dd_a\Gamma^c_{cb}+\Gamma^c_{cd}\Gamma^d_{ab}-\Gamma^c_{ad}\Gamma^d_{cb}$
+求和：
+
+\begin{theorem}[两个 Ricci 分量，已导出]\label{thm:ricciderived}
+求和的结果\emph{恰好}是第 \ref{sec:cancel} 节所假设的两个表达式。
+\leanline{RicciDiag.ricciTT\_eq, RicciDiag.ricciRR\_eq}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{引力链条端到端。} 度规 $\to$ 联络 $\to$ Ricci（\emph{已证}）$\to$ 相消（已证）
+$\to$ 标度和驻定（已证）$\to$ 渐近平直性（已证）$\to$ $s_ts_r=1$
+$\to$ $\gamma=1$（已证）$\to$ 偏折 $1.7515''$ 与进动 $42.99''$（已证）。
+
+\textbf{从度规到那两个数字之间，已无任何一步是假设。}
+\leanline{RicciDiag.gravity\_chain}
+\end{mdframed}
+
+扇区内仍为输入的只剩：标度响应律 A6$'$，以及静态球对称拟设的选取。引力波未涉及。
+
+\section{没有基本粒子}\label{sec:emergence}
+
+第 \ref{sec:color} 节试图产生色，第 \ref{sec:coloraudit} 节表明它失败得不近。
+那次失败不是技术性的。\textbf{整个目标就瞄错了}：
+它拿了标准模型的本体论——一张固定的物种表，每个带内禀标签——然后试图重现它。
+\emph{那是把问题也借了过来}，而框架并没有那个问题。
+
+A3 说的是另一件事，而且从一开始就在公理里：$\varepsilon\cdot s=1$。
+能标\emph{就是}逆长度标度。所以"存在什么"不是世界的性质，
+而是\textbf{世界在某个分辨率下}的性质。改变分辨率，你不是对同一批粒子知道得更多——
+\textbf{你在看另一批}。
+
+这也正是本框架中"统一"的含义。引力、$\hbar$、粒子内容不是三样待调和的东西，
+而是同一个变量的三种读法：
+
+\begin{itemize}[leftmargin=1.6em]
+\item 引力是标度的不均匀性（第 \ref{sec:geom}、\ref{sec:conn} 节）；
+\item $\hbar$ 是沿标度迈一步的步长（第 \ref{sec:exact} 节）；
+\item \textbf{粒子内容是标度上的一个截面}——本节。
+\end{itemize}
+
+\begin{theorem}[没有完整的清单]\label{thm:nolist}
+若阈值无上界——A2 允许这一点，因为标度是单位元、永不为零，
+故没有最小长度来给分辨率封顶——则\textbf{对每一个标度都有东西未被分辨}，
+且内容严格增长无穷多次。
+
+\textbf{于是根本不存在"那一份"基本粒子清单。}
+问"基本粒子有哪些"预设了一个与标度无关的答案，而公理不提供这样的答案。
+\leanline{Emergence.content\_never\_complete, always\_more\_above,
+no\_fundamental\_list}
+\end{theorem}
+
+\begin{theorem}[质量是位置，不是属性]\label{thm:masspos}
+质量与阈值互相决定。故质量\textbf{不是附着在物种上的参数}，
+而是该物种\emph{出现在}标度轴上的坐标。
+\leanline{Emergence.mass\_iff\_threshold, Emergence.mass\_antitone}
+\end{theorem}
+
+这一条同时回溯解释了两个早先的发现。第 \ref{sec:audit} 节发现质量律不被拓扑决定——
+\emph{当然不}：质量根本不是缺陷的属性，而是缺陷出现的地方。
+而有效场论"每换一个能标就得换框架"的尴尬也不是尴尬：
+定理 \ref{thm:eft} 说阈值之间的描述是\emph{精确}的，本节说没有最后一个阈值。
+\textbf{理论只是在如实报告自己的结构。}
+\leanline{Emergence.content\_eq\_of\_no\_threshold,
+Emergence.content\_changes\_only\_at\_threshold}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{放弃了什么。} 色、代结构、Higgs 以及标准模型表的其余部分\textbf{不是本文的目标}。
+它们是\emph{一个截面}的特征，而框架没有理由去重现某个截面的偶然内容。
+
+应当向框架索取的是\textbf{阈值结构}——内容在哪里改变——
+那是另一种、而且可检验的预言。第 \ref{sec:color} 节的色解释就此撤回，
+其数学作为"简并块的结构"保留。
+\end{mdframed}
+
+\section{可检验的预言与换算表}\label{sec:spectrum}
+
+第 \ref{sec:emergence} 节说该向框架索取的不是物种表而是\textbf{阈值结构}。
+本节索取它，得到一个可以、并且已经与数据对撞的预言。
+
+\subsection{预言：阈值是标度不变过程}
+
+A5 说没有哪个对数标度被优待。于是阈值不能在任何地方聚集：
+它们由一个\emph{标度不变}的过程放置，即每单位对数标度速率恒为 $\rho$ 的过程。
+常速率点过程的间距服从指数分布，而指数分布的变异系数恰为\textbf{一}：
+\[
+\mathrm{CV}(\ln m\ \text{的相邻间距}) = 1 .
+\]
+
+这条预言是尖锐的，而且能区分。\emph{等比塔}——
+第 \ref{sec:defect} 节曾假设、第 \ref{sec:audit} 节已撤回的那个——间距\emph{相等}，
+故 $\mathrm{CV}=0$。两个假设相距不能再远。
+
+\begin{theorem}[等比塔的方差恒为零]\label{thm:eqzero}
+若每个间距都等于 $c$，则总体方差恒等于零，故 $\mathrm{CV}=0$，没有任何自由度。
+\leanline{Spectrum.equal\_gaps\_variance\_zero}
+\end{theorem}
+
+\subsection{数据：标准模型的十二个质量标度}
+
+取标准模型十二个互不相同的质量标度（电子到顶夸克），作 $\ln m$ 的十一个相邻间距：
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+ & $\mathrm{CV}^2$ & $\mathrm{CV}$ \\
+\midrule
+标度不变过程（预言） & $1$ & $1$ \\
+\textbf{观测} & $\mathbf{0.875}$ & $\mathbf{0.935}$ \\
+等比塔 & $0$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\leanline{Spectrum.observed\_cvSq\_value, Spectrum.meanGap\_value}
+
+十一个间距的样本很小，预言自身的抽样范围很宽——$\mathrm{CV}$ 的中央 $90\%$
+从 $0.58$ 到 $1.28$——而观测值 $0.935$ 落在其第 $63$ 百分位，即正中间。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\begin{theorem}[标准模型谱不是等比塔]\label{thm:notgeom}
+观测间距方差为正，而等比塔方差恰为零。
+\textbf{这是比第 \ref{sec:qcd} 节胶球比值检验独立得多、也尖锐得多的一次否证}——
+它用的是整个观测谱，而非三个格点数字。
+\leanline{Spectrum.observed\_not\_geometric,
+Spectrum.observed\_within\_scale\_invariant\_range}
+\end{theorem}
+\end{mdframed}
+
+阈值密度由平均间距给出：$\rho = 1/\langle\text{gap}\rangle \approx 0.86$ 每 e 倍。
+\leanline{Spectrum.densityFromGaps\_value}
+
+\begin{remark}[诚实的界限]
+十一个间距是小样本，且十二个质量标度是人工挑选的（无质量态排除，中微子质量未知）。
+与 $\mathrm{CV}=1$ 的符合是\emph{鼓励性的，不是决定性的}；
+\textbf{决定性的是对 $\mathrm{CV}=0$ 的排除}。
+\end{remark}
+
+\subsection{换算表}
+
+框架不预言标准模型的表，但它说明任何一次测量在它自己的变量里是什么意思。
+以下每一条都把一个被测量换算为它所定住的框架参数。
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+被测量 & 框架参数 & 换算 \\
+\midrule
+暗能量状态方程 $w$ & 耗散指数 $q$ & $q=(3w+5)/2$ \\
+PPN 参数 $\gamma$ & 倒数条件 & 预言 $\gamma=1$（无自由参数）\\
+渐近 Hubble 率 $H_\infty$ & 耗散率 $\lambda$ & $\lambda=H_\infty$，$\rho_\Lambda=3\lambda^2/8\pi G$ \\
+$\Lambda_{\mathrm{QCD}}$ & 嬗变标度 & $\Lambda=\mu\,e^{-1/2bg^2}$（沿流不变）\\
+跑动系数跳变 $\Delta b$ & 新增可分辨内容 $\Delta N$ & $\Delta N=\Delta b/\kappa$ \\
+质量 $m$ & 阈值 $\mu$ & $\mu=\ln m$（互为逆）\\
+平均对数间距 & 阈值密度 $\rho$ & $\rho=1/\langle\text{gap}\rangle$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\leanline{Spectrum.thresholdOfMass, massOfThreshold, mass\_threshold\_inverse,
+qFromW, rhoLambdaFromLambda, deltaNFromDeltaB, densityFromGaps,
+density\_gap\_inverse}
+
+\subsection{当前全部数值对照}
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+量 & 预言 & 实测 & 状态 \\
+\midrule
+掠日光线偏折 & $1.7515''$ & $1.7509\pm0.0002''$ & 符合 $0.04\%$ \\
+水星近日点进动 & $42.99''/$世纪 & $42.98\pm0.04''$ & 符合 \\
+PPN $\gamma$ & $1$（精确） & $|\gamma-1|\lesssim2\times10^{-5}$ & 符合 \\
+$\mu$ 子寿命 & $64.43\,\mu$s & $64.378\pm0.026$ & 符合 $10^{-3}$ \\
+Pound--Rebka & $2.4551\times10^{-15}$ & $(2.46\pm0.03)\times10^{-15}$ & 符合 \\
+暗能量密度 & $5.845\times10^{-27}$ & $5.86\times10^{-27}$ kg/m$^3$ & 符合 \\
+暗能量 $w$ & $-1$（若 $q=1$） & $-1.03\pm0.03$ & 符合，且可证伪 \\
+质量谱 $\mathrm{CV}$ & $1$ & $0.935$ & 第 63 百分位 \\
+等比质量塔 & $\mathrm{CV}=0$ & $0.935$ & \textbf{排除} \\
+各向同性扇区偏折 & $0.8758''$ & $1.7509''$ & \textbf{排除（2 倍）} \\
+各向同性扇区进动 & $14.33''$ & $42.98''$ & \textbf{排除（3 倍）} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+前六行是与已知物理的符合；第七行是尚未判定的可证伪预言；
+后四行是\textbf{框架内部被排除的选项}——它们是这套体系最有信息量的部分，
+因为它们说明该体系确实会拒绝东西。
+
+\section{我提议的跨扇区检验并不存在}\label{sec:crosscheck}
+
+第 \ref{sec:spectrum} 节从质量谱量出阈值密度 $\rho\approx0.86$ 每 e 倍。
+而第 \ref{sec:running} 节有一个同名的 $\rho$ 控制 $g^{-2}$ 的斜率。
+既然框架把两者都叫 $\rho$，显然该做的事就是：
+一个从谱量、一个从耦合跑动量，看它们是否相等——
+一次不需要任何新假设的真正跨扇区检验。
+
+我做了。\textbf{它不是一次检验，而原因是我在第 \ref{sec:running} 节的措辞出了错。}
+
+\paragraph{第一，数字不一致。}
+数全部十二个标准模型质量标度得 $\rho_{\text{all}}\approx0.864$；
+只数六个夸克——强耦合真正响应的那些——得 $\rho_{\text{quark}}\approx0.444$。
+相差约两倍。
+\leanline{CrossCheck.rhoAll\_value, rhoQuark\_value, densities\_differ,
+density\_ratio\_near\_two}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\paragraph{第二，也是致命的：它们根本不是同一个量。}
+第 \ref{sec:running} 节写的是"探针响应它能分辨的缺陷"，
+而我把它读成了\emph{全部}缺陷。规范耦合不是这样：
+\textbf{它只响应带有该规范荷的结构}。
+所以跑动里的 $\rho$ 是\emph{扇区受限}的（且为使符号正确，是带号的）计数，
+而谱里的 $\rho$ 是对每一个阈值的裸计数。
+两者没有理由相等，\textbf{而框架也从未说过它们相等}。
+\end{mdframed}
+
+\paragraph{第三，在单个扇区内该关系退化为恒等式。}
+一个方程 $db/dt=\kappa\,(dN/dt)$、一个未知量 $\kappa$：
+测出跑动跳变与阈值密度是在\emph{定义} $\kappa$，而不是检验什么。
+对 QCD 在粲与顶阈值之间执行，返回 $\kappa=2/3$——
+那正是每味的 $\beta$ 跳变倒着写一遍。
+\leanline{CrossCheck.sector\_relation\_is\_identity,
+qcd\_extraction\_returns\_input, no\_second\_determination}
+
+\paragraph{幸存下来的。}
+逐扇区的预言仍可检验：每个扇区的阈值应各自是常速率过程，速率不必相同。
+单看夸克扇区，$\mathrm{CV}^2=0.243$（即 $\mathrm{CV}=0.493$），
+落在五个间距时预言抽样分布的第 12 百分位——
+偏低、比常速率过程通常给出的更\emph{规则}，但未被排除。
+五个间距说不出更强的话。夸克扇区同样不是等比塔。
+\leanline{CrossCheck.quarkCvSq\_value, quark\_not\_geometric}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{记录在案的结论。} 本框架目前\textbf{不提供}任何关于阈值密度的跨扇区检验。
+该提议是我的一次越界，第 \ref{sec:running} 节的措辞已更正为
+"耦合只计它所响应的那些缺陷"。
+
+真正的检验需要\emph{两个独立}的同一权重测定，好让后者核对前者。
+框架只给得出一个，因为每个扇区只有一个类耦合量，
+且没有任何一个耦合响应所有结构。
+\end{mdframed}
+
+\section{这个框架究竟能说什么}\label{sec:expressive}
+
+第 \ref{sec:crosscheck} 节结尾留下一个我一直在回避的问题：
+若引力在这里不是耦合，那么"把引力与其他力统一"到底是什么意思？
+怀疑是这个问法本身借来的。\textbf{它确实是}，而弄清原因给出的对本框架的刻画，
+比再多一条结果都更有用。
+
+标准的统一纲领要一个规范群，让所有力从中降下来。这预设了：
+力是耦合、耦合是基本描述、"一"意味着一个包含其余的代数对象。
+\textbf{这三条在这里都不成立。} 力不是原始量，局域单位的比较才是。
+所以"统一诸力"是一个用本框架\emph{没有}的词汇提出的问题。
+
+它\emph{能}回答的问题是：\textbf{什么是可表达的？}
+
+整个开发只由三种操作搭成，别无其他——\emph{比较标度}、\emph{不对易}、\emph{计数}。
+本节证明这三者确实就是全部词汇，并且它们互相独立。
+
+\subsection{标度这一路：恰好表达"差"}
+
+\begin{theorem}[可观测 $\iff$ 差的函数]\label{thm:express}
+一个量在 A5 的基准平移下不变（即可观测），\textbf{当且仅当}它是标度\emph{差}的函数。
+不是"至少是"，是\emph{恰好是}——两个方向都成立。
+\leanline{Expressive.invariant\_factors, diffPattern\_invariant,
+invariant\_iff\_diffPattern}
+\end{theorem}
+
+\begin{theorem}[绝对标度根本不可表达]\label{thm:noabs}
+在一点读取标度不是不变量，故它\textbf{不是本框架的可观测量}——
+不是"未被测量"，而是\emph{在词汇之外}。
+\leanline{Expressive.eval\_not\_invariant}
+\end{theorem}
+
+\subsection{两路互不通气}
+
+第 \ref{sec:foundation} 节把一次比较典范地拆成标度（交换化）与转动（对易子子群）。
+这两者携带\emph{不相交}的信息。
+
+\begin{theorem}[两路独立]\label{thm:indepchan}
+固定其中之一，对另一个毫无约束：
+标度相同的两次比较相差一个任意的对易子元素；
+而每个对易子的标度都平凡。
+\leanline{Expressive.scale\_says\_nothing\_about\_rotation,
+rotation\_says\_nothing\_about\_scale, channels\_independent,
+neither\_channel\_complete}
+\end{theorem}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{诊断。} 第 \ref{sec:crosscheck} 节找不到跨扇区检验，\emph{那不是运气不好}。
+两路是\textbf{按构造}独立的——标度路是一个商，转动路是它的核——
+所以谁也约束不了谁。跨扇区检验需要它们互相约束，
+\textbf{而公理保证它们不会}。
+\end{mdframed}
+
+\subsection{框架弱点的诚实表述，因此改变了}
+
+不是"尚未导出标准模型"，而是：
+\textbf{三条通路彼此太独立，以至于不能联合预言}。
+
+"引力、$\hbar$、粒子内容是同一个变量的三种读法"——这句话是对的，
+\emph{而它同时就是它们无法互相核对的原因}。
+
+于是今后要找的东西变得具体得多：不是更大的对称群，
+而是\textbf{一条通路间的耦合}——某种使标度差去约束对易子、
+或使计数去约束二者之一的结构。A1--A6 不提供任何这样的东西，
+第 \ref{sec:crosscheck} 节就是这一点的观测后果。
+\leanline{Expressive.no\_channel\_coupling}
+
+\begin{remark}[这一节改变了什么]
+它没有增加任何物理预言，而是划定了\emph{边界}：
+框架能说"标度之差"、"两次比较不对易多少"、"能分辨几个结构"，
+除此之外说不出别的。
+之前几轮里反复出现的"借来的问法"，
+到这里有了一个统一的解释——凡是要求框架谈论
+\emph{绝对标度}或\emph{两路之间的关系}的问题，都不是它的问题。
+\end{remark}
+
 \section{自我审查：已发现的思维污染}\label{sec:audit}
 
 本节是对整个体系的一次不设辩护的复查，按"基础建构"与"目标问题"两条线。
@@ -1457,19 +2381,23 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \subsection{仍存在：未修复的污染，逐条登记}
 
 \begin{enumerate}[leftmargin=1.8em]
-\item \textbf{$\kron$ 是被公设的平直度规，而且在干实活。}
-      A1 说 Kronecker 记账"不携带物理"，但它在 $\Gamma$ 中升降指标、
-      定义给出 Ricci 的缩并。于是"曲率不是额外结构"这句话
-      带有一定循环性：一个平直度规已经被放进去了。
-      第 \ref{sec:conn} 节的对易子路线不依赖 $\kron$，
-      但第 \ref{sec:geom} 节的显式曲率公式依赖。
-\item \textbf{"方向"和维数 $n$ 是给定的，不是导出的。}
+\item \sout{\textbf{$\kron$ 是被公设的平直度规。}} \textbf{已解决}——
+      第 \ref{sec:invariant} 节把它导出为 $\kappa(x,y)=\tau(xy)$，
+      而 $\kron$ 真正提供的那条性质（输运下不变）成为定理。
+      需要的只是一个迹，比度规弱得多。
+\item \textbf{维数 $n$ 仍是给定的}（部分解决）。第 \ref{sec:direction} 节去掉了
+      指标集——方向\emph{就是}代数元素，个数即代数维数——并揭穿 A1 的
+      "两两交换"其实是在假设方向平直。但\emph{哪个}代数仍是输入，故 $n=4$ 未被预言。
+      第 \ref{sec:codim} 节给出了一条把维数与激发形态联系起来的约束，
+      但它约束的是二者的\emph{关系}，不单独定住维数。
       "$n$ 个两两交换的导子"预设了一个 $n$ 维带坐标的流形。
       在一个只有标度的理论里，"方向"本应由标度\emph{定义}
       （例如作为标度比较的等价类），而不是先验给出。
       第 \ref{sec:gauge} 节的规范结论依赖于"块"，而块是方向的子集，
       故这一条污染向下传播。
-\item \textbf{号差 $\eta$ 是输入。} 为什么是 $(-,+,+,+)$，没有回答。
+\item \sout{\textbf{号差 $\eta$ 是输入。}} \textbf{已解决}——第 \ref{sec:signature} 节由 A6
+      的漂移导出 $1+(n-1)$ 的形状：时间就是标度在跑的方向，没有耗散就没有时间。
+      仍是输入的只剩\emph{类时}的符号约定。
 \item \textbf{$a=1/\varepsilon$ 是识别，不是导出。} 把宇宙学标度因子
       认成逆能标是一个物理假设；de Sitter 的数学（定理 \ref{thm:desitter}）
       本身无懈可击，但它依赖这个识别。
@@ -1478,6 +2406,16 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
       （引力可见与探测不可见可以并存），不是\emph{解释}。
       不应把它读作对暗物质的推导。
 \item \textbf{缺陷密度、标度花样、$n=3$} 仍是输入。
+      第 \ref{sec:coloraudit} 节\emph{排除}了从空间几何导出 $n$ 的路线
+      （它给出 $2$，数据要 $3$），故色必须来自框架尚不包含的结构。
+\item \textbf{各向异性曲率的逐分量计算仍未做}。第 \ref{sec:ppn} 节在系数层面付清欠债，
+      第 \ref{sec:vacuum} 节把倒数关系的\emph{常数}由渐近平直性定住；
+      仍缺的只是"真空方程 $\Rightarrow$ 标度和为常数"这一步的形式化。
+\item \sout{\textbf{基本激发的形态未定}} \textbf{已澄清}——
+      第 \ref{sec:codim} 节的警报误用了标量标度。第 \ref{sec:axis} 节表明：
+      标度是比值 $\Rightarrow$ 读数偶 $\Rightarrow$ 序参量是无取向轴 $\Rightarrow$
+      射影序参量携带整数荷\emph{点}缺陷。点粒子回来了。
+      仍是输入的是那条拓扑事实（$\pi_2(\mathbb{RP}^2)=\mathbb{Z}$）。
 \end{enumerate}
 
 \subsection{审查方法本身}
@@ -1501,17 +2439,24 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \ref{thm:detfail}、\ref{thm:dm}、\ref{thm:diss}、\ref{thm:desitter}、
 \ref{thm:h}、\ref{thm:arrow}、\ref{thm:null}、\ref{thm:massive}、
 \ref{thm:cov}、\ref{thm:covfield}、\ref{thm:sing}、\ref{thm:singcurv}、
-\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
+\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
 
 \paragraph{尚未完成——本纲领当前最薄弱之处。}
 这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
 \begin{itemize}[leftmargin=1.6em]
-\item \textbf{标准模型未被回归}。第 \ref{sec:gauge} 节证明内禀对称性只能是
-      标度花样的稳定子，第 \ref{sec:color} 节由块单值性导出了禁闭、
-      束缚态大小 $=n$、以及 $1/n$ 电荷——取 $n=3$ 即观测到的花样。
-      但\emph{未}导出标度花样本身，因而 $n=3$ 是输入不是结论，
-      也没有 $SU(3)\times SU(2)\times U(1)$ 的具体李群结构、
-      没有代结构、没有 Higgs 机制、没有电弱混合角。第 \ref{sec:defect} 节给出的是
+\item \textbf{标准模型不再是目标}（立场变更）。第 \ref{sec:emergence} 节论证：
+      索取一张固定物种表是把标准模型的\emph{本体论}也借了过来，而 A3 没有它——
+      内容是标度上的截面而非清单，且没有哪个标度携带完整清单。
+      色、代结构、Higgs 因此不是本框架应当重现的东西；
+      第 \ref{sec:color} 节的色解释已撤回。
+      应当索取的是\textbf{阈值结构}，第 \ref{sec:spectrum} 节已给出并检验：
+      预言 $\mathrm{CV}=1$，观测 $0.935$（第 63 百分位），等比塔被排除。
+\item \textbf{无跨扇区检验，且这是构造性的}（升级登记）。第 \ref{sec:crosscheck} 节
+      表明谱的 $\rho$ 与跑动的 $\rho$ 不是同一个量；
+      第 \ref{sec:expressive} 节进一步证明这不是运气不好——
+      标度路与转动路\textbf{按构造}独立（一个是商，一个是它的核），
+      故谁也约束不了谁。\textbf{框架的弱点应表述为"三条通路太独立以至不能联合预言"}，
+      而非"尚未导出标准模型"。需要找的是\emph{通路间的耦合}，不是更大的对称群。第 \ref{sec:defect} 节给出的是
       一条\emph{不同于} QFT 的粒子产生机制（标度缺陷、绕数即荷）
       及其可证伪的形状，但不产生任何具体粒子的数值。
 \item \textbf{量子场论未被回归}。第 \ref{sec:nc} 节回归的是量子\emph{力学}
@@ -1519,11 +2464,10 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
       场的二次量子化、路径积分、规范不变性、圈图重整化，均未涉及。
       第 \ref{sec:rg} 节的“重整化群”只是标度流的群律与幂律解，
       不是 QFT 意义下的圈计算。
-\item \textbf{定量引力效应仍未导出}。第 \ref{sec:transport} 节证明了输运由标度花样
-      唯一定出（非简并时），故无需无挠条件——那一环已经闭合。
-      但\emph{未}对具体的 Schwarzschild 型花样做逐分量曲率计算，
-      因而光线偏折、近日点进动、引力波的\emph{数值}仍未给出。
-      缺口已从"缺一个结构方程"变为"缺一次具体计算"。
+\item \sout{\textbf{定量引力未闭合}} \textbf{已闭合}——第 \ref{sec:riccidiag} 节
+      由联络导出两个 Ricci 分量，链条从度规到 $1.7515''$、$42.99''$
+      不再有任何假设。扇区内仅存的输入是标度响应律 A6$'$ 与球对称拟设；
+      引力波仍未涉及。
 \item \textbf{交叉积未完整构造}。第 \ref{sec:exact} 节已把"一阶"限制取消
       （对易子有精确闭形式），但只做到位移与乘法生成的算符代数：
       完整交叉积、其表示论、以及 $\hbar$ 数值与具体步长的对应，均未做。
@@ -1598,15 +2542,33 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Color.lean}       & 17 & 块单值性：禁闭、束缚态大小、$1/n$ 电荷 \\
 \texttt{Observation.lean} &  5 & 审查：红移属于观察者而非光 \\
 \texttt{MassAudit.lean}   & 10 & 审查：拓扑不决定质量律（撤回） \\
+\texttt{Foundation.lean}  &  9 & 地基重建：标度即交换化，拆分被导出 \\
+\texttt{Signature.lean}   & 10 & 时间即漂移方向；号差由耗散导出 \\
+\texttt{Invariant.lean}   &  8 & 记账形式由迹导出，不变性成为定理 \\
+\texttt{Deflection.lean}  &  8 & 光线偏折：各向同性扇区恰好只给一半 \\
+\texttt{Direction.lean}   &  9 & 方向即代数；揭穿 A1 的隐藏平直性 \\
+\texttt{PPN.lean}         &  9 & 倒数条件强制 $\gamma=1$，补上另一半 \\
+\texttt{Codimension.lean} & 12 & 缺陷余维二：三维中是弦而非点 \\
+\texttt{Vacuum.lean}      &  5 & 渐近平直性定住倒数关系的常数 \\
+\texttt{Axis.lean}        &  9 & 标度是比值 $\Rightarrow$ 射影序参量 $\Rightarrow$ 点粒子 \\
+\texttt{Charges.lean}     & 15 & 两个拓扑荷：有限的被禁闭，整数的不被 \\
+\texttt{Precession.lean}  &  8 & 水星近日点 $42.99''/$世纪；各向同性差 3 倍 \\
+\texttt{ColorAudit.lean}  &  8 & 审查：色荷的块不是空间的块（排除） \\
+\texttt{Schwarzschild.lean} & 5 & 相消：真空 $\Rightarrow$ 标度和驻定 \\
+\texttt{RicciDiag.lean}  &  4 & 由联络导出 Ricci，引力链条闭合 \\
+\texttt{Emergence.lean}  & 11 & 内容是截面：没有基本粒子；质量即位置 \\
+\texttt{Spectrum.lean}   & 10 & 阈值密度预言、谱检验、换算表 \\
+\texttt{CrossCheck.lean} &  9 & 审查：跨扇区检验不存在（越界更正） \\
+\texttt{Expressive.lean} & 10 & 表达力边界：可观测 $\iff$ 差；两路独立 \\
 \midrule
-\textbf{合计}             & \textbf{280} & 4645 行 Lean 代码 \\
+\textbf{合计}             & \textbf{438} & 7466 行 Lean 代码 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \subsection{公理审计}
 
-对 128 条主定理执行 \texttt{\#print axioms}，结果全部落在
+对 231 条主定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -1637,7 +2599,7 @@ Newton 引力是标度响应律的线性化；
 时间箭头是有限分辨率的必然产物；
 而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
 
-这些不是隐喻。它们是 280 条经机器检验、零 \texttt{sorry} 的定理。
+这些不是隐喻。它们是 438 条经机器检验、零 \texttt{sorry} 的定理。
 它们成立的前提是本文列出的六条公理与第 \ref{sec:scope} 节明示的物理输入；
 这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
 能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}

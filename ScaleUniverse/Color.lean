@@ -27,11 +27,18 @@ consistent — when the labelling closes up after the loop.
 * `constituent_charge_fraction` — each of the `n` constituents carries exactly
   `1/n` of the bound state's charge.  **Charge comes in `n`ths.**
 
-With `n = 3` this is the observed pattern: three constituents per bound state,
-none observable alone, charges in thirds.  The framework does not put the
-number 3 in — it puts in "a degeneracy block of size `n`" and gets `n`
-constituents and `1/n` charges out.  Which `n` nature chose is not derived;
-that would require deriving the scale pattern itself.
+**INTERPRETATION WITHDRAWN — see `ColorAudit.lean` and `Emergence.lean`.**
+
+The mathematics below is correct for a degenerate block of any size `n`.  What
+is withdrawn is calling it *colour* and matching it against baryons.  That
+identification required `n = 3`; `ColorAudit.lean` shows the only block the
+geometry supplies has `n = 2`, so the match fails.
+
+More importantly the whole target was borrowed.  Reproducing a fixed table of
+species with intrinsic labels is the Standard Model's ontology, and A3 does not
+have it: content is a slice across the scale, not a list (`Emergence.lean`).
+Read what follows as structure — a finite charge that is confined and an
+integral one that is not — and not as a derivation of QCD.
 -/
 import ScaleUniverse.Gauge
 import Mathlib.GroupTheory.OrderOfElement

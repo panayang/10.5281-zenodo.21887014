@@ -10,6 +10,13 @@ what a coupling *is* here.  A probe at log-scale `t` has a resolution; it
 responds to the defects it can resolve, and by `Defect.lean` those are discrete
 objects with definite log-scales.  So the accumulated response is a **count**.
 
+**Which defects, though.**  A coupling responds only to the structures it
+actually couples to, not to every structure there is.  So the `ρ` below is a
+*sector-restricted* — and, for the sign to come out right, signed — density.
+It is **not** the raw threshold density of `Spectrum.lean`, and
+`CrossCheck.lean` records what went wrong when the two were identified: they
+differ by about a factor of two, and no test connects them.
+
 Now impose A5.  A scale-covariant world has no preferred log-scale, so the
 defects cannot bunch anywhere: their density per unit log-scale is constant.
 A constant density integrated over `[t₀, t]` is linear in `t`.  Hence
