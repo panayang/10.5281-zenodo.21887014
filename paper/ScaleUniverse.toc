@@ -1,0 +1,71 @@
+\contentsline {section}{\numberline {1}导言：把“尺度”而不是“时空”当作基本量}{3}{section.1}%
+\contentsline {section}{\numberline {2}基底与公理}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}微分基底}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}六条公理}{4}{subsection.2.2}%
+\contentsline {section}{\numberline {3}非交换基底：量子力学的回归}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}一个必须交代的方法论问题}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}导数就是对易子}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}经典微积分是对易子的定理}{5}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}A3 在非交换扇区只能成立到 ${\mathchar "AF\mkern -9muh}$}{6}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}形变量子化：经典极限的严格形式化}{6}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}把"一阶"这个限制取消掉}{7}{subsection.3.6}%
+\contentsline {section}{\numberline {4}几何的涌现：曲率即标度形变}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Levi-Civita 数据}{8}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}主定理}{8}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}迹与标量曲率}{8}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}可积 Weyl 几何：没有第二时钟效应}{9}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}无量纲性是一条定理}{9}{subsection.4.5}%
+\contentsline {section}{\numberline {5}A4 太强：标度必须是方向性的}{10}{section.5}%
+\contentsline {subsection}{\numberline {5.1}诊断}{10}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}旧公理不是没能给出 Schwarzschild，而是禁止了它}{10}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}一套公理，而不是两套}{10}{subsection.5.3}%
+\contentsline {section}{\numberline {6}曲率就是对易子}{11}{section.6}%
+\contentsline {subsection}{\numberline {6.1}避开一次惯性}{11}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Yang--Mills 曲率不是被假设的，是被算出来的}{11}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}究竟是哪一部分在弯曲}{11}{subsection.6.3}%
+\contentsline {section}{\numberline {7}引力与规范场是同一个东西}{12}{section.7}%
+\contentsline {section}{\numberline {8}回归 I：引力红移与 Newton 极限}{12}{section.8}%
+\contentsline {subsection}{\numberline {8.1}引力红移}{12}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}标度响应律}{13}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}一阶区域}{13}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}一阶区域不是“扔掉高阶项”}{13}{subsection.8.4}%
+\contentsline {section}{\numberline {9}回归 II：重整化群与有效场论塔}{14}{section.9}%
+\contentsline {subsection}{\numberline {9.1}标度流}{14}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}自相似只能是幂律}{14}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}有效场论塔是定理而非窘境}{14}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}$\beta $ 函数从哪里来}{14}{subsection.9.4}%
+\contentsline {section}{\numberline {10}回归 III：粒子标度与寿命的动量依赖}{15}{section.10}%
+\contentsline {section}{\numberline {11}回归 IV：暗物质——相互作用发生，观测失效}{15}{section.11}%
+\contentsline {section}{\numberline {12}回归 V：暗能量——开放系统的耗散}{16}{section.12}%
+\contentsline {section}{\numberline {13}回归 VI：时间箭头}{16}{section.13}%
+\contentsline {paragraph}{正反物质不对称。}{16}{section*.2}%
+\contentsline {section}{\numberline {14}回归 VII：光是什么}{17}{section.14}%
+\contentsline {section}{\numberline {15}耗散之下的局域广义协变性}{17}{section.15}%
+\contentsline {section}{\numberline {16}奇点只是极小的尺度}{17}{section.16}%
+\contentsline {section}{\numberline {17}可检验的预言}{18}{section.17}%
+\contentsline {subsection}{\numberline {17.1}耗散指数与暗能量状态方程}{18}{subsection.17.1}%
+\contentsline {subsection}{\numberline {17.2}代入常数：三项数值核对}{18}{subsection.17.2}%
+\contentsline {section}{\numberline {18}粒子：不用场的产生机制}{19}{section.18}%
+\contentsline {paragraph}{与标准模型的差别，即可测试之处。}{20}{section*.3}%
+\contentsline {section}{\numberline {19}禁闭，以及电荷为何成三分之一}{20}{section.19}%
+\contentsline {section}{\numberline {20}强相互作用：从无到有的一个标度}{20}{section.20}%
+\contentsline {subsection}{\numberline {20.1}对谱的推论与检验}{21}{subsection.20.1}%
+\contentsline {subsection}{\numberline {20.2}与格点数据的正面对撞：一个失败}{21}{subsection.20.2}%
+\contentsline {section}{\numberline {21}内禀对称性无处可去}{22}{section.21}%
+\contentsline {section}{\numberline {22}跑动不需要圈图}{22}{section.22}%
+\contentsline {section}{\numberline {23}自我审查：已发现的思维污染}{23}{section.23}%
+\contentsline {subsection}{\numberline {23.1}须撤回：质量塔曾被当作结论，其实是假设}{23}{subsection.23.1}%
+\contentsline {subsection}{\numberline {23.2}已修复：光是标度盲的，红移却要靠光}{23}{subsection.23.2}%
+\contentsline {subsection}{\numberline {23.3}仍存在：未修复的污染，逐条登记}{24}{subsection.23.3}%
+\contentsline {subsection}{\numberline {23.4}审查方法本身}{24}{subsection.23.4}%
+\contentsline {section}{\numberline {24}范围声明：什么被证明了，什么没有}{24}{section.24}%
+\contentsline {paragraph}{已被机器证明（从公理出发，零 \texttt {sorry}）。}{24}{section*.4}%
+\contentsline {paragraph}{尚未完成——本纲领当前最薄弱之处。}{25}{section*.5}%
+\contentsline {paragraph}{属于物理输入而非定理（续）。}{25}{section*.6}%
+\contentsline {paragraph}{属于物理输入而非定理。}{25}{section*.7}%
+\contentsline {paragraph}{形式化的技术边界。}{26}{section*.8}%
+\contentsline {section}{\numberline {25}形式化与验证}{26}{section.25}%
+\contentsline {subsection}{\numberline {25.1}规模}{26}{subsection.25.1}%
+\contentsline {subsection}{\numberline {25.2}公理审计}{26}{subsection.25.2}%
+\contentsline {subsection}{\numberline {25.3}复现}{27}{subsection.25.3}%
+\contentsline {section}{\numberline {26}结语}{27}{section.26}%

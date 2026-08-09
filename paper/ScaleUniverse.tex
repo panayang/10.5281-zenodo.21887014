@@ -1,0 +1,1645 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{xeCJK}
+% Fandol：非可变字体，xdvipdfmx 可正确内嵌
+\setCJKmainfont{FandolSong-Regular}[
+  BoldFont=FandolHei-Regular, ItalicFont=FandolKai-Regular,
+  BoldItalicFont=FandolHei-Regular, Extension=.otf]
+\setCJKsansfont{FandolHei-Regular}[Extension=.otf]
+\setCJKmonofont{FandolFang-Regular}[Extension=.otf]
+\setmainfont{TeX Gyre Pagella}
+\setmonofont{DejaVu Sans Mono}[Scale=0.85]
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=2.6cm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,
+            urlcolor=blue!55!black]{hyperref}
+\usepackage{enumitem}
+\usepackage{mdframed}
+
+\linespread{1.15}
+\setlength{\emergencystretch}{2em}
+
+\renewcommand{\contentsname}{目录}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+
+\definecolor{axcol}{RGB}{20,80,140}
+\definecolor{lncol}{RGB}{100,100,100}
+
+\newtheoremstyle{sudef}{10pt}{10pt}{}{}{\bfseries}{.}{.5em}{}
+\theoremstyle{sudef}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{remark}[theorem]{注}
+
+\newenvironment{axiom}[1]
+  {\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4,
+    skipabove=10pt,skipbelow=10pt]\noindent\textbf{\color{axcol}公理 #1.}\ }
+  {\end{mdframed}}
+
+% Lean 出处标记
+\newcommand{\lean}[1]{\hfill{\small\color{lncol}\texttt{#1}}}
+\newcommand{\leanline}[1]{\par\vspace{2pt}\noindent{\small\color{lncol}%
+  \setlength{\emergencystretch}{4em}\sloppy Lean 出处：\texttt{#1}\par}}
+
+\newcommand{\dd}{\partial}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\kron}{\delta}
+\newcommand{\Defm}{D}
+
+\title{\bfseries 标度—能动量对偶\\[4pt]
+\large 一个完全无量纲的公理体系及其在 Lean 4 中的零 \texttt{sorry} 形式化}
+\author{形式化验证于 Lean 4 (v4.32.2) + Mathlib}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+本文提出并形式化一个物理公理体系：时空并非预先给定的几何背景，而只有一个
+\emph{无量纲}的标量场 $\sigma$（对数标度），它在每一点上规定了局域的度量单位；
+能量标度由对偶关系 $\varepsilon\cdot s=1$（$s=e^{\sigma}$）确定。曲率不是独立结构，
+而恰好是标度场的二阶非均匀性。
+
+全部推论均在 Lean 4 中给出机器验证的证明，\textbf{无一处 \texttt{sorry}}。
+核心结果是一条精确的代数恒等式（定理 \ref{thm:master}）：度量 $g=e^{2\sigma}\kron$ 的
+完整 Riemann 张量等于欧氏记账张量 $\kron$ 与\emph{标度形变张量} $\Defm$ 的
+Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson 方程）、
+引力红移、重整化群与有效场论塔的必然性、粒子寿命的动量依赖、
+暗物质的“相互作用发生而观测失效”、暗能量作为开放系统的耗散率、
+时间箭头，以及光的数学本质（标度盲的类光锥）。
+
+我们同时明确划出边界：Lean 验证的是\emph{从公理到结论的蕴含关系}，
+而非公理本身为真。第 \ref{sec:scope} 节逐条列出哪些是定理、
+哪些是仍需外部输入的物理假设。
+
+\medskip
+\noindent\textbf{形式化规模：}280 条定理、4645 行 Lean 代码；
+128 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
+（\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
+无 \texttt{sorryAx}。
+\end{abstract}
+
+\tableofcontents
+
+\section{导言：把“尺度”而不是“时空”当作基本量}
+
+标准图景中，时空流形与度量先验存在，物质在其上运动，Einstein 方程把二者耦合起来。
+这一图景在量子场论面前是尴尬的：QFT 的核心操作——重整化——是关于\emph{能标}的，
+而广义相对论的核心对象是\emph{长度}。二者在自然单位制下互为倒数，却被安放在
+理论结构的两个完全不同的层次上。
+
+本文采取相反的次序。设定如下：
+
+\begin{itemize}[leftmargin=1.6em]
+\item 基底只有一套\emph{平直的欧氏记账结构}（一张坐标纸），它不携带任何物理；
+\item 真正的物理量是每一点上的\emph{局域度量单位}，记其对数为 $\sigma$；
+\item 长度不是原始概念，而是“沿路径累加局域单位”的结果，于是
+      $g=e^{2\sigma}\kron$；
+\item 能量标度是长度标度的倒数：$\varepsilon\cdot s=1$，$s=e^{\sigma}$。
+\end{itemize}
+
+在这个设定下，“不同点的能动量不同”直接表现为“不同点的标度不同”，
+而标度的空间不均匀性\emph{就是}曲率。本文的主定理把这句话变成一条精确的恒等式。
+
+全部论证在 Lean 4 中完成。之所以坚持零 \texttt{sorry}，是因为一个公理体系一旦
+在地基处留下未证之处，其上层的一切“回归”都失去意义。
+
+\section{基底与公理}\label{sec:axioms}
+
+\subsection{微分基底}
+
+为使一切陈述有限、可机器检验，我们不使用解析意义上的光滑函数空间，
+而使用它的代数影子。
+
+\begin{definition}[标度代数]
+一个 \emph{$n$ 维标度代数} 是一个交换环 $A$，配备 $n$ 个两两交换的导子
+$\dd_0,\dots,\dd_{n-1}:A\to A$，满足
+\[
+\dd_i(a+b)=\dd_i a+\dd_i b,\qquad
+\dd_i(ab)=(\dd_i a)b+a(\dd_i b),\qquad
+\dd_i\dd_j a=\dd_j\dd_i a .
+\]
+\leanline{ScaleUniverse.ScaleAlgebra}
+\end{definition}
+
+由 Leibniz 律立刻得到 $\dd_i 1=0$、$\dd_i 0=0$，因而所有整数常量被导子零化
+（\texttt{d\_one}、\texttt{d\_zero}、\texttt{d\_natCast}）。
+Kronecker 记号 $\kron_{ij}$ 取值于 $A$，是纯记账量，满足 $\dd_k\kron_{ij}=0$。
+
+\begin{remark}
+选择代数化而非解析化，使得后文所有曲率恒等式成为\emph{纯代数恒等式}，
+对任意交换环成立。这既消除了对分析条件的依赖，也使机器验证不留缝隙。
+\end{remark}
+
+\subsection{六条公理}
+
+\begin{axiom}{A1（基底）}
+世界的基底是一个环 $A$，配备 $n$ 个满足 Leibniz 律且两两交换的导子 $\dd_i$，
+连同平直的 Kronecker 记账 $\kron$。基底本身不携带物理。
+
+\textbf{$A$ 不要求交换。} 交换性是\emph{经典扇区}的性质，不是基底的公理；
+第 \ref{sec:nc} 节证明上述微分结构在任意（含非交换）环中由对易子自动实现，
+而量子力学正是非交换扇区。第 \ref{sec:geom} 节起的几何推导在交换扇区中进行，
+这是一个\emph{物理限制}（引力是经典的），而非数学便利。
+\end{axiom}
+
+\begin{axiom}{A2（标度场）}
+存在一个无量纲标量 $\sigma\in A$（\emph{对数标度}），及其乘法代表元
+$s\in A^{\times}$（$s=e^{\sigma}$），满足指数场的定义性微分方程
+\[
+\dd_i s = s\,\dd_i\sigma .
+\]
+$s$ 取值于单位群，故处处非零。
+\leanline{ScaleUniverse.ScaleField}
+\end{axiom}
+
+\begin{axiom}{A3（标度—能动量对偶）}
+局域能量标度是局域长度标度的倒数：
+\[
+\varepsilon\cdot s = 1,\qquad \varepsilon := s^{-1}.
+\]
+在自然单位 $\hbar=c=1$ 下这不是建模选择，而是能量的定义本身。
+\leanline{ScaleField.en, ScaleField.en\_mul\_scale}
+\end{axiom}
+
+\begin{axiom}{A4（测量，方向性）}
+局域度量单位是\emph{每个方向一个}标度 $s_a\in A^{\times}$。被测线元为
+\[
+g_{ab} = \eta_a\,s_a^{2}\,\kron_{ab}.
+\]
+\textbf{标度必须有方向}，因为能动量是张量：流动的流体沿流向与横向携带的能量密度
+不同，张量源不可能设定一个标量标度。
+
+\emph{各向同性}特例（所有 $s_a$ 相等）给出 $g=e^{2\sigma}\kron$，
+这是本文早期版本所用的公理；第 \ref{sec:frame} 节证明它\emph{太强}
+（它禁止 Schwarzschild），并证明它恰是本公理的一个子轨迹，
+故一切在其上证明的结果不失。
+\leanline{Frame.DirScale, Unify.toMetric\_of\_isotropic}
+\end{axiom}
+
+\begin{axiom}{A5（基准协变性）}
+$\sigma$ 只在相差一个全局常数的意义下有定义：基准单位的选择不可观测。
+形式上，对任意满足 $\dd_i c=0$ 的 $c$，替换 $\sigma\mapsto\sigma+c$ 是理论的对称性。
+\leanline{geometry\_fiducial\_invariant}
+\end{axiom}
+
+\begin{axiom}{A6（开放性）}
+宇宙不是封闭系统：其总能量标度单调耗散。
+\leanline{Cosmology.dissipation\_solution}
+\end{axiom}
+
+A5 正是“完全无量纲化”的精确含义，我们将在定理 \ref{thm:fiducial} 中证明它
+对全部几何量严格成立。
+
+\section{非交换基底：量子力学的回归}\label{sec:nc}
+
+\subsection{一个必须交代的方法论问题}
+
+本文初稿把基底取为\emph{交换}环。这是一个应当被质疑的选择：它使曲率计算可以由
+\texttt{ring} 战术封闭，但量子力学的核心 $[\hat x,\hat p]=i\hbar$ 恰恰是非交换的。
+若基底必须交换，则本纲领从一开始就把量子力学排除在外。
+
+本节给出修正，而修正的结果比补丁更强：\textbf{经典扇区的微分结构从来没有用到交换性}。
+A1 要求的只是 Leibniz 律与混合偏导可交换，而这两条对任意环中的
+\emph{内导子} $\mathrm{ad}_p=[p,\cdot]$ 逐字成立。
+
+\subsection{导数就是对易子}
+
+\begin{theorem}[任意环中的 Leibniz 律]\label{thm:adleib}
+$\mathrm{ad}_p(ab)=\mathrm{ad}_p(a)\,b+a\,\mathrm{ad}_p(b)$。
+\leanline{Quantum.ad\_leibniz}
+\end{theorem}
+
+\begin{theorem}[Jacobi 恒等式]\label{thm:adjac}
+$\mathrm{ad}_p\mathrm{ad}_q-\mathrm{ad}_q\mathrm{ad}_p=\mathrm{ad}_{[p,q]}$。
+因此\textbf{两个内导子可交换，当且仅当其生成元可交换}。
+\leanline{Quantum.ad\_jacobi, Quantum.ad\_comm\_of\_commute}
+\end{theorem}
+
+定理 \ref{thm:adleib}、\ref{thm:adjac} 合起来说明：A1 中的 $\dd_i$ 不必被假定，
+它们\emph{就是}对易子；而“选定一个坐标系”在此获得精确含义——
+\textbf{选定一组互相对易的可观测量}。经典时空的存在性因此不是先验的，
+而是“存在足够大的对易子代数”这一条件的几何影子。
+
+\subsection{经典微积分是对易子的定理}
+
+只假设正则对易关系 $[P,X]=c$（$c$ 中心），不假设任何别的东西：
+
+\begin{theorem}[幂律，由对易子导出]\label{thm:adpow}
+\[
+[P,\;X^{\,n+1}] \;=\; (n+1)\,X^{\,n}\,c .
+\]
+取 $c=-i\hbar$、$\dd:=(i\hbar)^{-1}\mathrm{ad}_P$，这读作 $\dd(x^{n+1})=(n+1)x^n$。
+\leanline{Quantum.ad\_pow}
+\end{theorem}
+
+即：\textbf{微分学的幂律不是分析学的公理，而是关于非交换性的定理}。
+经典扇区中被假定的导子，在这里被推导出来。
+
+\subsection{A3 在非交换扇区只能成立到 $\hbar$}
+
+A3 说 $\varepsilon\cdot s=1$。在交换代数中这是精确恒等式，给出经典几何。
+在非交换代数中它\emph{不可能}精确成立，而偏差的定量形式就是不确定性关系。
+
+\begin{theorem}[Robertson 不等式]\label{thm:robertson}
+对对称算子 $A,B$ 与单位向量 $\psi$，
+\[
+\bigl\|\langle\psi,(AB-BA)\psi\rangle\bigr\| \;\le\; 2\,\|A\psi\|\,\|B\psi\| .
+\]
+\leanline{Quantum.robertson}
+\end{theorem}
+
+\begin{theorem}[Heisenberg 不确定性]\label{thm:heisenberg}
+若 $(AB-BA)\psi=i\hbar\,\psi$，则
+\[
+|\hbar| \;\le\; 2\,\|A\psi\|\,\|B\psi\| ,
+\qquad\text{即}\qquad \Delta A\cdot\Delta B \;\ge\; \frac{\hbar}{2}.
+\]
+\leanline{Quantum.heisenberg}
+\end{theorem}
+
+\medskip
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{统一的陈述.} 标度—能动量对偶 $\varepsilon s=1$ 有且只有两种实现方式：
+在\emph{对易}扇区它精确成立，给出经典几何与广义相对论（第 \ref{sec:geom} 节起）；
+在\emph{非对易}扇区它只能成立到对易子，而那个对易子就是 $\hbar$，
+给出量子力学。二者不是两个待调和的理论，而是同一条对偶在仅有的两个可用状态下的读数。
+\end{mdframed}
+
+\subsection{形变量子化：经典极限的严格形式化}\label{sec:deform}
+
+上一小节只说明了对易子\emph{满足}经典微分公理。真正欠下的是反方向：
+证明交换的标度代数确实是某个非交换代数的 $\hbar\to0$ 极限，
+从而 $\dd_i$ 就是对易子而非仅仅类似于对易子。
+
+取一阶形变 $A_\hbar=A[\hbar]/(\hbar^2)$，星积
+\[
+(f_0+\hbar f_1)\star(g_0+\hbar g_1)
+= f_0g_0+\hbar\bigl(f_0g_1+f_1g_0+P(f_0,g_0)\bigr),
+\]
+其中 $P$ 是 $A$ 上任意双导子。
+
+\begin{theorem}[形变的存在与结合律]\label{thm:starassoc}
+对\emph{任意}双导子 $P$，星积结合。双导子的两条 Leibniz 律恰是一阶
+Hochschild 上圈条件。
+\leanline{Deformation.star\_assoc}
+\end{theorem}
+
+\begin{theorem}[经典极限]\label{thm:starcl}
+$\hbar$ 的零次项恰为 $A$ 的交换乘法，无任何近似。
+\leanline{Deformation.star\_classical}
+\end{theorem}
+
+\begin{theorem}[对应原理，精确成立]\label{thm:starcomm}
+对易子无经典部分，其 $\hbar$ 系数恰为 $P$ 的反对称化：
+\[
+\hbar^{-1}[f,g]_\star=\{f_0,g_0\}.
+\]
+\textbf{这里没有极限可取——一阶上该恒等式是精确的。}
+\leanline{Deformation.star\_commutator}
+\end{theorem}
+
+\begin{theorem}[Poisson 括号是导子]\label{thm:poissonleib}
+$\{\cdot,g\}$ 对交换环 $A$ 满足 Leibniz 律。
+\leanline{Deformation.Biderivation.poisson\_leibniz\_left}
+\end{theorem}
+
+定理 \ref{thm:starcomm}、\ref{thm:poissonleib} 合起来就是所欠的那一步：
+\textbf{A1 中被假定的导子 $\dd_i$，正是 $A_\hbar$ 的内导子除以 $\hbar$}；
+非交换性是 $\hbar$ 的一阶效应，在 $\hbar=0$ 处消失，留下引力扇区的交换几何。
+
+\begin{theorem}[正则对易关系]\label{thm:ccr}
+若 $X$ 只沿方向 $p$ 变化、$\Pi$ 只沿 $q$ 变化，则 $\{\Pi,X\}=1$，
+故在形变代数中 $[\Pi,X]_\star=\hbar$。取 $\hbar=i\hslash$ 即 $[\Pi,X]=i\hslash$。
+\leanline{Deformation.ccr\_of\_canonical}
+\end{theorem}
+
+至此闭环：定理 \ref{thm:ccr} 由经典标度代数产生 CCR，
+而定理 \ref{thm:adpow} 由 CCR 复原经典微积分的幂律。
+引力扇区的交换微分结构与量子力学的正则对易关系，
+是同一个一阶形变的两端。
+
+\subsection{把"一阶"这个限制取消掉}\label{sec:exact}
+
+上一小节的形变只做到一阶。那是诚实的，但一阶截断是个不该安放地基的位置。
+而且它\emph{根本不必要}——框架里本来就有一个\emph{精确}的非交换来源。
+
+问：理论实际拥有的是哪两个操作？一个是读取\emph{此处}的量：乘以 $a$。
+另一个是移到\emph{相邻标度}：位移 $T$。二者不对易，而不对易量不是小参数，
+是一个有限的、精确的量——标度差本身：
+\[
+[\,U,\;M_a\,] \;=\; M_{Ta-a}\cdot U .
+\]
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{位置与标度不对易。} 这是 A3（$\varepsilon s=1$）的算符形式：
+分辨"在哪里"与分辨"在什么标度上"是不相容的操作，
+而 $\hbar$ 是\emph{标度步长}，不是一个形式符号。
+\end{mdframed}
+
+\begin{theorem}[交换关系与对易子的闭形式]\label{thm:exchange}
+$U M_a = M_{Ta}U$，且 $[U,M_a]=M_{\delta a}U$，其中 $\delta a := Ta-a$。
+\textbf{全程精确，无任何展开。}
+\leanline{Crossed.shift\_mul\_eq, Crossed.commutator\_eq}
+\end{theorem}
+
+\begin{theorem}[交换性 $\iff$ 标度步长为零]\label{thm:commiff}
+代数交换当且仅当标度位移平凡。
+\textbf{经典几何不是为方便而取的极限，而是"沿标度什么也没动"的那个情形。}
+\leanline{Crossed.comm\_iff\_shift\_trivial}
+\end{theorem}
+
+\begin{theorem}[有限步长下的精确 Leibniz 律]\label{thm:twisted}
+\[
+\delta(ab)=\delta(a)\,Tb + a\,\delta(b).
+\]
+规则是\emph{扭曲}的：第二个因子在位移后的标度上读取。此式对任意大的步长精确成立。
+当扭曲平凡（$Tb=b$）时，它退化为 A1 所假设的普通 Leibniz 律。
+\leanline{Crossed.delta\_twisted\_leibniz, Crossed.delta\_leibniz\_of\_untwisted}
+\end{theorem}
+
+于是经典微分结构\textbf{不是}"$\hbar$ 的一阶截断"，而是一条精确关系在
+\emph{零标度步长}处的取值。上一小节的限制就此被取消，而不是被绕过。
+
+\begin{remark}[仍在的限制]
+本节给出的是位移与乘法生成的算符代数，\emph{未}构造完整的交叉积、
+未讨论其表示论，也未把 $\hbar$ 的数值与任何具体步长联系起来。
+\end{remark}
+
+\section{几何的涌现：曲率即标度形变}\label{sec:geom}
+
+\subsection{Levi-Civita 数据}
+
+由 A4，度量 $g=e^{2\sigma}\kron$ 的 Christoffel 记号为
+\begin{equation}
+\Gamma^{a}{}_{bc}
+= \kron_{ab}\,\sigma_c + \kron_{ac}\,\sigma_b - \kron_{bc}\,\sigma_a,
+\qquad \sigma_i:=\dd_i\sigma .
+\end{equation}
+\leanline{ScaleUniverse.Chr}
+
+值得注意：共形因子 $e^{2\sigma}$ \emph{完全消失}。联络只看得见标度的\emph{变化}，
+看不见标度本身——这已经预示了 A5。
+
+\begin{definition}[标度形变张量]
+\begin{equation}
+\Defm_{ij} := 2\sigma_{ij} - 2\sigma_i\sigma_j + \kron_{ij}\,|\nabla\sigma|^2,
+\end{equation}
+其中 $\sigma_{ij}=\dd_i\dd_j\sigma$，$|\nabla\sigma|^2=\sum_k\sigma_k\sigma_k$。
+它度量局域单位\emph{偏离仿射变化}的程度。（因子 $2$ 是为避免除法，
+使一切陈述在任意交换环上成立。）
+\leanline{ScaleUniverse.Defm}
+\end{definition}
+
+\subsection{主定理}
+
+\begin{theorem}[曲率即标度形变]\label{thm:master}
+在任意标度代数中，对任意 $\sigma\in A$ 与任意指标 $a,b,c,e$，
+\begin{equation}\boxed{\;
+2\,R^{a}{}_{bce}
+= \kron_{ae}\Defm_{bc} - \kron_{ac}\Defm_{be}
++ \kron_{bc}\Defm_{ae} - \kron_{be}\Defm_{ac}\;}
+\end{equation}
+即 $g=e^{2\sigma}\kron$ 的完整 Riemann 张量恰是欧氏记账 $\kron$ 与标度形变 $\Defm$
+的 Kulkarni–Nomizu 乘积。
+\leanline{ScaleUniverse.two\_Rm\_eq}
+\end{theorem}
+
+这是全部纲领的核心。它把“欧氏空间在不同点按不同比例缩放，等价于黎曼几何”
+从一句口号变成一条恒等式：\textbf{几何 $=$ 记账 $\times$ 标度形变，没有别的成分}。
+曲率没有任何独立于标度场的自由度。
+
+\begin{proof}[证明要点]
+Riemann 张量的导数部分给出
+\[
+\dd_c\Gamma^a{}_{be}-\dd_e\Gamma^a{}_{bc}
+=\kron_{ae}\sigma_{bc}-\kron_{be}\sigma_{ac}-\kron_{ac}\sigma_{be}+\kron_{bc}\sigma_{ae},
+\]
+其中 $\kron_{ab}$ 项因混合偏导可交换而相消（\texttt{d\_Chr\_diff}）。
+二次部分由一条主收缩恒等式给出：
+\[
+\sum_m \Gamma^{a}{}_{cm}\Gamma^{m}{}_{be}
+= 2\kron_{ac}\sigma_b\sigma_e-\kron_{ac}\kron_{be}|\nabla\sigma|^2
++\kron_{ab}\sigma_c\sigma_e+\kron_{ae}\sigma_b\sigma_c
+-\kron_{bc}\sigma_a\sigma_e-\kron_{ce}\sigma_a\sigma_b
+\]
+（\texttt{sum\_Chr\_Chr\_full}；Lean 中通过把九个乘积项整理成可收缩形式，
+再用 $\sum_a\kron_{ab}f(a)=f(b)$ 逐项化简）。两部分相加，$|\nabla\sigma|^2$ 项
+恰好成对相消，余下即所断言的形式。全部步骤为环上恒等式，由 \texttt{ring} 封闭。
+\end{proof}
+
+\subsection{迹与标量曲率}
+
+\begin{theorem}[Ricci 曲率]\label{thm:ric}
+\begin{equation}
+R_{be} = -(n-2)\bigl(\sigma_{be}-\sigma_b\sigma_e\bigr)
+- \kron_{be}\bigl(\Delta\sigma + (n-2)|\nabla\sigma|^2\bigr).
+\end{equation}
+\leanline{ScaleUniverse.Ric\_eq}
+\end{theorem}
+
+\begin{theorem}[标量曲率]\label{thm:rsc}
+\begin{equation}
+e^{2\sigma}R = -2(n-1)\,\Delta\sigma - (n-1)(n-2)\,|\nabla\sigma|^2 .
+\end{equation}
+\leanline{ScaleUniverse.RscBare\_eq}
+\end{theorem}
+
+（我们把共形因子显式保留在左侧，从而无需任何可逆性假设。）
+
+\begin{corollary}[真空即标度的仿射变化]\label{cor:flat}
+若 $2$ 在 $A$ 中可逆（对任何 $\R$-代数模型自动成立），则
+\[
+\Defm_{ij}\equiv 0 \;\Longrightarrow\; R^{a}{}_{bce}\equiv 0 .
+\]
+即：形变自由的标度场给出\emph{完全平直}的几何，而非仅仅 Ricci 平坦。
+\leanline{Rm\_eq\_zero\_of\_Defm\_eq\_zero}
+\end{corollary}
+
+真空因此不是“没有标度”，而是“标度均匀地变化”。这与本纲领的直觉一致：
+标度处处存在，引力只是它的不均匀性。
+
+\subsection{可积 Weyl 几何：没有第二时钟效应}
+
+Weyl 于 1918 年提出：单位长度可以逐点变化，由一个独立的一形式 $A_i$ 描述。
+Einstein 的反驳是致命的：若 $A$ 不可积，原子谱线将依赖于世界线历史
+（“第二时钟效应”），与观测矛盾。
+
+本理论中 $A_i$ \emph{不是}独立场，而是全局标量的梯度 $A_i=\dd_i\sigma$。
+
+\begin{theorem}[标度联络平坦]\label{thm:weyl}
+\[
+F_{ij} := \dd_i A_j - \dd_j A_i = 0 \quad\text{恒成立}.
+\]
+\leanline{ScaleUniverse.scaleCurv\_eq\_zero}
+\end{theorem}
+
+证明只用到混合偏导可交换。因此沿任意闭合回路输运单位后单位不变，
+第二时钟效应\emph{按构造}不存在。这正是可积 Weyl 几何成功、
+而 Weyl 原版失败的原因——本纲领所需的恰是前者。
+
+\subsection{无量纲性是一条定理}
+
+\begin{theorem}[基准协变性]\label{thm:fiducial}
+设 $\dd_i c=0$。则对 $\sigma\mapsto\sigma+c$，下列量逐一不变：
+\[
+\sigma_i,\quad \sigma_{ij},\quad \Delta\sigma,\quad |\nabla\sigma|^2,\quad
+\Gamma^a{}_{bc},\quad R^a{}_{bce},\quad R_{be},\quad \Defm_{ij},\quad e^{2\sigma}R .
+\]
+\leanline{ScaleUniverse.geometry\_fiducial\_invariant}
+\end{theorem}
+
+这就是 A5 的精确内容，也是“全部物理量无量纲化”的严格实现：
+没有任何可观测量依赖于 $\sigma$ 的零点位置，只有标度\emph{差}是物理的。
+
+\begin{remark}[重整化群的起源]
+定理 \ref{thm:fiducial} 说的是\emph{几何}对基准平移不变。但\emph{物质的描述}
+未必不变：为在基准移动时保持预言不变，耦合常数必须相应流动。
+这一补偿运动就是重整化群（第 \ref{sec:rg} 节）。
+换言之，RG 不是 QFT 的技术手续，而是 A5 在物质部门的影子。
+\end{remark}
+
+\section{A4 太强：标度必须是方向性的}\label{sec:frame}
+
+\subsection{诊断}
+
+第 \ref{sec:geom} 节的一切都建立在 $g=e^{2\sigma}\kron$ —— \emph{一个}标量标度，
+各方向相同。本文早期版本把这当作 A4 本身。它无法承载 Schwarzschild，
+而原因是物理的，不是技术的。
+
+本纲领说局域能动量决定局域标度。但\textbf{能动量是张量}：
+流动的流体沿流向与横向携带的能量密度不同。张量源不可能设定一个标量标度。
+\textbf{标度必须有方向。}
+
+这就是第 \ref{sec:axioms} 节把 A4 直接写成\emph{方向性}的理由：
+局域度量单位是每个方向一个标度 $s_a\in A^{\times}$，被测线元为
+$g_{ab}=\eta_a s_a^2\kron_{ab}$。各向同性（所有 $s_a$ 相同）是它的特例。
+
+\subsection{旧公理不是没能给出 Schwarzschild，而是禁止了它}
+
+Schwarzschild（及 Reissner–Nordström）族的定义性关系是 $g_{tt}g_{rr}=-1$。
+在标度语言中它读作
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\[
+s_t\cdot s_r=1 .
+\]
+\textbf{时间标度与径向标度互为倒数}：钟被压缩的因子，恰好等于径向尺子被拉长的因子。
+这是一句关于\emph{标度}的陈述，标量理论连表述它的能力都没有。
+\end{mdframed}
+
+\begin{theorem}[各向同性 $+$ 倒数关系 $\Rightarrow$ 平直]\label{thm:frameflat}
+若所有方向共用一个标度，且 $s_ts_r=1$，则 $s_t^2=1$，
+于是每个度量分量都等于裸记账值：几何是平直的。
+\leanline{Frame.DirScale.isotropic\_reciprocal\_forces\_flat,
+isotropic\_reciprocal\_metric\_bare}
+\end{theorem}
+
+这就是诊断的精确形式：\textbf{$g=e^{2\sigma}\kron$ 并非未能产生 Schwarzschild，
+而是排除了它}。公理确实太强。
+
+\begin{theorem}[方向性 A4 下该关系有非平凡解]\label{thm:frameexists}
+对任意满足 $u^2\ne1$ 的单位 $u$，存在方向性标度场使 $s_t=u$、$s_r=u^{-1}$，
+倒数关系成立且\emph{非}各向同性。
+\leanline{Frame.exists\_reciprocal\_nonisotropic}
+\end{theorem}
+
+\subsection{一套公理，而不是两套}
+
+若把方向性 A4 与旧的标量 A4 并列，体系就同时挂着两条互斥的公理——
+\texttt{Conformal.lean} 等文件用标量 $\sigma$，而 \texttt{Frame.lean} 说标度有方向。
+这必须消除，消除的办法是\textbf{降格旧公理}：方向性 A4 是公理，标量形式是关于其
+各向同性轨迹的定理。
+
+\begin{theorem}[旧公理是新公理的各向同性轨迹]\label{thm:unify}
+若所有方向共用一个标度 $s$，则方向性 A4 的度量\emph{恰好}等于共形度量
+$\eta_a s^2\kron_{ab}$——无近似、无附加假设。
+\leanline{Unify.toMetric\_of\_isotropic}
+\end{theorem}
+
+\begin{theorem}[各向同性轨迹恰是标量理论的像]\label{thm:unifyiff}
+一个方向性标度场是各向同性的，当且仅当它形如 $\mathrm{ofScalar}(u)$。
+故旧公理不只是被新公理蕴含，而是新公理限制在一个子轨迹上的\emph{全部}内容，
+没有剩余。
+\leanline{Unify.isotropic\_iff\_ofScalar, Unify.sector\_coherence}
+\end{theorem}
+
+于是此前一切关于 $\sigma$ 的定理原封不动保留，只是获得了明确的适用域：
+它们是关于\emph{各向同性扇区}的陈述。公理表由两条变回一条。
+
+\begin{remark}[相容但尚不完备]
+本文\emph{未}完成\emph{各向异性}扇区的曲率计算（Cartan 结构方程、
+Schwarzschild 曲率张量的逐分量验证、光线偏折与近日点进动）。
+公理体系现在是\textbf{相容}的；它还不\textbf{完备}——
+方向性 A4 的几何推论目前只在标度恰为各向同性处被算出。
+这是当前最优先的下一步。
+\end{remark}
+
+\section{曲率就是对易子}\label{sec:conn}
+
+\subsection{避开一次惯性}
+
+补各向异性曲率的"显然"办法，是写下 Cartan 结构方程然后硬算。
+那等于把广义相对论的整套机器原样搬过来——正是最该避开的路径依赖。
+有一条更本原的路，而且它把引力认成了本文早已造好的东西。
+
+问：输运局域单位\emph{究竟}是什么？沿方向 $i$ 移动，就是把一切改用邻近的单位表述，
+那是一个算子 $D_i$。先 $i$ 后 $j$ 未必等于先 $j$ 后 $i$。这个差额就是曲率的全部：
+\[
+F_{ij} = [D_i,\;D_j].
+\]
+
+这与 \texttt{Quantum.ad} 是\emph{同一个构造}。那里的输运是相空间平移，
+它们的不对易就是 $\hbar$；这里的输运是标架输运，它们的不对易就是引力。
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{曲率与 $\hbar$ 是同一个构造在两族输运上的取值。}
+这比"两个理论之间存在类比"强得多——它们是一件事。
+\end{mdframed}
+
+\subsection{Yang--Mills 曲率不是被假设的，是被算出来的}
+
+\begin{theorem}[曲率即输运的对易子]\label{thm:commcov}
+以 $D_i m = \dd_i m + [A_i,m]$ 为协变输运，则
+\[
+[D_i,D_j]\,m \;=\; [F_{ij},\,m],
+\qquad
+F_{ij} = \dd_iA_j-\dd_jA_i+[A_i,A_j].
+\]
+两件事同时发生：其一，Yang--Mills 曲率不是被写下的，而是左边算出来的结果；
+其二，结果对 $m$ 是\emph{代数}作用——$m$ 的导数全部消失——
+这正是"曲率是张量"的精确含义。
+\leanline{Connection.comm\_covD}
+\end{theorem}
+
+\begin{theorem}[Bianchi 恒等式]\label{thm:bianchi}
+$\;\sum_{\text{cyc}} D_iF_{jk}=0$。它由 \texttt{ad} 的 Jacobi 恒等式
+（定理 \ref{thm:adjac}）与混合偏导可交换直接给出。
+\textbf{引力场的守恒律就是输运的结合律}，别无其他内容。
+\leanline{Connection.bianchi}
+\end{theorem}
+
+\subsection{究竟是哪一部分在弯曲}
+
+\begin{theorem}[梯度联络是平的]\label{thm:gradflat}
+若联络是标量的梯度且自对易，其曲率恒为零。
+这是定理 \ref{thm:weyl} 在非交换情形下的重述：
+输运的\emph{标度}部分是可积的，故无论几何多弯，第二时钟效应都不存在。
+\leanline{Connection.curv\_gradient\_eq\_zero}
+\end{theorem}
+
+\begin{theorem}[全部曲率都住在不对易的部分]\label{thm:rotpart}
+把输运拆为标度部分（由 A5 是梯度，故对易、可积）加标架转动部分：
+\[
+F\bigl(\dd\sigma+\omega\bigr)_{ij} \;=\; F(\omega)_{ij}.
+\]
+\textbf{标度部分对曲率的贡献恰好为零。}
+\leanline{Connection.curv\_eq\_rotation\_part, curv\_split, curv\_pure\_scale\_eq\_zero}
+\end{theorem}
+
+于是引力不是"标度场把空间掰弯了"。引力是\textbf{标架转动的不对易}，
+而标度本身可积地输运。这既解释了可积 Weyl 几何为何能承载引力却不产生第二时钟效应，
+也正是标量公理 A4 表达不了的那个各向异性曲率——而且全程没有出现一个 Christoffel 记号。
+
+推论：纯标量输运的曲率恒为零，这就是旧公理禁止 Schwarzschild 的结构性原因，
+与定理 \ref{thm:frameflat} 从度量一侧给出的结论一致。
+
+\begin{remark}[仍未闭合的一环]
+本节给出的是\emph{给定联络}的曲率。由标架\emph{定出}联络
+（Cartan 第一结构方程，即无挠条件 $de^a+\omega^a{}_b\wedge e^b=0$）尚未形式化。
+因此各向异性扇区现在有了曲率机器与拆分定理，但还没有"从 $s_a$ 算到 $F$"的完整链条，
+光线偏折与近日点进动仍未导出。缺口比上一版窄，但没有消失。
+\end{remark}
+
+\section{引力与规范场是同一个东西}\label{sec:transport}
+
+上一轮留下一个问题：从标架定出联络，是否需要无挠条件？
+\emph{这样问本身就是惯性}——"挠率"来自一个把标架与联络当作\emph{独立场}的理论，
+所以才需要一个条件把二者拴住。
+
+在这里它们并不独立，也就没有什么可强加的。
+
+从 $x$ 到 $y$ 的输运只有一件事要做：把 $x$ 处每个局域单位送到 $y$ 处对应的单位。
+两端的标度花样就是全部，于是输运就是"使单位对上"的那个重标号。
+\textbf{没有做出任何选择，因而不需要任何条件来消除选择。}
+
+\begin{theorem}[非简并 $\Rightarrow$ 输运唯一]\label{thm:tunique}
+若目标处各局域单位\emph{互不相同}，则输运\textbf{唯一}。
+没有无挠条件、没有度规相容性公设、没有变分原理：
+联络是标度场的一个\emph{函数}，它从来就不是一个待约束的独立场。
+\leanline{Transport.transport\_unique\_of\_nondegenerate}
+\end{theorem}
+
+\begin{theorem}[简并 $\Rightarrow$ 自由度恰是内禀对称性]\label{thm:tcoset}
+两个输运同一花样的重标号相差一个 $\mathrm{stabilizer}$ 元素，且仅此而已；
+反之乘上任一稳定子元素仍是输运。故输运集合恰是稳定子的一个陪集。
+\leanline{Transport.transport\_coset, Transport.transports\_of\_stabilizer}
+\end{theorem}
+
+\begin{theorem}[唯一性 $\iff$ 无规范自由]\label{thm:tiff}
+输运唯一，当且仅当稳定子平凡。
+\leanline{Transport.transport\_unique\_iff\_stabilizer\_trivial,
+Transport.nondegenerate\_no\_gauge\_freedom}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{输运是一个对象；标度花样的简并把它劈成"被定死的部分"与"自由的部分"。}
+被定死的部分逐点变化并弯曲——那是\emph{引力}；
+自由的部分是块内转动——那是\emph{规范场}。
+它们不是两个有待统一的场，而是一个场，
+被"局域单位是否恰好重合"这一件事分开。
+\end{mdframed}
+
+\section{回归 I：引力红移与 Newton 极限}
+
+\subsection{引力红移}
+
+\begin{theorem}[红移]\label{thm:redshift}
+对 A2、A3 的标度场，
+\[
+\dd_i \varepsilon = -\,\varepsilon\,\dd_i\sigma .
+\]
+\leanline{ScaleUniverse.ScaleField.d\_en}
+\end{theorem}
+
+证明只是对 $\varepsilon s=1$ 求导。物理读法：标度\emph{升高}处能量标度\emph{降低}。
+一个固定激发从标度大的区域向外传播时能量下降——引力红移是定理，不是附加假设。
+
+\subsection{标度响应律}
+
+要得到引力，还需要一句话说明\emph{什么在源生标度}：
+
+\begin{axiom}{A6$'$（标度响应）}
+$e^{2\sigma}R = \kappa\rho$，其中 $\rho$ 是局域无量纲能量密度。
+$n=3$ 时这正是共形平直切片上的 Hamilton 约束。
+\end{axiom}
+
+\subsection{一阶区域}
+
+\begin{theorem}[线性化是精确的]\label{thm:linear}
+若 $|\nabla\sigma|^2=0$，则
+\[
+e^{2\sigma}R = -2(n-1)\Delta\sigma .
+\]
+\leanline{ScaleUniverse.RscBare\_linear}
+\end{theorem}
+
+\begin{theorem}[Poisson 方程]\label{thm:poisson}
+在一阶区域，令 $\Phi:=-\sigma$（\emph{Newton 势就是负的对数标度}），则
+\[
+2(n-1)\,\Delta\Phi = \kappa\rho .
+\]
+$n=3$ 时为 $4\Delta\Phi=\kappa\rho$；取 $\kappa=16\pi G$ 即得
+\[
+\Delta\Phi = 4\pi G\rho .
+\]
+\leanline{ScaleUniverse.poisson, ScaleUniverse.poisson\_three}
+\end{theorem}
+
+符号自洽性值得强调：$\sigma=-\Phi$ 意味着引力势阱深处 $\sigma>0$，
+即\emph{标度被拉大}、尺子被拉长——这与 Schwarzschild 各向同性坐标下
+径向固有距离大于坐标距离一致；同时由定理 \ref{thm:redshift}，
+$\varepsilon=e^{-\sigma}=e^{\Phi}$，正是引力红移因子。两个符号都不是调出来的。
+
+\subsection{一阶区域不是“扔掉高阶项”}
+
+条件 $|\nabla\sigma|^2=0$ 看似是把困难项抹去。我们证明它是\emph{精确可实现}的：
+把基底扩张为对偶数环 $A[\varepsilon]/(\varepsilon^2)$，并取无穷小标度场
+$\sigma=\varepsilon\varphi$。
+
+\begin{theorem}[一阶区域的实现]\label{thm:dual}
+对偶数环上的导子逐分量延拓后仍是标度代数；且对任意 $\varphi\in A$，
+\[
+|\nabla(\varepsilon\varphi)|^2 = 0 \quad\text{恒等成立}.
+\]
+因而定理 \ref{thm:linear}、\ref{thm:poisson} 在其上\emph{精确}成立，
+没有任何被丢弃的项。
+\leanline{ScaleUniverse.Dual.instScaleAlgebra, Dual.gradsq\_inr, Dual.poisson\_exact}
+\end{theorem}
+
+一阶微扰论由此被安置在公理体系\emph{内部}，而不是从外部强加。
+
+\section{回归 II：重整化群与有效场论塔}\label{sec:rg}
+
+\subsection{标度流}
+
+\begin{definition}[标度流]
+耦合空间 $S$ 上的标度流是 $\Phi_t:S\to S$，满足 $\Phi_0=\mathrm{id}$、
+$\Phi_{t+u}=\Phi_t\circ\Phi_u$。群律由 A5 强制：基准先移 $u$ 再移 $t$，
+就是移 $t+u$，没有别的可能。
+\leanline{RG.ScaleFlow}
+\end{definition}
+
+\begin{proposition}[不动点即标度不变]
+若 $\Phi_t g=g$ 对一切 $t$ 成立，则任意可观测量 $O$ 满足 $O(\Phi_t g)=O(g)$。
+\leanline{RG.ScaleFlow.observable\_const\_at\_fixedPoint}
+\end{proposition}
+
+\subsection{自相似只能是幂律}
+
+\begin{theorem}[Callan–Symanzik]\label{thm:cs}
+若无量纲可观测量满足 $\dfrac{dO}{dt}=\gamma O$，则
+\[
+O(t) = O(0)\,e^{\gamma t}.
+\]
+特别地 $\gamma=0$（不动点）给出严格标度不变。
+\leanline{RG.callan\_symanzik, RG.scale\_invariant\_of\_fixedPoint}
+\end{theorem}
+
+反常量纲 $\gamma$ 是标度协变行为的\emph{唯一}可能形式。
+值得注意，这与第 \ref{sec:de} 节的耗散律是同一条微分方程：
+\textbf{跑动的耦合与膨胀的宇宙，是同一个数学在两个标度上的读数}——
+这正是本纲领所主张的自相似性。
+
+\subsection{有效场论塔是定理而非窘境}
+
+设激发 $i$ 携带对数阈值 $\mu_i$。在对数能标 $t$ 上可用的激发集合为
+$\mathcal{A}(t)=\{i:\mu_i\le t\}$。
+
+\begin{theorem}[EFT 塔]\label{thm:eft}
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item \emph{单调性}：$t\le t' \Rightarrow \mathcal{A}(t)\subseteq\mathcal{A}(t')$；
+      新物理只随标度升高而出现，从不消失。
+      \lean{RG.active\_mono}
+\item \emph{阈值间恒定}：若 $(t,t']$ 中无阈值，则 $\mathcal{A}(t)=\mathcal{A}(t')$。
+      有效描述在阈值之间是\emph{精确}的，而非近似。
+      \lean{RG.active\_eq\_of\_no\_threshold}
+\item \emph{有限性}：有限激发内容只给出有限多个不同的有效理论。
+      \lean{RG.active\_finite\_range}
+\end{enumerate}
+\end{theorem}
+
+因此，“不同能标下必须更换理论框架”不是有效场论的缺陷，
+而是一个标度分层世界在如实报告自己的结构。
+
+\subsection{$\beta$ 函数从哪里来}\label{sec:beta}
+
+第 \ref{sec:qcd} 节把单圈系数 $b$ 当作输入，是从规范理论借来的。这一步可以往回推一层。
+
+A5 说基准平移是几何的对称性而非描述的对称性：耦合必须补偿。
+而\emph{需要被补偿的}只能是实际在场的内容，即活跃激发。
+所以补偿率只能是活跃集合的泛函，别无依赖。
+
+\begin{theorem}[$\beta$ 系数的形状]\label{thm:beta}
+设 $\beta$ 系数为活跃内容的任意泛函 $\Phi(\mathcal{A}(t))$。则
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item 阈值之间它\emph{恒定}——那里的跑动精确是单系数的，而非近似；
+      \lean{RG.beta\_const\_between\_thresholds}
+\item 它只取有限多个值，故是一个阶梯函数，跳变点恰在质量阈值上；
+      \lean{RG.beta\_finite\_range}
+\item 越过全部阈值后它稳定到完整内容的值。
+      \lean{RG.beta\_eq\_of\_all\_active}
+\end{enumerate}
+\end{theorem}
+
+QCD 的系数正是这样：在每个夸克阈值处跳变。本框架\emph{定出了这个形状}，
+但\textbf{不定出数值}——$\Phi$ 的具体形式（如 $11N_c-2N_f$）仍是输入。
+这一步只把借来的东西从"一个数"缩小为"一个泛函"，没有消灭它。
+
+\section{回归 III：粒子标度与寿命的动量依赖}
+
+激发携带自己的时钟，其单位由静止能标 $m$ 设定；实验室使用另一套单位，
+由总能量 $E=\sqrt{p^2+m^2}$ 设定。寿命是内部“滴答”的纯数目；
+实验室报告的是同一数目在\emph{它的}单位下的读数，因此要乘以两个标度之比
+\[
+\gamma = \frac{E}{m}.
+\]
+
+\begin{theorem}[寿命]\label{thm:lifetime}
+设 $m>0$、$\tau_0\ge 0$，$\tau(p)=\gamma(p)\,\tau_0$。则
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item $\gamma\ge 1$，故 $\tau(p)\ge\tau_0$；\lean{Particles.one\_le\_scaleRatio}
+\item $p^2\le q^2 \Rightarrow \tau(p)\le\tau(q)$：寿命随动量单调增加；
+      \lean{Particles.lifetime\_mono}
+\item $\tau(0)=\tau_0$：静止时两个标度重合，归一化无余项。
+      \lean{Particles.lifetime\_at\_rest}
+\end{enumerate}
+\end{theorem}
+
+证明中没有使用任何关于衰变动力学的假设。时间膨胀在此不是“钟走慢了”，
+而是 A3 的标度比被读了两次。
+
+\section{回归 IV：暗物质——相互作用发生，观测失效}
+
+探测器本身是坐落在某个能标 $\varepsilon_D$ 上的物理系统；由 A3，
+这也是它的空间分辨率的倒数。它能登记的不是“一次相互作用”，
+而是“一次把它自身状态推动了至少阈值 $\theta$ 的相互作用”。
+
+\begin{definition}
+单次激发的探测响应 $\;\mathrm{det}(\varepsilon,\varepsilon_D)=\varepsilon/\varepsilon_D$；
+引力响应 $\;\mathrm{grav}(N,\varepsilon)=N\varepsilon$（总能量，对能量如何分配是盲的）。
+\end{definition}
+
+\begin{theorem}[相互作用而不可观测]\label{thm:detfail}
+对任意 $\varepsilon_D>0$ 与任意阈值 $\theta>0$，存在 $\varepsilon_0>0$，使得
+对一切 $0<\varepsilon<\varepsilon_0$，
+\[
+0 < \mathrm{det}(\varepsilon,\varepsilon_D) < \theta .
+\]
+即：耦合严格非零（相互作用确实发生），却严格低于阈值（观测必然失败）。
+\leanline{Dark.detection\_failure}
+\end{theorem}
+
+\begin{theorem}[暗物质]\label{thm:dm}
+对任意引力信号 $M>0$、任意探测器标度 $\varepsilon_D>0$、任意阈值 $\theta>0$，
+存在标度 $\varepsilon>0$ 与多重度 $N>0$，使得
+\[
+N\varepsilon = M \quad\text{（引力上完全可见）},\qquad
+0<\frac{\varepsilon}{\varepsilon_D}<\theta \quad\text{（非引力上不可见）}.
+\]
+\leanline{Dark.dark\_matter\_exists}
+\end{theorem}
+
+引力可见性与非引力不可见性因此并不冲突：它们是同一位形的两个不同泛函，
+而标度层级可以把二者拉开任意大的倍数。用户直觉中“超大号、能量极低的粒子”
+在此获得精确表述——关键不在于它是什么粒子，而在于\emph{探测器自身的能标远高于它}，
+使得测量（而非相互作用）失效。
+
+\section{回归 V：暗能量——开放系统的耗散}\label{sec:de}
+
+由 A6，宇宙不封闭，其能量标度耗散。由 A3，衰减的能量标度\emph{就是}增长的长度标度。
+定义宇宙标度因子 $a:=1/\varepsilon$（它不是独立场）。
+
+\begin{theorem}[耗散的历史唯一]\label{thm:diss}
+若 $\dot\varepsilon=-\lambda\varepsilon$，则
+\[
+\varepsilon(t)=\varepsilon_0 e^{-\lambda t}.
+\]
+未假设任何拟设；指数形式是被强制的。
+\leanline{Cosmology.dissipation\_solution}
+\end{theorem}
+
+\begin{theorem}[耗散即膨胀，且加速]\label{thm:desitter}
+设 $\lambda>0$、$\varepsilon_0>0$。则
+\[
+a(t)=a_0e^{\lambda t},\qquad
+\dot a=\lambda a \;(\text{即 } H=\lambda \text{ 为常数}),\qquad
+\ddot a=\lambda^2 a>0 .
+\]
+即精确的 de Sitter 膨胀，全程没有引入任何宇宙学常数。
+\leanline{Cosmology.open\_universe\_accelerates, hasDerivAt\_scaleFactor,
+hasDerivAt\_hubble, acceleration\_pos}
+\end{theorem}
+
+结论：所谓“暗能量”在此框架下不是具有负压的物质，而是\emph{开放宇宙的耗散率}。
+观测到的加速膨胀是一个倒数的二阶导数，$\Lambda$ 与 $\lambda^2$ 同阶。
+把宇宙自身看作一个“因涨落而诞生、正在耗散的大粒子”，
+其数学内容恰是定理 \ref{thm:diss}——与定理 \ref{thm:cs} 的跑动方程同型。
+
+\section{回归 VI：时间箭头}
+
+基底中没有任何东西区分时间方向：微观动力学是双射。破缺来自\emph{观测发生在某个标度上}，
+而标度携带有限分辨率，即一个从微观位形到可分辨对象的\emph{非单射}映射。
+
+设 $X$ 有限，$\pi:X\to Y$ 为粗粒化，$T$ 为 $X$ 上的置换（可逆微观动力学）。
+定义饱和 $\mathrm{sat}_\pi(S)=\{x:\pi x\in\pi(S)\}$，观测演化
+$F(S)=\mathrm{sat}_\pi(T(S))$。
+
+\begin{theorem}[H 定理]\label{thm:h}
+$|S|\le |F(S)|$，对一切 $S$ 成立。
+\leanline{Entropy.entropy\_nondecreasing}
+\end{theorem}
+
+证明只用两步：微观步严格保持基数；粗粒化步只能变大。没有任何概率假设。
+
+\begin{theorem}[不可逆性]\label{thm:arrow}
+设 $F$ 满足 H 定理且在某个 $S_0$ 上严格产熵（$|S_0|<|F(S_0)|$）。
+则\emph{不存在}同样满足 H 定理的 $G$ 使 $G\circ F=\mathrm{id}$。
+\leanline{Entropy.no\_reverse\_law, Entropy.evolve\_no\_reverse\_law}
+\end{theorem}
+
+即：宏观方程无法被同类型的规律倒着跑。微观层面时间反演不变严格成立，
+宏观层面它被摧毁——这正是 Boltzmann 方程不具时间反演不变性的确切地位。
+
+\paragraph{正反物质不对称。} 我们只给出结构性结论，不宣称推出观测到的重子不对称度。
+Sakharov 第三条件是“偏离热平衡”。在封闭系统中这是精心安排的插曲；
+在 A6 之下宇宙永不停止耗散，因而该必要条件\emph{结构性地}恒被满足：
+
+\begin{proposition}
+若某荷量在一步演化中发生改变，则系统必不处于平衡（$F(S)\ne S$）；
+严格产熵本身即构成偏离平衡。
+\leanline{Entropy.charge\_change\_implies\_nonequilibrium,
+Entropy.entropy\_production\_implies\_nonequilibrium}
+\end{proposition}
+
+\section{回归 VII：光是什么}\label{sec:light}
+
+被测二次型是记账二次型乘以标度因子：$Q_g=s^2Q_\kron$。由于 $s$ 是单位元，
+乘以它既不能制造零也不能消灭零。
+
+\begin{theorem}[光对标度是盲的]\label{thm:null}
+\[
+Q_g(v)=0 \iff Q_\kron(v)=0 .
+\]
+类光锥由记账结构单独决定；任何标度场（即任何引力场）都无法改变哪些方向是类光的。
+两个使用任意不同标度场的观察者，对“何为类光”的判断完全一致。
+\leanline{Light.isNull\_iff\_bare, Light.isNull\_scale\_invariant}
+\end{theorem}
+
+\begin{theorem}[物质不是盲的]\label{thm:massive}
+若 $Q_\kron(v)$ 是正则元（特别地，$v$ 非类光），则由被测二次型可\emph{唯一确定} $s^2$。
+\leanline{Light.scale\_determined\_of\_nonnull, Light.physForm\_ne\_bareForm}
+\end{theorem}
+
+两条定理合起来给出本框架完整的认识论：
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{光确定共形（因果）结构，且仅此而已；标度必须用物质去读。}
+\end{mdframed}
+
+因此，光的数学本质是几何中\emph{权重为零}的部分——A5 的基准平移作用于其上是平凡的
+（\texttt{Light.null\_weight\_zero}），这正是“无质量”的形式内容。
+它的实在意义是：光是唯一路径对标度不敏感的探针，因而是唯一能够
+把局域单位的比较从一个事件无循环论证地传递到另一个事件的\emph{比较器}。
+再结合定理 \ref{thm:weyl}（标度联络平坦），这种传递沿闭合回路无残差，
+理论自洽。
+
+\section{耗散之下的局域广义协变性}\label{sec:cov}
+
+对 A6 最直接的反驳是：若基准标度永不停止漂移，局域物理岂不被摧毁？
+氢原子为什么昨天和今天一样大？太阳系为什么不膨胀？
+
+答案由 A5 强制。宇宙耗散是基准的\emph{空间常数}漂移
+$\sigma_t=\sigma+c(t)$，$\dd_i c(t)=0$；而一切几何量都由 $\sigma$ 的\emph{导数}构成，
+漂移逐项相消。
+
+\begin{theorem}[局域几何与宇宙时无关]\label{thm:cov}
+对任意两个宇宙时刻 $t,t'$：
+\[
+\sigma_i,\quad \Gamma^a{}_{bc},\quad R^a{}_{bce},\quad R_{be},\quad \Defm_{ij},
+\quad e^{2\sigma}R
+\]
+逐一相等。
+\leanline{Covariance.CosmicHistory.no\_local\_expansion}
+\end{theorem}
+
+\begin{corollary}[场方程形式不变]\label{thm:covfield}
+若 $e^{2\sigma}R=\kappa\rho$ 在某一时刻成立，则它在\emph{每一}时刻以相同的 $\kappa$
+与相同的局域 $\rho$ 成立。全局耗散不重整化局域引力，局域广义协变性严格保持。
+\leanline{Covariance.CosmicHistory.field\_equation\_form\_invariant}
+\end{corollary}
+
+物理结论：\textbf{束缚系统不膨胀，这是定理而非假设}。膨胀不是空间对物质施加的局域力；
+它只在比较\emph{两个不同基准}时才可见——而这恰恰就是一次宇宙学红移测量所做的事。
+
+\section{奇点只是极小的尺度}\label{sec:sing}
+
+A2 把标度写成 $s\in A^{\times}$，即\emph{单位群}的元素。这不是技术选择：
+一个度量单位必须是可以拿来做除法的东西。后果是结构性的。
+
+\begin{theorem}[无度规退化]\label{thm:sing}
+$s\ne 0$ 处处成立；$\varepsilon=1/s\ne 0$ 处处成立；共形因子 $s^2$ 处处可逆。
+\leanline{Singularity.ScaleField.scale\_ne\_zero, energy\_ne\_zero,
+conformal\_factor\_isUnit}
+\end{theorem}
+
+\begin{theorem}[曲率只看标度的变化，不看标度的值]\label{thm:singcurv}
+若两个标度场的一阶、二阶导数相同，则其 Riemann 张量相同，无论二者的标度相差多少。
+\leanline{Singularity.curvature\_indep\_of\_scale\_value}
+\end{theorem}
+
+由主定理 \ref{thm:master}，Riemann 张量是 $\sigma$ 导数的\emph{多项式}，$s$ 根本不出现。
+因此\textbf{标度变小本身不产生任何曲率发散}。广义相对论所报告的奇点，
+在此框架下是 $\sigma\to$ 极负的区域：尺度极小、能标极高，但二者都有限且都可逆。
+理论在那里并不失语。
+
+这与"奇点是数学奇点"的图景相反，而与本纲领的物理直觉一致：
+奇点是一个尺寸极小的点，不是一个洞。
+
+\section{可检验的预言}\label{sec:pred}
+
+\subsection{耗散指数与暗能量状态方程}
+
+把 A6 从 $\dot\varepsilon=-\lambda\varepsilon$ 推广为幂律 $\dot\varepsilon=-\lambda\varepsilon^{q}$。
+由 $a=1/\varepsilon$ 得 $H=\lambda a^{1-q}$，故 $\rho\propto H^2\propto a^{2(1-q)}$；
+与连续性方程 $\rho\propto a^{-3(1+w)}$ 比较指数，得到
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\[
+\boxed{\;w=\frac{2q-5}{3}\;}
+\qquad\Longleftrightarrow\qquad
+\boxed{\;q=\frac{3w+5}{2}\;}
+\]
+\end{mdframed}
+
+\begin{theorem}[加速判据与状态方程]\label{thm:eos}
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item $2\dot\varepsilon^{\,2}-\varepsilon\ddot\varepsilon=\lambda^2\varepsilon^{2q}(2-q)$，
+      故 $\ddot a>0 \iff q<2$。\lean{Predictions.powerlaw\_accel\_numerator,
+      accelerates\_iff}
+\item $w=-1 \iff q=1$（预言是尖锐的，不是通有的）。
+      \lean{Predictions.eos\_eq\_neg\_one\_iff}
+\item $w<-1/3 \iff q<2$：与 (i) 的加速判据一致。
+      \lean{Predictions.eos\_lt\_third\_iff}
+\item $w<-1$（幻影区）$\iff q<1$。\lean{Predictions.eos\_lt\_neg\_one\_iff}
+\item 反演公式是双向的：$w\mapsto q\mapsto w$ 恒等。
+      \lean{Predictions.eos\_dissipationExponent}
+\end{enumerate}
+\end{theorem}
+
+这是本框架最容易被杀死的地方，应当明说：
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{可证伪性.} 纯指数耗散（$q=1$）预言 $w=-1$ \emph{精确}成立，无任何可调参数。
+若观测确证 $w\ne-1$，则该情形被直接排除；此时理论并不崩塌，而是被数据
+\emph{测定}：由 $q=(3w+5)/2$ 读出耗散指数。例如观测给出 $w=-0.95$，
+则 $q=1.075$。\lean{Predictions.worked\_inversion}
+\end{mdframed}
+
+\subsection{代入常数：三项数值核对}
+
+以下公式由本框架给出，常数取 SI 定义值或 CODATA 值，算术由 \texttt{norm\_num} 验证。
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+量 & 本框架公式 & 计算值 & 实验值 \\
+\midrule
+$\mu$ 子寿命 & $\tau=\gamma\tau_0$ & $64.432\ \mu$s & $64.378\pm0.026\ \mu$s \\
+Pound–Rebka & $z=gh/c^2$ & $2.4551\times10^{-15}$ & $(2.46\pm0.03)\times10^{-15}$ \\
+暗能量密度 & $\rho_\Lambda=3\lambda^2/8\pi G$ & $5.845\times10^{-27}$ & $5.86\times10^{-27}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}[leftmargin=1.6em]
+\item $\mu$ 子：CERN 储存环 $\gamma=29.327$、$\tau_0=2.19703\,\mu$s，
+      由定理 \ref{thm:lifetime} 得 $\tau=64.432\,\mu$s，与测量符合到 $10^{-3}$。
+      \lean{Predictions.muon\_matches\_experiment}
+\item Pound–Rebka：由定理 \ref{thm:redshift} 的 $\varepsilon=e^{\Phi}$ 一阶展开，
+      $h=22.5$ m 处 $z=2.4551\times10^{-15}$。
+      \lean{Predictions.poundRebka\_value}
+\item 暗能量：由定理 \ref{thm:desitter}，$\lambda$ 即渐近 Hubble 率
+      $H_\infty=H_0\sqrt{\Omega_\Lambda}\approx1.8077\times10^{-18}\,$s$^{-1}$，
+      代入 $\rho_\Lambda=3\lambda^2/8\pi G$ 得 $5.845\times10^{-27}$ kg/m$^3$。
+      \lean{Predictions.darkEnergyDensity\_value}
+\end{itemize}
+
+需要说明：前两项是\emph{核对}而非新预言（框架落在已知物理的正确数值上）；
+第三项在 $\lambda\leftrightarrow H_\infty$ 的识别下带有一定循环性，
+其真正的预言内容是 $w=-1$ 这一\emph{形状}，而非该数值本身。
+
+\section{粒子：不用场的产生机制}\label{sec:defect}
+
+量子场论用背景上的场的量子化产生粒子：粒子是激发，荷是表示标签，
+质量是拉氏量的参数。这些在本框架中一样都没有。与其模仿，不如照标度图景直说。
+
+若 A5 的连续标度对称性破缺到离散子群——标度只在模 $\Delta$ 的意义下有物理——
+则对数标度不是实值场而是\textbf{圆值}场。绕任一点的闭合回路一周，
+标度必须回到\emph{模 $\Delta$ 的}自身，因而未必精确回到自身；
+其偏差是 $\Delta$ 的整数倍。
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{那个整数就是粒子。} 粒子是\emph{度量单位中的缺陷}：
+一处局域标度无法被梳理平整的地方。
+\end{mdframed}
+
+\begin{theorem}[荷是整数，且唯一确定]\label{thm:winding}
+配置唯一决定其绕数；没有重新指派的自由。
+荷之为整数，不是因为选定了某个表示，而是因为回路要么闭合、
+要么差整数个周期。孤立的分数荷因此不可能出现。
+\leanline{Defect.ScaleDefect.winding\_unique}
+\end{theorem}
+
+\begin{theorem}[粒子稳定]\label{thm:stable}
+绕数非零的缺陷不是平凡配置：标度绕它确实不闭合。
+稳定性是\emph{拓扑}的，证明中未使用任何关于力或势的假设。
+\leanline{Defect.ScaleDefect.stable\_of\_winding\_ne\_zero,
+winding\_eq\_zero\_of\_trivial}
+\end{theorem}
+
+\begin{theorem}[荷守恒；不能单独产生]\label{thm:pair}
+绕数可加；粒子与其反粒子的总绕数为零，故可以从真空成对产生，
+而单个缺陷不能。
+\leanline{Defect.ScaleDefect.pair\_winding\_zero}
+\end{theorem}
+
+\begin{theorem}[反粒子质量严格相等]\label{thm:anti}
+电荷共轭即取向反转，$|k|$ 不变，故
+$m_{-k}=m_{k}$。这一简并不是作为对称性原理被强加的，
+而是荷为绕数的推论。
+\leanline{Defect.ScaleDefect.antiparticle\_same\_mass}
+\end{theorem}
+
+\begin{theorem}[几何质量塔——\emph{基于一条被假设的质量律}]\label{thm:spectrum}
+\textbf{注意：} 此律是\emph{假设}而非导出，见第 \ref{sec:audit} 节的撤回。
+若假定质量即逆标度且缺陷的荷每增加一就跨一个周期，则
+\[
+m_k=m_0e^{|k|\Delta},\qquad
+\frac{m_{k+1}}{m_k}=e^{\Delta}\ \text{在每一层都相同}.
+\]
+\leanline{Defect.ScaleDefect.mass\_ratio\_geometric,
+mass\_ratio\_const, mass\_zero}
+\end{theorem}
+
+\paragraph{与标准模型的差别，即可测试之处。}
+这不重现标准模型，也不打算重现。它是一套不同的机制，具有不同的特征：
+\emph{恒定的质量比}、\emph{向上无界的塔}、\emph{严格整数的荷}、
+以及\emph{粒子—反粒子质量精确简并}。这四条是应当被检验的东西。
+
+必须明说：\textbf{本节不给出规范群，不给出代结构，不产生任何具体粒子的数值}。
+它给出的是一条不同于 QFT 的产生机制及其可证伪的形状。
+
+\section{禁闭，以及电荷为何成三分之一}\label{sec:color}
+
+第 \ref{sec:defect} 节只给了缺陷一个整数：标度绕它的绕数。那是不完整的。
+若缺陷位于一个\emph{简并块}中——一组携带相同局域单位的方向——
+则绕它一周时，标度不仅会平移，\emph{块内标号也可能被置换}，
+因为块内的标号本来就不是物理的（定理 \ref{thm:multiplet}）。
+
+所以缺陷的单值性数据是一\emph{对}：一个绕数\textbf{和}一个块置换。
+这里没有从规范理论抄任何东西；置换是被"简并块没有优先标号"这一事实\emph{逼出来}的。
+
+以下全部来自一个问题：这样的位形何时是整体自洽的——标号在绕行一周后是否闭合。
+
+\begin{theorem}[禁闭]\label{thm:confine}
+其单值性真正置换了块的缺陷，\textbf{不可能单独存在}。
+这不是"力随距离增长"，而是孤立位形根本不是单值的，
+因而那里并没有一个东西可供分离。
+\leanline{Color.BlockMonodromy.confinement}
+\end{theorem}
+
+\begin{theorem}[束缚态大小即块大小]\label{thm:baryon}
+$k$ 个拷贝闭合当且仅当 $\pi^k=1$。对一个把大小为 $n$ 的块循环一次的缺陷，
+最小自洽的组分数恰为 $n$。\textbf{重子数就是块大小}，不是额外的量子数。
+\leanline{Color.BlockMonodromy.bound\_state\_size}
+\end{theorem}
+
+\begin{theorem}[介子无需解释；不存在部分强子]\label{thm:meson}
+缺陷与其反缺陷总是闭合，对 $n$ 无任何条件；
+而少于 $n$ 个组分\emph{永不}闭合。
+取 $n=3$：一个组分不可观测，两个不可观测，三个可观测。
+"没有双夸克强子"不是一条附加规则。
+\leanline{Color.BlockMonodromy.pair\_observable,
+Color.BlockMonodromy.no\_partial\_state}
+\end{theorem}
+
+\begin{theorem}[电荷成 $1/n$]\label{thm:third}
+束缚态电荷是单个组分的 $n$ 倍：
+\[
+Q(\text{束缚态}) = n\cdot Q(\text{组分}),\qquad
+Q(\text{组分}) = \tfrac{1}{n}\,Q(\text{束缚态}).
+\]
+可观测态的电荷必为整数（它是可观测态的电荷），故组分电荷落在 $\tfrac1n\mathbb{Z}$ 中。
+\leanline{Color.BlockMonodromy.constituent\_charge\_fraction,
+constituent\_charge\_rat, bound\_charge\_divisible}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+取 $n=3$ 即观测到的花样：每个束缚态三个组分、单个组分不可观测、电荷成三分之一。
+\textbf{框架并没有把 3 放进去}——它放进去的是"一个大小为 $n$ 的简并块"，
+取出来的是"$n$ 个组分"与"$1/n$ 电荷"。
+\end{mdframed}
+
+必须明说：\textbf{自然界为何选了 $n=3$，本文没有导出}。
+那需要把标度花样本身导出来。
+
+\section{强相互作用：从无到有的一个标度}\label{sec:qcd}
+
+A5 说没有任何标度被优待，理论完全无量纲。但强相互作用显然\emph{有}标度——
+强子有确定的质量。若本框架无法交代这一点，它恰恰在标度物理最难的地方失败。
+
+它交代得了，而机制正是标准模型中唯一纯粹关于标度的现象：
+\textbf{量纲嬗变（dimensional transmutation）}。一个纯数耦合，
+在 A5 的基准流下跑动，会分泌出一个公理中根本不存在的不变标度 $\Lambda$。
+\textbf{标度不变性不是被强行破坏的，而是被一个标度协变方程的\emph{解}破坏的}——
+在一个没有任何有量纲参数可供破缺的理论里，这是唯一可能的破缺方式。
+
+由单圈跑动 $dg/dt=-bg^3$（$b>0$）出发：
+
+\begin{theorem}[跑动的精确解]\label{thm:running}
+$g^{-2}(t)=g^{-2}(0)+2bt$。未用任何微扰展开；对给定流该式精确。
+\leanline{QCD.running\_inv\_sq}
+\end{theorem}
+
+\begin{theorem}[渐近自由]\label{thm:asympt}
+$g\to0$ 当 $t\to\infty$：强扇区在标度极小处变得自由。
+由 A3，小标度即高能，这正是所要求的行为。
+\leanline{QCD.asymptotic\_freedom}
+\end{theorem}
+
+\begin{theorem}[量纲嬗变]\label{thm:transmut}
+\[
+\Lambda \;=\; \exp\!\Bigl(t-\frac{g^{-2}(t)}{2b}\Bigr)
+\]
+沿流\textbf{恒定}。一个仅以纯数为输入的理论产生了一个标度，
+而由 A5，任何基准选择都无法移动它。
+\leanline{QCD.lambda\_invariant, QCD.lambda\_pos}
+\end{theorem}
+
+\subsection{对谱的推论与检验}
+
+$\Lambda$ 是强扇区唯一的标度。由 A3，质量即逆标度，故每个强子质量必是
+纯数乘 $\Lambda$。
+
+\begin{theorem}[质量比无自由参数]\label{thm:massratio}
+任意两个强子质量之比是两个纯数之比，与 $\Lambda$ 无关，
+因而与理论的一切输入无关。
+\leanline{QCD.hadron\_mass\_ratio, QCD.spectrum\_rigid}
+\end{theorem}
+
+这是本框架对强扇区最尖锐的预言，也正是\textbf{胶球}是检验它的正确场所的原因：
+胶球质量不含任何夸克质量，$\Lambda$ 确实是唯一在场的标度。
+
+\subsection{与格点数据的正面对撞：一个失败}
+
+淬火格点 QCD 给出（MeV）：$0^{++}\approx1710$、$2^{++}\approx2390$、
+$0^{-+}\approx2560$。第 \ref{sec:defect} 节的缺陷机制预言\emph{等比}塔，
+即相邻质量比相等。检验：
+
+\[
+\frac{2390}{1710}=1.398,\qquad \frac{2560}{2390}=1.071 .
+\]
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\begin{theorem}[最简等比塔被证伪]\label{thm:towerfail}
+两个相邻比值之差大于 $0.3$。
+\textbf{横跨全部胶球态的单一等比塔被格点数据排除。}
+\leanline{QCD.geometric\_tower\_fails, ratio$_1$\_value, ratio$_2$\_value}
+\end{theorem}
+\end{mdframed}
+
+这否定的是定理 \ref{thm:spectrum} 所基于的\emph{质量律假设}（见第 \ref{sec:audit} 节），而非缺陷图景或框架本身。我们如实记录，并已把结论削弱到它应有的强度。
+幸存下来的是两条较弱但仍可检验的陈述：
+（i）塔可能只存在于\emph{固定} $J^{PC}$ 通道\emph{之内}；
+（ii）定理 \ref{thm:massratio} 的无参数比值陈述完全未受影响。
+
+作为待计算的目标：取 $\Lambda\approx332$ MeV，最轻胶球位于
+$m/\Lambda\approx5.15$——一个本框架最终必须\emph{算出}而非拟合的纯数。
+\leanline{QCD.lightestGlueballInLambda\_value}
+
+\section{内禀对称性无处可去}\label{sec:gauge}
+
+规范理论挑一个李群、在每点挂一个内禀空间、让联络作用其上。
+正是这份自由，使标准模型的群成为输入：形式体系本身不指定任何群。
+
+本框架\emph{没有}这份自由，而这恰恰是有意思的地方。
+\textbf{这里没有内禀空间。} 一点上唯一的结构是方向性标度 $s:\mathrm{Fin}\,n\to A^{\times}$。
+因此，一个不是基底运动的对称性，只能是\emph{标度花样}的对称性——
+一个使每个局域单位保持原样的方向重标号。
+
+\begin{theorem}[内禀对称性即标度花样的稳定子]\label{thm:stab}
+这些重标号构成一个群，其中没有任何选择余地。特别地：
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item 若各方向标度\emph{互不相同}，则内禀对称性\textbf{不存在}；
+      规范自由不是通有的，它是简并的后果。
+\item 若全部相同（各向同性扇区，即旧标量公理），则对称性是全置换群。
+\end{enumerate}
+\leanline{Gauge.stabilizer\_eq\_bot\_of\_injective,
+Gauge.stabilizer\_eq\_top\_of\_isotropic}
+\end{theorem}
+
+\begin{theorem}[多重态就是简并块]\label{thm:multiplet}
+两个方向被某个内禀对称性联系，当且仅当它们携带相同的局域单位。
+故\textbf{规范结构与多重态结构同源}：都来自方向性标度之间的重合花样，
+而多重态的大小就是简并块的大小。
+\leanline{Gauge.sameOrbit\_iff\_eq\_scale, Gauge.internal\_symmetry\_determined}
+\end{theorem}
+
+这给出的是一条\emph{限制}，而非对 $SU(3)\times SU(2)\times U(1)$ 的推导：
+框架断言内禀对称性\textbf{必须}是某个标度简并的稳定子，
+故规范因子一块一个、多重态大小即块大小；
+一个作用在与标度花样无关的内禀空间上的群，在这里\emph{不可用}。
+这是关于"何种规范理论可以存在"的可证伪的结构性断言。
+
+必须明说：\textbf{本节不断言观测到的花样是 $3+2+1$，也不解释代结构}。
+那需要把标度花样本身导出来，而它没有被导出。
+
+\section{跑动不需要圈图}\label{sec:running}
+
+第 \ref{sec:qcd} 节假设了 $dg/dt=-bg^3$ 并从规范理论取来 $b$。
+这是本文最后一处大的借用，值得问一句：框架非借不可吗？
+
+不必。放下"跑动来自求和图"的成见，问耦合在这里\emph{是什么}。
+处于对数标度 $t$ 的探针有一个分辨率；它响应它能分辨的缺陷，
+而由第 \ref{sec:defect} 节，那些是带确定对数标度的\emph{离散}对象。
+所以累积响应是一个\textbf{计数}。
+
+再加上 A5：标度协变的世界没有优待的对数标度，故缺陷不能在任何地方聚集——
+它们\emph{每单位对数标度的密度是常数}。常密度在 $[t_0,t]$ 上积分即线性。于是
+\[
+g^{-2}(t)=g^{-2}(t_0)+\kappa\rho\,(t-t_0),
+\]
+这\emph{正是}单圈形式，其中 $b=\kappa\rho/2$。
+
+\begin{theorem}[计数给出线性跑动]\label{thm:counting}
+累积响应在对数标度上的斜率恒为 $\kappa\rho$；该式与单圈解形式相同，
+系数被认成"每单位对数标度的缺陷密度 $\times$ 单缺陷响应"。
+\leanline{Running.hasDerivAt\_invSqCoupling, Running.invSqCoupling\_eq\_one\_loop}
+\end{theorem}
+
+\begin{theorem}[渐近自由 $\iff$ 正的缺陷密度]\label{thm:afdensity}
+响应在高对数标度处趋零，当且仅当可分辨的缺陷密度为正。
+\textbf{分辨出越多结构，响应被稀释得越厉害}——这就是渐近自由在本框架下的物理内容，
+陈述与证明中都没有出现规范群、没有 $11N_c-2N_f$、也没有任何图。
+\leanline{Running.asympt\_free\_iff\_pos\_density}
+\end{theorem}
+
+\textbf{线性对数跑动是标度不变的缺陷密度的推论，不是单圈图的推论。}
+借来的系数由此变成一个缺陷密度——一个计数，而 $11N_c-2N_f$ 本来也是一个计数。
+仍未导出的是密度的\emph{数值}。
+
+\section{自我审查：已发现的思维污染}\label{sec:audit}
+
+本节是对整个体系的一次不设辩护的复查，按"基础建构"与"目标问题"两条线。
+发现的问题分三类：\textbf{已修复}、\textbf{须撤回}、\textbf{仍存在}。
+第三类未被修复，只被登记。
+
+\subsection{须撤回：质量塔曾被当作结论，其实是假设}
+
+第 \ref{sec:defect} 节写下 $m_k=m_0e^{|k|\Delta}$，并说它由 A3
+（质量即逆标度）加"每单位绕数跨一个周期"得出。第 \ref{sec:qcd} 节据此检验格点胶球比值，
+报告\textbf{被证伪}。
+
+复查发现\emph{证伪打错了靶}。框架真正确立的关于缺陷的性质是\textbf{拓扑}的：
+绕数是整数、可加、不能连续改变、$|k|$ 在取向反转下不变。
+而质量律额外需要的是\textbf{动力学}的：绕数为 $k$ 的缺陷使标度场应变多少——
+本文\emph{没有任何定理}涉及这件事。
+
+\begin{theorem}[拓扑不决定质量律]\label{thm:massgap}
+存在两个真正不同的质量律——指数塔与二次律——
+\textbf{都}满足关于绕数已证明的全部性质（正性、$k=0$ 处归一、取向反转不变）。
+\leanline{MassAudit.mass\_law\_underdetermined,
+MassAudit.both\_laws\_antiparticle\_degenerate}
+\end{theorem}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{撤回.} 几何质量塔从\emph{预言}降格为\emph{假设}。
+定理 \ref{thm:towerfail} 的胶球检验因此否定的是\textbf{那个假设}，
+不是缺陷图景、也不是框架——这比上一版报告的结论\emph{弱}得多，
+本节存在的目的就是让较弱的那个成为记录在案的版本。
+
+\emph{幸存者}：粒子—反粒子质量简并（只依赖 $|k|$，定理 \ref{thm:anti}）；
+无参数质量比（不用任何质量律，定理 \ref{thm:massratio}）。
+\end{mdframed}
+
+\subsection{已修复：光是标度盲的，红移却要靠光}
+
+第 \ref{sec:light} 节证明类光锥\textbf{标度盲}；
+第 \ref{sec:cov} 节证明宇宙漂移\textbf{局域完全不可观测}。
+那么膨胀究竟怎么被看见？答案本应是红移——由光携带。
+但光若对标度是盲的，它就无法携带标度的记录。
+
+两条都已被证明，故都为真，"矛盾"意味着有东西被混同了。确实有。
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{类光矢量没有长度，但有能量——而能量不是矢量的属性。}
+它是矢量与\emph{观察者}的配对，而观察者由物质构成，
+物质按定理 \ref{thm:massive} 确实携带标度。
+\end{mdframed}
+
+\begin{theorem}[红移属于观察者，不属于光]\label{thm:redshiftobs}
+类光方向可以携带非零能量；且两个局域单位为 $u_1,u_2$ 的观察者
+对\emph{同一}类光方向给出的能量之比是 $(u_1/u_2)^2$——
+光对这个比值没有贡献，全部来自两个局域单位之差。
+\leanline{Observation.null\_has\_energy, Observation.redshift\_is\_scale\_ratio}
+\end{theorem}
+
+这同时化解了第二处张力：A5 说全局基准平移不可观测，A6 说宇宙耗散。
+红移测量并不是对漂移的局域测量，而是比较\emph{发射时}与\emph{吸收时}的标度——
+那是一个标度\emph{差}，正是 A5 判为物理的量。
+\textbf{宇宙学观测到的恰好是公理允许的那个量，不多不少。}
+\leanline{Observation.redshift\_fiducial\_invariant}
+
+\subsection{仍存在：未修复的污染，逐条登记}
+
+\begin{enumerate}[leftmargin=1.8em]
+\item \textbf{$\kron$ 是被公设的平直度规，而且在干实活。}
+      A1 说 Kronecker 记账"不携带物理"，但它在 $\Gamma$ 中升降指标、
+      定义给出 Ricci 的缩并。于是"曲率不是额外结构"这句话
+      带有一定循环性：一个平直度规已经被放进去了。
+      第 \ref{sec:conn} 节的对易子路线不依赖 $\kron$，
+      但第 \ref{sec:geom} 节的显式曲率公式依赖。
+\item \textbf{"方向"和维数 $n$ 是给定的，不是导出的。}
+      "$n$ 个两两交换的导子"预设了一个 $n$ 维带坐标的流形。
+      在一个只有标度的理论里，"方向"本应由标度\emph{定义}
+      （例如作为标度比较的等价类），而不是先验给出。
+      第 \ref{sec:gauge} 节的规范结论依赖于"块"，而块是方向的子集，
+      故这一条污染向下传播。
+\item \textbf{号差 $\eta$ 是输入。} 为什么是 $(-,+,+,+)$，没有回答。
+\item \textbf{$a=1/\varepsilon$ 是识别，不是导出。} 把宇宙学标度因子
+      认成逆能标是一个物理假设；de Sitter 的数学（定理 \ref{thm:desitter}）
+      本身无懈可击，但它依赖这个识别。
+\item \textbf{暗物质定理偏弱。} 定理 \ref{thm:dm} 的实质接近
+      "任给阈值都存在低于它的东西"。它证明的是\emph{相容性}
+      （引力可见与探测不可见可以并存），不是\emph{解释}。
+      不应把它读作对暗物质的推导。
+\item \textbf{缺陷密度、标度花样、$n=3$} 仍是输入。
+\end{enumerate}
+
+\subsection{审查方法本身}
+
+值得记录的是，本轮两处最有价值的修正都来自同一个动作：
+\textbf{发现被借走的是"问题"而不是"答案"}。
+"要不要无挠条件"预设了标架与联络是独立场；
+"该选哪个规范群"预设了存在一个内禀空间。
+换掉问句，答案自己就出来了（第 \ref{sec:transport}、\ref{sec:gauge} 节）。
+本节登记的六条"仍存在"，很可能也各自藏着一个同类的问句。
+
+\section{范围声明：什么被证明了，什么没有}\label{sec:scope}
+
+这是本文最重要的一节。Lean 验证的是\emph{蕴含关系}，不是自然界的真值。
+
+\paragraph{已被机器证明（从公理出发，零 \texttt{sorry}）。}
+定理 \ref{thm:adleib}、\ref{thm:adjac}、\ref{thm:adpow}、\ref{thm:robertson}、
+\ref{thm:heisenberg}、\ref{thm:master}、\ref{thm:ric}、\ref{thm:rsc}、\ref{cor:flat}、
+\ref{thm:weyl}、\ref{thm:fiducial}、\ref{thm:redshift}、\ref{thm:linear}、
+\ref{thm:poisson}、\ref{thm:dual}、\ref{thm:cs}、\ref{thm:eft}、\ref{thm:lifetime}、
+\ref{thm:detfail}、\ref{thm:dm}、\ref{thm:diss}、\ref{thm:desitter}、
+\ref{thm:h}、\ref{thm:arrow}、\ref{thm:null}、\ref{thm:massive}、
+\ref{thm:cov}、\ref{thm:covfield}、\ref{thm:sing}、\ref{thm:singcurv}、
+\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
+
+\paragraph{尚未完成——本纲领当前最薄弱之处。}
+这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{标准模型未被回归}。第 \ref{sec:gauge} 节证明内禀对称性只能是
+      标度花样的稳定子，第 \ref{sec:color} 节由块单值性导出了禁闭、
+      束缚态大小 $=n$、以及 $1/n$ 电荷——取 $n=3$ 即观测到的花样。
+      但\emph{未}导出标度花样本身，因而 $n=3$ 是输入不是结论，
+      也没有 $SU(3)\times SU(2)\times U(1)$ 的具体李群结构、
+      没有代结构、没有 Higgs 机制、没有电弱混合角。第 \ref{sec:defect} 节给出的是
+      一条\emph{不同于} QFT 的粒子产生机制（标度缺陷、绕数即荷）
+      及其可证伪的形状，但不产生任何具体粒子的数值。
+\item \textbf{量子场论未被回归}。第 \ref{sec:nc} 节回归的是量子\emph{力学}
+      （对易子、幂律、不确定性），第 \ref{sec:deform} 节回归的是经典极限。
+      场的二次量子化、路径积分、规范不变性、圈图重整化，均未涉及。
+      第 \ref{sec:rg} 节的“重整化群”只是标度流的群律与幂律解，
+      不是 QFT 意义下的圈计算。
+\item \textbf{定量引力效应仍未导出}。第 \ref{sec:transport} 节证明了输运由标度花样
+      唯一定出（非简并时），故无需无挠条件——那一环已经闭合。
+      但\emph{未}对具体的 Schwarzschild 型花样做逐分量曲率计算，
+      因而光线偏折、近日点进动、引力波的\emph{数值}仍未给出。
+      缺口已从"缺一个结构方程"变为"缺一次具体计算"。
+\item \textbf{交叉积未完整构造}。第 \ref{sec:exact} 节已把"一阶"限制取消
+      （对易子有精确闭形式），但只做到位移与乘法生成的算符代数：
+      完整交叉积、其表示论、以及 $\hbar$ 数值与具体步长的对应，均未做。
+\item \textbf{强扇区只到结构层面}。第 \ref{sec:qcd} 节证明了量纲嬗变、
+      渐近自由与无参数质量比，但\emph{未}计算任何强子质量的纯数
+      （那需要格点或解析求解）。单圈 $\beta$ 函数是输入而非导出。
+      定理 \ref{thm:towerfail} 已经证伪了最简版本的粒子塔。
+      第 \ref{sec:beta} 节把借来的 $\beta$ 系数缩小为"活跃内容的一个泛函"，
+      第 \ref{sec:running} 节进一步把它换成"缺陷密度"并导出了线性形式与
+      渐近自由的判据；仍未导出的是密度的\emph{数值}。
+\end{itemize}
+
+\paragraph{属于物理输入而非定理（续）。}
+
+\paragraph{属于物理输入而非定理。}
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{A6$'$ 标度响应律}（$e^{2\sigma}R=\kappa\rho$）。本文\emph{未}从更基本的
+      原理导出它；它扮演 Einstein 方程的角色。所证明的是：一旦接受它，
+      Newton 极限被强制。$\kappa=16\pi G$ 是外部标定。
+\item \textbf{Lorentz 号差}。第 \ref{thm:null} 节的类光结构以号差 $\eta$ 为给定输入，
+      未从标度结构导出为何号差是 $(-,+,+,+)$。
+\item \textbf{耗散率 $\lambda$ 的取值}。定理 \ref{thm:desitter} 证明耗散蕴含加速膨胀，
+      但 $\lambda$ 的数值（即 $\Lambda$ 的大小）不是本理论的预言。
+\item \textbf{暗物质的具体候选}。定理 \ref{thm:dm} 证明“引力可见 $+$ 探测不可见”
+      在标度层级下是相容的，并给出构造；它\emph{不}预言具体的粒子谱或截面数值。
+\item \textbf{重子不对称度}。仅证明 Sakharov 第三条件结构性满足，
+      未导出 $\eta_B$ 的量级。
+\item \textbf{胶球等强耦合谱}。本文未涉及 QCD 谱的计算；
+      引言所述的实验进展是启发，不构成本文的证据链条。
+\end{itemize}
+
+\paragraph{形式化的技术边界。}
+基底采用代数化的“标度代数”而非光滑流形上的解析结构。这使全部曲率恒等式
+成为任意交换环上的代数恒等式（更强、更干净），但也意味着我们\emph{没有}
+形式化测地线方程、整体解的存在性、或 Cauchy 问题。
+“类光测地线的共形不变性”本文只证明了其代数内核——类光锥的标度无关性
+（定理 \ref{thm:null}），未证明参数化曲线层面的完整陈述。
+
+\section{形式化与验证}
+
+\subsection{规模}
+
+\begin{center}
+\begin{tabular}{lrl}
+\toprule
+文件 & 定理数 & 内容 \\
+\midrule
+\texttt{Basic.lean}       & 16 & 标度代数、Kronecker 收缩原语 \\
+\texttt{Conformal.lean}   & 20 & 主定理、Ricci、标量曲率、平坦性、Weyl 可积性 \\
+\texttt{Axioms.lean}      & 16 & A2/A3/A5、红移、基准协变性 \\
+\texttt{Quantum.lean}     & 10 & 非交换基底、对易子即导数、Heisenberg 不确定性 \\
+\texttt{Newton.lean}      &  9 & 线性化、Poisson、对偶数模型 \\
+\texttt{Covariance.lean}  &  8 & 耗散下的局域协变性、束缚系统不膨胀 \\
+\texttt{Singularity.lean} &  6 & 无度规退化、曲率与标度值无关 \\
+\texttt{RG.lean}          & 13 & 标度流、Callan–Symanzik、EFT 塔、$\beta$ 的形状 \\
+\texttt{Particles.lean}   &  9 & 标度比、寿命、阈值 \\
+\texttt{DarkMatter.lean}  &  4 & 探测失效、暗物质构造 \\
+\texttt{DarkEnergy.lean}  &  8 & 耗散唯一性、de Sitter、加速 \\
+\texttt{Entropy.lean}     & 10 & H 定理、不可逆性、非平衡 \\
+\texttt{Light.lean}       &  6 & 类光锥标度无关、标度可测性 \\
+\texttt{Predictions.lean} & 18 & $w(q)$ 状态方程、数值核对 \\
+\texttt{Frame.lean}       &  6 & A4$'$ 方向性标度、旧公理禁止 Schwarzschild \\
+\texttt{Deformation.lean} & 11 & 一阶形变、对应原理、CCR \\
+\texttt{Defect.lean}      & 13 & 标度缺陷、绕数即荷、反粒子简并、质量塔 \\
+\texttt{Unify.lean}       &  8 & 公理相容性：A4 是 A4$'$ 的各向同性轨迹 \\
+\texttt{QCD.lean}         & 11 & 渐近自由、量纲嬗变、胶球比值检验 \\
+\texttt{Connection.lean}  & 16 & 曲率即对易子、Bianchi、标度/转动拆分 \\
+\texttt{Crossed.lean}     & 12 & 精确非交换：位置与标度不对易、扭曲 Leibniz \\
+\texttt{Gauge.lean}       &  8 & 内禀对称性即标度花样稳定子、多重态即简并块 \\
+\texttt{Running.lean}     &  7 & 由计数导出线性跑动、渐近自由判据 \\
+\texttt{Transport.lean}   &  6 & 输运由标度花样定出；规范自由即简并 \\
+\texttt{Color.lean}       & 17 & 块单值性：禁闭、束缚态大小、$1/n$ 电荷 \\
+\texttt{Observation.lean} &  5 & 审查：红移属于观察者而非光 \\
+\texttt{MassAudit.lean}   & 10 & 审查：拓扑不决定质量律（撤回） \\
+\midrule
+\textbf{合计}             & \textbf{280} & 4645 行 Lean 代码 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{公理审计}
+
+对 128 条主定理执行 \texttt{\#print axioms}，结果全部落在
+\[
+\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
+\]
+之内——这是 Lean 中经典数学的三条标准逻辑公理。
+\textbf{无一条定理依赖 \texttt{sorryAx}}，即全部证明完整闭合。
+
+需要强调：\texttt{ScaleAlgebra}、\texttt{ScaleField} 以及各条物理假设
+\emph{不是} Lean 的 \texttt{axiom} 声明，而是类型类、结构与显式假设。
+它们出现在定理的\emph{陈述}中，因而无法被隐藏在证明背后。
+本开发中不存在“先把物理结论声明为公理、再宣称已证明”的情形。
+
+\subsection{复现}
+
+\begin{verbatim}
+    lake exe cache get
+    lake build
+    lake env lean ScaleUniverse/Verify.lean   # 公理审计
+\end{verbatim}
+
+\section{结语}
+
+若把标度而非时空当作基本量，则：曲率是标度形变的线性函数（定理 \ref{thm:master}）；
+无量纲性是一条可证的对称性（定理 \ref{thm:fiducial}）；
+重整化群是该对称性在物质部门的影子；
+Newton 引力是标度响应律的线性化；
+暗物质是标度失配下的观测失效；
+暗能量是开放系统的耗散率；
+时间箭头是有限分辨率的必然产物；
+而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
+
+这些不是隐喻。它们是 280 条经机器检验、零 \texttt{sorry} 的定理。
+它们成立的前提是本文列出的六条公理与第 \ref{sec:scope} 节明示的物理输入；
+这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
+能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}
+
+\end{document}
