@@ -33,13 +33,18 @@ the abelianization and the commutator channel is its kernel, so neither
 constrains the other.  A cross-sector test would need them to constrain each
 other, and the axioms guarantee they do not.
 
-**So the honest statement of the framework's weakness changes.**  It is not
-"has not yet derived the Standard Model".  It is: **the three channels are too
-independent to be jointly predictive.**  Gravity, `ħ` and particle content being
-"three readings of one variable" is true, and it is also why they cannot check
-each other.  Any future progress has to come from a *coupling between channels*
-that the present axioms do not contain — which is a much more specific thing to
-look for than "unification".
+**SUPERSEDED IN PART — see `Coupling.lean`.**  The independence proved below is
+real, but it is independence of the *scalar* scale channel: `Foundation.scale`
+is the abelianization, and that construction rests on "ratios commute", which is
+a statement about a scalar scale.  A4 gives one scale **per direction**, and
+`Coupling.lean` shows that scalings along different directions bracket into a
+rotation — so the rotation sector is *generated* by the scale sector and the
+channels are coupled after all.
+
+That is the same scalar-for-directional substitution corrected in `Frame.lean`
+and `Axis.lean`, appearing a third time.  The theorems below stand as
+statements about the scalar sector; the conclusion drawn from them about the
+framework does not.
 -/
 import ScaleUniverse.Foundation
 import Mathlib.Data.Real.Basic

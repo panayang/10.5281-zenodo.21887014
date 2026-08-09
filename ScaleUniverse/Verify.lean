@@ -396,6 +396,31 @@ namespace ScaleUniverse.Verify
 #print axioms ScaleUniverse.Expressive.channels_independent
 #print axioms ScaleUniverse.Expressive.neither_channel_complete
 
+/-! ## Sector XLVI — the scale/rotation coupling, derived -/
+
+#print axioms ScaleUniverse.Coupling.bracket_scaling_scaling
+#print axioms ScaleUniverse.Coupling.bracket_rotation_scaling
+#print axioms ScaleUniverse.Coupling.bracket_rotation_rotation
+#print axioms ScaleUniverse.Coupling.coupling_structure
+#print axioms ScaleUniverse.Coupling.no_rotation_of_commuting
+#print axioms ScaleUniverse.Coupling.boost_bracket_eq_rotation
+#print axioms ScaleUniverse.Coupling.scalings_do_not_commute
+
+/-! ## Sector XLVII — dynamics from the coupling -/
+
+#print axioms ScaleUniverse.Dynamics.no_flatness_from_commuting_derivations
+#print axioms ScaleUniverse.Dynamics.nonflat_witness
+#print axioms ScaleUniverse.Dynamics.commutative_sector_transports_commute
+#print axioms ScaleUniverse.Dynamics.commutative_curvature_undetectable
+#print axioms ScaleUniverse.Dynamics.source_conserved_of_field_equation
+#print axioms ScaleUniverse.Dynamics.no_field_equation_of_nonconserved
+#print axioms ScaleUniverse.Dynamics.source_antisymm
+#print axioms ScaleUniverse.Dynamics.field_equation_content
+#print axioms ScaleUniverse.Dynamics.same_multiplet_no_rotation
+#print axioms ScaleUniverse.Dynamics.rotation_implies_different_multiplet
+#print axioms ScaleUniverse.Dynamics.larger_multiplet_fewer_generators
+#print axioms ScaleUniverse.Dynamics.multiplet_change_needs_pattern_change
+
 /-! ## Sector IX — light -/
 
 #print axioms ScaleUniverse.Light.isNull_iff_bare

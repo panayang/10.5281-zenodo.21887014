@@ -43,3 +43,5 @@ import ScaleUniverse.Emergence
 import ScaleUniverse.Spectrum
 import ScaleUniverse.CrossCheck
 import ScaleUniverse.Expressive
+import ScaleUniverse.Coupling
+import ScaleUniverse.Dynamics

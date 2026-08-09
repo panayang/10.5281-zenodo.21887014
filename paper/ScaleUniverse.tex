@@ -87,8 +87,8 @@ Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson �
 哪些是仍需外部输入的物理假设。
 
 \medskip
-\noindent\textbf{形式化规模：}438 条定理、7466 行 Lean 代码；
-231 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
+\noindent\textbf{形式化规模：}462 条定理、7974 行 Lean 代码；
+263 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
 （\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
 无 \texttt{sorryAx}。
 \end{abstract}
@@ -1573,11 +1573,16 @@ Deflection.solar\_ratio, Deflection.iso\_fails\_by\_far}
 本节把指标集去掉。而在过程中发现，A1 夹带的\emph{不止}一个维数。
 
 看 A1 到底说了什么：有 $n$ 个导子 $\dd_0,\dots,\dd_{n-1}$，它们\textbf{两两交换}。
-这里被假设的是两件事，不是一件。指标集是显眼的那件。
-隐藏的那件是\emph{交换性}，而它并不无辜：
-\textbf{相互交换的方向就是平直的坐标方向}。
-A1 假设了方向结构的平直性，然后从一个另行公设的 $\kron$ 里把曲率再引进来——
-这正是 $\kron$ 非公设不可的原因。
+这里被假设的是两件事，不是一件。指标集是显眼的那件，另一件是\emph{交换性}。
+
+\textbf{更正（见第 \ref{sec:dynamics} 节）。}我原先把那个交换性读作一个隐藏的
+\emph{平直性}假设——"相互交换的方向就是平直的坐标方向"。
+\textbf{那个解读是错的，在此撤回。}相互交换的坐标方向只是选了一张图，
+局部永远可选，与曲率无关；
+定理 \ref{thm:noflatcomm} 把导子全部杀死——它们能有的最强交换性——曲率原封不动。
+下面的定理 \ref{thm:expose} 本身成立（它带着平直前提），
+但从它得出的那个解读不成立。A1 假设的是一张图和一个指标集，
+这是真实的输入，但比我当时宣称的要小。
 
 把指标集丢掉。方向不是标签，而是比较代数的元素，输运对它是线性的。于是：
 
@@ -1602,14 +1607,12 @@ F(x,y) = [D_x,D_y] - D_{[x,y]} .
 \leanline{Direction.DirTransport.curv\_of\_abelian}
 \end{theorem}
 
-\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
-\begin{theorem}[揭穿]\label{thm:expose}
+\begin{mdframed}[linecolor=gray!60!black,linewidth=0.9pt,backgroundcolor=gray!4]
+\begin{theorem}[交换性与括号的关系]\label{thm:expose}
 对平直输运，"诸方向相互交换"（A1 的要求）\emph{等价于}"括号平凡地作用"。
 
-\textbf{A1 并非只是选了一个指标集：它假设了方向代数是交换的，
-也就是假设了方向是平直的。}
-这正是随后必须另行公设一个平直度规 $\kron$ 的原因——
-平直性已经在方向层面被手工放入，曲率只好从外面再引进来。
+注意前提：这是关于\emph{平直}输运的陈述，
+\textbf{不是}"相互交换的方向必平直"的推导。见第 \ref{sec:dynamics} 节的更正。
 \leanline{Direction.DirTransport.commute\_iff\_bracket\_acts\_trivially}
 \end{theorem}
 \end{mdframed}
@@ -1621,7 +1624,7 @@ F(x,y) = [D_x,D_y] - D_{[x,y]} .
 本节导出的是"方向\emph{是}代数元素"以及"其个数\emph{是}代数的维数"。
 它\emph{没有}导出是\emph{哪个}代数，因而不预言 $n=4$。
 输入从"$n$ 个交换标签 $+$ 平直度规 $+$ 号差"变成"一个代数"；
-这是压缩加上一个隐藏平直性假设的移除，不是维数的推导。
+这是压缩，不是维数的推导。
 \end{remark}
 
 \section{把另一半付清}\label{sec:ppn}
@@ -2316,6 +2319,171 @@ neither\_channel\_complete}
 \emph{绝对标度}或\emph{两路之间的关系}的问题，都不是它的问题。
 \end{remark}
 
+\section{耦合一直都在：两次缩放生成一次转动}\label{sec:coupling}
+
+第 \ref{sec:expressive} 节把框架的弱点诊断为"标度路与转动路按构造独立"，
+并断言进展需要一个公理不提供的\emph{通路间耦合}。
+
+那个诊断是通过分析 \texttt{Foundation.scale} 得到的，
+而它把标度取为交换化，理由是"标度是比值，比值可交换"。
+\textbf{那个理由说的是标量标度。} A4 给的不是标量标度，是\emph{每方向一个}标度。
+\textbf{而沿不同方向的缩放并不对易。}
+
+这是同一个替换错误第\textbf{三}次出现——在公理是方向性的地方用标量推理——
+前两次是第 \ref{sec:frame} 节（几何）与第 \ref{sec:axis} 节（缺陷）。
+这次它在地基上，而改正它\emph{恰好}供出了那个被说成缺失的耦合。
+
+\subsection{耦合由词义强制}
+
+缩放是纯拉伸：它改变沿其轴的长度而不转动任何东西，故作为算子是\textbf{对称}的。
+转动不改变任何长度，故是\textbf{反对称}的。于是：
+
+\begin{theorem}[两次缩放的括号是转动]\label{thm:ss}
+若 $S,T$ 对称，则 $[S,T]$ \textbf{反对称}。
+即：沿一个方向缩放后再沿另一个方向缩放，与反序执行的结果\textbf{相差一次转动}。
+没有任何东西是被选的；生成元的对称性就逼出了它。
+\leanline{Coupling.bracket\_scaling\_scaling}
+\end{theorem}
+
+\begin{theorem}[完整结构]\label{thm:cartan}
+$[S,S]\subseteq A$、$[A,S]\subseteq S$、$[A,A]\subseteq A$。
+\textbf{标度扇区不是子代数}，而它不闭合的那部分\emph{恰好落在转动扇区}。
+\leanline{Coupling.bracket\_rotation\_scaling, bracket\_rotation\_rotation,
+coupling\_structure}
+\end{theorem}
+
+\begin{theorem}[具体地，在三维中]\label{thm:concrete}
+$0$--$1$ 面与 $0$--$2$ 面上的两个方向性缩放，其括号\emph{恰好}是
+$1$--$2$ 面上的转动：$[K_1,K_2]=J$，逐分量算出，不诉诸任何群论。
+故这两个缩放\textbf{不对易}——标度扇区一旦具有方向性就不再交换。
+\leanline{Coupling.boost\_bracket\_eq\_rotation, scalings\_do\_not\_commute}
+\end{theorem}
+
+\subsection{一个方向什么也生成不了}
+
+\begin{theorem}[单方向 $\Rightarrow$ 平直]\label{thm:onedir}
+单个缩放与自身的括号为零，故不生成转动。
+\leanline{Coupling.bracket\_self, no\_rotation\_of\_commuting}
+\end{theorem}
+
+这与已证的一切自洽：定理 \ref{thm:rotpart} 说纯标度联络是平的；
+而\emph{单个}缩放方向正是没有括号可用、因而不生成转动的情形。
+定理 \ref{thm:frameflat} 是同一事实的度量侧表述。
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{一个方向：平直。两个或更多：曲率，而且是被缩放自己生成的。}
+\end{mdframed}
+
+\subsection{这改变了什么}
+
+\begin{enumerate}[leftmargin=1.8em]
+\item \texttt{Foundation.scale} 作为交换化，描述的只是\emph{标量}情形。
+      方向性标度下，缩放不构成交换商——\textbf{它们生成转动}。
+\item 定理 \ref{thm:indepchan}（两路独立）因此是关于\emph{标量扇区}的陈述，
+      不是关于本框架的。\textbf{两路是耦合的}，而且是最强的耦合：
+      转动扇区被标度扇区\emph{生成}。
+\item 第 \ref{sec:crosscheck} 节找不到跨扇区检验，原因也随之改写：
+      不是"按构造不可能"，而是我当时分析的是退化情形。
+\end{enumerate}
+
+\begin{remark}[物理上这是什么]
+这就是 Thomas--Wigner 转动：两个不同方向的推促复合出一个推促\emph{加一次转动}。
+Terrell--Penrose 效应是它的视觉形式——高速运动的物体被看成\emph{转动}而非收缩，
+因为标度改变正被读成转动。\textbf{两者都不是从外面引进来的}；
+它们就是两个对称生成元的括号。
+\end{remark}
+
+\section{耦合让标度场做什么}\label{sec:dynamics}
+
+第 \ref{sec:coupling} 节给出了耦合。本节问它让理论\emph{说}什么——
+关于地基、关于演化、关于谱。三者是同一个问题，故在同一处回答。
+
+\subsection{一处更正，以及交换环真正的代价}
+
+\begin{theorem}[杀死导子并不能压平曲率]\label{thm:noflatcomm}
+令所有导子为零——方向能有的最强交换性——曲率仍是 $\ad(A_i)(A_j)$，完全自由。
+而第 \ref{sec:coupling} 节的两个方向性缩放给出
+$\ad K_1 K_2 = J \neq 0$，是一个现成的反例。
+\textbf{平直性住在联络对不对易里，不在方向对不对易里。}
+\leanline{Dynamics.no\_flatness\_from\_commuting\_derivations, nonflat\_witness}
+\end{theorem}
+
+于是交换的\emph{函数}代数并不是对量子非对易性的限制。
+空间上的函数本就交换，那是经典且正确的；非对易性属于比较算子，
+而 \texttt{Foundation}、\texttt{Connection}、\texttt{Crossed}、\texttt{Quantum}、
+\texttt{Coupling} 全都保持它们非交换。
+
+\textbf{但交换扇区确实有代价，而这里把它精确定住。}
+
+\begin{theorem}[交换扇区的输运恒对易]\label{thm:commcost}
+在交换环上 $\ad$ 恒为零，故 $[\covD_i,\covD_j]=0$：
+无论联络是什么，该扇区\textbf{完全没有输运意义下的曲率}。
+\leanline{Dynamics.commutative\_sector\_transports\_commute,
+commutative\_curvature\_undetectable}
+\end{theorem}
+
+这正是第 \ref{sec:geom} 节非公设 $\kron$ 不可的原因：
+它的曲率只能从共形因子进来，进不来输运。
+\textbf{代价就是这个，而且被限制在经典各向同性几何里，不是对量子扇区的限制。}
+
+\subsection{演化方程就是 Bianchi，其内容是守恒}
+
+\begin{theorem}[Bianchi 强制源守恒]\label{thm:conserv}
+若标度场的曲率正比于一个源——任何场方程的形状——
+则该源的循环协变散度\emph{恒等于零}。
+\leanline{Dynamics.source\_conserved\_of\_field\_equation}
+\end{theorem}
+
+\begin{theorem}[尖锐形式：不守恒的源没有场方程]\label{thm:nofe}
+若循环散度在某处不为零，则该源\textbf{不可能}是任何联络的曲率之源。
+本框架不是偏好守恒的源，而是\emph{无法表述}不守恒的源。
+\leanline{Dynamics.no\_field\_equation\_of\_nonconserved}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=0.9pt,backgroundcolor=axcol!4]
+\textbf{能动量守恒在本框架中不是额外公设，而是场方程可被写下的条件。}
+它经由 Bianchi 来自 Jacobi 恒等式——来自输运的结合律，别无其他。
+\end{mdframed}
+
+再加上耦合的贡献：$F$ 反称，而由定理 \ref{thm:ss} 它取值于转动。
+故\textbf{标度场的源是一个转动密度}。
+\leanline{Dynamics.source\_antisymm, field\_equation\_content}
+
+\subsection{多重态内部是平的}
+
+这里是耦合真正付账的地方。第 \ref{sec:gauge} 节说多重态是方向性标度的简并块
+（$a\sim b \iff s_a = s_b$）；第 \ref{sec:coupling} 节说缩放与自身的括号为零。
+
+\begin{theorem}[同一多重态内不生成转动]\label{thm:multflat}
+同一多重态中的两个方向携带同一单位，故有同一缩放，故括号为零。
+\textbf{标度的简并块内部是平的；曲率只在多重态\emph{之间}生成。}
+\leanline{Dynamics.same\_multiplet\_no\_rotation}
+\end{theorem}
+
+\begin{theorem}[逆命题：转动是简并破缺的见证]\label{thm:rotwit}
+两方向之间有非零转动，就证明它们属于\textbf{不同}的多重态。
+\leanline{Dynamics.rotation\_implies\_different\_multiplet}
+\end{theorem}
+
+在耦合之前，规范多重态与曲率是标度花样的两个互不相干的读数；
+\textbf{现在前者控制后者}。而全简并（各向同性）的极端情形给出：
+所有括号为零，处处不生成转动——\textbf{最大对称的位形就是平的}。
+这从规范一侧第三次独立地回收了定理 \ref{thm:frameflat} 与 \ref{thm:rotpart}。
+\leanline{Dynamics.larger\_multiplet\_fewer\_generators}
+
+\begin{theorem}[多重态只能在阈值处改变]\label{thm:multthresh}
+内部对称性完全由标度的重合花样决定，故花样不变则多重态不变。
+\textbf{新的多重态不会在两个阈值之间出现}，
+与第 \ref{sec:emergence} 节的内容变化发生在同一批位置。
+\leanline{Dynamics.multiplets\_fixed\_by\_pattern,
+multiplet\_change\_needs\_pattern\_change}
+\end{theorem}
+
+\begin{remark}[诚实的界限]
+以上都没有预言\emph{哪些}多重态。它说的是它们可以在何处改变、以及它们内部是平的。
+标度花样仍然是输入。
+\end{remark}
+
 \section{自我审查：已发现的思维污染}\label{sec:audit}
 
 本节是对整个体系的一次不设辩护的复查，按"基础建构"与"目标问题"两条线。
@@ -2439,7 +2607,7 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \ref{thm:detfail}、\ref{thm:dm}、\ref{thm:diss}、\ref{thm:desitter}、
 \ref{thm:h}、\ref{thm:arrow}、\ref{thm:null}、\ref{thm:massive}、
 \ref{thm:cov}、\ref{thm:covfield}、\ref{thm:sing}、\ref{thm:singcurv}、
-\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
+\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
 
 \paragraph{尚未完成——本纲领当前最薄弱之处。}
 这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
@@ -2451,12 +2619,14 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
       第 \ref{sec:color} 节的色解释已撤回。
       应当索取的是\textbf{阈值结构}，第 \ref{sec:spectrum} 节已给出并检验：
       预言 $\mathrm{CV}=1$，观测 $0.935$（第 63 百分位），等比塔被排除。
-\item \textbf{无跨扇区检验，且这是构造性的}（升级登记）。第 \ref{sec:crosscheck} 节
-      表明谱的 $\rho$ 与跑动的 $\rho$ 不是同一个量；
-      第 \ref{sec:expressive} 节进一步证明这不是运气不好——
-      标度路与转动路\textbf{按构造}独立（一个是商，一个是它的核），
-      故谁也约束不了谁。\textbf{框架的弱点应表述为"三条通路太独立以至不能联合预言"}，
-      而非"尚未导出标准模型"。需要找的是\emph{通路间的耦合}，不是更大的对称群。第 \ref{sec:defect} 节给出的是
+\item \sout{\textbf{两路按构造独立，故无跨扇区检验}} \textbf{已推翻}——
+      第 \ref{sec:coupling} 节表明那是对\emph{标量}扇区的分析。
+      方向性标度下，两次缩放的括号是转动，故\textbf{转动扇区由标度扇区生成}，
+      耦合是被词义强制的，不需要新公理。
+      第 \ref{sec:crosscheck} 节的否定结果仍然成立（谱的 $\rho$ 与跑动的 $\rho$
+      确实不是同一个量），但其\emph{原因}不再是"通路独立"。
+      \textbf{同一个"标量替代方向性"的错误已出现三次}，见第 \ref{sec:frame}、
+      \ref{sec:axis}、\ref{sec:coupling} 节。第 \ref{sec:defect} 节给出的是
       一条\emph{不同于} QFT 的粒子产生机制（标度缺陷、绕数即荷）
       及其可证伪的形状，但不产生任何具体粒子的数值。
 \item \textbf{量子场论未被回归}。第 \ref{sec:nc} 节回归的是量子\emph{力学}
@@ -2546,7 +2716,7 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Signature.lean}   & 10 & 时间即漂移方向；号差由耗散导出 \\
 \texttt{Invariant.lean}   &  8 & 记账形式由迹导出，不变性成为定理 \\
 \texttt{Deflection.lean}  &  8 & 光线偏折：各向同性扇区恰好只给一半 \\
-\texttt{Direction.lean}   &  9 & 方向即代数；揭穿 A1 的隐藏平直性 \\
+\texttt{Direction.lean}   &  9 & 方向即代数（平直性解读已更正） \\
 \texttt{PPN.lean}         &  9 & 倒数条件强制 $\gamma=1$，补上另一半 \\
 \texttt{Codimension.lean} & 12 & 缺陷余维二：三维中是弦而非点 \\
 \texttt{Vacuum.lean}      &  5 & 渐近平直性定住倒数关系的常数 \\
@@ -2559,16 +2729,18 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Emergence.lean}  & 11 & 内容是截面：没有基本粒子；质量即位置 \\
 \texttt{Spectrum.lean}   & 10 & 阈值密度预言、谱检验、换算表 \\
 \texttt{CrossCheck.lean} &  9 & 审查：跨扇区检验不存在（越界更正） \\
-\texttt{Expressive.lean} & 10 & 表达力边界：可观测 $\iff$ 差；两路独立 \\
+\texttt{Expressive.lean} & 10 & 表达力边界：可观测 $\iff$ 差（部分被超越） \\
+\texttt{Coupling.lean}   & 11 & 两次缩放生成转动；耦合被词义强制 \\
+\texttt{Dynamics.lean}   & 12 & 守恒出自 Bianchi；多重态内部平直 \\
 \midrule
-\textbf{合计}             & \textbf{438} & 7466 行 Lean 代码 \\
+\textbf{合计}             & \textbf{462} & 7974 行 Lean 代码 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \subsection{公理审计}
 
-对 231 条主定理执行 \texttt{\#print axioms}，结果全部落在
+对 263 条主定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -2599,7 +2771,7 @@ Newton 引力是标度响应律的线性化；
 时间箭头是有限分辨率的必然产物；
 而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
 
-这些不是隐喻。它们是 438 条经机器检验、零 \texttt{sorry} 的定理。
+这些不是隐喻。它们是 462 条经机器检验、零 \texttt{sorry} 的定理。
 它们成立的前提是本文列出的六条公理与第 \ref{sec:scope} 节明示的物理输入；
 这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
 能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}

@@ -7,10 +7,16 @@ it finds along the way is that A1 was smuggling more than a dimension.
 
 Look at what A1 actually says: there are `n` derivations `∂₀,…,∂ₙ₋₁` which
 **commute**.  Two things are being assumed there, not one.  The index set is
-the obvious one.  The hidden one is the commutativity, and it is not innocent:
-commuting directions are *flat* coordinate directions.  A1 was assuming
-flatness of the direction structure and then deriving curvature from a
-separately postulated `δ` — which is why `δ` had to be postulated.
+the obvious one.  The other is the commutativity.
+
+**Correction (see `Dynamics.lean`).**  I originally read that commutativity as
+a hidden *flatness* assumption — "commuting directions are flat coordinate
+directions".  **That reading is wrong and is withdrawn.**  Commuting coordinate
+directions are a choice of chart, available locally always, and imply nothing
+about curvature; `Dynamics.no_flatness_from_commuting_derivations` kills the
+derivations entirely and the curvature survives untouched.  Flatness is a
+statement about whether the *connection* commutes.  What A1 assumes is a chart
+and an index set — a genuine input, but a smaller one than I claimed.
 
 Drop the index set.  A direction is not a label; it is an element of the
 comparison algebra, and transporting along it is linear in it.  Then:
@@ -21,10 +27,10 @@ comparison algebra, and transporting along it is linear in it.  Then:
 * `curv_of_abelian` — when the direction algebra is abelian this reduces to
   `[D_x, D_y]`, which is `Connection.comm_covD`'s object.  The old theory is
   the abelian case;
-* `commute_iff_bracket_acts_trivially` — **the exposure.**  For a flat
-  transport, "the directions commute" is *equivalent* to "the bracket acts
-  trivially".  A1's commutativity requirement was the assumption that the
-  direction algebra is abelian, i.e. that the directions are flat.
+* `commute_iff_bracket_acts_trivially` — for a **flat** transport, "the
+  directions commute" is *equivalent* to "the bracket acts trivially".  Note
+  the hypothesis: this is a statement about flat transports, not a derivation
+  that commuting directions are flat.
 
 So `n` is no longer chosen: the directions are the algebra, and their number is
 whatever that algebra's dimension is.  Choosing a basis is a convenience, not
