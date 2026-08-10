@@ -49,8 +49,11 @@
   {\end{mdframed}}
 
 % Lean 出处标记
-\newcommand{\lean}[1]{\hfill{\small\color{lncol}\texttt{#1}}}
-\newcommand{\leanline}[1]{\par\vspace{2pt}\noindent{\small\color{lncol}%
+\makeatletter
+\newcommand{\breakunder}{\discretionary{\char`\_}{}{\char`\_}}
+\makeatother
+\newcommand{\lean}[1]{\hfill{\small\color{lncol}\begingroup\let\_\breakunder\texttt{#1}\endgroup}}
+\newcommand{\leanline}[1]{\par\vspace{2pt}\noindent{\small\color{lncol}\sloppy\let\_\breakunder%
   \setlength{\emergencystretch}{4em}\sloppy Lean 出处：\texttt{#1}\par}}
 
 \newcommand{\dd}{\partial}
@@ -58,6 +61,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\kron}{\delta}
 \newcommand{\Defm}{D}
+\renewcommand{\d}{\mathrm{d}}
 \newcommand{\ad}{\operatorname{ad}}
 \newcommand{\covD}{\nabla}
 
@@ -101,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}595 条定理、11878 行 Lean 代码、61 个文件；
-\textbf{全部 595 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}611 条定理、11878 行 Lean 代码、61 个文件；
+\textbf{全部 611 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -2056,6 +2060,98 @@ entropy\_increment\_independent\_of\_size}
 
 \clearpage
 
+
+\section{引力波动力学：旋近、波形与辐射功率}\label{sec:waves}
+
+第 \ref{sec:horizon} 节做的是运动学——波恰在光锥上、无色散、偏振恰为二、呼吸模被禁止。
+本节做\textbf{动力学}，以便与脉冲双星计时和干涉仪数据对照。
+
+\subsection{诚实的分工，先说清楚}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{框架自己导出的：多极结构。}
+定理 \ref{thm:conserv} 证明场方程\emph{只有在}其源守恒时才写得下来——
+守恒在这里不是额外公设，\textbf{是方程存在的条件}。
+那条定理干的正是通常靠假设 $\nabla_\mu T^{\mu\nu}=0$ 才能干的活。
+
+\textbf{一个输入：系数 $\kappa$}（A6$'$）。但它\emph{只出现一次}——
+静态 Poisson 方程与四极系数共用同一个 $\kappa$，
+故由 Newton 极限定住它之后，\textbf{辐射率没有任何剩余自由度}。
+这就是为什么 Hulse--Taylor 是一次\emph{检验}而不是一次拟合。
+
+\textbf{属于标准数学、不是物理引进的：}给定 $\Box$ 与守恒源，
+把推迟 Green 函数按多极展开是微积分。$32/5$ 与间距的五次方是那次展开的后果。
+\end{mdframed}
+
+\subsection{什么在辐射：守恒定理杀掉低阶}
+
+\begin{theorem}[单极与偶极都不辐射]\label{thm:nolowmult}
+守恒矩的时间导数为零，故它恒定；而恒定的矩在任何阶都不贡献辐射场。
+单极是总源，偶极的一阶导是总动量——\textbf{同一条守恒律把两者都冻住}。
+\leanline{Waves.monopole\_does\_not\_radiate, Waves.dipole\_does\_not\_radiate,
+Waves.quadrupole\_is\_leading}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{"无偶极辐射"在这里是预言，不是约定。}
+标量--张量理论一般\emph{会}在偶极阶辐射，因为它们带一个\textbf{不守恒}的标量荷。
+本框架没有这样的荷：定理 \ref{thm:pol} 去掉了标量偏振，
+而定理 \ref{thm:conserv} 去掉了偶极。\textbf{脉冲双星计时测的正是这一条。}
+\end{mdframed}
+
+\subsection{圆轨道双星}
+
+\begin{theorem}[辐射功率与旋近]\label{thm:inspiral}
+$P = \tfrac{32}{5}\,G^4(m_1m_2)^2(m_1+m_2)/(c^5r^5) > 0$；
+间距减半，功率乘以 \textbf{32}——这就是旋近失控的原因。
+而 $E=-Gm_1m_2/2r$ 使能量损失强制 $\dot r<0$，闭形式为
+\[
+\dot r = -\frac{64}{5}\,\frac{G^3m_1m_2(m_1+m_2)}{c^5r^3}.
+\]
+\leanline{Waves.power\_pos, Waves.power\_ratio\_halving,
+Waves.inspiral\_shrinks\_orbit, Waves.separation\_rate}
+\end{theorem}
+
+\subsection{啁啾：干涉仪实际测的量}
+
+\begin{theorem}[啁啾质量]\label{thm:chirp}
+频率演化只通过\textbf{一个}质量组合进入：
+$\mathcal M=(m_1m_2)^{3/5}/(m_1+m_2)^{1/5}$，且 $\d f/\d t \propto \mathcal M^{5/3}f^{11/3}$。
+$\mathcal M$ 对两质量对称——\textbf{领头阶波形分不出哪个是哪个}；
+等质量时 $\mathcal M\cdot 2^{1/5}=m$。
+\leanline{Waves.chirpMass\_symm, Waves.chirpMass\_equal,
+Waves.chirp\_exponent, Waves.chirp\_mass\_exponent}
+\end{theorem}
+
+\subsection{对数据}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+观测 & 本框架 & 结果 \\
+\midrule
+PSR B1913$+$16 轨道衰减／四极预言 & $1$（无偶极项） & $0.9983\pm0.0016$ \\
+偶极辐射分数 & 恒等于 $0$ & $<0.002$（由上行定出）\\
+GW150914 啁啾质量 & —— & $30.7\,M_\odot$，等质量读作 $\approx35\,M_\odot$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{Hulse--Taylor 的符合是对偶极辐射的一个界。}
+任何偶极项都会叠加到四极率上，把比值推离 $1$；
+实测把它压在 $0.002$ 以下，而\textbf{本框架预言它恒等于零}。
+这与"呼吸模振幅恒为零"是同一条判别式的两个面。
+\leanline{Waves.hulse\_taylor\_agreement, Waves.dipole\_bounded\_by\_hulse\_taylor,
+Waves.gw150914\_equal\_mass\_component, Waves.same\_constant\_both\_sectors}
+\end{mdframed}
+
+\begin{remark}[仍然没有的]
+数值相对论、并合与铃宕、领头阶之外的后 Newton 修正、自旋。
+那些需要\textbf{含时各向异性解}，而本开发只有静态球对称的那一个。
+本节处理的是领头阶、圆轨道、无自旋的旋近。
+\end{remark}
+
 \clearpage
 \part{第五部分\quad 各向异性扇区：标签与荷}
 
@@ -3861,6 +3957,8 @@ $w$ 不演化（A5 强制） & $w=-1$，不跑动 & DESI: $w_0>-1,w_a<0$ & \text
 $f_0(500)$ 极点 $\Gamma/m$ & $<1.157$ & CCL $1.234$ / GKPY $1.090$ & \textbf{开放} \\
 光子能量依赖时延 & 恰为零 & $E_{\rm QG}\gtrsim7.6E_{\rm Pl}$ & 通过，且与对手分道 \\
 引力波速 & 精确 $c$，无色散 & $|\Delta v/v|\lesssim10^{-15}$ & 通过 \\
+引力波偏振数 & 恰为 $2$，无呼吸模 & 网络偏振检验 & 通过（与标量--张量分道）\\
+偶极辐射 & 恒等于 $0$ & Hulse--Taylor $<0.002$ & 通过 \\
 质量谱 $\mathrm{CV}^2$ & $<1$（秩一） & $0.875$ & 通过 \\
 非禁闭精确守恒荷 & 恰一个 & 电荷、$B{-}L$（两个？） & 未决，$0\nu\beta\beta$ 裁决 \\
 黑洞熵 & $\propto\ln R$ & —— & 未测（面积律亦未测）\\
@@ -4059,11 +4157,12 @@ $k=3$ 依赖一个判断 & 已扶正为 A7 & 公开的第七条公理（\S\ref{s
       也已形式化（定理 \ref{thm:vacstat}）。
       \textbf{此前本条写作“逐分量计算未做”，那是 \texttt{RicciDiag.lean} 写出之前的旧登记，已更正。}
       仍是输入的是\emph{静态球对称拟设}的选取本身，以及标度响应律 A6$'$。
-\item \textbf{引力波：运动学与模式计数已做，动力学未做。}
-      第 \ref{sec:horizon} 节证明波恰在光锥上、无色散，
-      并\textbf{导出偏振数恰为二}、且\textbf{呼吸模被 A5 禁止}（定理 \ref{thm:pol}）。
-      仍未做的是\emph{动力学}：波形、辐射功率、双星旋近——
-      那些需要含时各向异性解，而本框架目前只做了静态球对称。
+\item \textbf{引力波：领头阶已做，强场未做。}
+      第 \ref{sec:horizon} 节给运动学与偏振计数；
+      第 \ref{sec:waves} 节给动力学——\textbf{单极与偶极由守恒定理杀掉}，
+      四极领头，旋近闭形式与啁啾质量给出，并与 Hulse--Taylor、GW150914 对照。
+      \textbf{仍未做的}：数值相对论、并合与铃宕、领头阶之外的后 Newton 修正、自旋。
+      那些需要含时各向异性解，而本开发只有静态球对称的那一个。
 \item \textbf{微观扇区的数值等价于那一个自由单位。} 措辞需要精确：
       框架给出量子修正的\emph{形式}（$[\sigma_i,\sigma_j]$）、\emph{对称性}（纯反对称）
       与\emph{标度}（相对经典项为一个标度步长）。
@@ -4543,6 +4642,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Precession.lean} & 8 & 水星 $42.99''$ \\
 \texttt{Covariance.lean} & 7 & 耗散下的局域协变性 \\
 \texttt{Singularity.lean} & 6 & 无度规退化 \\
+\texttt{Waves.lean} & 16 & 旋近动力学：守恒杀掉单极与偶极 \\
 \texttt{Horizon.lean} & 12 & 无视界；波在光锥；熵是对数；无最小长度 \\
 \midrule
 \multicolumn{3}{l}{\emph{第五部分\quad 各向异性扇区}}\\
@@ -4586,14 +4686,14 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
 \texttt{Audit.lean} & 4 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{592} & 61 个文件，11689 行 Lean 代码 \\
+\textbf{合计} & \textbf{611} & 62 个文件，12055 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 595 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 611 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -4657,14 +4757,16 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 而它\emph{不能}回答这件事本身，正是记分牌与登记册存在的理由。
 
 
+
+
 \clearpage
 \appendix
-\section{定理索引：全部 595 条}\label{sec:index}
+\section{定理索引：全部 611 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
-本索引由源码生成，非人工维护。\textbf{每一条都在 \texttt{Verify.lean} 中经
-\texttt{\#print axioms} 审计}，故报告正文未展开叙述的定理\emph{并非未被检验}，
-只是未被叙述。名称按报告的部分顺序排列。
+本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
+\textbf{每一条都在 \texttt{Verify.lean} 中经 \texttt{\#print axioms} 审计}，
+故报告正文未展开叙述的定理\emph{并非未被检验}，只是未被叙述。
 
 \footnotesize
 \raggedright
@@ -4705,6 +4807,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Covariance.lean}} (7)\quad \texttt{sig\_\allowbreak eq}, \texttt{Chr\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq}, \texttt{Ric\_\allowbreak eq\_\allowbreak of\_\allowbreak drift}, \texttt{Defm\_\allowbreak eq}, \texttt{field\_\allowbreak equation\_\allowbreak form\_\allowbreak invariant}, \texttt{no\_\allowbreak local\_\allowbreak expansion}\par\smallskip
 \noindent\textbf{\texttt{Singularity.lean}} (6)\quad \texttt{scale\_\allowbreak ne\_\allowbreak zero}, \texttt{energy\_\allowbreak ne\_\allowbreak zero}, \texttt{conformal\_\allowbreak factor\_\allowbreak isUnit}, \texttt{conformal\_\allowbreak factor\_\allowbreak invertible}, \texttt{curvature\_\allowbreak indep\_\allowbreak of\_\allowbreak scale\_\allowbreak value}, \texttt{curvature\_\allowbreak zero\_\allowbreak of\_\allowbreak uniform\_\allowbreak scale}\par\smallskip
 \noindent\textbf{\texttt{Horizon.lean}} (15)\quad \texttt{gtt\_\allowbreak ne\_\allowbreak zero}, \texttt{reciprocal\_\allowbreak never\_\allowbreak degenerate}, \texttt{redshift\_\allowbreak never\_\allowbreak infinite}, \texttt{no\_\allowbreak degeneracy\_\allowbreak anywhere}, \texttt{null\_\allowbreak cone\_\allowbreak scale\_\allowbreak independent}, \texttt{waves\_\allowbreak travel\_\allowbreak on\_\allowbreak the\_\allowbreak light\_\allowbreak cone}, \texttt{no\_\allowbreak energy\_\allowbreak dependent\_\allowbreak speed}, \texttt{two\_\allowbreak polarizations}, \texttt{no\_\allowbreak breathing\_\allowbreak mode}, \texttt{polarization\_\allowbreak count}, \texttt{entropy\_\allowbreak of\_\allowbreak scale\_\allowbreak ratio}, \texttt{entropy\_\allowbreak doubling\_\allowbreak is\_\allowbreak additive}, \texttt{entropy\_\allowbreak increment\_\allowbreak independent\_\allowbreak of\_\allowbreak size}, \texttt{no\_\allowbreak minimum\_\allowbreak length}, \texttt{no\_\allowbreak final\_\allowbreak description}\par\smallskip
+\noindent\textbf{\texttt{Waves.lean}} (16)\quad \texttt{conserved\_\allowbreak has\_\allowbreak no\_\allowbreak dynamics}, \texttt{monopole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{dipole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{quadrupole\_\allowbreak is\_\allowbreak leading}, \texttt{power\_\allowbreak pos}, \texttt{power\_\allowbreak ratio\_\allowbreak halving}, \texttt{inspiral\_\allowbreak shrinks\_\allowbreak orbit}, \texttt{separation\_\allowbreak rate}, \texttt{chirpMass\_\allowbreak symm}, \texttt{chirpMass\_\allowbreak equal}, \texttt{chirp\_\allowbreak exponent}, \texttt{chirp\_\allowbreak mass\_\allowbreak exponent}, \texttt{hulse\_\allowbreak taylor\_\allowbreak agreement}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak hulse\_\allowbreak taylor}, \texttt{gw150914\_\allowbreak equal\_\allowbreak mass\_\allowbreak component}, \texttt{same\_\allowbreak constant\_\allowbreak both\_\allowbreak sectors}\par\smallskip
 
 \subsection*{第五部分\quad 各向异性扇区}
 \noindent\textbf{\texttt{Gauge.lean}} (5)\quad \texttt{mem\_\allowbreak stabilizer\_\allowbreak iff}, \texttt{stabilizer\_\allowbreak eq\_\allowbreak bot\_\allowbreak of\_\allowbreak injective}, \texttt{stabilizer\_\allowbreak eq\_\allowbreak top\_\allowbreak of\_\allowbreak isotropic}, \texttt{sameOrbit\_\allowbreak iff\_\allowbreak eq\_\allowbreak scale}, \texttt{internal\_\allowbreak symmetry\_\allowbreak determined}\par\smallskip

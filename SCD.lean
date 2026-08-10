@@ -95,6 +95,8 @@ PART V — PREDICTIONS, AND THE DATA
     Predictions  the conversion table
     Cosmos       w does not evolve; there is no initial value; dark matter
     Horizon      no horizon; waves on the light cone; entropy ∝ ln R
+    Waves        inspiral dynamics: conservation kills monopole and dipole,
+                 so the quadrupole leads; Hulse–Taylor bounds the dipole
     Native       the seven questions only this framework can ask
     Data         ★ the confrontation.  One live tension (DESI vs A5), one
                  live open question (the f₀(500) pole), the rest passing.
@@ -152,6 +154,7 @@ import SCD.Precession
 import SCD.Covariance
 import SCD.Singularity
 import SCD.Horizon
+import SCD.Waves
 
 -- Part II.b — the anisotropic sector: labels and charges
 import SCD.Gauge
