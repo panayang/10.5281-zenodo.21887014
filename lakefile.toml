@@ -1,7 +1,7 @@
-name = "ScaleUniverse"
+name = "SCD"
 version = "0.1.0"
 keywords = ["math"]
-defaultTargets = ["ScaleUniverse"]
+defaultTargets = ["SCD"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
@@ -16,4 +16,4 @@ scope = "leanprover-community"
 rev = "v4.32.2"
 
 [[lean_lib]]
-name = "ScaleUniverse"
+name = "SCD"
