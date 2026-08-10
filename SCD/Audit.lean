@@ -225,7 +225,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 637
+def auditedTheorems : ℕ := 641
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

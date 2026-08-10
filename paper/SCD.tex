@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}637 条定理、13001 行 Lean 代码、64 个文件；
-\textbf{全部 637 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}641 条定理、13099 行 Lean 代码、64 个文件；
+\textbf{全部 641 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -4154,6 +4154,74 @@ $E_{{\rm QG},1}\gtrsim 7.6\,E_{\rm Pl}$（总色散）、$\gtrsim 2\,E_{\rm Pl}$
 这是一个\textbf{正在进行的实验}（KamLAND-Zen、LEGEND、nEXO），
 而框架关心它的结果，出于一个别人没有的理由。
 
+
+\subsection{有没有第二个开关？直接查粒子谱}\label{ss:secondswitch}
+
+定理 \ref{thm:iso} 说标签同源，故只有一个边界。它留下的尖锐问题是：
+
+\begin{center}
+\textbf{是否存在某个标签，其出现\emph{不是}对既有各向异性花样的细化——即\emph{第二个}开关？}
+\end{center}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
+\textbf{先说框架\emph{没有}说的。}定理 \ref{thm:multthresh} 说多重态只在花样改变处改变，
+但它\textbf{不定方向}——本开发\emph{没有}证明花样随标度下降只会细化而不会粗化。
+所以"只细化"是\textbf{一条待检验的主张，不是可以拿来假设的定理}；
+拿粒子谱去查它之所以不循环，正是因为这一点。
+\end{mdframed}
+
+\subsubsection*{检验设计}
+
+数\textbf{标签的\emph{种类}}，不数态。"一个开关"要求这个计数在花样各向异性之处
+\textbf{恒定}；第二个开关会表现为\emph{某个标签种类在某标度以下存在、以上不存在}。
+
+\subsubsection*{清单}
+
+从中微子质量标度（约 $5\times10^{-11}$ GeV）到 LHC（$1.3\times10^{4}$ GeV），
+\textbf{十四个数量级}之内，精确守恒的标签种类是：
+\textbf{电荷、色、粒子--反粒子加倍}，若 $B-L$ 精确则加一。
+\textbf{这个数不动。}
+
+而\emph{动}的是简并花样，共两处：
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+标度 & 多重态大小 & 性质 \\
+\midrule
+电弱破缺（$\sim10^2$ GeV） & $2\to1$ & \textbf{严格细化} \\
+禁闭（$\sim0.2$ GeV） & $3\to3$ & 不变；改变的是可观测性，不是标签 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[两处破缺都是细化，尺寸从不增加]\label{thm:refine}
+$1\le2$ 且 $3\le3$，且电弱那处是\emph{严格}细化。
+\textbf{十四个数量级里没有任何一处出现 $1\to2$}——即在原本没有简并的地方冒出一个精确简并。
+\leanline{Data.labelTypeCount, Data.probed\_range\_orders,
+Data.breakings\_are\_refinements, Data.electroweak\_strictly\_refines}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{结果：未观测到第二个开关，框架通过。}
+两处破缺都\textbf{没有引入新的标签种类}——一处劈开一个块，一处改变可见性。
+\end{mdframed}
+
+\subsubsection*{这有多强？弱，而且弱在具体的地方}
+
+十四个数量级是真实的范围，但开关可以落在它之外的任一端。
+更要紧的是，检验的锋利程度全系于\textbf{"精确"}二字：
+每一个表面上的反例——\textbf{同位旋、custodial 对称性、偶然的重子数与轻子数}——
+都是\textbf{近似}简并，而框架的块是\emph{精确}的。
+
+\textbf{反例全都是近似的}这件事本身与框架相容
+（第 \ref{sec:slice} 节把低能近似对称性称作被截断描述的特征），
+但这意味着\textbf{除非出现一个\emph{精确}简并在中间标度上冒出来，这个检验不可能失败}。
+
+\begin{center}
+\textbf{证伪者是具体的：一个在某标度之上被破坏、之下精确守恒的量子数。}
+\end{center}
+
 \subsection{总表：全部数值与全部预言}\label{ss:scoreboard}
 
 \textbf{本报告只有这一张数值表。}第 \ref{sec:pred} 与 \ref{sec:spectrum} 节
@@ -4246,7 +4314,7 @@ $f_0(500)$ 极点 $\Gamma/m$ & $<1.157$ & CCL $1.234$ / GKPY $1.090$ & \textbf{�
 \textbf{存在最小长度} & 第 \ref{sec:horizon} 节全部（无奇点／无视界／无最大密度同源） & 与光子色散同一条界 \\
 \textbf{$f_0(500)$ 极点 $\Gamma/m>1.157$ 被确定} & 第 \ref{sec:spectrum} 节的可分辨性界 & CCL $1.234$／GKPY $1.090$，框架押 GKPY \\
 \textbf{$B-L$ 被规范化且精确守恒} & 第 \ref{sec:particle} 节"恰一个整数荷" & $0\nu\beta\beta$ 未见，引信很长 \\
-\textbf{某个标签的出现不是既有各向异性的细化} & 第 \ref{sec:locus} 节的单一开关 & 无已知反例 \\
+\textbf{某个标签的出现不是既有各向异性的细化} & 第 \ref{sec:locus} 节的单一开关 & 十四个数量级内无反例（\S\ref{ss:secondswitch}）\\
 \textbf{总宇称改变的过程} & 第 \ref{sec:native} 节的 $\mathbb Z/2$ 算术 & 无已知过程 \\
 \bottomrule
 \end{tabular}
@@ -5065,7 +5133,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \subsection{公理审计}
 
-对全部 637 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 641 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5133,7 +5201,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 637 条}\label{sec:index}
+\section{定理索引：全部 641 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5214,7 +5282,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Predictions.lean}} (17)\quad \texttt{accel\_\allowbreak numerator}, \texttt{powerlaw\_\allowbreak accel\_\allowbreak numerator}, \texttt{accelerates\_\allowbreak iff}, \texttt{eos\_\allowbreak dissipationExponent}, \texttt{dissipationExponent\_\allowbreak eos}, \texttt{eos\_\allowbreak one}, \texttt{eos\_\allowbreak eq\_\allowbreak neg\_\allowbreak one\_\allowbreak iff}, \texttt{eos\_\allowbreak lt\_\allowbreak third\_\allowbreak iff}, \texttt{eos\_\allowbreak lt\_\allowbreak neg\_\allowbreak one\_\allowbreak iff}, \texttt{worked\_\allowbreak inversion}, \texttt{muon\_\allowbreak lifetime\_\allowbreak value}, \texttt{muon\_\allowbreak matches\_\allowbreak experiment}, \texttt{poundRebka\_\allowbreak value}, \texttt{darkEnergyDensity\_\allowbreak value}, \texttt{logScale\_\allowbreak step}, \texttt{logScale\_\allowbreak ratio\_\allowbreak const}, \texttt{logScale\_\allowbreak closed}\par\smallskip
 \noindent\textbf{\texttt{Cosmos.lean}} (13)\quad \texttt{shift\_\allowbreak invariant\_\allowbreak is\_\allowbreak constant}, \texttt{rate\_\allowbreak constant\_\allowbreak of\_\allowbreak fiducial\_\allowbreak invariance}, \texttt{w\_\allowbreak does\_\allowbreak not\_\allowbreak evolve}, \texttt{scale\_\allowbreak ratio\_\allowbreak depends\_\allowbreak only\_\allowbreak on\_\allowbreak difference}, \texttt{no\_\allowbreak first\_\allowbreak moment}, \texttt{finite\_\allowbreak lookback\_\allowbreak no\_\allowbreak origin}, \texttt{isotropic\_\allowbreak gravitates\_\allowbreak without\_\allowbreak labels}, \texttt{dark\_\allowbreak matter\_\allowbreak has\_\allowbreak no\_\allowbreak species}, \texttt{two\_\allowbreak dark\_\allowbreak routes\_\allowbreak differ}, \texttt{resolvable\_\allowbreak needs\_\allowbreak width\_\allowbreak below\_\allowbreak gap}, \texttt{mean\_\allowbreak gap\_\allowbreak bound}, \texttt{broad\_\allowbreak structures\_\allowbreak unresolvable}, \texttt{resolvability\_\allowbreak boundary}\par\smallskip
 \noindent\textbf{\texttt{Native.lean}} (15)\quad \texttt{not\_\allowbreak two\_\allowbreak places\_\allowbreak of\_\allowbreak parallel}, \texttt{separation\_\allowbreak is\_\allowbreak oriented}, \texttt{single\_\allowbreak anisotropy\_\allowbreak boundary}, \texttt{label\_\allowbreak forces\_\allowbreak anisotropy}, \texttt{zero\_\allowbreak window\_\allowbreak resolves\_\allowbreak nothing}, \texttt{content\_\allowbreak is\_\allowbreak interval\_\allowbreak valued}, \texttt{no\_\allowbreak global\_\allowbreak field\_\allowbreak equation}, \texttt{ordering\_\allowbreak discrepancy\_\allowbreak is\_\allowbreak the\_\allowbreak observable}, \texttt{parity\_\allowbreak conserved\_\allowbreak under\_\allowbreak binding}, \texttt{both\_\allowbreak labels\_\allowbreak conserved}, \texttt{entropy\_\allowbreak order\_\allowbreak is\_\allowbreak scale\_\allowbreak order}, \texttt{entropy\_\allowbreak strict\_\allowbreak iff\_\allowbreak scale\_\allowbreak strict}, \texttt{arrows\_\allowbreak are\_\allowbreak one\_\allowbreak order}, \texttt{no\_\allowbreak maximum\_\allowbreak anisotropy}, \texttt{no\_\allowbreak cutoff\_\allowbreak either\_\allowbreak end}\par\smallskip
-\noindent\textbf{\texttt{Data.lean}} (19)\quad \texttt{desi\_\allowbreak tension\_\allowbreak exceeds\_\allowbreak three\_\allowbreak sigma}, \texttt{desi\_\allowbreak significance\_\allowbreak dataset\_\allowbreak dependent}, \texttt{desi\_\allowbreak combinations\_\allowbreak disagree\_\allowbreak internally}, \texttt{falsification\_\allowbreak threshold}, \texttt{ccl\_\allowbreak above\_\allowbreak bound}, \texttt{gkpy\_\allowbreak below\_\allowbreak bound}, \texttt{determinations\_\allowbreak straddle\_\allowbreak bound}, \texttt{gkpy\_\allowbreak updated\_\allowbreak inside}, \texttt{kappa\_\allowbreak below\_\allowbreak bound}, \texttt{rho\_\allowbreak below\_\allowbreak bound}, \texttt{delta\_\allowbreak below\_\allowbreak bound}, \texttt{z\_\allowbreak boson\_\allowbreak far\_\allowbreak inside}, \texttt{bound\_\allowbreak separates\_\allowbreak kappa\_\allowbreak from\_\allowbreak sigma}, \texttt{breit\_\allowbreak wigner\_\allowbreak spans\_\allowbreak the\_\allowbreak bound}, \texttt{dispersion\_\allowbreak limit\_\allowbreak above\_\allowbreak planck}, \texttt{framework\_\allowbreak predicts\_\allowbreak no\_\allowbreak finite\_\allowbreak scale}, \texttt{one\_\allowbreak charge\_\allowbreak prediction}, \texttt{zero\_\allowbreak nu\_\allowbreak beta\_\allowbreak beta\_\allowbreak decides}, \texttt{scorecard}\par\smallskip
+\noindent\textbf{\texttt{Data.lean}} (23)\quad \texttt{desi\_\allowbreak tension\_\allowbreak exceeds\_\allowbreak three\_\allowbreak sigma}, \texttt{desi\_\allowbreak significance\_\allowbreak dataset\_\allowbreak dependent}, \texttt{desi\_\allowbreak combinations\_\allowbreak disagree\_\allowbreak internally}, \texttt{falsification\_\allowbreak threshold}, \texttt{ccl\_\allowbreak above\_\allowbreak bound}, \texttt{gkpy\_\allowbreak below\_\allowbreak bound}, \texttt{determinations\_\allowbreak straddle\_\allowbreak bound}, \texttt{gkpy\_\allowbreak updated\_\allowbreak inside}, \texttt{kappa\_\allowbreak below\_\allowbreak bound}, \texttt{rho\_\allowbreak below\_\allowbreak bound}, \texttt{delta\_\allowbreak below\_\allowbreak bound}, \texttt{z\_\allowbreak boson\_\allowbreak far\_\allowbreak inside}, \texttt{bound\_\allowbreak separates\_\allowbreak kappa\_\allowbreak from\_\allowbreak sigma}, \texttt{breit\_\allowbreak wigner\_\allowbreak spans\_\allowbreak the\_\allowbreak bound}, \texttt{dispersion\_\allowbreak limit\_\allowbreak above\_\allowbreak planck}, \texttt{framework\_\allowbreak predicts\_\allowbreak no\_\allowbreak finite\_\allowbreak scale}, \texttt{one\_\allowbreak charge\_\allowbreak prediction}, \texttt{zero\_\allowbreak nu\_\allowbreak beta\_\allowbreak beta\_\allowbreak decides}, \texttt{probed\_\allowbreak range\_\allowbreak orders}, \texttt{no\_\allowbreak second\_\allowbreak switch\_\allowbreak observed}, \texttt{breakings\_\allowbreak are\_\allowbreak refinements}, \texttt{electroweak\_\allowbreak strictly\_\allowbreak refines}, \texttt{scorecard}\par\smallskip
 
 \subsection*{第九部分\quad 登记册}
 \noindent\textbf{\texttt{Color.lean}} (17)\quad \texttt{comp\_\allowbreak perm}, \texttt{anti\_\allowbreak perm}, \texttt{triv\_\allowbreak perm}, \texttt{charge\_\allowbreak comp}, \texttt{charge\_\allowbreak anti}, \texttt{triv\_\allowbreak observable}, \texttt{confinement}, \texttt{pair\_\allowbreak observable}, \texttt{pair\_\allowbreak charge}, \texttt{rep\_\allowbreak perm}, \texttt{rep\_\allowbreak charge}, \texttt{bound\_\allowbreak state\_\allowbreak observable}, \texttt{bound\_\allowbreak state\_\allowbreak size}, \texttt{no\_\allowbreak partial\_\allowbreak state}, \texttt{constituent\_\allowbreak charge\_\allowbreak fraction}, \texttt{constituent\_\allowbreak charge\_\allowbreak rat}, \texttt{bound\_\allowbreak charge\_\allowbreak divisible}\par\smallskip

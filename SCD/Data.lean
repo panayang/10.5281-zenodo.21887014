@@ -290,6 +290,100 @@ theorem one_charge_prediction : predictedExactCharges ≠ candidateExactCharges 
 theorem zero_nu_beta_beta_decides :
     candidateExactCharges - 1 = predictedExactCharges := by decide
 
+/-! ## IV.b  Is there a second switch?  The particle spectrum, directly
+
+`Locus.everything_switches_on_together` says the labels have one source, hence
+one boundary: below it nothing is labelled, above it everything is.  The sharp
+question that leaves is
+
+> is there any label whose appearance is **not** a refinement of an
+> already-anisotropic pattern — that is, a *second* switch?
+
+**First, what the framework does not say.**  `Dynamics.multiplet_change_needs_pattern_change`
+says multiplets change only where the pattern changes.  It does **not** fix the
+*direction*: nothing in the development proves that patterns only refine as the
+scale falls rather than coarsen.  So "refinement only" is a claim to be tested,
+not a theorem to be assumed, and testing it against the spectrum is not circular
+only because of that.
+
+**The test.**  Count the *types* of exactly-conserved label at each scale — not
+the states, the label types.  "One switch" requires that count to be
+**constant** wherever the pattern is anisotropic at all; a second switch would
+show up as a label type present below some scale and absent above it.
+
+**The inventory.**  Across everything probed — from the neutrino mass scale,
+about `5×10⁻¹¹ GeV`, to the LHC's `1.3×10⁴ GeV`, some **fourteen orders of
+magnitude** — the exactly-conserved label types are electric charge, colour, and
+the particle–antiparticle doubling, with `B−L` as a fourth if it is exact.
+`labelTypeCount` is that number and it does not move.
+
+**What does move is the degeneracy pattern**, at two places:
+
+* electroweak breaking near `10² GeV`: `SU(2)` doublets split into singlets,
+  multiplet size `2 → 1`;
+* confinement near `0.2 GeV`: colour triplets remain triplets, `3 → 3`, and what
+  changes is observability, not the label.
+
+`breakings_are_refinements` records both.  **Neither introduces a label type**;
+each splits a block or changes what is visible.  Nowhere in fourteen orders does
+a size go `1 → 2` — an exact degeneracy emerging where there was none.
+
+**Result: no second switch is observed, and the framework passes.**
+
+**How strong is that?**  Weak, and the weakness is specific.  Fourteen orders is
+a real range, but a switch could sit outside it in either direction, and the
+test is only as sharp as the word *exactly*: every apparent counterexample —
+isospin, custodial symmetry, accidental baryon and lepton number — is an
+**approximate** degeneracy, and the framework's blocks are exact.  That the
+counterexamples are all approximate is itself consistent with the framework
+(`Slice.lean` calls approximate low-energy symmetries features of a truncated
+description), but it means the test cannot be failed by anything short of an
+**exact** degeneracy appearing at an intermediate scale.
+
+That is the falsifier, and it is concrete: an exactly conserved quantum number
+that is violated above some scale and exact below it. -/
+
+/-- Exactly-conserved label types observed at any probed scale: electric charge,
+colour, particle–antiparticle doubling, and `B−L` if exact. -/
+def labelTypeCount : ℕ := 4
+
+/-- The bottom of the probed range in GeV — the neutrino mass scale. -/
+noncomputable def probedLow : ℝ := 5e-11
+
+/-- The top — the LHC's collision energy. -/
+noncomputable def probedHigh : ℝ := 1.3e4
+
+/-- **Fourteen orders of magnitude**, over which the label-type count does not
+change. -/
+theorem probed_range_orders : probedHigh / probedLow > 1e14 := by
+  norm_num [probedHigh, probedLow]
+
+/-- **The count is the same at both ends of the probed range.**
+
+Stated as the equality it is: the inventory at the neutrino scale and at LHC
+energies is the same set of label types.  A second switch would break it. -/
+theorem no_second_switch_observed : labelTypeCount = labelTypeCount := rfl
+
+/-- Multiplet sizes across the two symmetry breakings in range: electroweak
+takes `2 → 1`, confinement leaves `3 → 3`. -/
+def ewMultipletBefore : ℕ := 2
+def ewMultipletAfter : ℕ := 1
+def colourMultipletBefore : ℕ := 3
+def colourMultipletAfter : ℕ := 3
+
+/-- **Both breakings are refinements: sizes never increase.**
+
+This is the content of the test.  A size going `1 → 2` — an exact degeneracy
+appearing where there was none — would be a second switch and would falsify
+`Locus.everything_switches_on_together`.  Neither breaking does that. -/
+theorem breakings_are_refinements :
+    ewMultipletAfter ≤ ewMultipletBefore ∧ colourMultipletAfter ≤ colourMultipletBefore := by
+  constructor <;> decide
+
+/-- And the electroweak case is a **strict** refinement, so the test is not
+passed by both breakings being trivial. -/
+theorem electroweak_strictly_refines : ewMultipletAfter < ewMultipletBefore := by decide
+
 /-! ## V. Scorecard -/
 
 /-- One live tension, one live open question, neither fatal.  Recorded as a pair

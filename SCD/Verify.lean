@@ -716,6 +716,10 @@ namespace SCD.Verify
 #print axioms SCD.Data.framework_predicts_no_finite_scale
 #print axioms SCD.Data.one_charge_prediction
 #print axioms SCD.Data.zero_nu_beta_beta_decides
+#print axioms SCD.Data.probed_range_orders
+#print axioms SCD.Data.no_second_switch_observed
+#print axioms SCD.Data.breakings_are_refinements
+#print axioms SCD.Data.electroweak_strictly_refines
 #print axioms SCD.Data.scorecard
 
 /-! ## PART VI — the register -/
