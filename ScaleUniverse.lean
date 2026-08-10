@@ -51,3 +51,6 @@ import ScaleUniverse.Slice
 import ScaleUniverse.Axes
 import ScaleUniverse.Dimension
 import ScaleUniverse.Locus
+import ScaleUniverse.Cosmos
+import ScaleUniverse.NCConformal
+import ScaleUniverse.Horizon

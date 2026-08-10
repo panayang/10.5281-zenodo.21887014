@@ -508,6 +508,50 @@ namespace ScaleUniverse.Verify
 #print axioms ScaleUniverse.Locus.everything_switches_on_together
 #print axioms ScaleUniverse.Locus.particle_locus_is_anisotropic
 
+/-! ## Sector LIV — what the position predicts -/
+
+#print axioms ScaleUniverse.Cosmos.shift_invariant_is_constant
+#print axioms ScaleUniverse.Cosmos.rate_constant_of_fiducial_invariance
+#print axioms ScaleUniverse.Cosmos.w_does_not_evolve
+#print axioms ScaleUniverse.Cosmos.scale_ratio_depends_only_on_difference
+#print axioms ScaleUniverse.Cosmos.no_first_moment
+#print axioms ScaleUniverse.Cosmos.finite_lookback_no_origin
+#print axioms ScaleUniverse.Cosmos.isotropic_gravitates_without_labels
+#print axioms ScaleUniverse.Cosmos.dark_matter_has_no_species
+#print axioms ScaleUniverse.Cosmos.resolvable_needs_width_below_gap
+#print axioms ScaleUniverse.Cosmos.broad_structures_unresolvable
+#print axioms ScaleUniverse.Cosmos.resolvability_boundary
+
+/-! ## Sector LV — the non-commutative curvature, and the first correction -/
+
+#print axioms ScaleUniverse.NCConformal.NCScale.hess_symm
+#print axioms ScaleUniverse.NCConformal.NCScale.Chr_symm
+#print axioms ScaleUniverse.NCConformal.NCScale.Defm_antisymm_part
+#print axioms ScaleUniverse.NCConformal.NCScale.Defm_symm_iff_commutator
+#print axioms ScaleUniverse.NCConformal.NCScale.Defm_symm_iff_commute
+#print axioms ScaleUniverse.NCConformal.NCScale.symmetric_part_uncorrected
+#print axioms ScaleUniverse.NCConformal.NCScale.correction_is_pure_antisymmetric
+#print axioms ScaleUniverse.NCConformal.NCScale.sum_Chr_Chr_full_nc
+#print axioms ScaleUniverse.NCConformal.NCScale.sum_Chr_Chr_full_classical
+#print axioms ScaleUniverse.NCConformal.NCScale.quantum_correction_couples_to_rotation
+#print axioms ScaleUniverse.NCConformal.NCScale.correction_vanishes_on_commuting
+#print axioms ScaleUniverse.Cosmos.two_dark_routes_differ
+
+/-! ## Sector LVI — black holes, waves, and the borrowed questions -/
+
+#print axioms ScaleUniverse.Horizon.gtt_ne_zero
+#print axioms ScaleUniverse.Horizon.reciprocal_never_degenerate
+#print axioms ScaleUniverse.Horizon.redshift_never_infinite
+#print axioms ScaleUniverse.Horizon.no_degeneracy_anywhere
+#print axioms ScaleUniverse.Horizon.null_cone_scale_independent
+#print axioms ScaleUniverse.Horizon.waves_travel_on_the_light_cone
+#print axioms ScaleUniverse.Horizon.no_energy_dependent_speed
+#print axioms ScaleUniverse.Horizon.entropy_of_scale_ratio
+#print axioms ScaleUniverse.Horizon.entropy_doubling_is_additive
+#print axioms ScaleUniverse.Horizon.entropy_increment_independent_of_size
+#print axioms ScaleUniverse.Horizon.no_minimum_length
+#print axioms ScaleUniverse.Horizon.no_final_description
+
 /-! ## Sector IX — light -/
 
 #print axioms ScaleUniverse.Light.isNull_iff_bare

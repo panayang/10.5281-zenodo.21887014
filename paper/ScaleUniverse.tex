@@ -58,6 +58,8 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\kron}{\delta}
 \newcommand{\Defm}{D}
+\newcommand{\ad}{\operatorname{ad}}
+\newcommand{\covD}{\nabla}
 
 \title{\bfseries 标度—能动量对偶\\[4pt]
 \large 一个完全无量纲的公理体系及其在 Lean 4 中的零 \texttt{sorry} 形式化}
@@ -87,8 +89,8 @@ Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson �
 哪些是仍需外部输入的物理假设。
 
 \medskip
-\noindent\textbf{形式化规模：}544 条定理、9710 行 Lean 代码；
-332 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
+\noindent\textbf{形式化规模：}587 条定理、10663 行 Lean 代码；
+367 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
 （\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
 无 \texttt{sorryAx}。
 \end{abstract}
@@ -955,7 +957,7 @@ QCD 的系数正是这样：在每个夸克阈值处跳变。本框架\emph{定�
 证明中没有使用任何关于衰变动力学的假设。时间膨胀在此不是“钟走慢了”，
 而是 A3 的标度比被读了两次。
 
-\section{回归 IV：暗物质——相互作用发生，观测失效}
+\section{回归 IV：暗物质——相互作用发生，观测失效}\label{sec:dm}
 
 探测器本身是坐落在某个能标 $\varepsilon_D$ 上的物理系统；由 A3，
 这也是它的空间分辨率的倒数。它能登记的不是“一次相互作用”，
@@ -1022,7 +1024,7 @@ hasDerivAt\_hubble, acceleration\_pos}
 把宇宙自身看作一个“因涨落而诞生、正在耗散的大粒子”，
 其数学内容恰是定理 \ref{thm:diss}——与定理 \ref{thm:cs} 的跑动方程同型。
 
-\section{回归 VI：时间箭头}
+\section{回归 VI：时间箭头}\label{sec:entropy}
 
 基底中没有任何东西区分时间方向：微观动力学是双射。破缺来自\emph{观测发生在某个标度上}，
 而标度携带有限分辨率，即一个从微观位形到可分辨对象的\emph{非单射}映射。
@@ -3110,6 +3112,337 @@ everything\_switches\_on\_together, particle\_locus\_is\_anisotropic}
 第 \ref{sec:frame} 节早已把各向同性情形降格为度规扇区的一个轨迹——
 同一降格现在也适用于荷，这是我此前没注意到的一处自洽。
 
+\section{这个立场究竟预言什么}\label{sec:cosmos}
+
+纲领现在的立场是：标签是截面局部的，内容是标度轴上的一个切面。
+这是一个强主张，而它欠账的地方正是开发中最单薄之处——
+暗能量、开端、暗物质，以及最尖锐的挑战：\textbf{共振峰}，
+那是有位置、有宽度、有形状的实测对象。本节偿付能付的，并标明付不了的。
+
+\subsection{耗散速率是常数，故 $w$ 不演化}
+
+第 \ref{sec:de} 节\emph{假设}了恒定分数速率 $\lambda$ 并由之导出精确 de Sitter。
+\textbf{假设正是弱点}：没有任何东西挑出 $\lambda$ 为常数，
+故 $w=-1$ 是一种可能而非预言。
+
+\textbf{A5 提供了它。}设速率依赖于当前标度，$\lambda=\lambda(\sigma)$。
+A5 说全局基准平移 $\sigma\mapsto\sigma+c$ 不可观测，而速率\emph{是}可观测的——
+它就是 Hubble 率。故 $\lambda(\sigma+c)=\lambda(\sigma)$ 对一切 $c$ 成立，
+而在一切平移下不变的函数是常数。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\[
+\text{A5} \Longrightarrow \lambda\ \text{恒定} \Longrightarrow
+\text{精确 de Sitter} \Longrightarrow w=-1\ \text{且不跑动}
+\]
+\leanline{Cosmos.shift\_invariant\_is\_constant,
+rate\_constant\_of\_fiducial\_invariance, w\_does\_not\_evolve}
+\end{mdframed}
+
+\textbf{这是本框架目前最尖锐的可检验陈述：暗能量状态方程的任何演化都证伪 A5。}
+而 A5 是全局承重的——它正是使几何无量纲的那一条。\textbf{这个预言不可调。}
+
+\subsection{没有初值，而这是定理}
+
+若速率恒定，膨胀的初条件由什么定？框架的回答是：\textbf{这个问题预设了 A5 所禁止的东西。}
+
+\begin{theorem}[只有比值，没有起点]\label{thm:noorigin}
+标度因子只以\emph{比值}进入观测，而比值只依赖于流逝的\emph{差}；
+标度是单位故永不消失，历史可延伸到任何给定时刻之下而标度仍为正——
+\textbf{没有第一时刻可供赋值}；
+然而任何有限的流逝差给出有限比值，故\textbf{观测到的历史是有限且可测的，而起点不存在}。
+\leanline{Cosmos.scale\_ratio\_depends\_only\_on\_difference, no\_first\_moment,
+finite\_lookback\_no\_origin}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{宇宙没有年龄，它只有流逝的比值。}
+\end{mdframed}
+
+这不是回避：第 \ref{sec:sing} 节早已证明标度不可退化，
+而第 \ref{sec:expressive} 节证明绝对标度不可表达。\textbf{第一时刻就是一个绝对标度。}
+
+\subsection{暗物质就是各向同性轨迹}
+
+第 \ref{sec:dm} 节此前只有一条自洽陈述。第 \ref{sec:locus} 节现在提供了解释。
+
+\begin{theorem}[各向同性但量值变化：只引力，无其他]\label{thm:dm2}
+$v(x)=f(x)\cdot u$ 的花样楔积恒为零，故不携带转动标签，
+从而（定理 \ref{thm:iso}）无荷、无多重态；
+但 $f$ 仍在变，故共形因子非常数，\textbf{几何仍然弯曲}。
+\leanline{Cosmos.isotropic\_gravitates\_without\_labels}
+\end{theorem}
+
+\begin{center}
+\textbf{无标签、无荷、无多重态——而仍然引力。}
+\end{center}
+
+这就是暗物质的定义性质，\textbf{是导出的而非拟合的}。两条更尖锐的推论：
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{暗物质没有物种，也没有质量谱。}标签是区分内容的东西，
+      而各向同性区域没有标签，故不携带阈值结构。
+      \textbf{在某个确定质量上寻找峰的直接探测计划，
+      找的是框架说不存在的东西。}
+      \leanline{Cosmos.dark\_matter\_has\_no\_species}
+\item 同一论证禁止电荷型自相互作用——这正是"无碰撞"的含义。
+\end{itemize}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
+\textbf{但这不是唯一的路径，我不该把它当作\emph{那个}答案。}
+第 \ref{sec:dm} 节早已有另一条：能标远低于探针的内容——
+\textbf{相互作用发生，探测响应消失}。两者是不同机制，
+而且做出\textbf{相反}的预言，这比单一故事更好：
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{低标度路径}：耦合小但\textbf{非零}，故足够匹配的探针终能看见；
+      且这些对象\emph{有}阈值，故\textbf{有质量谱}。
+\item \textbf{各向同性路径}：在任何标度上都\textbf{没有可耦合的标签}，
+      也没有阈值，故\textbf{没有谱}。
+\end{itemize}
+
+\textbf{哪一条是世界所用，是实验问题。}
+灵敏度提升下的持续零结果支持各向同性路径；任何谱特征支持低标度路径。
+\textbf{框架容纳两者，它不做选择。}
+\leanline{Cosmos.two\_dark\_routes\_differ}
+\end{mdframed}
+
+\subsection{共振峰}
+
+最难的问题：若标签不实在，共振峰是什么？
+
+\textbf{共振就是阈值。}第 \ref{sec:emergence} 节已把质量与标度轴上的位置等同，
+故峰的\emph{位置}就是阈值。新内容是\emph{宽度}。
+
+第 \ref{sec:rg} 节使描述在阈值\textbf{之间}精确；在阈值处它不精确，
+而那个过渡区的尺寸就是宽度。定它的是框架自己的不确定性定理：
+第 \ref{sec:exact} 小节使标度平移精确非对易，
+而第 \ref{sec:nc} 节把对易子变成不确定度乘积。
+故对数标度宽度与驻留时间共轭——\textbf{$\Gamma\tau\gtrsim 1$，宽度--寿命关系，
+出自框架自己的代数而非引进}。
+
+因 $\mu=\ln m$，对数标度上的宽度就是\textbf{相对}宽度 $\Gamma/m$。
+而阈值可被单独分辨，仅当它不与邻居重叠——实测阈值密度把这变成一条界：
+
+\begin{theorem}[可分辨性界]\label{thm:reso}
+两个阈值可被单独分辨，仅当其间距超过半宽之和；
+而平均间隔在对数标度上是 $1/\rho \approx 1.16$，故
+\textbf{$\Gamma/m \gtrsim 1.16$ 的结构根本不是单独的内容}，它们是连续谱。
+\leanline{Cosmos.resolvable\_needs\_width\_below\_gap,
+broad\_structures\_unresolvable, resolvability\_boundary}
+\end{theorem}
+
+\textbf{这是一条真预言，而且在别扭的方向上可证伪}：
+一个窄的、无歧义的、良好分离的共振若其 $\Gamma/m$ 超过该界，就与之矛盾。
+它同时预言最宽的那些已知结构恰是其"是否为独立态"存在争议的那些——事实如此。
+
+\begin{remark}[这不给什么]
+不给耦合常数、不给分宽度、不给产生截面、
+不给"阈值有宽度"之外的任何线型。
+\textbf{框架说共振\emph{是}什么，并界定它何时算一个共振；它不计算一个共振。}
+\end{remark}
+
+\begin{remark}[仍然单薄之处]
+微观扇区的\emph{数值}。$\hbar$ 作为标度步长、曲率作为对易子仍是结构而非数值。
+但"定量引力链条跑在交换扇区上"这一条\textbf{已由第 \ref{sec:ncconf} 节关闭}。
+\end{remark}
+
+\section{闭合量子引力回路}\label{sec:ncconf}
+
+唯一剩下的大缺口是：\emph{定量}引力链条跑在交换扇区上。
+定理 \ref{thm:commcost} 已经证明代价是什么——在交换环上 $\ad$ 恒为零，
+故该扇区\textbf{完全没有输运曲率}，第 \ref{sec:geom} 节的一切曲率只能从公设的 $\kron$ 进来。
+在这一步被重做之前，没有任何量子引力陈述可讲。
+
+\textbf{本节重做它。}场景是一个\textbf{非交换}环，带 $n$ 个相互对易的导子——
+导子仍然对易，因为那是一张图的选择（定理 \ref{thm:noflatcomm}），
+但它们产生的\emph{值}不再对易。
+
+\subsection{原封不动的部分}
+
+Kronecker 符号是 $0$ 与 $1$ 的像，故\textbf{中心}；
+凡只是把它们挪来挪去的步骤全都不变。
+Hessian 的对称性只来自 $d_{\text{comm}}$，Christoffel 的对称性只来自 $\kron$ 的对称性。
+\textbf{联络是同一个对象。}
+
+\subsection{改变的只有一件事}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\begin{theorem}[全部量子引力修正，一行]\label{thm:ncdefm}
+\[
+\Defm_{ij} - \Defm_{ji} = -2\,[\sigma_i,\sigma_j]
+\]
+\textbf{几何的全部量子引力修正，就是不同方向上标度梯度的对易子。}
+\leanline{NCConformal.NCScale.Defm\_antisymm\_part}
+\end{theorem}
+\end{mdframed}
+
+它不是加进拉氏量的一项；它是\textbf{标度无法同时在两个方向上有确定梯度}——
+正是第 \ref{sec:exact} 小节做成精确、第 \ref{sec:nc} 节变成不确定度的那件事。
+
+\begin{theorem}[对称 $\iff$ 梯度对易]\label{thm:ncclass}
+故\textbf{经典几何不是近似，而是对易子恰好消失的那个轨迹}。
+\leanline{NCConformal.NCScale.Defm\_symm\_iff\_commutator,
+Defm\_symm\_iff\_commute}
+\end{theorem}
+
+主收缩获得同样的修正，且再无其他。经典情形下
+$\sum_m \Gamma^a_{cm}\Gamma^m_{be}$ 含有 $2\delta_{ac}\sigma_b\sigma_e$；
+非交换情形下这个 $2\cdot$ 变成\textbf{反对易子}，交叉项保持次序，
+并出现\emph{一个}全新项 $\delta_{be}[\sigma_a,\sigma_c]$。
+
+\begin{theorem}[非交换主收缩及其经典极限]\label{thm:ncmaster}
+逐项算出；对易子消失时精确回到第 \ref{sec:geom} 节的结果。
+\leanline{NCConformal.NCScale.sum\_Chr\_Chr\_full\_nc,
+sum\_Chr\_Chr\_full\_classical}
+\end{theorem}
+
+\subsection{预言}
+
+\textbf{修正是反对称的。}而经典检验——偏折、进动、红移——
+都由 Ricci 的\emph{对称}部分算出。
+
+\begin{theorem}[对称部分完全未被修正]\label{thm:ncsym}
+形变张量的对称部分\textbf{恰是}经典的那个，任何阶都没有对易子修正；
+全部修正住在反对称部分。
+\leanline{NCConformal.NCScale.symmetric\_part\_uncorrected,
+correction\_is\_pure\_antisymmetric}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{故领头阶量子引力效应对一切经典检验\emph{不可见}}，
+只出现在对反对称几何部分敏感的观测量中。
+那是一种类挠率耦合；而由第 \ref{sec:axes} 节，
+框架的转动标签恰是标度方向的楔积——\textbf{同一个对象}。于是预言是：
+
+\begin{center}
+\textbf{量子引力修正首先出现在\emph{自旋--几何耦合}中，而不是轨道中。}
+\end{center}
+\leanline{NCConformal.NCScale.quantum\_correction\_couples\_to\_rotation,
+correction\_vanishes\_on\_commuting}
+\end{mdframed}
+
+\begin{remark}[量级，诚实地说]
+第 \ref{sec:exact} 小节把 $[\sigma_a,\sigma_b]$ 的尺度定为标度步长。
+相对经典项，修正就是那个量级，故在太阳系中\textbf{完全可忽略}；
+此处\textbf{不预言任何现有仪器可测的效应}。
+所主张的是第一个修正的\emph{结构}，以及它能与不能出现在何处。
+\end{remark}
+
+\begin{remark}[仍然没有的]
+没有引力子、没有散射振幅、没有黑洞熵、没有短距完备化。
+\textbf{被闭合的正是被点名的那一个}：曲率计算不再需要交换性，
+而第一个修正被\emph{辨认}出来而非假设。
+\end{remark}
+
+\section{黑洞、引力波，以及哪些标准问题是我们的}\label{sec:horizon}
+
+非交换曲率闭合之后，引力扇区可以往前推。
+标准问题中有些在这里问得出来，有些问不出来，\textbf{把它们分开是一半的工作}。
+
+\subsection{没有奇点——也没有视界}
+
+第 \ref{sec:sing} 节证明标度作为单位不可消失，故无度规退化。
+同一事实还说了一句此前没被引出的更强的话。
+
+\textbf{视界是度规时间分量为零之处。}对角方向性标度下该分量是 $-s_t^2$，而 $s_t$ 是\textbf{单位}：
+
+\begin{theorem}[无视界、无无穷红移]\label{thm:nohor}
+$g_{tt}=-s_t^2$ 永不为零，故\textbf{没有视界}；
+其倒数伙伴 $s_r=s_t^{-1}$ 也永不发散（第 \ref{sec:vacuum} 节把二者绑定）；
+而红移是\emph{两个单位之比}，故是单位，故\textbf{既不为零也不为无穷}。
+\leanline{Horizon.gtt\_ne\_zero, reciprocal\_never\_degenerate,
+redshift\_never\_infinite, no\_degeneracy\_anywhere}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{无奇点、无视界、无无穷红移——三者出自同一个事实：
+标度是比值，而比值可逆。}
+\end{mdframed}
+
+\textbf{那么观测现象如何解释？}一切经典检验都由\emph{外部}算出，而外部原封未动：
+从对角拟设经第 \ref{sec:riccidiag} 节到第 \ref{sec:vacuum} 节的链条不变，
+故\textbf{黑洞阴影、最内稳定轨道、铃宕频率、光线偏折全部与广义相对论一致}。
+黑洞在这里是\textbf{标度比值极端但\emph{有限}}的区域：\textbf{任意黑，但不全黑}。
+
+三条与标准图景不同的推论，同源于上述定理：
+\textbf{没有任何东西被因果隔断、没有信息被销毁、红移有界而非发散}。
+\textbf{这三条目前都不可测，我不作相反声称。}
+
+\subsection{引力波，以及一个尖锐的判别式}
+
+第 \ref{sec:light} 节证明"是否类光"\textbf{不依赖于标度}。由此分出两件事。
+
+\begin{theorem}[引力波恰好走在光锥上]\label{thm:gw}
+引力波是标度的传播扰动——因为几何\emph{就是}标度花样。
+而标度扰动移动不了光锥。
+故\textbf{引力波与光共用光锥：同速、无色散、无质量}。
+\leanline{Horizon.null\_cone\_scale\_independent, waves\_travel\_on\_the\_light\_cone}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\begin{theorem}[禁止能量依赖的光速]\label{thm:nodisp}
+由 A3，能量\emph{就是}标度之倒数，故标度无关的光锥就是\textbf{能量无关}的光锥。
+\textbf{本框架禁止能量依赖的光子到达时延，任何阶。}
+\leanline{Horizon.no\_energy\_dependent\_speed}
+\end{theorem}
+
+这是一个真判别式：\textbf{带最小长度的方案普遍预言一个小的能量依赖延迟，
+而本框架预言恰好为零。}伽马暴计时已在约束领头效应，每一次改进都在直接检验它。
+\end{mdframed}
+
+\subsection{黑洞熵是对数的，不是面积律}
+
+熵在这里是可分辨结构的计数（第 \ref{sec:entropy} 节），
+而第 \ref{sec:spectrum} 节测出其密度 $\rho$。故跨越标度比值 $R$ 的区域，熵为
+\[
+S = \rho \ln R .
+\]
+
+\begin{theorem}[比值加倍只增加一个常数]\label{thm:ent}
+面积律会使熵\emph{翻四倍}；此处增量只依赖于比值增长的\emph{因子}，
+\textbf{与已达到的比值无关}。
+\leanline{Horizon.entropy\_of\_scale\_ratio, entropy\_doubling\_is\_additive,
+entropy\_increment\_independent\_of\_size}
+\end{theorem}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
+\textbf{这与 Bekenstein--Hawking 面积律矛盾。}
+我把它作为\emph{分歧}而非任何东西的推导来陈述：
+面积律被广泛相信但\textbf{从未被测量}，
+而本框架无法复现它，因为面积律的推导需要视界，而上一小节说视界不存在。
+\textbf{要么框架在此处错，要么面积律错，而现有的一切都判不了。}
+\end{mdframed}
+
+\subsection{哪些问题是借来的}
+
+\textbf{引力子。}引力子是一个具有粒子激发的场的量子。
+第 \ref{sec:emergence} 节说不存在标度无关的物种清单，
+而此处引力不是几何上的场，\textbf{它就是标度本身的不均匀}。
+故"引力子是什么"同时引进了框架所拒绝的场本体论与物种本体论。
+\textbf{取代它的是定理 \ref{thm:ncdefm}}：引力的量子内容是标度梯度的对易子，
+而那不是一个粒子。
+
+\textbf{散射振幅。}振幅需要内容固定的渐近入态与出态。
+第 \ref{sec:emergence} 节说没有标度携带完整清单，故"那些"渐近态并不存在。
+存活下来的是\textbf{两个被指名标度之间的映射}——
+而这正是重整化振幅实际所是；\textbf{它的标度依赖不再是麻烦，而成为内容}。
+
+\textbf{短距完备化。}完备化预设一个最后的标度。
+
+\begin{theorem}[没有最小长度]\label{thm:nomin}
+对任何被提议的最短标度都存在更细者：阈值无界，且标度是单位故分辨率无上限。
+\textbf{本框架预言没有最小长度}，这与一切预设基本长度的纲领矛盾——
+而这个预言正是定理 \ref{thm:nodisp} 使之可检验的那一个。
+\leanline{Horizon.no\_minimum\_length, no\_final\_description}
+\end{theorem}
+
+\begin{remark}[四项的结局]
+两项被回答（引力波、熵），
+一项被\emph{否定地}回答且带可检验推论（短距完备化），
+一项作为借来的问题被\textbf{谢绝}（引力子），并指明取代它的是什么。
+\end{remark}
+
 \section{自我审查：已发现的思维污染}\label{sec:audit}
 
 本节是对整个体系的一次不设辩护的复查，按"基础建构"与"目标问题"两条线。
@@ -3259,7 +3592,7 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \ref{thm:detfail}、\ref{thm:dm}、\ref{thm:diss}、\ref{thm:desitter}、
 \ref{thm:h}、\ref{thm:arrow}、\ref{thm:null}、\ref{thm:massive}、
 \ref{thm:cov}、\ref{thm:covfield}、\ref{thm:sing}、\ref{thm:singcurv}、
-\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:newc}、\ref{thm:nouniv}、\ref{thm:wedge}、\ref{thm:uniax}、\ref{thm:three}、\ref{thm:rotvar}、\ref{thm:wound}、\ref{thm:noax2}、\ref{thm:stabpos}、\ref{thm:algbig}、\ref{thm:twocond}、\ref{thm:ratio}、\ref{thm:dennorm}、\ref{thm:a7}、\ref{thm:noinv}、\ref{thm:iso}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
+\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:newc}、\ref{thm:nouniv}、\ref{thm:wedge}、\ref{thm:uniax}、\ref{thm:three}、\ref{thm:rotvar}、\ref{thm:wound}、\ref{thm:noax2}、\ref{thm:stabpos}、\ref{thm:algbig}、\ref{thm:twocond}、\ref{thm:ratio}、\ref{thm:dennorm}、\ref{thm:a7}、\ref{thm:noinv}、\ref{thm:iso}、\ref{thm:noorigin}、\ref{thm:dm2}、\ref{thm:reso}、\ref{thm:ncdefm}、\ref{thm:ncclass}、\ref{thm:ncmaster}、\ref{thm:ncsym}、\ref{thm:nohor}、\ref{thm:gw}、\ref{thm:nodisp}、\ref{thm:ent}、\ref{thm:nomin}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
 
 \paragraph{尚未完成——本纲领当前最薄弱之处。}
 这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
@@ -3390,15 +3723,18 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Axes.lean}       & 10 & 两难消解；轴数被迫为一 \\
 \texttt{Dimension.lean}  & 10 & 方向是表示；比值不变；量值即单位 \\
 \texttt{Locus.lean}      & 10 & A7 扶正；标签只活在各向异性轨迹上 \\
+\texttt{Cosmos.lean}     & 12 & $w$ 不演化；无初值；暗物质两路；共振宽度界 \\
+\texttt{NCConformal.lean}& 12 & 非交换曲率；修正 $=[\sigma_i,\sigma_j]$，纯反对称 \\
+\texttt{Horizon.lean}    & 12 & 无视界；波恰在光锥；熵是对数；无最小长度 \\
 \midrule
-\textbf{合计}             & \textbf{544} & 9710 行 Lean 代码 \\
+\textbf{合计}             & \textbf{587} & 10663 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对 332 条主定理执行 \texttt{\#print axioms}，结果全部落在
+对 367 条主定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -3429,7 +3765,7 @@ Newton 引力是标度响应律的线性化；
 时间箭头是有限分辨率的必然产物；
 而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
 
-这些不是隐喻。它们是 544 条经机器检验、零 \texttt{sorry} 的定理。
+这些不是隐喻。它们是 587 条经机器检验、零 \texttt{sorry} 的定理。
 它们成立的前提是本文列出的七条公理与第 \ref{sec:scope} 节明示的物理输入；
 这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
 能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}
