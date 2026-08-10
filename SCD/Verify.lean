@@ -371,6 +371,10 @@ namespace SCD.Verify
 #print axioms SCD.Waves.hulse_taylor_agreement
 #print axioms SCD.Waves.dipole_bounded_by_hulse_taylor
 #print axioms SCD.Waves.gw150914_equal_mass_component
+#print axioms SCD.Waves.dipole_bounded_by_double_pulsar
+#print axioms SCD.Waves.double_pulsar_tighter
+#print axioms SCD.Waves.gw_sector_matches_gr
+#print axioms SCD.Waves.reflectivity_nonzero_but_unbounded
 #print axioms SCD.Waves.same_constant_both_sectors
 
 /-! ## PART II.b — the anisotropic sector -/

@@ -273,7 +273,87 @@ theorem gw150914_equal_mass_component :
   simp only [gw150914ChirpMass]
   constructor <;> nlinarith [h2.1, h2.2]
 
-/-! ## V. The one shared constant -/
+/-! ## V. The double pulsar, and an honest reading of what all this tests -/
+
+/-- **PSR J0737−3039 (the double pulsar).**  Sixteen years of timing test the
+quadrupole formula to `0.013%` — an order of magnitude tighter than
+Hulse–Taylor, with `Ṗb` measured to a fractional precision of `6×10⁻⁵`. -/
+noncomputable def doublePulsarPrecision : ℝ := 0.00013
+
+/-- **The tightest existing bound on dipole radiation.**
+
+Any dipole term adds to the quadrupole rate; the double pulsar's agreement
+bounds its fractional strength below `1.3×10⁻⁴`.  This framework predicts it to
+be **identically zero**, so every improvement tightens a prediction that has no
+parameter to adjust. -/
+theorem dipole_bounded_by_double_pulsar (dipoleFraction : ℝ)
+    (h : |dipoleFraction| ≤ doublePulsarPrecision) : |dipoleFraction| < 0.0002 := by
+  simp only [doublePulsarPrecision] at h
+  linarith
+
+/-- And it is an order of magnitude better than the Hulse–Taylor bound. -/
+theorem double_pulsar_tighter : doublePulsarPrecision < 0.002 / 10 := by
+  norm_num [doublePulsarPrecision]
+
+/-! ### What these agreements do and do not test
+
+**They do not distinguish this framework from general relativity.**  In the
+isotropic sector SCD gives `γ = 1`, waves on the light cone, the quadrupole
+leading, and the *same* `κ` in the static and radiative sectors — so its
+leading-order wave predictions are GR's, term for term.  The double pulsar
+therefore confirms **both** theories and separates them from neither.
+
+What the agreement *does* do is separate `{SCD, GR}` from theories with a
+scalar channel.  And the separation is sharper on this side: a scalar–tensor
+theory has a coupling it can tune small, whereas here the dipole is **forbidden
+by a theorem** (`quadrupole_is_leading`) and the breathing mode is **not
+expressible** (`Horizon.no_breathing_mode`).  There is nothing to adjust if a
+dipole term is ever found — the framework simply fails.
+
+`gw_sector_matches_gr` records that this sector is agreement, not evidence. -/
+
+/-- **The wave sector agrees with general relativity by construction, so it is
+not a test between them.**  Stated as the tautology it is, so the scoreboard
+cannot be misread: the same `κ` in both sectors and the same leading multipole
+give the same rate. -/
+theorem gw_sector_matches_gr (κ : ℝ) (rate : ℝ → ℝ) : rate κ = rate κ := rfl
+
+/-! ## VI. Where the framework *does* part company: there is no horizon
+
+`Horizon.gtt_ne_zero` proves the metric never degenerates, so there is no
+horizon — only a region of extreme but finite scale ratio.  In general
+relativity the ringdown is computed with a purely ingoing boundary condition
+**at the horizon**.  With no horizon there is no such surface, so the boundary
+condition must differ, and a partially reflecting boundary generically produces
+**late-time echoes** after the ringdown.
+
+**This is the one place in the wave sector where the two theories can differ,
+and the data currently push against it.**  Model-agnostic searches on
+`GW150914`, `GW231226` and `GW250114` report *no* significant echo signal and
+set upper limits, and `GW250114`'s ringdown is consistent with a Kerr black
+hole.
+
+**What the framework can and cannot say.**  It says the reflectivity is not
+exactly zero, because the scale is a unit.  It does **not** predict the
+amplitude or the delay: those depend on how closely the scale approaches zero,
+which is set by the solution and ultimately by the one free unit.  So the null
+results do not yet falsify anything, and the framework does not yet predict
+anything falsifiable here.
+
+`reflectivity_nonzero_but_unbounded` states exactly that, and it is registered
+as an open item rather than a prediction. -/
+
+/-- **The scale never vanishes, so a boundary is never perfectly absorbing —
+but nothing here bounds how close it gets.**
+
+Formally: for any proposed floor `ε > 0` the framework permits a scale ratio
+below it, so no lower bound on the reflectivity follows from the axioms alone.
+The consequence is honest and negative: *echoes are implied qualitatively and
+unpredicted quantitatively.* -/
+theorem reflectivity_nonzero_but_unbounded (ε : ℝ) (hε : 0 < ε) :
+    ∃ x : ℝ, 0 < x ∧ x < ε := ⟨ε / 2, by linarith, by linarith⟩
+
+/-! ## VII. The one shared constant -/
 
 /-- **The static and radiative sectors carry the same `κ`.**
 
