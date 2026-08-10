@@ -132,8 +132,12 @@ conditional:
   `ScaleField`; it asks only for a ring endomorphism.  So the exactness is a
   property **of the model**, not something the axioms are shown to realise.
   This is the most consequential instance, because the claim is a flagship one;
-* `Waves.Conserved` — the multipole conservation hypothesis is not bridged from
-  `Dynamics.source_conserved_of_field_equation` to a concrete moment;
+* `Waves.Conserved` — **now bridged** (`Waves.total_conserved`).  I had said the
+  bridge was impossible because the framework has no integral; that was wrong.
+  The algebraic content of "the integral of a divergence vanishes" is the
+  **quotient by the divergences**, which A1 supplies.  What survives is one
+  algebraic condition, `divergences ≠ ⊤` — the algebraic face of localisation —
+  in place of the three analytic ones (measure, divergence theorem, decay);
 * `RG.ScaleFlow`, `Direction.DirTransport`, `Invariant.Trace`,
   `Covariance.CosmicHistory` — each never instantiated from the framework's own
   carrier.
@@ -225,7 +229,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 641
+def auditedTheorems : ℕ := 644
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

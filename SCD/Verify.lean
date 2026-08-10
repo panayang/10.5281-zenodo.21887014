@@ -360,6 +360,9 @@ namespace SCD.Verify
 #print axioms SCD.Waves.monopole_does_not_radiate
 #print axioms SCD.Waves.dipole_does_not_radiate
 #print axioms SCD.Waves.quadrupole_is_leading
+#print axioms SCD.Waves.drift_descends
+#print axioms SCD.Waves.total_conserved
+#print axioms SCD.Waves.localised_iff_proper
 #print axioms SCD.Waves.power_pos
 #print axioms SCD.Waves.power_ratio_halving
 #print axioms SCD.Waves.inspiral_shrinks_orbit
