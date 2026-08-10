@@ -73,15 +73,20 @@ noncomputable def mercuryFactor : ℝ :=
   6 * 6.674e-11 * 1.989e30 * 415.2030829 * 206264.806
     / (5.7909e10 * (1 - 0.2056 ^ 2) * (2.998e8) ^ 2)
 
-theorem mercuryFactor_bounds : 13.68 < mercuryFactor ∧ mercuryFactor < 13.69 := by
+theorem mercuryFactor_bounds : 13.6837 < mercuryFactor ∧ mercuryFactor < 13.6838 := by
   constructor <;> norm_num [mercuryFactor]
 
 /-- Predicted perihelion advance of Mercury, arcseconds per century, at the
 reciprocal value `γ = 1`. -/
 noncomputable def mercuryPrecession : ℝ := Real.pi * mercuryFactor
 
-/-- **`42.99″` per century**, against the measured `42.98 ± 0.04″`. -/
-theorem mercury_value : 42.9 < mercuryPrecession ∧ mercuryPrecession < 43.1 := by
+/-- **`42.989″` per century**, against the measured `42.98 ± 0.04″`.
+
+The bound is certified to `±0.001″`, which is what the comparison to a
+`±0.04″` measurement requires.  An earlier version proved only `42.9 < x < 43.1`
+while quoting agreement at `±0.04″`; the gap between what was proved and what
+was claimed was caught by the external audit. -/
+theorem mercury_value : 42.988 < mercuryPrecession ∧ mercuryPrecession < 42.990 := by
   have hf := mercuryFactor_bounds
   have hlo := Real.pi_gt_d6
   have hhi := Real.pi_lt_d6

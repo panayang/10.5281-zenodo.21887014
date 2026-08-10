@@ -93,7 +93,7 @@ noncomputable def solarIsoArcsec : ℝ :=
   (2 * 6.674e-11 * 1.989e30 / (6.957e8 * (2.998e8) ^ 2)) * 206264.806
 
 /-- **`1.7515″`** — matching the VLBI value `1.7509 ± 0.0002″` to about `0.04%`. -/
-theorem solarObs_value : 1.75 < solarObsArcsec ∧ solarObsArcsec < 1.76 := by
+theorem solarObs_value : 1.7515 < solarObsArcsec ∧ solarObsArcsec < 1.7516 := by
   constructor <;> norm_num [solarObsArcsec]
 
 /-- **`0.8758″`** — the isotropic sector's prediction, wrong by a factor of

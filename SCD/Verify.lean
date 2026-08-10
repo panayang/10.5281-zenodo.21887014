@@ -602,7 +602,7 @@ namespace SCD.Verify
 -- Observation.lean
 #print axioms SCD.Observation.null_has_energy
 #print axioms SCD.Observation.redshift_is_scale_ratio
-#print axioms SCD.Observation.no_redshift_of_equal_scale
+#print axioms SCD.Observation.scale_differs_of_energy_differs
 #print axioms SCD.Observation.obsEnergy_rescale
 #print axioms SCD.Observation.redshift_fiducial_invariant
 #print axioms SCD.Observation.causal_structure_still_blind
@@ -790,6 +790,7 @@ namespace SCD.Verify
 #print axioms SCD.Audit.scalar_for_directional_count
 #print axioms SCD.Audit.register_nonempty
 #print axioms SCD.Audit.more_corrected_than_retracted
+#print axioms SCD.Audit.register_grew_under_audit
 #print axioms SCD.Audit.clean_count
 
 end SCD.Verify

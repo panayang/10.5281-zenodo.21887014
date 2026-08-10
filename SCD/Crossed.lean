@@ -35,6 +35,17 @@ Everything follows exactly:
 So the classical differential structure is not first-order-in-`ħ`; it is the
 **zero-scale-step** case of an exact relation.  The caveat in
 `Deformation.lean` is thereby retired rather than argued around.
+
+**Scope, added after an external audit.**  `ScaleShift` below is **not
+constructed from A1–A7**.  It requires only a ring endomorphism `T` and a unit
+`U`; nothing in this development builds one from `ScaleAlgebra`, `DiffRing` or
+`ScaleField`.  So what is proved is exact **for any such pair** — the algebra is
+airtight — but the step from "the framework has a scale shift with these
+properties" to "`ħ` is that step" is an **identification**, not a construction.
+
+That distinction was not made in earlier versions of this file, and the docstring
+below still reads as though the structure were forced.  It is not.  Registered
+in `Audit.lean` §V.b.
 -/
 import Mathlib.Algebra.Group.End
 import Mathlib.Tactic.Ring

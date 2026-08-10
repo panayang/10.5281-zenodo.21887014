@@ -68,10 +68,21 @@ violated.
 ## III.  The recurring error
 
 Five of the corrections above are the same mistake: **scalar reasoning where the
-structure is directional.**  It appeared in `Frame.lean` (geometry),
-`Axis.lean` (defects), `Coupling.lean` (the foundation — "ratios commute" is
-scalar), `Direction.lean` (the flatness reading), and `Slice.lean` (the uniaxial
-reading).
+structure is directional.**  Taking the attribution from the files' own
+self-diagnoses rather than from memory:
+
+1. `Frame.lean` — geometry: the scalar scale forbids Schwarzschild;
+2. `Codimension.lean` — defects: a circle-valued (scalar) scale predicts
+   strings, corrected by `Axis.lean`'s unoriented axis;
+3. `Coupling.lean` — the foundation: "ratios commute" is a scalar statement;
+4. `Direction.lean` — the flatness reading of commuting derivations;
+5. `Axes.lean` — the uniaxial reading of `wedge v v = 0`, which is about
+   *homogeneity*; the theorem was renamed in `Slice.lean`.
+
+An earlier version of this list credited `Axis.lean` and `Slice.lean` for
+occurrences 2 and 5.  Those are the files that *corrected* them; the files that
+*made* them are `Codimension.lean` and `Axes.lean`'s antecedent.  The count is
+unchanged; the attribution was wrong and is fixed.
 
 `scalar_for_directional_count` records the number so it cannot drift.
 
@@ -94,10 +105,42 @@ identification does not.
 
 ## V.  Assumed, and registered rather than smuggled
 
+* **A6′, the scale response law** `e^{2σ}R = κρ`.  **This is not one of the
+  seven axioms.**  It is an external physical input, introduced in
+  `Newton.lean` and load-bearing there and in `RicciDiag.lean`,
+  `Precession.lean` and `Waves.lean`.  It appears as an explicit hypothesis in
+  every theorem that uses it, so nothing is hidden at the type level — but it
+  was **missing from this register**, which is the one place a reader looks to
+  answer "does this rest on the axioms alone?".  Added after an external audit
+  pointed it out; the omission was mine and it was the register's most
+  consequential gap.
 * **defects uniform in the symmetric space's volume**, needed for the
   `ρ·α = k−1` conversion in `Dimension.lean`.  No theorem supplies it;
 * **A7 itself** — a commitment about what counts as an observation, promoted to
   an axiom in `Postulates.lean` rather than left as a judgement.
+
+## V.b  Structures that carry hypotheses the axioms do not supply
+
+A recurring shape, first registered for `Dynamics.Realizes` and then found more
+widely by an external audit.  A theorem of the form "given a structure `S`, …"
+is only as strong as the framework's ability to *build* an `S`.  Where it
+cannot, the theorem is true but unwitnessed, and its physical gloss is a
+conditional:
+
+* **`Crossed.ScaleShift`** — the carrier of the "`ħ` is an exact scale step"
+  result.  It is never constructed from `ScaleAlgebra`, `DiffRing` or
+  `ScaleField`; it asks only for a ring endomorphism.  So the exactness is a
+  property **of the model**, not something the axioms are shown to realise.
+  This is the most consequential instance, because the claim is a flagship one;
+* `Waves.Conserved` — the multipole conservation hypothesis is not bridged from
+  `Dynamics.source_conserved_of_field_equation` to a concrete moment;
+* `RG.ScaleFlow`, `Direction.DirTransport`, `Invariant.Trace`,
+  `Covariance.CosmicHistory` — each never instantiated from the framework's own
+  carrier.
+
+**None of these is false.**  Each is a correct theorem about anything meeting
+its hypothesis.  What is corrected here is the *reading*: they describe what
+would follow, not what the axioms deliver.
 
 ## VI.  What rests on the axioms alone
 
@@ -131,8 +174,9 @@ def correctedCount : ℕ := 6
 /-- External results cited and not proved. -/
 def citedCount : ℕ := 2
 
-/-- Assumptions registered rather than smuggled, `A7` included. -/
-def assumedCount : ℕ := 2
+/-- Assumptions registered rather than smuggled: A6′, the uniform-density
+assumption, and A7 itself. -/
+def assumedCount : ℕ := 3
 
 /-- **The register is not empty, and that is the point.**
 
@@ -147,11 +191,19 @@ theorem register_nonempty :
 narrowed than had to be withdrawn. -/
 theorem more_corrected_than_retracted : retractedCount < correctedCount := by decide
 
+/-- Structures carrying hypotheses the framework does not supply — true
+theorems whose physical reading is conditional (§V.b). -/
+def unwitnessedStructures : ℕ := 6
+
+/-- **The register grew under external audit, which is the point of having
+one.**  An audit that finds nothing has not been run adversarially. -/
+theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
+
 /-! ## The standing verification claim -/
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 629
+def auditedTheorems : ℕ := 630
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

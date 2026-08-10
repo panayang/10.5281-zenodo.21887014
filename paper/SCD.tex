@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}629 条定理、11878 行 Lean 代码、61 个文件；
-\textbf{全部 629 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}630 条定理、11878 行 Lean 代码、61 个文件；
+\textbf{全部 630 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -4137,9 +4137,9 @@ $E_{{\rm QG},1}\gtrsim 7.6\,E_{\rm Pl}$（总色散）、$\gtrsim 2\,E_{\rm Pl}$
 \toprule
 量 & 本框架 & 实测 & 状态 \\
 \midrule
-\multicolumn{4}{l}{\emph{从公理链条导出，中间无假设（第四部分）}}\\
-掠日光线偏折 & $1.7515''$ & $1.7509\pm0.0002''$ & 符合 $0.04\%$ \\
-水星近日点进动 & $42.99''/$世纪 & $42.98\pm0.04''$ & 符合 \\
+\multicolumn{4}{l}{\emph{从公理链条导出（外加 A6$'$）；数值证到所引精度}}\\
+掠日光线偏折 & $1.7515''$ & $1.7509\pm0.0002''$ & 符合 \\
+水星近日点进动 & $42.989''$ & $42.98\pm0.04''$ & 符合 \\
 PPN $\gamma$ & $1$（精确） & $|\gamma-1|\lesssim2\times10^{-5}$ & 符合 \\
 \midrule
 \multicolumn{4}{l}{\emph{A3 读法的算术核对，非独立预言}}\\
@@ -4301,9 +4301,20 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 
 \begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
 \textbf{上列六条中有五条是同一个错误：在结构是方向性的地方用标量推理。}
-它出现在第 \ref{sec:frame}（几何）、\ref{sec:axis}（缺陷）、
-\ref{sec:coupling}（地基——“比值可交换”是标量的说法）、
-\ref{sec:direction}（平直性解读）、\ref{sec:slice}（单轴解读）节。
+归属取自各文件\emph{自己}的自述，而非记忆：
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=1pt]
+\item \textbf{第 \ref{sec:frame} 节}——几何：标量标度禁止 Schwarzschild；
+\item \textbf{第 \ref{sec:codim} 节}——缺陷：圆值（标量）标度预言弦，
+      由第 \ref{sec:axis} 节的无向轴更正；
+\item \textbf{第 \ref{sec:coupling} 节}——地基：“比值可交换”是标量陈述；
+\item \textbf{第 \ref{sec:direction} 节}——对易导子的平直性解读；
+\item \textbf{第 \ref{sec:axes} 节}——$\text{wedge}\,v\,v=0$ 的单轴解读，
+      而它讲的是\emph{均匀性}。
+\end{enumerate}
+
+\textbf{此前本表把第 2、5 条记在第 \ref{sec:axis}、\ref{sec:slice} 节名下。
+那是\emph{更正}它们的节，不是\emph{犯下}它们的节。}计数不变，归属已改。
 
 \textbf{抓住它的判据：}凡是提到一个计数——一根轴、一个标度、一个方向、一个值——
 就问\emph{是什么的计数}。\textbf{值与方向每一次都会分开。}
@@ -4394,12 +4405,44 @@ $k=3$ 依赖一个判断 & 已扶正为 A7 & 公开的第七条公理（\S\ref{s
       以及李群模离散子群的 $\pi_2$ 为零。
 \end{enumerate}
 
-\textbf{假设（2 条）。}
+\textbf{假设（3 条）。}
 \begin{enumerate}[leftmargin=1.8em,itemsep=2pt]
+\item \textbf{A6$'$，标度响应律} $e^{2\sigma}R=\kappa\rho$。
+      \textbf{它不是七条公理之一}，是一条外部物理输入，
+      在第 \ref{sec:newton}、\ref{sec:riccidiag}、\ref{sec:precession}、
+      \ref{sec:waves} 节承重。它在每一条用到它的定理里都是显式前提，
+      故类型层面没有隐瞒——但它\textbf{此前不在本登记册里}，
+      而这里正是读者用来回答"这是否只靠公理"的地方。
+      \textbf{经外部审核指出后补入；这个遗漏是本登记册最严重的一处。}
 \item 缺陷在对称空间体积中\textbf{均匀分布}——第 \ref{sec:dimension} 节的
       $\rho\alpha=k-1$ 换算需要它，无定理提供。
 \item \textbf{A7 本身}——关于什么算一次观测的承诺，已扶正为公理而非留作判断。
 \end{enumerate}
+
+\subsection{登记册（六）：前提无见证的结构}\label{ss:unwitnessed}
+
+一个反复出现的形状，最初为 \texttt{Dynamics.Realizes} 登记，
+后由外部审核发现范围更广。形如"给定结构 $S$，……"的定理，
+其强度取决于框架\emph{能否造出}一个 $S$。造不出时，定理为真但\textbf{无见证}，
+其物理解读只是一个条件句。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1.2pt,backgroundcolor=red!4]
+\textbf{最严重的一处：\texttt{Crossed.ScaleShift}}——
+即"$\hbar$ 是精确的标度步长"这一\emph{招牌}结果的载体。
+它\textbf{从未由 \texttt{ScaleAlgebra}／\texttt{DiffRing}／\texttt{ScaleField} 构造出来}，
+只要求一个环自同态。
+故那份精确性是\textbf{模型的性质}，而不是公理被证明能实现的东西。
+\textbf{从"框架有一个具此性质的标度平移"到"$\hbar$ 就是那个步长"，
+是一次\emph{认定}，不是一次构造。}
+
+其余五处：\texttt{Waves.Conserved}（多极守恒未从 Bianchi 桥接到具体矩）、
+\texttt{RG.ScaleFlow}、\texttt{Direction.DirTransport}、
+\texttt{Invariant.Trace}、\texttt{Covariance.CosmicHistory}——
+各自从未由框架自己的载体实例化。
+
+\textbf{这些没有一条是假的。}每一条对满足其前提者都成立。
+此处更正的是\emph{读法}：它们说的是\emph{会跟出什么}，不是公理\emph{给出了什么}。
+\end{mdframed}
 
 \subsection{审查方法本身}
 
@@ -4903,7 +4946,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \subsection{公理审计}
 
-对全部 629 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 630 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -4971,7 +5014,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 629 条}\label{sec:index}
+\section{定理索引：全部 630 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5040,7 +5083,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Spectrum.lean}} (9)\quad \texttt{mass\_\allowbreak threshold\_\allowbreak inverse}, \texttt{equal\_\allowbreak gaps\_\allowbreak variance\_\allowbreak zero}, \texttt{observed\_\allowbreak cvSq\_\allowbreak value}, \texttt{meanGap\_\allowbreak value}, \texttt{observed\_\allowbreak not\_\allowbreak geometric}, \texttt{observed\_\allowbreak within\_\allowbreak scale\_\allowbreak invariant\_\allowbreak range}, \texttt{densityFromGaps\_\allowbreak value}, \texttt{deltaN\_\allowbreak inverse}, \texttt{density\_\allowbreak gap\_\allowbreak inverse}\par\smallskip
 \noindent\textbf{\texttt{Entropy.lean}} (9)\quad \texttt{mem\_\allowbreak sat}, \texttt{subset\_\allowbreak sat}, \texttt{card\_\allowbreak le\_\allowbreak card\_\allowbreak sat}, \texttt{card\_\allowbreak image\_\allowbreak perm}, \texttt{entropy\_\allowbreak nondecreasing}, \texttt{no\_\allowbreak reverse\_\allowbreak law}, \texttt{evolve\_\allowbreak no\_\allowbreak reverse\_\allowbreak law}, \texttt{charge\_\allowbreak change\_\allowbreak implies\_\allowbreak nonequilibrium}, \texttt{entropy\_\allowbreak production\_\allowbreak implies\_\allowbreak nonequilibrium}\par\smallskip
 \noindent\textbf{\texttt{Light.lean}} (6)\quad \texttt{unit\_\allowbreak sq\_\allowbreak mul\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff}, \texttt{isNull\_\allowbreak iff\_\allowbreak bare}, \texttt{isNull\_\allowbreak scale\_\allowbreak invariant}, \texttt{scale\_\allowbreak determined\_\allowbreak of\_\allowbreak nonnull}, \texttt{physForm\_\allowbreak ne\_\allowbreak bareForm}, \texttt{null\_\allowbreak weight\_\allowbreak zero}\par\smallskip
-\noindent\textbf{\texttt{Observation.lean}} (6)\quad \texttt{null\_\allowbreak has\_\allowbreak energy}, \texttt{redshift\_\allowbreak is\_\allowbreak scale\_\allowbreak ratio}, \texttt{no\_\allowbreak redshift\_\allowbreak of\_\allowbreak equal\_\allowbreak scale}, \texttt{obsEnergy\_\allowbreak rescale}, \texttt{redshift\_\allowbreak fiducial\_\allowbreak invariant}, \texttt{causal\_\allowbreak structure\_\allowbreak still\_\allowbreak blind}\par\smallskip
+\noindent\textbf{\texttt{Observation.lean}} (6)\quad \texttt{null\_\allowbreak has\_\allowbreak energy}, \texttt{redshift\_\allowbreak is\_\allowbreak scale\_\allowbreak ratio}, \texttt{scale\_\allowbreak differs\_\allowbreak of\_\allowbreak energy\_\allowbreak differs}, \texttt{obsEnergy\_\allowbreak rescale}, \texttt{redshift\_\allowbreak fiducial\_\allowbreak invariant}, \texttt{causal\_\allowbreak structure\_\allowbreak still\_\allowbreak blind}\par\smallskip
 \noindent\textbf{\texttt{Particles.lean}} (9)\quad \texttt{energy\_\allowbreak pos}, \texttt{energy\_\allowbreak ge}, \texttt{one\_\allowbreak le\_\allowbreak scaleRatio}, \texttt{scaleRatio\_\allowbreak mono}, \texttt{lifetime\_\allowbreak ge}, \texttt{lifetime\_\allowbreak mono}, \texttt{lifetime\_\allowbreak at\_\allowbreak rest}, \texttt{available\_\allowbreak mono}, \texttt{not\_\allowbreak available\_\allowbreak of\_\allowbreak lt}\par\smallskip
 \noindent\textbf{\texttt{DarkMatter.lean}} (4)\quad \texttt{detResp\_\allowbreak pos}, \texttt{detection\_\allowbreak failure}, \texttt{dark\_\allowbreak matter\_\allowbreak exists}, \texttt{response\_\allowbreak vanishes}\par\smallskip
 \noindent\textbf{\texttt{DarkEnergy.lean}} (8)\quad \texttt{hasDerivAt\_\allowbreak exp\_\allowbreak mul}, \texttt{dissipation\_\allowbreak solution}, \texttt{energy\_\allowbreak strictly\_\allowbreak decreasing}, \texttt{scaleFactor\_\allowbreak eq}, \texttt{hasDerivAt\_\allowbreak scaleFactor}, \texttt{hasDerivAt\_\allowbreak hubble}, \texttt{acceleration\_\allowbreak pos}, \texttt{open\_\allowbreak universe\_\allowbreak accelerates}\par\smallskip
@@ -5058,7 +5101,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Expressive.lean}} (10)\quad \texttt{diffPattern\_\allowbreak shift}, \texttt{invariant\_\allowbreak factors}, \texttt{diffPattern\_\allowbreak invariant}, \texttt{invariant\_\allowbreak iff\_\allowbreak diffPattern}, \texttt{eval\_\allowbreak not\_\allowbreak invariant}, \texttt{scale\_\allowbreak says\_\allowbreak nothing\_\allowbreak about\_\allowbreak rotation}, \texttt{rotation\_\allowbreak says\_\allowbreak nothing\_\allowbreak about\_\allowbreak scale}, \texttt{channels\_\allowbreak independent}, \texttt{neither\_\allowbreak channel\_\allowbreak complete}, \texttt{no\_\allowbreak channel\_\allowbreak coupling}\par\smallskip
 \noindent\textbf{\texttt{CrossCheck.lean}} (9)\quad \texttt{rhoAll\_\allowbreak value}, \texttt{rhoQuark\_\allowbreak value}, \texttt{densities\_\allowbreak differ}, \texttt{density\_\allowbreak ratio\_\allowbreak near\_\allowbreak two}, \texttt{sector\_\allowbreak relation\_\allowbreak is\_\allowbreak identity}, \texttt{qcd\_\allowbreak extraction\_\allowbreak returns\_\allowbreak input}, \texttt{no\_\allowbreak second\_\allowbreak determination}, \texttt{quarkCvSq\_\allowbreak value}, \texttt{quark\_\allowbreak not\_\allowbreak geometric}\par\smallskip
 \noindent\textbf{\texttt{MassAudit.lean}} (9)\quad \texttt{massExp\_\allowbreak neg}, \texttt{massQuad\_\allowbreak neg}, \texttt{massExp\_\allowbreak pos}, \texttt{massQuad\_\allowbreak pos}, \texttt{massExp\_\allowbreak zero}, \texttt{massQuad\_\allowbreak zero}, \texttt{mass\_\allowbreak law\_\allowbreak underdetermined}, \texttt{both\_\allowbreak laws\_\allowbreak antiparticle\_\allowbreak degenerate}, \texttt{massQuad\_\allowbreak ratio\_\allowbreak not\_\allowbreak constant}\par\smallskip
-\noindent\textbf{\texttt{Audit.lean}} (4)\quad \texttt{scalar\_\allowbreak for\_\allowbreak directional\_\allowbreak count}, \texttt{register\_\allowbreak nonempty}, \texttt{more\_\allowbreak corrected\_\allowbreak than\_\allowbreak retracted}, \texttt{clean\_\allowbreak count}\par\smallskip
+\noindent\textbf{\texttt{Audit.lean}} (5)\quad \texttt{scalar\_\allowbreak for\_\allowbreak directional\_\allowbreak count}, \texttt{register\_\allowbreak nonempty}, \texttt{more\_\allowbreak corrected\_\allowbreak than\_\allowbreak retracted}, \texttt{register\_\allowbreak grew\_\allowbreak under\_\allowbreak audit}, \texttt{clean\_\allowbreak count}\par\smallskip
 
 \normalsize
 

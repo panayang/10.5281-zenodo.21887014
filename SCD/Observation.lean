@@ -88,9 +88,21 @@ theorem redshift_is_scale_ratio (u₁ u₂ : Aˣ) (η w v : Fin n → A) :
   simp only [obsEnergy]
   ring
 
-/-- Equal scales, equal energies: no redshift without a scale difference. -/
-theorem no_redshift_of_equal_scale (u : Aˣ) (η w v : Fin n → A) :
-    obsEnergy u η w v = obsEnergy u η w v := rfl
+/-- **No redshift without a scale difference.**
+
+Stated as the contrapositive of `redshift_is_scale_ratio`, which is where the
+content is: if two observers assign energies whose cross-products differ, their
+units differ.  Equal units give equal energies by congruence and that is not a
+theorem about redshift.
+
+An earlier version of this file stated the equal-units case as
+`obsEnergy u … = obsEnergy u …`, which is `x = x` — vacuous, and caught by the
+external audit rather than by me.  It is replaced here. -/
+theorem scale_differs_of_energy_differs (u₁ u₂ : Aˣ) (η w v : Fin n → A)
+    (h : obsEnergy u₁ η w v * ((u₂ : A)) ^ 2 ≠ obsEnergy u₂ η w v * ((u₁ : A)) ^ 2) :
+    u₁ ≠ u₂ := by
+  intro hu
+  exact h (by rw [hu])
 
 /-- The energy assigned by an observer whose unit is rescaled by `c` is scaled
 by `c²`.  Rescaling *both* observers changes nothing observable, which is A5. -/

@@ -128,7 +128,7 @@ theorem halves_equal (G Mass b c : ℝ) :
 /-- The reciprocal (γ = 1) prediction for a ray grazing the Sun, in arcseconds:
 `1.7515″`, against the VLBI value `1.7509 ± 0.0002″`. -/
 theorem solar_reciprocal_value :
-    1.75 < solarObsArcsec ∧ solarObsArcsec < 1.76 := solarObs_value
+    1.7515 < solarObsArcsec ∧ solarObsArcsec < 1.7516 := solarObs_value
 
 /-- Current solar-system bounds put `γ` within about `2×10⁻⁵` of `1`
 (Cassini).  The framework's reciprocity condition predicts `γ = 1` with no
