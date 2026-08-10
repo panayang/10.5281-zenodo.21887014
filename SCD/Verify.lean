@@ -346,6 +346,9 @@ namespace SCD.Verify
 #print axioms SCD.Horizon.null_cone_scale_independent
 #print axioms SCD.Horizon.waves_travel_on_the_light_cone
 #print axioms SCD.Horizon.no_energy_dependent_speed
+#print axioms SCD.Horizon.two_polarizations
+#print axioms SCD.Horizon.no_breathing_mode
+#print axioms SCD.Horizon.polarization_count
 #print axioms SCD.Horizon.entropy_of_scale_ratio
 #print axioms SCD.Horizon.entropy_doubling_is_additive
 #print axioms SCD.Horizon.entropy_increment_independent_of_size

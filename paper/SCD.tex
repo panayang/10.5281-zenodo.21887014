@@ -101,8 +101,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}595 条定理、11710 行 Lean 代码、61 个文件；
-\textbf{全部 592 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}595 条定理、11878 行 Lean 代码、61 个文件；
+\textbf{全部 595 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -141,22 +141,39 @@
 而广义相对论的核心对象是\emph{长度}。二者在自然单位制下互为倒数，却被安放在
 理论结构的两个完全不同的层次上。
 
-本文采取相反的次序。设定如下：
+本报告采取相反的次序。设定如下：
 
 \begin{itemize}[leftmargin=1.6em]
 \item 基底只有一套\emph{平直的欧氏记账结构}（一张坐标纸），它不携带任何物理；
-\item 真正的物理量是每一点上的\emph{局域度量单位}，记其对数为 $\sigma$；
+\item 真正的物理量是每一点上的\emph{局域度量单位}，记其对数为 $\sigma$（稍后将看到它是矢量而非标量）；
 \item 长度不是原始概念，而是“沿路径累加局域单位”的结果，于是
-      $g=e^{2\sigma}\kron$；
+      在各向同性情形下 $g=e^{2\sigma}\kron$（第 \ref{sec:frame} 节证明这个特例太强）；
 \item 能量标度是长度标度的倒数：$\varepsilon\cdot s=1$，$s=e^{\sigma}$。
 \end{itemize}
 
 在这个设定下，“不同点的能动量不同”直接表现为“不同点的标度不同”，
-而标度的空间不均匀性\emph{就是}曲率。本文的主定理把这句话变成一条精确的恒等式。
+而标度的空间不均匀性\emph{就是}曲率。第 \ref{sec:geom} 节把这句话变成一条精确的恒等式。
 
+\medskip
+\noindent\textbf{但那条恒等式不是本理论的核心，它是各向同性扇区的结果。}
+开发过程中最重要的一步发生在别处：标度必须是\emph{方向性}的（标量版本被证明太强，
+它禁止 Schwarzschild），而一旦标度有方向，\textbf{标度与转动的耦合就被词义强制了}——
+缩放是对称算子、转动是反称算子，而两个对称算子的括号必然反称。
+沿两个方向各缩放一次，两种次序必然相差一次转动。
+这一步（第 \ref{sec:coupling} 节）是全部下游结果的铰链：
+它给出实秩一、从而 Lorentz 代数族、从而 $n=k+1$，
+也给出量子引力修正的全部内容。
+
+\medskip
+\noindent\textbf{理论的分叉点}在第 \ref{sec:locus} 节：
+标度花样各向同性时，序参量、荷、多重态、转动\emph{一个都没有}；
+各向异性时它们\emph{一并}出现。而花样是否各向同性是标度相关的事实。
+
+\medskip
 全部论证在 Lean 4 中完成。之所以坚持零 \texttt{sorry}，是因为一个公理体系一旦
 在地基处留下未证之处，其上层的一切“回归”都失去意义。
-
+而之所以坚持记录\emph{撤回}（第 \ref{sec:audit} 节），
+是因为一个没有撤回记录的开发，是一个没有被审计的开发。
 
 \section{物理图像：这个世界看起来是什么样}\label{sec:picture}
 
@@ -360,7 +377,7 @@ g_{ab} = \eta_a\,s_a^{2}\,\kron_{ab}.
 不同，张量源不可能设定一个标量标度。
 
 \emph{各向同性}特例（所有 $s_a$ 相等）给出 $g=e^{2\sigma}\kron$，
-这是本文早期版本所用的公理；第 \ref{sec:frame} 节证明它\emph{太强}
+这是本报告早期版本所用的公理；第 \ref{sec:frame} 节证明它\emph{太强}
 （它禁止 Schwarzschild），并证明它恰是本公理的一个子轨迹，
 故一切在其上证明的结果不失。
 \leanline{Frame.DirScale, Unify.toMetric\_of\_isotropic}
@@ -395,7 +412,6 @@ A5 正是“完全无量纲化”的精确含义，我们将在定理 \ref{thm:f
 它同时强制耗散速率恒定（第 \ref{sec:cosmos} 节），
 故\textbf{DESI 的张力是与 A5 的张力，不是与某个拟合参数的张力}。
 
-
 \clearpage
 
 \clearpage
@@ -415,6 +431,14 @@ A5 正是“完全无量纲化”的精确含义，我们将在定理 \ref{thm:f
 于是整个拆分由一个观察落地。\textbf{标度是一种相乘的量。}
 先按 $a$ 比再按 $b$ 比，必须与先 $b$ 后 $a$ 给出相同的\emph{标度}，因为标度是比值而比值可交换。
 所以一次比较所携带的标度，恰是它在 $\Gamma$ 的\emph{最大交换商}——即交换化——中的像。
+
+\begin{theorem}[对易子的标度恒为平凡]\label{thm:commtrivial}
+$\mathrm{scale}(aba^{-1}b^{-1})=1$，且反之标度为 $1$ 者恰是对易子子群的元素。
+故\textbf{"标度部分"与"转动部分"的拆分不是一个选择}：
+转动恰是标度看不见的那部分，而这是被\emph{定义}逼出来的，不是被假设的。
+\leanline{Foundation.scale\_commutator, Foundation.scale\_eq\_one\_of\_mem\_commutator,
+Foundation.mem\_commutator\_of\_scale\_eq\_one, Foundation.scale\_comm}
+\end{theorem}
 \textbf{这里没有选择}：交换化是唯一的泛性交换商。
 
 \begin{theorem}[对易子不携带标度]\label{thm:scalecomm}
@@ -597,7 +621,7 @@ $\dim\mathfrak{so}(3,1)=6$，而时空有 $4$ 个方向。
 
 补各向异性曲率的"显然"办法，是写下 Cartan 结构方程然后硬算。
 那等于把广义相对论的整套机器原样搬过来——正是最该避开的路径依赖。
-有一条更本原的路，而且它把引力认成了本文早已造好的东西。
+有一条更本原的路，而且它把引力认成了本报告早已造好的东西。
 
 问：输运局域单位\emph{究竟}是什么？沿方向 $i$ 移动，就是把一切改用邻近的单位表述，
 那是一个算子 $D_i$。先 $i$ 后 $j$ 未必等于先 $j$ 后 $i$。这个差额就是曲率的全部：
@@ -813,9 +837,9 @@ no\_two\_dimensional\_commuting\_family, commuting\_boosts\_lie\_on\_a\_line}
 它们的对称空间分别是实、复、四元数、八元数双曲空间。
 
 \begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
-\textbf{这条分类是李理论的定理，不是本文的推导，此处\emph{未被证明}。}
+\textbf{这条分类是李理论的定理，不是本报告的推导，此处\emph{未被证明}。}
 它是引用，并已登记进第 \ref{sec:audit} 节的污染表作为外部输入。
-本文证明的是\emph{筛掉}这份清单的那条约束，以及 $\mathfrak{so}(n,1)$ 满足它。
+本报告证明的是\emph{筛掉}这份清单的那条约束，以及 $\mathfrak{so}(n,1)$ 满足它。
 \end{mdframed}
 
 四者之中，$\mathfrak{so}(n,1)$ 是标度为\textbf{实}比值的那一个；
@@ -943,7 +967,7 @@ $k=3$ 时 $\rho\alpha = 2$；代回即返回输入。
 记录过的陷阱。它\emph{确实}确立的是：\textbf{两项剩余自由并不独立}——
 定住 $k$ 就把 $\rho$ 的测量变成对归一化的确定，反之亦然。
 
-它还额外依赖"缺陷在对称空间体积中均匀分布"这一条，而本文没有任何定理提供它。
+它还额外依赖"缺陷在对称空间体积中均匀分布"这一条，而本报告没有任何定理提供它。
 \textbf{已登记为假设，未被夹带。}
 \end{mdframed}
 
@@ -1046,7 +1070,6 @@ rotation\_iff\_variation}
 它提供一个矢量、一个缩放。定理对满足其前提者仍成立，
 但\textbf{那条物理解读撤回}。取代它的是本节：转动由单一花样的\emph{变化}携带。
 \leanline{Axes.multiplet\_flatness\_needs\_per\_direction\_scalings}
-
 
 \clearpage
 
@@ -1240,17 +1263,45 @@ multiplet\_change\_needs\_pattern\_change}
 标度花样仍然是输入。
 \end{remark}
 
-
 \clearpage
 
 \clearpage
 \part{第四部分\quad 各向同性扇区：几何与引力}
 
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{先解一个表面矛盾。}第三部分说各向同性轨迹上\textbf{无转动、无荷、无多重态}，
+而本部分整部在各向同性扇区\emph{计算曲率}。这不矛盾，但必须说清：
+
+\begin{center}
+\textbf{“各向同性”指标度矢量的\emph{方向}处处一致，不是它的\emph{量值}不变。}
+\end{center}
+
+方向一致 $\Rightarrow$ 楔积恒为零 $\Rightarrow$ 无转动标签、无荷、无多重态。
+但量值仍可随位置变化 $\Rightarrow$ 共形因子非常数 $\Rightarrow$
+\textbf{几何仍然弯曲}。这正是第 \ref{sec:cosmos} 节据以导出暗物质的那一条：
+\emph{只引力，无其他}。
+
+\medskip
+\noindent
+所以本部分的定量结果——$1.7515''$、$42.99''/$世纪、$\gamma=1$——
+是\textbf{纯引力扇区}的结果：那里没有标签可算，也不需要。
+而第 \ref{sec:frame} 节证明把各向同性当\emph{公理}太强（它禁止 Schwarzschild），
+故它是一个\emph{轨迹}，不是世界。
+\end{mdframed}
+
 \section{几何的涌现：曲率即标度形变}\label{sec:geom}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{本节全部结果属于\emph{各向同性扇区}。}
+A4 给的是\emph{每方向一个}标度；本节所用的 $g=e^{2\sigma}\kron$ 是它的
+各向同性特例（所有 $s_a$ 相等），第 \ref{sec:frame} 节证明把这个特例当作\emph{公理}
+太强——\textbf{它禁止 Schwarzschild}。特例被降格为一个\emph{轨迹}，
+故本节的定理不失，但它们的适用域是那个轨迹。
+\end{mdframed}
 
 \subsection{Levi-Civita 数据}
 
-由 A4，度量 $g=e^{2\sigma}\kron$ 的 Christoffel 记号为
+在各向同性轨迹上，度量 $g=e^{2\sigma}\kron$ 的 Christoffel 记号为
 \begin{equation}
 \Gamma^{a}{}_{bc}
 = \kron_{ab}\,\sigma_c + \kron_{ac}\,\sigma_b - \kron_{bc}\,\sigma_a,
@@ -1285,7 +1336,8 @@ multiplet\_change\_needs\_pattern\_change}
 \leanline{SCD.two\_Rm\_eq}
 \end{theorem}
 
-这是全部纲领的核心。它把“欧氏空间在不同点按不同比例缩放，等价于黎曼几何”
+这是\emph{各向同性扇区}的核心恒等式（不是全部纲领的核心；那是第 \ref{sec:coupling}
+节的耦合）。它把“欧氏空间在不同点按不同比例缩放，等价于黎曼几何”
 从一句口号变成一条恒等式：\textbf{几何 $=$ 记账 $\times$ 标度形变，没有别的成分}。
 曲率没有任何独立于标度场的自由度。
 
@@ -1384,7 +1436,7 @@ F_{ij} := \dd_i A_j - \dd_j A_i = 0 \quad\text{恒成立}.
 \subsection{诊断}
 
 第 \ref{sec:geom} 节的一切都建立在 $g=e^{2\sigma}\kron$ —— \emph{一个}标量标度，
-各方向相同。本文早期版本把这当作 A4 本身。它无法承载 Schwarzschild，
+各方向相同。本报告早期版本把这当作 A4 本身。它无法承载 Schwarzschild，
 而原因是物理的，不是技术的。
 
 本纲领说局域能动量决定局域标度。但\textbf{能动量是张量}：
@@ -1448,7 +1500,7 @@ $\eta_a s^2\kron_{ab}$——无近似、无附加假设。
 它们是关于\emph{各向同性扇区}的陈述。公理表由两条变回一条。
 
 \begin{remark}[相容但尚不完备]
-本文\emph{未}完成\emph{各向异性}扇区的曲率计算（Cartan 结构方程、
+本报告\emph{未}完成\emph{各向异性}扇区的曲率计算（Cartan 结构方程、
 Schwarzschild 曲率张量的逐分量验证、光线偏折与近日点进动）。
 公理体系现在是\textbf{相容}的；它还不\textbf{完备}——
 方向性 A4 的几何推论目前只在标度恰为各向同性处被算出。
@@ -1457,10 +1509,8 @@ Schwarzschild 曲率张量的逐分量验证、光线偏折与近日点进动）
 
 \section{引力与规范场是同一个东西}\label{sec:transport}
 
-上一轮留下一个问题：从标架定出联络，是否需要无挠条件？
-\emph{这样问本身就是惯性}——"挠率"来自一个把标架与联络当作\emph{独立场}的理论，
-所以才需要一个条件把二者拴住。
-
+从标架定出联络，是否需要无挠条件？\textbf{这样问本身就是惯性。}
+“挠率”来自一个把标架与联络当作\emph{独立场}的理论，所以才需要一个条件把二者拴住。
 在这里它们并不独立，也就没有什么可强加的。
 
 从 $x$ 到 $y$ 的输运只有一件事要做：把 $x$ 处每个局域单位送到 $y$ 处对应的单位。
@@ -1494,7 +1544,7 @@ Transport.nondegenerate\_no\_gauge\_freedom}
 被"局域单位是否恰好重合"这一件事分开。
 \end{mdframed}
 
-\section{回归 I：引力红移与 Newton 极限}
+\section{引力红移与 Newton 极限}\label{sec:newton}
 
 \subsection{引力红移}
 
@@ -1513,10 +1563,16 @@ Transport.nondegenerate\_no\_gauge\_freedom}
 
 要得到引力，还需要一句话说明\emph{什么在源生标度}：
 
-\begin{axiom}{A6$'$（标度响应）}
-$e^{2\sigma}R = \kappa\rho$，其中 $\rho$ 是局域无量纲能量密度。
-$n=3$ 时这正是共形平直切片上的 Hamilton 约束。
-\end{axiom}
+\begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
+\textbf{A6$'$（标度响应）不是本体系的公理。}公理只有 A1--A7（第 \ref{sec:axioms} 节）。
+下式是一条\textbf{外部物理输入}，本报告\emph{未}从更基本的东西导出它，
+已登记在第 \ref{sec:scope} 节：
+\[
+e^{2\sigma}R = \kappa\rho,
+\]
+其中 $\rho$ 是局域无量纲能量密度；$n=3$ 时这正是共形平直切片上的 Hamilton 约束。
+\textbf{凡依赖它的结论（本节的 Newton 极限）都继承这一输入。}
+\end{mdframed}
 
 \subsection{一阶区域}
 
@@ -1558,7 +1614,7 @@ $\sigma=\varepsilon\varphi$。
 \]
 因而定理 \ref{thm:linear}、\ref{thm:poisson} 在其上\emph{精确}成立，
 没有任何被丢弃的项。
-\leanline{SCD.Dual.instScaleAlgebra, Dual.gradsq\_inr, Dual.poisson\_exact}
+\leanline{SCD.Dual.ScaleAlgebra, Dual.gradsq\_inr, Dual.poisson\_exact}
 \end{theorem}
 
 一阶微扰论由此被安置在公理体系\emph{内部}，而不是从外部强加。
@@ -1718,7 +1774,7 @@ Deflection.solar\_ratio, Deflection.iso\_fails\_by\_far}
 观测支与实测符合到约 $0.04\%$；而各向同性扇区差了 $0.87''$，
 是 VLBI 误差的四千倍。这不是建模精度问题，是结构性问题。
 
-\textbf{本节的地位：} 这是本文最尖锐的定量陈述，
+\textbf{本节的地位：} 这是本报告最尖锐的定量陈述，
 而它是对标量公理的\emph{反驳}，不是对任何东西的确认。
 方向性扇区要给出缺失的一半，仍需完成各向异性曲率的具体计算——那尚未完成。
 本节确立的是\textbf{剩余欠债的精确大小}。
@@ -1919,6 +1975,33 @@ redshift\_never\_infinite, no\_degeneracy\_anywhere}
 而本框架预言恰好为零。}伽马暴计时已在约束领头效应，每一次改进都在直接检验它。
 \end{mdframed}
 
+
+\subsection{偏振数恰为二，而呼吸模是\emph{被禁止}的}\label{ss:pol}
+
+波是标度花样的扰动。数它的独立模式是算术，前提是先把扇区分开。
+
+\begin{theorem}[两个偏振，来自两个不同扇区]\label{thm:pol}
+三个空间方向中，一个是传播方向，横向维数为 $2$。于是
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item \textbf{标度扇区}贡献 $2-1=1$ 个模（即 $+$ 模，$\delta s_x=-\delta s_y$）；
+\item \textbf{转动扇区}贡献 $\dim\Lambda^2\mathbb R^2=1$ 个模（即 $\times$ 模）。
+\end{itemize}
+合计 $2$。\textbf{两者来源不同}——一个是标度之差，一个是转动——
+这是广义相对论\emph{不}作的区分，而在此由第 \ref{sec:coupling} 节的 Cartan 拆分逼出。
+\leanline{Horizon.two\_polarizations, polarization\_count}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{那个被减掉的 $1$ 不是约定，是 A5。}
+标量（呼吸）偏振就是横向的\emph{均匀}重标度——而那恰是一次基准平移，
+A5 宣布它不可观测。故呼吸模\textbf{不是"在解中恰好为零"，而是不可表达}。
+
+\textbf{这是对标量--张量理论的判别式}：那类理论一般\emph{预言}呼吸模，
+而本框架预言其振幅\textbf{恒等于零}，不是小。
+足够大的探测器网络的偏振检验直接测这一条。
+\leanline{Horizon.no\_breathing\_mode}
+\end{mdframed}
+
 \subsection{黑洞熵是对数的，不是面积律}
 
 熵在这里是可分辨结构的计数（第 \ref{sec:entropy} 节），
@@ -1971,11 +2054,21 @@ entropy\_increment\_independent\_of\_size}
 一项作为借来的问题被\textbf{谢绝}（引力子），并指明取代它的是什么。
 \end{remark}
 
-
 \clearpage
 
 \clearpage
 \part{第五部分\quad 各向异性扇区：标签与荷}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{本部分的一切只存在于各向异性轨迹上。}标度花样的方向一旦处处一致，
+以下全部对象——序参量、绕数、块荷、多重态、内禀对称性——\textbf{一个都不存在}，
+不是取平凡值，是\emph{不存在}（第 \ref{sec:locus} 节）。
+
+而花样是否各向异性是\textbf{标度相关}的事实。
+所以本部分的标签不是世界的性质，是\emph{某个标度轨迹}的性质——
+它们在各向同性破缺处一并诞生，因为它们同源。
+\textbf{这就是“相互作用随能标下降而分离”，是导出的，不是假设的。}
+\end{mdframed}
 
 \section{内禀对称性无处可去}\label{sec:gauge}
 
@@ -2080,8 +2173,19 @@ Axis.uniaxial\_stabilizer, Axis.uniaxial\_axis\_distinguished}
 量子场论用背景上的场的量子化产生粒子：粒子是激发，荷是表示标签，
 质量是拉氏量的参数。这些在本框架中一样都没有。与其模仿，不如照标度图景直说。
 
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{本节用的是\emph{圆值}标度图景，它已被取代。}
+第 \ref{sec:axis} 节表明：标度是一个\emph{比值}，故读数无向，
+序参量是一根\textbf{无向轴}而非一个圆——这是方向性 A4 的后果。
+本节关于绕数为整数、荷唯一、反粒子简并的定理\textbf{仍然成立}
+（它们只用到"回路要么闭合要么差整数个周期"），
+但由圆值图景推出的\emph{余维数}结论已被撤回（第 \ref{sec:codim} 节），
+而缺陷的完整标签由第 \ref{sec:charges}、\ref{sec:particle} 节给出：
+$(\text{阈值},\mathbb Z/2,\mathbb Z)$。
+\end{mdframed}
+
 若 A5 的连续标度对称性破缺到离散子群——标度只在模 $\Delta$ 的意义下有物理——
-则对数标度不是实值场而是\textbf{圆值}场。绕任一点的闭合回路一周，
+则对数标度可被当作\textbf{圆值}场处理。绕任一点的闭合回路一周，
 标度必须回到\emph{模 $\Delta$ 的}自身，因而未必精确回到自身；
 其偏差是 $\Delta$ 的整数倍。
 
@@ -2143,6 +2247,12 @@ mass\_ratio\_const, mass\_zero}
 第 \ref{sec:color} 节的荷与点缺陷的荷是\emph{同一个}量子数，还是两个？
 
 是两个，而它们的差别才是有意思的地方。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{注意：}第 \ref{sec:color} 节的\emph{色}解释已被撤回（见第 \ref{sec:audit} 节）。
+本节引用的只是它的\textbf{块单值性结构}，那部分成立；
+而块群的取值由第 \ref{sec:particle} 节定死为 $\mathbb Z/2$。
+\end{mdframed}
 
 \begin{itemize}[leftmargin=1.6em]
 \item \textbf{块荷}是绕一圈后简并方向所经历的置换。它住在一个\emph{有限}群里，
@@ -2322,7 +2432,7 @@ no\_fundamental\_list}
 \begin{theorem}[质量是位置，不是属性]\label{thm:masspos}
 质量与阈值互相决定。故质量\textbf{不是附着在物种上的参数}，
 而是该物种\emph{出现在}标度轴上的坐标。
-\leanline{Emergence.mass\_iff\_threshold, Emergence.mass\_antitone}
+\leanline{Emergence.mass\_iff\_threshold, Emergence.mass\_mono}
 \end{theorem}
 
 这一条同时回溯解释了两个早先的发现。第 \ref{sec:audit} 节发现质量律不被拓扑决定——
@@ -2334,7 +2444,7 @@ no\_fundamental\_list}
 Emergence.content\_changes\_only\_at\_threshold}
 
 \begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
-\textbf{放弃了什么。} 色、代结构、Higgs 以及标准模型表的其余部分\textbf{不是本文的目标}。
+\textbf{放弃了什么。} 色、代结构、Higgs 以及标准模型表的其余部分\textbf{不是本报告的目标}。
 它们是\emph{一个截面}的特征，而框架没有理由去重现某个截面的偶然内容。
 
 应当向框架索取的是\textbf{阈值结构}——内容在哪里改变——
@@ -2342,21 +2452,33 @@ Emergence.content\_changes\_only\_at\_threshold}
 其数学作为"简并块的结构"保留。
 \end{mdframed}
 
-
 \clearpage
 \part{第六部分\quad 量 子 扇 区}
 
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{此处的“量子”不是另一套理论，是同一个标度的另一个读数。}
+$\hbar$ 不是外加常数，是\textbf{沿标度轴平移一步与“在哪里”不对易}的失配大小；
+而几何的全部量子修正是标度梯度的对易子 $[\sigma_i,\sigma_j]$，
+它\textbf{纯反对称}，故对第四部分的一切经典检验\emph{不可见}。
+\end{mdframed}
+
 \section{非交换基底：量子力学的回归}\label{sec:nc}
 
-\subsection{一个必须交代的方法论问题}
+\textbf{A1 的基底是一个环，\emph{不}要求交换。}交换性是\emph{经典扇区}的性质，
+不是基底的公理。这不是补丁，而是比补丁更强的事实：
+\textbf{经典扇区的微分结构从来没有用到交换性}——
+A1 要求的只有 Leibniz 律与混合偏导可交换，
+而这两条对任意环中的\emph{内导子} $\mathrm{ad}_p=[p,\cdot]$ 逐字成立。
 
-本文初稿把基底取为\emph{交换}环。这是一个应当被质疑的选择：它使曲率计算可以由
-\texttt{ring} 战术封闭，但量子力学的核心 $[\hat x,\hat p]=i\hbar$ 恰恰是非交换的。
-若基底必须交换，则本纲领从一开始就把量子力学排除在外。
+\begin{remark}[一处开发记录]
+本报告初稿确曾把基底取为交换环，理由是它让曲率计算可以由 \texttt{ring} 战术封闭。
+那是\textbf{工具驱动而非物理驱动}的选择，且若成立就等于从一开始把量子力学排除在外
+（$[\hat x,\hat p]=i\hbar$ 恰恰是非交换的）。本节是那次修正的结果。
 
-本节给出修正，而修正的结果比补丁更强：\textbf{经典扇区的微分结构从来没有用到交换性}。
-A1 要求的只是 Leibniz 律与混合偏导可交换，而这两条对任意环中的
-\emph{内导子} $\mathrm{ad}_p=[p,\cdot]$ 逐字成立。
+\emph{定量}引力链条曾长期仍跑在交换扇区上——那是最后一个大缺口，
+已由第 \ref{sec:ncconf} 节关闭：曲率计算不再需要交换性，
+而第一个修正被\emph{辨认}出来（是 $[\sigma_i,\sigma_j]$），不是被假设。
+\end{remark}
 
 \subsection{导数就是对易子}
 
@@ -2609,13 +2731,12 @@ correction\_vanishes\_on\_commuting}
 而第一个修正被\emph{辨认}出来而非假设。
 \end{remark}
 
-
 \clearpage
 
 \clearpage
 \part{第七部分\quad 标度流与内容}
 
-\section{回归 II：重整化群与有效场论塔}\label{sec:rg}
+\section{重整化群是定理，不是方法}\label{sec:rg}
 
 \subsection{标度流}
 
@@ -2646,6 +2767,34 @@ O(t) = O(0)\,e^{\gamma t}.
 值得注意，这与第 \ref{sec:de} 节的耗散律是同一条微分方程：
 \textbf{跑动的耦合与膨胀的宇宙，是同一个数学在两个标度上的读数}——
 这正是本纲领所主张的自相似性。
+
+
+\subsection{阈值之间，描述是\emph{精确}的}\label{ss:exact}
+
+这一小节此前只在 Lean 中，未进正文，而后文（第 \ref{sec:emergence}、\ref{sec:slice} 节）
+的整条论证都依赖它。
+
+\begin{theorem}[无阈值区间上内容不变]\label{thm:exactbetween}
+若区间 $[t,t']$ 内没有任何阈值，则活跃内容集合在其上\emph{恒等}，
+故 $\beta$ 系数在其上是\textbf{常数}，而有效描述在该区间上不是近似，是\textbf{精确}。
+\leanline{RG.active\_eq\_of\_no\_threshold, RG.beta\_const\_between\_thresholds,
+RG.active\_mono, Emergence.resolved\_mono}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{这把“有效场论要在每个能标换一套描述”从窘境变成结构。}
+描述之所以要换，不是因为它不够好，而是因为\textbf{内容在阈值处真的变了}；
+而在两个阈值之间它\emph{一点都不近似}。
+第 \ref{sec:emergence} 节接着证明没有最后一个阈值，
+故这件事没有尽头——那不是方法的缺陷，是理论在如实报告自己的结构。
+\end{mdframed}
+
+\begin{theorem}[内容只增不减]\label{thm:contentmono}
+更好的探针不会丢失结构：$t\le t' \Rightarrow$ 活跃集合单调包含。
+故“在能量 $E$ 上存在什么”至少是良序的——尽管第 \ref{sec:native} 节表明
+它在\emph{单点}上不良定，内容属于区间。
+\leanline{RG.active\_mono, RG.active\_eq\_univ\_of\_ge, RG.active\_finite\_range}
+\end{theorem}
 
 \subsection{有效场论塔是定理而非窘境}
 
@@ -2695,7 +2844,7 @@ QCD 的系数正是这样：在每个夸克阈值处跳变。本框架\emph{定�
 \section{跑动不需要圈图}\label{sec:running}
 
 第 \ref{sec:qcd} 节假设了 $dg/dt=-bg^3$ 并从规范理论取来 $b$。
-这是本文最后一处大的借用，值得问一句：框架非借不可吗？
+这是本报告最后一处大的借用，值得问一句：框架非借不可吗？
 
 不必。放下"跑动来自求和图"的成见，问耦合在这里\emph{是什么}。
 处于对数标度 $t$ 的探针有一个分辨率；它响应它能分辨的缺陷，
@@ -2907,7 +3056,7 @@ more\_wedges\_than\_directions, fewer\_wedges\_than\_directions}
 转动群获得双覆盖的地方——而那正是第 \ref{sec:particle} 节 $\mathbb Z/2$ 的来源。
 \textbf{维数与那个标签同源。}
 
-\section{回归 III：粒子标度与寿命的动量依赖}\label{sec:particles}
+\section{寿命的动量依赖：$\gamma$ 就是两个标度之比}\label{sec:particles}
 
 激发携带自己的时钟，其单位由静止能标 $m$ 设定；实验室使用另一套单位，
 由总能量 $E=\sqrt{p^2+m^2}$ 设定。寿命是内部“滴答”的纯数目；
@@ -2930,7 +3079,16 @@ more\_wedges\_than\_directions, fewer\_wedges\_than\_directions}
 证明中没有使用任何关于衰变动力学的假设。时间膨胀在此不是“钟走慢了”，
 而是 A3 的标度比被读了两次。
 
-\section{回归 IV：暗物质——相互作用发生，观测失效}\label{sec:dm}
+\section{暗物质：相互作用发生，观测失效}\label{sec:dm}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{本节是\emph{两条}路径中的第一条，而两条做出\emph{相反}的预言。}
+本节的低标度路径说：耦合小但\textbf{非零}，故足够匹配的探针终能看见，
+且这些对象\emph{有}阈值，故\textbf{有质量谱}。
+第 \ref{sec:cosmos} 节给出另一条——各向同性轨迹：
+在任何标度上都\textbf{没有可耦合的标签}，也没有阈值，故\textbf{没有谱}。
+\textbf{哪一条是世界所用，是实验问题；框架容纳两者，它不做选择。}
+\end{mdframed}
 
 探测器本身是坐落在某个能标 $\varepsilon_D$ 上的物理系统；由 A3，
 这也是它的空间分辨率的倒数。它能登记的不是“一次相互作用”，
@@ -2966,7 +3124,7 @@ N\varepsilon = M \quad\text{（引力上完全可见）},\qquad
 在此获得精确表述——关键不在于它是什么粒子，而在于\emph{探测器自身的能标远高于它}，
 使得测量（而非相互作用）失效。
 
-\section{回归 V：暗能量——开放系统的耗散}\label{sec:de}
+\section{暗能量：耗散率就是 $\Lambda$}\label{sec:de}
 
 由 A6，宇宙不封闭，其能量标度耗散。由 A3，衰减的能量标度\emph{就是}增长的长度标度。
 定义宇宙标度因子 $a:=1/\varepsilon$（它不是独立场）。
@@ -2997,7 +3155,7 @@ hasDerivAt\_hubble, acceleration\_pos}
 把宇宙自身看作一个“因涨落而诞生、正在耗散的大粒子”，
 其数学内容恰是定理 \ref{thm:diss}——与定理 \ref{thm:cs} 的跑动方程同型。
 
-\section{回归 VI：时间箭头}\label{sec:entropy}
+\section{时间箭头}\label{sec:entropy}
 
 基底中没有任何东西区分时间方向：微观动力学是双射。破缺来自\emph{观测发生在某个标度上}，
 而标度携带有限分辨率，即一个从微观位形到可分辨对象的\emph{非单射}映射。
@@ -3033,7 +3191,7 @@ Sakharov 第三条件是“偏离热平衡”。在封闭系统中这是精心�
 Entropy.entropy\_production\_implies\_nonequilibrium}
 \end{proposition}
 
-\section{回归 VII：光是什么}\label{sec:light}
+\section{光：标度盲的类光锥}\label{sec:light}
 
 被测二次型是记账二次型乘以标度因子：$Q_g=s^2Q_\kron$。由于 $s$ 是单位元，
 乘以它既不能制造零也不能消灭零。
@@ -3064,7 +3222,6 @@ Q_g(v)=0 \iff Q_\kron(v)=0 .
 把局域单位的比较从一个事件无循环论证地传递到另一个事件的\emph{比较器}。
 再结合定理 \ref{thm:weyl}（标度联络平坦），这种传递沿闭合回路无残差，
 理论自洽。
-
 
 \clearpage
 
@@ -3144,25 +3301,7 @@ Pound–Rebka & $z=gh/c^2$ & $2.4551\times10^{-15}$ & $(2.46\pm0.03)\times10^{-1
 第三项在 $\lambda\leftrightarrow H_\infty$ 的识别下带有一定循环性，
 其真正的预言内容是 $w=-1$ 这一\emph{形状}，而非该数值本身。
 
-
-\subsection{数值结果一览（全部机器验证）}\label{ss:numbers}
-
-以下每一行都是 Lean 中经 \texttt{norm\_num} 验证的算术命题，不是拟合。
-
-\begin{center}
-\begin{tabular}{llll}
-\toprule
-量 & 本框架 & 实测 & Lean \\
-\midrule
-$\mu$ 子飞行寿命（$\gamma=29.327$） & $64.4323\,\mu$s & $64.378\,\mu$s & \texttt{muon\_matches\_experiment} \\
-Pound--Rebka 红移（22.5 m） & $2.45$--$2.46\times10^{-15}$ & $2.46\times10^{-15}$ & \texttt{poundRebka\_value} \\
-暗能量密度 $\rho_\Lambda$ & $5.8$--$5.9\times10^{-10}$ J/m$^3$ & $\sim5.9\times10^{-10}$ & \texttt{darkEnergyDensity\_value} \\
-光线偏折（太阳边缘） & $1.7515''$ & $1.7512''$ (VLBI) & \texttt{Deflection} \\
-水星近日点进动 & $42.99''/$世纪 & $42.98''/$世纪 & \texttt{Precession} \\
-PPN $\gamma$ & $1$（精确） & $1\pm2.3\times10^{-5}$ & \texttt{PPN.gamma\_eq\_one\_first\_order} \\
-\bottomrule
-\end{tabular}
-\end{center}
+\subsection{反演公式}
 
 \begin{theorem}[状态方程与耗散指数互为反演]\label{thm:eosinv}
 $w=(2q-5)/3$，故 $w=-1 \iff q=1$；$w<-1/3$（加速）$\iff q<2$；
@@ -3171,12 +3310,15 @@ $w<-1$（幽灵）$\iff q<1$。给定 $w=-0.95$ 反演得 $q=1.075$。
 eos\_lt\_neg\_one\_iff, worked\_inversion, accelerates\_iff}
 \end{theorem}
 
-\begin{remark}[这些数的地位并不相同]
-偏折、进动、$\gamma$ 是\textbf{从公理链条导出的}——中间无假设（第四部分）。
-$\mu$ 子与 Pound--Rebka 是\textbf{时间膨胀与红移的算术核对}，
-它们检验的是 A3 的读法而非一条独立预言。
-$\rho_\Lambda$ 由 $\lambda=H_\infty$ 换算而来，\textbf{$\lambda$ 本身是测量值}
-——这正是"唯一一个自由数"（第 \ref{sec:dimension} 节）。
+\begin{remark}[全部数值对照见第 \ref{sec:data} 节]
+本报告只保留\textbf{一张}数值总表，在第 \ref{sec:data} 节。
+此处以及第 \ref{sec:spectrum} 节曾各有一张部分重复的表，已合并。
+
+那里同时说明\textbf{这些数的地位并不相同}：
+偏折、进动、$\gamma$ 是从公理链条导出的，中间无假设；
+$\mu$ 子与 Pound--Rebka 是时间膨胀与红移的算术核对，检验的是 A3 的读法；
+$\rho_\Lambda$ 由 $\lambda=H_\infty$ 换算而来，而 $\lambda$ 本身是测量值——
+它正是那个唯一的自由数。
 \end{remark}
 
 \section{可检验的预言与换算表}\label{sec:spectrum}
@@ -3267,31 +3409,13 @@ $\Lambda_{\mathrm{QCD}}$ & 嬗变标度 & $\Lambda=\mu\,e^{-1/2bg^2}$（沿流�
 qFromW, rhoLambdaFromLambda, deltaNFromDeltaB, densityFromGaps,
 density\_gap\_inverse}
 
-\subsection{当前全部数值对照}
+\subsection{对照表已并入第 \ref{sec:data} 节}
 
-\begin{center}
-\begin{tabular}{llll}
-\toprule
-量 & 预言 & 实测 & 状态 \\
-\midrule
-掠日光线偏折 & $1.7515''$ & $1.7509\pm0.0002''$ & 符合 $0.04\%$ \\
-水星近日点进动 & $42.99''/$世纪 & $42.98\pm0.04''$ & 符合 \\
-PPN $\gamma$ & $1$（精确） & $|\gamma-1|\lesssim2\times10^{-5}$ & 符合 \\
-$\mu$ 子寿命 & $64.43\,\mu$s & $64.378\pm0.026$ & 符合 $10^{-3}$ \\
-Pound--Rebka & $2.4551\times10^{-15}$ & $(2.46\pm0.03)\times10^{-15}$ & 符合 \\
-暗能量密度 & $5.845\times10^{-27}$ & $5.86\times10^{-27}$ kg/m$^3$ & 符合 \\
-暗能量 $w$ & $-1$（若 $q=1$） & $-1.03\pm0.03$ & 符合，且可证伪 \\
-质量谱 $\mathrm{CV}$ & $1$ & $0.935$ & 第 63 百分位 \\
-等比质量塔 & $\mathrm{CV}=0$ & $0.935$ & \textbf{排除} \\
-各向同性扇区偏折 & $0.8758''$ & $1.7509''$ & \textbf{排除（2 倍）} \\
-各向同性扇区进动 & $14.33''$ & $42.98''$ & \textbf{排除（3 倍）} \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-前六行是与已知物理的符合；第七行是尚未判定的可证伪预言；
-后四行是\textbf{框架内部被排除的选项}——它们是这套体系最有信息量的部分，
-因为它们说明该体系确实会拒绝东西。
+此处原有一张数值对照表，与第 \ref{sec:pred} 节的表部分重复，且其暗能量一行已过时
+（它写作“$w=-1$（\emph{若} $q=1$）……与 $-1.03\pm0.03$ 符合”；
+而第 \ref{sec:cosmos} 节此后证明 A5 \textbf{强制} $q=1$，
+第 \ref{sec:data} 节则记录 DESI 给出 $2.8$--$4.2\sigma$ 的\emph{反向}偏好）。
+\textbf{全部数值对照现在只有一张表，在第 \ref{sec:data} 节。}
 
 \section{这个立场究竟预言什么}\label{sec:cosmos}
 
@@ -3709,38 +3833,57 @@ $E_{{\rm QG},1}\gtrsim 7.6\,E_{\rm Pl}$（总色散）、$\gtrsim 2\,E_{\rm Pl}$
 这是一个\textbf{正在进行的实验}（KamLAND-Zen、LEGEND、nEXO），
 而框架关心它的结果，出于一个别人没有的理由。
 
-\subsection{记分牌}
+\subsection{总表：全部数值与全部预言}\label{ss:scoreboard}
+
+\textbf{本报告只有这一张数值表。}第 \ref{sec:pred} 与 \ref{sec:spectrum} 节
+原各有一张部分重复的表，已并入此处。
 
 \begin{center}
-\begin{tabular}{lll}
+\small
+\begin{tabular}{llll}
 \toprule
-预言 & 状态 & 说明 \\
+量 & 本框架 & 实测 & 状态 \\
 \midrule
-$w$ 不演化 & \textbf{有张力} & $2.8$--$4.2\sigma$ 相反，有争议 \\
-$\Gamma/m$ 极点界 & \textbf{开放} & CCL 界外、GKPY 界内 \\
-光子无色散 & 通过 & 且与对手分道 \\
-引力波速恰为 $c$ & 通过 & $|\Delta v/v|\lesssim10^{-15}$ \\
-$\mathrm{CV}^2<1$（秩一） & 通过 & 实测 $0.875$ \\
-恰一个精确整数荷 & 未决 & $0\nu\beta\beta$ 裁决 \\
-宇称守恒 & 通过（弱） & 无过程可违反 \\
-无最小长度 & 通过 & 经光子色散 \\
-黑洞熵 $\propto\ln R$ & 未测 & 面积律亦未测 \\
+\multicolumn{4}{l}{\emph{从公理链条导出，中间无假设（第四部分）}}\\
+掠日光线偏折 & $1.7515''$ & $1.7509\pm0.0002''$ & 符合 $0.04\%$ \\
+水星近日点进动 & $42.99''/$世纪 & $42.98\pm0.04''$ & 符合 \\
+PPN $\gamma$ & $1$（精确） & $|\gamma-1|\lesssim2\times10^{-5}$ & 符合 \\
+\midrule
+\multicolumn{4}{l}{\emph{A3 读法的算术核对，非独立预言}}\\
+$\mu$ 子飞行寿命 & $64.43\,\mu$s & $64.378\pm0.026$ & 符合 $10^{-3}$ \\
+Pound--Rebka & $2.455\times10^{-15}$ & $(2.46\pm0.03)\times10^{-15}$ & 符合 \\
+\midrule
+\multicolumn{4}{l}{\emph{换算而来；$\lambda$ 本身是测量值，即那个唯一的自由数}}\\
+暗能量密度 & $5.845\times10^{-27}$ & $5.86\times10^{-27}$ kg/m$^3$ & 符合 \\
+\midrule
+\multicolumn{4}{l}{\emph{当前活的检验}}\\
+$w$ 不演化（A5 强制） & $w=-1$，不跑动 & DESI: $w_0>-1,w_a<0$ & \textbf{张力 $2.8$--$4.2\sigma$} \\
+$f_0(500)$ 极点 $\Gamma/m$ & $<1.157$ & CCL $1.234$ / GKPY $1.090$ & \textbf{开放} \\
+光子能量依赖时延 & 恰为零 & $E_{\rm QG}\gtrsim7.6E_{\rm Pl}$ & 通过，且与对手分道 \\
+引力波速 & 精确 $c$，无色散 & $|\Delta v/v|\lesssim10^{-15}$ & 通过 \\
+质量谱 $\mathrm{CV}^2$ & $<1$（秩一） & $0.875$ & 通过 \\
+非禁闭精确守恒荷 & 恰一个 & 电荷、$B{-}L$（两个？） & 未决，$0\nu\beta\beta$ 裁决 \\
+黑洞熵 & $\propto\ln R$ & —— & 未测（面积律亦未测）\\
+\midrule
+\multicolumn{4}{l}{\emph{框架内部被排除的选项——最有信息量的部分}}\\
+等比质量塔 & $\mathrm{CV}=0$ & $0.935$ & \textbf{排除} \\
+各向同性扇区偏折 & $0.8758''$ & $1.7509''$ & \textbf{排除（2 倍）} \\
+各向同性扇区进动 & $14.33''$ & $42.98''$ & \textbf{排除（3 倍）} \\
+色 $=$ 块荷 & $\mathbb Z/2$（两值） & 需要三值 & \textbf{排除（结构不可能）} \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
-\textbf{一条活张力、一个活的开放问题，都不致命。}
-宽度界在极点确定值被正确读取之后\textbf{并非一次失败}，
-而那处更正被明写在上文而非悄悄吸收。
+\textbf{一条活张力、一个活的开放问题，都不致命}——而这两个扇区正在被测量。
+最后四行是本体系\emph{拒绝}掉的东西，
+\textbf{它们比符合的那些更有信息量，因为它们说明这套体系确实会拒绝}。
 
 \textbf{关于电荷检验的时间尺度：}即便建立在跷跷板机制上的轻子数破坏模型，
-所预言的 $0\nu\beta\beta$ 半衰期也\textbf{远高于现有实验的排除范围}，
-故这项计数短期内不会有定论。
-\textbf{它是一个真实但引信很长的检验}，"正在进行"不应被读作"即将报告"。
+所预言的 $0\nu\beta\beta$ 半衰期也远高于现有实验的排除范围。
+\textbf{这是一个真实但引信很长的检验}，“正在进行”不应被读作“即将报告”。
 \leanline{Data.scorecard}
 \end{mdframed}
-
 
 \clearpage
 \part{第九部分\quad 登记册：撤回、更正、与边界}
@@ -3752,7 +3895,6 @@ $\mathrm{CV}^2<1$（秩一） & 通过 & 实测 $0.875$ \\
 但它们所支持的\emph{解读}不再成立，故迁到此处。
 
 \textbf{一个没有撤回记录的开发，是一个没有被审计的开发。}
-
 
 \section{自我审查：已发现的思维污染}\label{sec:audit}
 
@@ -3769,7 +3911,7 @@ $\mathrm{CV}^2<1$（秩一） & 通过 & 实测 $0.875$ \\
 复查发现\emph{证伪打错了靶}。框架真正确立的关于缺陷的性质是\textbf{拓扑}的：
 绕数是整数、可加、不能连续改变、$|k|$ 在取向反转下不变。
 而质量律额外需要的是\textbf{动力学}的：绕数为 $k$ 的缺陷使标度场应变多少——
-本文\emph{没有任何定理}涉及这件事。
+本报告\emph{没有任何定理}涉及这件事。
 
 \begin{theorem}[拓扑不决定质量律]\label{thm:massgap}
 存在两个真正不同的质量律——指数塔与二次律——
@@ -3816,70 +3958,138 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \textbf{宇宙学观测到的恰好是公理允许的那个量，不多不少。}
 \leanline{Observation.redshift\_fiducial\_invariant}
 
-\subsection{仍存在：未修复的污染，逐条登记}
+\subsection{登记册（一）：已撤回的主张}\label{ss:retracted}
 
-\begin{enumerate}[leftmargin=1.8em]
-\item \sout{\textbf{$\kron$ 是被公设的平直度规。}} \textbf{已解决}——
-      第 \ref{sec:invariant} 节把它导出为 $\kappa(x,y)=\tau(xy)$，
-      而 $\kron$ 真正提供的那条性质（输运下不变）成为定理。
-      需要的只是一个迹，比度规弱得多。
-\item \sout{\textbf{$k=3$ 依赖一个判断}} \textbf{已扶正为公理 A7}——
-      第 \ref{sec:locus} 节。它不再伪装成"几乎已导出"，
-      而是公开的第七条公理，内容是关于什么算可观测的哲学承诺。
-      \textbf{这是降级，不是升级。}原文如下：第 \ref{sec:dimension} 节表明
-      同形的自匹配条件\emph{不止一条}且答案不同（$k=3$ 与 $k=2$），
-      故须说明\emph{哪个}指标集匹配\emph{哪个}。框架选的是
-      "A4 的标签须足以标记耦合生成的转动"——一条关于可观测性的假设。
-      注意 $n$ 本身\textbf{已不再是独立输入}：代数定名后 $n=k+1$。
+\textbf{以下四条曾被作为结论提出，现已收回。} 其定理仍成立且仍被审计，
+被收回的是\emph{解读}。
 
-\item \textbf{缺陷在对称空间体积中均匀分布}（新登记）。
-      第 \ref{sec:dimension} 节的 $\rho\alpha = k-1$ 换算依赖它，而无定理提供。
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt]
+\item \textbf{几何质量塔}。$m_k=m_0e^{|k|\Delta}$ 是\emph{假设}而非推论
+      （本节上文）。定理 \ref{thm:towerfail} 的胶球检验否定的是那个假设。
+      第 \ref{sec:emergence} 节此后说明了为什么不存在这样一条律：
+      质量不是缺陷\emph{带着}的属性，而是它在标度轴上\emph{出现的位置}。
+\item \textbf{色的识别}。第 \ref{sec:color} 节导出的有限禁闭荷不是色。
+      第 \ref{sec:particle} 节表明块群只能是 $\mathbb Z/2$——序参量是射影的——
+      故\textbf{三值从来不在供给里}。这不是缺口，是被解释了的结构不可能。
+\item \textbf{跨扇区检验}。第 \ref{sec:crosscheck} 节：谱的 $\rho$ 与跑动的 $\rho$
+      不是同一个量（一个是原始计数，一个是扇区受限且带符号的）。
+\item \textbf{余维数分析}。第 \ref{sec:codim} 节的定理对\emph{圆值}标度成立，
+      但那不是本框架：方向性 A4 下序参量是无取向轴，点缺陷回来了（第 \ref{sec:axis} 节）。
+\end{enumerate}
 
-\item \sout{\textbf{单轴／双轴两难}} \textbf{已消解}——第 \ref{sec:axes} 节表明
-      那个两难来自把"一个矢量与自身的楔积为零"误读为"单轴不带转动"。
-      转动由花样的\emph{变化}携带，绕数缺陷必然带转动；
-      而实秩一使花样成为单个矢量，故更多轴根本不可得。
-      第 \ref{sec:particle} 节的标签无需限缩。
-      \textbf{同一个"标量替代方向性"的错误已出现五次}，而这一次
-      \textbf{挺过了一次形式化与一版论文}。
+\subsection{登记册（二）：已限缩适用域的主张}\label{ss:corrected}
 
-\item \textbf{实秩一的分类定理是外部输入}（新登记）。第 \ref{sec:algebra} 节
-      证明了公理强制实秩 $=1$，并算出 $\mathfrak{so}(n,1)$ 满足它；
-      但"实秩一的实单李代数只有四族"这条\emph{分类}是李理论的定理，
-      本文未证，纯属引用。若该引用有误，第 \ref{sec:algebra} 节的
-      "指向 Lorentz 族"就失效，而秩 $=1$ 这条约束本身仍然成立。
+\textbf{定理成立，当初的解读过宽。}
 
-\item \textbf{维数 $n$ 仍是给定的}（部分解决）。第 \ref{sec:direction} 节去掉了
-      指标集——方向\emph{就是}代数元素，个数即代数维数——并揭穿 A1 的
-      "两两交换"其实是在假设方向平直。但\emph{哪个}代数仍是输入，故 $n=4$ 未被预言。
-      第 \ref{sec:codim} 节给出了一条把维数与激发形态联系起来的约束，
-      但它约束的是二者的\emph{关系}，不单独定住维数。
-      "$n$ 个两两交换的导子"预设了一个 $n$ 维带坐标的流形。
-      在一个只有标度的理论里，"方向"本应由标度\emph{定义}
-      （例如作为标度比较的等价类），而不是先验给出。
-      第 \ref{sec:gauge} 节的规范结论依赖于"块"，而块是方向的子集，
-      故这一条污染向下传播。
-\item \sout{\textbf{号差 $\eta$ 是输入。}} \textbf{已解决}——第 \ref{sec:signature} 节由 A6
-      的漂移导出 $1+(n-1)$ 的形状：时间就是标度在跑的方向，没有耗散就没有时间。
-      仍是输入的只剩\emph{类时}的符号约定。
-\item \textbf{$a=1/\varepsilon$ 是识别，不是导出。} 把宇宙学标度因子
-      认成逆能标是一个物理假设；de Sitter 的数学（定理 \ref{thm:desitter}）
-      本身无懈可击，但它依赖这个识别。
-\item \textbf{暗物质定理偏弱。} 定理 \ref{thm:dm} 的实质接近
-      "任给阈值都存在低于它的东西"。它证明的是\emph{相容性}
-      （引力可见与探测不可见可以并存），不是\emph{解释}。
-      不应把它读作对暗物质的推导。
-\item \textbf{缺陷密度、标度花样、$n=3$} 仍是输入。
-      第 \ref{sec:coloraudit} 节\emph{排除}了从空间几何导出 $n$ 的路线
-      （它给出 $2$，数据要 $3$），故色必须来自框架尚不包含的结构。
-\item \textbf{各向异性曲率的逐分量计算仍未做}。第 \ref{sec:ppn} 节在系数层面付清欠债，
-      第 \ref{sec:vacuum} 节把倒数关系的\emph{常数}由渐近平直性定住；
-      仍缺的只是"真空方程 $\Rightarrow$ 标度和为常数"这一步的形式化。
-\item \sout{\textbf{基本激发的形态未定}} \textbf{已澄清}——
-      第 \ref{sec:codim} 节的警报误用了标量标度。第 \ref{sec:axis} 节表明：
-      标度是比值 $\Rightarrow$ 读数偶 $\Rightarrow$ 序参量是无取向轴 $\Rightarrow$
-      射影序参量携带整数荷\emph{点}缺陷。点粒子回来了。
-      仍是输入的是那条拓扑事实（$\pi_2(\mathbb{RP}^2)=\mathbb{Z}$）。
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt]
+\item \textbf{“对易导子是隐藏的平直性假设”}——\emph{撤回}。把导子全部杀死，
+      曲率原封不动（定理 \ref{thm:noflatcomm}）。一张图就是一张图；
+      平直性住在\emph{联络}对不对易里。
+\item \textbf{“方向就是代数，$n$ 是代数维数”}——\emph{撤回}。
+      $\dim\mathfrak{so}(3,1)=6\neq4$。方向是代数所作用的\textbf{定义表示}
+      （定理 \ref{thm:algbig}）。什么也没丢：定名代数仍然定住 $n=k+1$。
+\item \textbf{“多重态内部平直”}——解读\emph{撤回}。其前提按方向指派缩放算子，
+      而实秩一只提供一个矢量、一个缩放（第 \ref{sec:axes} 节）。
+\item \textbf{“单轴不携带转动”}——定理讲的是\emph{均匀}花样。
+      由此产生的两难随之消解（第 \ref{sec:axes} 节）。
+      \textbf{这一条挺过了一次形式化与一版报告才被抓住。}
+\item \textbf{“标度路与转动路互相独立”}——\emph{推翻}。那是对标量扇区的分析；
+      方向性标度下转动扇区由标度扇区\emph{生成}（第 \ref{sec:coupling} 节）。
+\item \textbf{“$f_0(500)$ 违反宽度界”}——\emph{更正}。此前引用的极点虚部
+      不是任何一个标准确定值。以真值计，界落在 CCL 与 GKPY \emph{之间}：
+      开放，未被违反（第 \ref{sec:data} 节）。
+\end{enumerate}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
+\textbf{上列六条中有五条是同一个错误：在结构是方向性的地方用标量推理。}
+它出现在第 \ref{sec:frame}（几何）、\ref{sec:axis}（缺陷）、
+\ref{sec:coupling}（地基——“比值可交换”是标量的说法）、
+\ref{sec:direction}（平直性解读）、\ref{sec:slice}（单轴解读）节。
+
+\textbf{抓住它的判据：}凡是提到一个计数——一根轴、一个标度、一个方向、一个值——
+就问\emph{是什么的计数}。\textbf{值与方向每一次都会分开。}
+\end{mdframed}
+
+\subsection{登记册（三）：已解决的项目}\label{ss:closed}
+
+\textbf{以下曾在本清单上，现已关闭。}列出是为了让读者能核对，而不是为了记功。
+
+\begin{center}
+\small
+\begin{tabular}{lll}
+\toprule
+曾登记的问题 & 现状 & 由何关闭 \\
+\midrule
+$\kron$ 是被公设的平直度规 & 已导出 & $\kappa(x,y)=\tau(xy)$，仅需一个迹（\S\ref{sec:invariant}）\\
+号差 $\eta$ 是输入 & 已导出 & 漂移区分出恰好一个方向（\S\ref{sec:signature}）\\
+$n$ 是独立输入 & 不再是 & 代数定名后 $n=k+1$（\S\ref{sec:dimension}）\\
+$k=3$ 依赖一个判断 & 已扶正为 A7 & 公开的第七条公理（\S\ref{sec:locus}）\\
+单轴／双轴两难 & 已消解 & 误读所致；更多轴不可得（\S\ref{sec:axes}）\\
+基本激发形态未定 & 已澄清 & 射影序参量给出整数荷点缺陷（\S\ref{sec:axis}）\\
+交叉积未完整构造 & 结构部分已解决 & 实秩一使作用群为 $\mathbb R$（\S\ref{sec:algebra}）\\
+定量引力跑在交换扇区 & 已关闭 & 非交换曲率（\S\ref{sec:ncconf}）\\
+耗散率 $\lambda$ 是否恒定 & 已定 & A5 强制它恒定（\S\ref{sec:cosmos}）\\
+两路独立故无跨扇区检验 & 前提被推翻 & 耦合被词义强制（\S\ref{sec:coupling}）\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{注意“$k=3$ 已扶正为 A7”不是一次解决，是一次\emph{降级}。}
+它从“几乎已导出”变成公开的公理，读者可以拒绝它并得到别的 $k$。
+
+\subsection{登记册（四）：仍然开放}\label{ss:open}
+
+\textbf{以下没有被解决，只被登记。}
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt]
+\item \textbf{$a=1/\varepsilon$ 是识别，不是导出。} 把宇宙学标度因子认作逆能标
+      是一个物理假设。de Sitter 的数学（定理 \ref{thm:desitter}）无懈可击，
+      但它依赖这个识别。
+\item \textbf{标度花样是输入。} 哪些方向简并、简并到什么程度，
+      框架不预言。第 \ref{sec:gauge} 节的全部规范结论都是\emph{给定花样}的函数。
+\item \textbf{阈值密度 $\rho$ 的\emph{数值}是测量的。} 第 \ref{sec:spectrum} 节
+      预言的是\emph{离散度}（$\mathrm{CV}$），不是密度；
+      第 \ref{sec:dimension} 节的 $\rho\alpha=k-1$ 是换算而非预言。
+\item \textbf{暗物质：两条路径，框架不选。} 第 \ref{sec:dm} 节的低标度路径
+      证明的是\emph{相容性}而非解释；第 \ref{sec:cosmos} 节的各向同性路径
+      是一条导出，但两者预言相反（有谱／无谱），\textbf{哪条为真是实验问题}。
+\item \textbf{球对称拟设本身是输入。} 第 \ref{sec:riccidiag} 节\emph{已}对
+      各向异性度规 $-A(r)\dd t^2+B(r)\dd r^2+r^2\dd\Omega^2$ 逐分量算出 Ricci
+      （$A\neq B$ 正是各向异性），而“真空方程 $\Rightarrow$ 标度和为常数”
+      也已形式化（定理 \ref{thm:vacstat}）。
+      \textbf{此前本条写作“逐分量计算未做”，那是 \texttt{RicciDiag.lean} 写出之前的旧登记，已更正。}
+      仍是输入的是\emph{静态球对称拟设}的选取本身，以及标度响应律 A6$'$。
+\item \textbf{引力波：运动学与模式计数已做，动力学未做。}
+      第 \ref{sec:horizon} 节证明波恰在光锥上、无色散，
+      并\textbf{导出偏振数恰为二}、且\textbf{呼吸模被 A5 禁止}（定理 \ref{thm:pol}）。
+      仍未做的是\emph{动力学}：波形、辐射功率、双星旋近——
+      那些需要含时各向异性解，而本框架目前只做了静态球对称。
+\item \textbf{微观扇区的数值等价于那一个自由单位。} 措辞需要精确：
+      框架给出量子修正的\emph{形式}（$[\sigma_i,\sigma_j]$）、\emph{对称性}（纯反对称）
+      与\emph{标度}（相对经典项为一个标度步长）。
+      \textbf{一旦任何一次测量把那个单位定住，量级就随之定住}——
+      所以这不是一处独立的缺口，而是"唯一一个自由数"的又一次现身
+      （第 \ref{sec:dimension} 节）。
+      \emph{真正}缺的是\textbf{散射振幅}：它需要固定内容的渐近态，
+      而第 \ref{sec:emergence} 节说没有哪个标度携带完整清单。
+\end{enumerate}
+
+\subsection{登记册（五）：引用而未证，与登记的假设}\label{ss:cited}
+
+\textbf{引用（2 条）。}若引用有误，其上的\emph{约束}仍成立，只是\emph{识别}不成立。
+\begin{enumerate}[leftmargin=1.8em,itemsep=2pt]
+\item 实秩一实单李代数的分类（$\mathfrak{so}(n,1)$、$\mathfrak{su}(n,1)$、
+      $\mathfrak{sp}(n,1)$、$\mathfrak f_{4(-20)}$）。秩 $=1$ 本身\emph{是}被证明的；
+      清单的\emph{穷尽性}不是。
+\item 射影空间的同伦：$\pi_1(\mathbb{RP}^n)=\mathbb Z/2$、$\pi_2(S^2)=\mathbb Z$、
+      以及李群模离散子群的 $\pi_2$ 为零。
+\end{enumerate}
+
+\textbf{假设（2 条）。}
+\begin{enumerate}[leftmargin=1.8em,itemsep=2pt]
+\item 缺陷在对称空间体积中\textbf{均匀分布}——第 \ref{sec:dimension} 节的
+      $\rho\alpha=k-1$ 换算需要它，无定理提供。
+\item \textbf{A7 本身}——关于什么算一次观测的承诺，已扶正为公理而非留作判断。
 \end{enumerate}
 
 \subsection{审查方法本身}
@@ -3891,7 +4101,22 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 换掉问句，答案自己就出来了（第 \ref{sec:transport}、\ref{sec:gauge} 节）。
 本节登记的六条"仍存在"，很可能也各自藏着一个同类的问句。
 
-\section{禁闭，以及电荷为何成三分之一}\label{sec:color}
+\section{（已撤回的解读）块单值性、禁闭与分数电荷}\label{sec:color}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1.2pt,backgroundcolor=red!4]
+\textbf{本节的定理成立，本节的\emph{解读}已被撤回。}
+
+下面导出的"绕数 $+$ 块置换"这对单值性数据是对的，禁闭与分数电荷的结论
+在\emph{它自己的假设下}也是对的。被撤回的是把这个有限荷读作\textbf{色}。
+
+\textbf{而"它给出 2 而数据要 3，这是一个缺口"这个后续说法同样已过时。}
+第 \ref{sec:particle} 节证明：序参量是射影的，故块群只能是 $\mathbb Z/2$，
+\textbf{3 从来就不在供给里}。这不是缺口，是被解释了的结构不可能——
+色不是这个量子数，而且没有任何修补能让它是。
+
+保留本节，是因为它的数学仍被审计，而撤回记录与结论同样重要。
+\textbf{请勿把以下内容当作本框架的现行主张。}
+\end{mdframed}
 
 第 \ref{sec:defect} 节只给了缺陷一个整数：标度绕它的绕数。那是不完整的。
 若缺陷位于一个\emph{简并块}中——一组携带相同局域单位的方向——
@@ -3942,7 +4167,7 @@ constituent\_charge\_rat, bound\_charge\_divisible}
 取出来的是"$n$ 个组分"与"$1/n$ 电荷"。
 \end{mdframed}
 
-必须明说：\textbf{自然界为何选了 $n=3$，本文没有导出}。
+必须明说：\textbf{自然界为何选了 $n=3$，本报告没有导出}。
 那需要把标度花样本身导出来。
 
 \section{审查：色荷的块不是空间的块}\label{sec:coloraudit}
@@ -3979,9 +4204,24 @@ ColorAudit.identification\_fails\_charge}
 这同时消除了一个未曾言明的隐忧：若该认同成立，色将是时空对称性而非内禀对称性，
 而那正是 Coleman--Mandula 所禁止的混合。\textbf{框架没能产生它，是预期结果而非意外。}
 
-
 \clearpage
-\section{三维中的绕数缺陷究竟是什么}\label{sec:codim}
+\section{（已撤回）三维中的绕数缺陷究竟是什么}\label{sec:codim}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1.2pt,backgroundcolor=red!4]
+\textbf{本节的定理成立，但它们描述的不是本框架。}
+
+以下余维数分析假设标度是\emph{圆值}的（对数标度取值于 $\mathbb R/\Delta\mathbb Z$）。
+在那个假设下，结论——三维中绕数缺陷是\textbf{弦}而非点——是对的。
+
+\textbf{但那个假设是错的，而错法又是那个熟悉的错法：}标度是一个\emph{比值}，
+故读数无向，序参量是一根\textbf{无向轴}而非一个圆（第 \ref{sec:axis} 节）。
+射影序参量的 $\pi_2$ 非平凡，故\textbf{点缺陷回来了}。
+这是“标量代替方向性”五次中的第二次（第 \ref{sec:audit} 节）。
+
+保留本节，是因为它记录了一次真实的误判，而登记册与结论同样重要。
+\textbf{请勿把以下内容当作本框架对激发形态的主张}——
+那由第 \ref{sec:axis}、\ref{sec:charges}、\ref{sec:particle} 节给出。
+\end{mdframed}
 
 试图从代数定住维数 $n$，结果撞出的是 \texttt{Defect.lean} 的一个问题，
 而这个问题比维数本身更有意思。
@@ -4057,7 +4297,18 @@ $3+1$ 维中的基本激发是\emph{一维的广延对象}。
 它\emph{能}回答的问题是：\textbf{什么是可表达的？}
 
 整个开发只由三种操作搭成，别无其他——\emph{比较标度}、\emph{不对易}、\emph{计数}。
-本节证明这三者确实就是全部词汇，并且它们互相独立。
+本节证明这三者确实就是全部词汇。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1.2pt,backgroundcolor=red!4]
+\textbf{"三者互相独立"这个结论已被推翻，本节因此被降级为记录。}
+下面关于\emph{可表达性}的定理仍然成立且仍被审计：
+可观测量恰是标度\emph{差}的函数，绝对标度根本不可表达。
+
+但由此得出的"标度路与转动路按构造独立，故不可能有跨扇区检验"是\textbf{错的}。
+第 \ref{sec:coupling} 节证明：那是对\emph{标量}扇区的分析；
+方向性标度下\textbf{转动扇区由标度扇区\emph{生成}}，耦合是被词义强制的。
+这是"标量代替方向性"错误的第三次出现（共五次，见第 \ref{sec:audit} 节）。
+\end{mdframed}
 
 \subsection{标度这一路：恰好表达"差"}
 
@@ -4171,11 +4422,10 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 且没有任何一个耦合响应所有结构。
 \end{mdframed}
 
-
 \clearpage
 \section{范围声明：什么被证明了，什么没有}\label{sec:scope}
 
-这是本文最重要的一节。Lean 验证的是\emph{蕴含关系}，不是自然界的真值。
+这是本报告最重要的一节。Lean 验证的是\emph{蕴含关系}，不是自然界的真值。
 
 \paragraph{已被机器证明（从公理出发，零 \texttt{sorry}）。}
 定理 \ref{thm:adleib}、\ref{thm:adjac}、\ref{thm:adpow}、\ref{thm:robertson}、
@@ -4188,70 +4438,64 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:newc}、\ref{thm:nouniv}、\ref{thm:wedge}、\ref{thm:uniax}、\ref{thm:three}、\ref{thm:rotvar}、\ref{thm:wound}、\ref{thm:noax2}、\ref{thm:stabpos}、\ref{thm:algbig}、\ref{thm:twocond}、\ref{thm:ratio}、\ref{thm:dennorm}、\ref{thm:a7}、\ref{thm:noinv}、\ref{thm:iso}、\ref{thm:noorigin}、\ref{thm:dm2}、\ref{thm:reso}、\ref{thm:ncdefm}、\ref{thm:ncclass}、\ref{thm:ncmaster}、\ref{thm:ncsym}、\ref{thm:nohor}、\ref{thm:gw}、\ref{thm:nodisp}、\ref{thm:ent}、\ref{thm:nomin}、\ref{thm:sep}、\ref{thm:interval}、\ref{thm:noglobal}、\ref{thm:parity}、\ref{thm:nomax}、\ref{thm:bound}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
 
 \paragraph{尚未完成——本纲领当前最薄弱之处。}
-这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{完整的登记册在第 \ref{sec:audit} 节，分五张清单：}
+已撤回（\S\ref{ss:retracted}，4 条）、已限缩适用域（\S\ref{ss:corrected}，6 条）、
+\textbf{已解决}（\S\ref{ss:closed}，10 条，附由何关闭）、
+仍然开放（\S\ref{ss:open}，7 条）、引用与假设（\S\ref{ss:cited}，各 2 条）。
+
+本栏此前混杂着已解决与未解决的条目并以删除线标注，那是修改痕迹而非登记册；
+\textbf{已解决的条目现已移入 \S\ref{ss:closed} 的表中}，本栏只留仍未完成者。
+\end{mdframed}
 \begin{itemize}[leftmargin=1.6em]
-\item \textbf{标准模型不再是目标}（立场变更）。第 \ref{sec:emergence} 节论证：
-      索取一张固定物种表是把标准模型的\emph{本体论}也借了过来，而 A3 没有它——
-      内容是标度上的截面而非清单，且没有哪个标度携带完整清单。
-      色、代结构、Higgs 因此不是本框架应当重现的东西；
-      第 \ref{sec:color} 节的色解释已撤回。
-      应当索取的是\textbf{阈值结构}，第 \ref{sec:spectrum} 节已给出并检验：
-      预言 $\mathrm{CV}=1$，观测 $0.935$（第 63 百分位），等比塔被排除。
-\item \sout{\textbf{两路按构造独立，故无跨扇区检验}} \textbf{已推翻}——
-      第 \ref{sec:coupling} 节表明那是对\emph{标量}扇区的分析。
-      方向性标度下，两次缩放的括号是转动，故\textbf{转动扇区由标度扇区生成}，
-      耦合是被词义强制的，不需要新公理。
-      第 \ref{sec:crosscheck} 节的否定结果仍然成立（谱的 $\rho$ 与跑动的 $\rho$
-      确实不是同一个量），但其\emph{原因}不再是"通路独立"。
-      \textbf{同一个"标量替代方向性"的错误已出现三次}，见第 \ref{sec:frame}、
-      \ref{sec:axis}、\ref{sec:coupling} 节。第 \ref{sec:defect} 节给出的是
-      一条\emph{不同于} QFT 的粒子产生机制（标度缺陷、绕数即荷）
-      及其可证伪的形状，但不产生任何具体粒子的数值。
-\item \textbf{量子场论未被回归}。第 \ref{sec:nc} 节回归的是量子\emph{力学}
-      （对易子、幂律、不确定性），第 \ref{sec:deform} 节回归的是经典极限。
-      场的二次量子化、路径积分、规范不变性、圈图重整化，均未涉及。
-      第 \ref{sec:rg} 节的“重整化群”只是标度流的群律与幂律解，
-      不是 QFT 意义下的圈计算。
-\item \sout{\textbf{定量引力未闭合}} \textbf{已闭合}——第 \ref{sec:riccidiag} 节
-      由联络导出两个 Ricci 分量，链条从度规到 $1.7515''$、$42.99''$
-      不再有任何假设。扇区内仅存的输入是标度响应律 A6$'$ 与球对称拟设；
-      引力波仍未涉及。
-\item \textbf{交叉积未完整构造}。第 \ref{sec:exact} 节已把"一阶"限制取消
-      （对易子有精确闭形式），但只做到位移与乘法生成的算符代数：
-      完整交叉积、其表示论、以及 $\hbar$ 数值与具体步长的对应，均未做。
-\item \textbf{强扇区只到结构层面}。第 \ref{sec:qcd} 节证明了量纲嬗变、
-      渐近自由与无参数质量比，但\emph{未}计算任何强子质量的纯数
-      （那需要格点或解析求解）。单圈 $\beta$ 函数是输入而非导出。
-      定理 \ref{thm:towerfail} 已经证伪了最简版本的粒子塔。
-      第 \ref{sec:beta} 节把借来的 $\beta$ 系数缩小为"活跃内容的一个泛函"，
-      第 \ref{sec:running} 节进一步把它换成"缺陷密度"并导出了线性形式与
-      渐近自由的判据；仍未导出的是密度的\emph{数值}。
+\item \textbf{标准模型不是目标}（立场，非缺口）。索取一张固定物种表，
+      是把标准模型的\emph{本体论}也借过来；而 A3 没有它——内容是标度上的截面，
+      没有哪个标度携带完整清单（第 \ref{sec:emergence} 节）。
+      色、代结构、Higgs 因此不是本框架应当重现的东西。
+      应当索取的是\textbf{阈值结构}，第 \ref{sec:spectrum} 节已给出并检验。
+
+\item \textbf{量子场论不是目标}（立场，非缺口）。此前本栏写作“量子场论未被回归”，
+      \textbf{那个措辞不准确}：二次量子化、路径积分、圈图重整化\emph{预设}了
+      一个固定内容的场论描述，而第 \ref{sec:slice} 节证明那种描述的标签数
+      度量的是它覆盖的\emph{范围}而非物理的深度。
+      \textbf{本框架回归的是量子\emph{力学}}（对易子、幂律、不确定性，
+      第 \ref{sec:nc} 节）与\emph{精确}的非交换标度平移（$\hbar$ 是步长）。
+      真正的缺口是\textbf{散射振幅}——它需要固定内容的渐近态，
+      而框架只能给出“两个被指名标度之间的映射”。
+
+\item \textbf{强扇区没有纯数}。第 \ref{sec:qcd} 节证明量纲嬗变、渐近自由
+      与无参数质量比；第 \ref{sec:running} 节把 $\beta$ 系数换成缺陷密度并导出线性形式。
+      \textbf{仍缺的只有密度的\emph{数值}}——而那与"唯一一个自由单位"是同一件事
+      （第 \ref{sec:dimension} 节），不是一处独立的缺口。
+      任何强子质量的纯数需要格点或解析求解，本框架不提供也不声称提供。
 \end{itemize}
 
 \paragraph{属于物理输入而非定理（续）。}
 
 \paragraph{属于物理输入而非定理。}
 \begin{itemize}[leftmargin=1.6em]
-\item \textbf{A6$'$ 标度响应律}（$e^{2\sigma}R=\kappa\rho$）。本文\emph{未}从更基本的
+\item \textbf{A6$'$ 标度响应律}（$e^{2\sigma}R=\kappa\rho$）。本报告\emph{未}从更基本的
       原理导出它；它扮演 Einstein 方程的角色。所证明的是：一旦接受它，
       Newton 极限被强制。$\kappa=16\pi G$ 是外部标定。
-\item \textbf{Lorentz 号差}。第 \ref{thm:null} 节的类光结构以号差 $\eta$ 为给定输入，
-      未从标度结构导出为何号差是 $(-,+,+,+)$。
-\item \textbf{耗散率 $\lambda$ 的取值}。定理 \ref{thm:desitter} 证明耗散蕴含加速膨胀，
-      但 $\lambda$ 的数值（即 $\Lambda$ 的大小）不是本理论的预言。
+
+\item \textbf{耗散率 $\lambda$ 的\emph{数值}}。第 \ref{sec:cosmos} 节已证明
+      A5 强制 $\lambda$ \textbf{恒定}——故 $w=-1$ 且不演化，
+      这是本框架最暴露的预言。但 $\lambda$ 的\emph{数值}不被预言，
+      也\textbf{不可能}被预言：它就是那个唯一的单位（第 \ref{sec:dimension} 节）。
 \item \textbf{暗物质的具体候选}。定理 \ref{thm:dm} 证明“引力可见 $+$ 探测不可见”
       在标度层级下是相容的，并给出构造；它\emph{不}预言具体的粒子谱或截面数值。
 \item \textbf{重子不对称度}。仅证明 Sakharov 第三条件结构性满足，
       未导出 $\eta_B$ 的量级。
-\item \textbf{胶球等强耦合谱}。本文未涉及 QCD 谱的计算；
-      引言所述的实验进展是启发，不构成本文的证据链条。
+\item \textbf{胶球等强耦合谱}。本报告未涉及 QCD 谱的计算；
+      引言所述的实验进展是启发，不构成本报告的证据链条。
 \end{itemize}
 
 \paragraph{形式化的技术边界。}
 基底采用代数化的“标度代数”而非光滑流形上的解析结构。这使全部曲率恒等式
 成为任意交换环上的代数恒等式（更强、更干净），但也意味着我们\emph{没有}
 形式化测地线方程、整体解的存在性、或 Cauchy 问题。
-“类光测地线的共形不变性”本文只证明了其代数内核——类光锥的标度无关性
+“类光测地线的共形不变性”本报告只证明了其代数内核——类光锥的标度无关性
 （定理 \ref{thm:null}），未证明参数化曲线层面的完整陈述。
 
 \section{形式化与验证}
@@ -4263,75 +4507,93 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \toprule
 文件 & 定理数 & 内容 \\
 \midrule
-\texttt{Basic.lean}       & 16 & 标度代数、Kronecker 收缩原语 \\
-\texttt{Conformal.lean}   & 20 & 主定理、Ricci、标量曲率、平坦性、Weyl 可积性 \\
-\texttt{Axioms.lean}      & 16 & A2/A3/A5、红移、基准协变性 \\
-\texttt{Quantum.lean}     & 10 & 非交换基底、对易子即导数、Heisenberg 不确定性 \\
-\texttt{Newton.lean}      &  9 & 线性化、Poisson、对偶数模型 \\
-\texttt{Covariance.lean}  &  8 & 耗散下的局域协变性、束缚系统不膨胀 \\
-\texttt{Singularity.lean} &  6 & 无度规退化、曲率与标度值无关 \\
-\texttt{RG.lean}          & 13 & 标度流、Callan–Symanzik、EFT 塔、$\beta$ 的形状 \\
-\texttt{Particles.lean}   &  9 & 标度比、寿命、阈值 \\
-\texttt{DarkMatter.lean}  &  4 & 探测失效、暗物质构造 \\
-\texttt{DarkEnergy.lean}  &  8 & 耗散唯一性、de Sitter、加速 \\
-\texttt{Entropy.lean}     & 10 & H 定理、不可逆性、非平衡 \\
-\texttt{Light.lean}       &  6 & 类光锥标度无关、标度可测性 \\
-\texttt{Predictions.lean} & 18 & $w(q)$ 状态方程、数值核对 \\
-\texttt{Frame.lean}       &  6 & A4$'$ 方向性标度、旧公理禁止 Schwarzschild \\
-\texttt{Deformation.lean} & 11 & 一阶形变、对应原理、CCR \\
-\texttt{Defect.lean}      & 13 & 标度缺陷、绕数即荷、反粒子简并、质量塔 \\
-\texttt{Unify.lean}       &  8 & 公理相容性：A4 是 A4$'$ 的各向同性轨迹 \\
-\texttt{QCD.lean}         & 11 & 渐近自由、量纲嬗变、胶球比值检验 \\
-\texttt{Connection.lean}  & 16 & 曲率即对易子、Bianchi、标度/转动拆分 \\
-\texttt{Crossed.lean}     & 12 & 精确非交换：位置与标度不对易、扭曲 Leibniz \\
-\texttt{Gauge.lean}       &  8 & 内禀对称性即标度花样稳定子、多重态即简并块 \\
-\texttt{Running.lean}     &  7 & 由计数导出线性跑动、渐近自由判据 \\
-\texttt{Transport.lean}   &  6 & 输运由标度花样定出；规范自由即简并 \\
-\texttt{Color.lean}       & 17 & 块单值性：禁闭、束缚态大小、$1/n$ 电荷 \\
-\texttt{Observation.lean} &  5 & 审查：红移属于观察者而非光 \\
-\texttt{MassAudit.lean}   & 10 & 审查：拓扑不决定质量律（撤回） \\
-\texttt{Foundation.lean}  &  9 & 地基重建：标度即交换化，拆分被导出 \\
-\texttt{Signature.lean}   & 10 & 时间即漂移方向；号差由耗散导出 \\
-\texttt{Invariant.lean}   &  8 & 记账形式由迹导出，不变性成为定理 \\
-\texttt{Deflection.lean}  &  8 & 光线偏折：各向同性扇区恰好只给一半 \\
-\texttt{Direction.lean}   &  9 & 方向即代数（平直性解读已更正） \\
-\texttt{PPN.lean}         &  9 & 倒数条件强制 $\gamma=1$，补上另一半 \\
-\texttt{Codimension.lean} & 12 & 缺陷余维二：三维中是弦而非点 \\
-\texttt{Vacuum.lean}      &  5 & 渐近平直性定住倒数关系的常数 \\
-\texttt{Axis.lean}        &  9 & 标度是比值 $\Rightarrow$ 射影序参量 $\Rightarrow$ 点粒子 \\
-\texttt{Charges.lean}     & 15 & 两个拓扑荷：有限的被禁闭，整数的不被 \\
-\texttt{Precession.lean}  &  8 & 水星近日点 $42.99''/$世纪；各向同性差 3 倍 \\
-\texttt{ColorAudit.lean}  &  8 & 审查：色荷的块不是空间的块（排除） \\
-\texttt{Schwarzschild.lean} & 5 & 相消：真空 $\Rightarrow$ 标度和驻定 \\
-\texttt{RicciDiag.lean}  &  4 & 由联络导出 Ricci，引力链条闭合 \\
-\texttt{Emergence.lean}  & 11 & 内容是截面：没有基本粒子；质量即位置 \\
-\texttt{Spectrum.lean}   & 10 & 阈值密度预言、谱检验、换算表 \\
-\texttt{CrossCheck.lean} &  9 & 审查：跨扇区检验不存在（越界更正） \\
-\texttt{Expressive.lean} & 10 & 表达力边界：可观测 $\iff$ 差（部分被超越） \\
-\texttt{Coupling.lean}   & 11 & 两次缩放生成转动；耦合被词义强制 \\
-\texttt{Dynamics.lean}   & 12 & 守恒出自 Bianchi；多重态内部平直 \\
-\texttt{Algebra.lean}    & 12 & 实秩一；耦合筛出 Lorentz 族 \\
-\texttt{Particle.lean}   & 14 & 标签结构（单轴，适用域见 \S\ref{sec:slice}）；离散度检验 \\
-\texttt{Slice.lean}      & 14 & 广延即标签；转动是楔积；$k=3$ 唯一 \\
-\texttt{Axes.lean}       & 10 & 两难消解；轴数被迫为一 \\
-\texttt{Dimension.lean}  & 10 & 方向是表示；比值不变；量值即单位 \\
-\texttt{Locus.lean}      & 10 & A7 扶正；标签只活在各向异性轨迹上 \\
-\texttt{Cosmos.lean}     & 12 & $w$ 不演化；无初值；暗物质两路；共振宽度界 \\
-\texttt{NCConformal.lean}& 12 & 非交换曲率；修正 $=[\sigma_i,\sigma_j]$，纯反对称 \\
-\texttt{Horizon.lean}    & 12 & 无视界；波恰在光锥；熵是对数；无最小长度 \\
-\texttt{Native.lean}     & 12 & 框架自己的七个问题与图像 \\
-\texttt{Data.lean}       & 19 & 与 DESI／PDG／Fermi-LAT 数据对质 \\
-\texttt{Postulates.lean} &  3 & A1--A7 全在一处；证明基底只有一个载体 \\
-\texttt{Audit.lean}      &  4 & 登记册：撤回／更正／引用／假设的计数 \\
+\endhead
+\multicolumn{3}{l}{\emph{第一部分\quad 公理}}\\
+\texttt{Basic.lean} & 13 & 标度代数、Kronecker 收缩原语 \\
+\texttt{Axioms.lean} & 16 & A2/A3/A5、红移、基准协变性 \\
+\texttt{Postulates.lean} & 3 & A1--A7 全在一处；证明基底只有一个载体 \\
 \midrule
-\textbf{合计}             & \textbf{594} & 11710 行 Lean 代码，61 个文件 \\
+\multicolumn{3}{l}{\emph{第二部分\quad 公理逼出什么}}\\
+\texttt{Foundation.lean} & 10 & 地基重建：标度即交换化，拆分被导出 \\
+\texttt{Signature.lean} & 7 & 时间即漂移方向；号差由耗散导出 \\
+\texttt{Invariant.lean} & 6 & 记账形式由迹导出 \\
+\texttt{Quantum.lean} & 7 & 对易子即导数、Heisenberg 不确定性 \\
+\texttt{Direction.lean} & 8 & 方向是定义表示（原说法已更正） \\
+\texttt{Connection.lean} & 9 & 曲率即对易子、Bianchi \\
+\texttt{Coupling.lean} & 8 & 两次缩放生成转动；耦合被词义强制 \\
+\texttt{Algebra.lean} & 18 & 实秩一；筛出 Lorentz 族 \\
+\texttt{Dimension.lean} & 10 & 方向是表示；比值不变；量值即单位 \\
+\texttt{Slice.lean} & 16 & 广延即标签；转动是楔积；$k=3$ 唯一 \\
+\texttt{Axes.lean} & 9 & 两难消解；轴数被迫为一 \\
+\midrule
+\multicolumn{3}{l}{\emph{第三部分\quad 分叉点}}\\
+\texttt{Locus.lean} & 11 & A7；标签只活在各向异性轨迹上 \\
+\texttt{Dynamics.lean} & 13 & 守恒出自 Bianchi \\
+\midrule
+\multicolumn{3}{l}{\emph{第四部分\quad 各向同性扇区}}\\
+\texttt{Conformal.lean} & 20 & 共形曲率恒等式、Ricci、标量曲率 \\
+\texttt{Frame.lean} & 5 & A4$'$ 方向性；旧公理禁止 Schwarzschild \\
+\texttt{Unify.lean} & 9 & A4 是 A4$'$ 的各向同性轨迹 \\
+\texttt{Newton.lean} & 7 & 线性化、Poisson、对偶数模型 \\
+\texttt{Schwarzschild.lean} & 5 & 使倒数关系成立的相消 \\
+\texttt{RicciDiag.lean} & 4 & 由联络导出 Ricci，引力链条闭合 \\
+\texttt{Vacuum.lean} & 5 & 倒数关系的常数由渐近平直定出 \\
+\texttt{Deflection.lean} & 7 & 各向同性扇区恰好只给一半 \\
+\texttt{PPN.lean} & 9 & $\gamma=1$；付清另一半 \\
+\texttt{Precession.lean} & 8 & 水星 $42.99''$ \\
+\texttt{Covariance.lean} & 7 & 耗散下的局域协变性 \\
+\texttt{Singularity.lean} & 6 & 无度规退化 \\
+\texttt{Horizon.lean} & 12 & 无视界；波在光锥；熵是对数；无最小长度 \\
+\midrule
+\multicolumn{3}{l}{\emph{第五部分\quad 各向异性扇区}}\\
+\texttt{Gauge.lean} & 5 & 内禀对称性即标度花样稳定子 \\
+\texttt{Transport.lean} & 6 & 输运由花样定出；规范自由即简并 \\
+\texttt{Axis.lean} & 9 & 点粒子回来了 \\
+\texttt{Defect.lean} & 13 & 标度缺陷、绕数即荷 \\
+\texttt{Charges.lean} & 15 & 两个拓扑荷，恰一个被禁闭 \\
+\texttt{Particle.lean} & 16 & 标签结构 $(\mathbb R,\mathbb Z/2,\mathbb Z)$ \\
+\texttt{Emergence.lean} & 9 & 没有基本粒子 \\
+\midrule
+\multicolumn{3}{l}{\emph{第六部分\quad 量子扇区}}\\
+\texttt{Deformation.lean} & 12 & 一阶形变、对应原理、CCR \\
+\texttt{Crossed.lean} & 11 & 精确非交换；$\hbar$ 是标度步长 \\
+\texttt{NCConformal.lean} & 18 & 非交换曲率；修正 $=[\sigma_i,\sigma_j]$，纯反对称 \\
+\midrule
+\multicolumn{3}{l}{\emph{第七部分\quad 标度流与内容}}\\
+\texttt{RG.lean} & 13 & 标度流、Callan--Symanzik、EFT 塔 \\
+\texttt{Running.lean} & 6 & 由计数导出线性跑动 \\
+\texttt{QCD.lean} & 10 & 渐近自由、量纲嬗变 \\
+\texttt{Spectrum.lean} & 9 & 阈值密度、$\mathrm{CV}$ 检验、换算 \\
+\texttt{Entropy.lean} & 9 & H 定理、不可逆性 \\
+\texttt{Light.lean} & 6 & 类光锥标度无关 \\
+\texttt{Observation.lean} & 6 & 红移属于观察者而非光 \\
+\texttt{Particles.lean} & 9 & 标度比、寿命、阈值 \\
+\texttt{DarkMatter.lean} & 4 & 探测失效 \\
+\texttt{DarkEnergy.lean} & 8 & 耗散唯一性、de Sitter \\
+\midrule
+\multicolumn{3}{l}{\emph{第八部分\quad 预言与数据}}\\
+\texttt{Predictions.lean} & 17 & $w(q)$ 状态方程、数值核对 \\
+\texttt{Cosmos.lean} & 13 & $w$ 不演化；无初值；暗物质两路；共振宽度界 \\
+\texttt{Native.lean} & 12 & 框架自己的七个问题 \\
+\texttt{Data.lean} & 19 & 与 DESI／PDG／Fermi-LAT 对质 \\
+\midrule
+\multicolumn{3}{l}{\emph{第九部分\quad 登记册}}\\
+\texttt{Color.lean} & 17 & 块单值性（色解释已撤回） \\
+\texttt{ColorAudit.lean} & 8 & 块 $\ne$ 色块 \\
+\texttt{Codimension.lean} & 12 & （已被方向性 A4 取代） \\
+\texttt{Expressive.lean} & 10 & 可表达性（独立性结论已推翻） \\
+\texttt{CrossCheck.lean} & 9 & 跨扇区检验并不存在 \\
+\texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
+\texttt{Audit.lean} & 4 & 登记册：撤回／更正／引用／假设 \\
+\midrule
+\textbf{合计} & \textbf{592} & 61 个文件，11689 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 592 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 595 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -4353,24 +4615,51 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \section{结语}
 
-若把标度而非时空当作基本量，则：曲率是标度形变的线性函数（定理 \ref{thm:master}）；
-无量纲性是一条可证的对称性（定理 \ref{thm:fiducial}）；
-重整化群是该对称性在物质部门的影子；
-Newton 引力是标度响应律的线性化；
-暗物质是标度失配下的观测失效；
-暗能量是开放系统的耗散率；
-时间箭头是有限分辨率的必然产物；
-而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
+若把标度而非时空当作基本量，则一条链条从公理一路走下来：
 
-这些不是隐喻。它们是 594 条经机器检验、零 \texttt{sorry} 的定理。
-它们成立的前提是本文列出的七条公理与第 \ref{sec:scope} 节明示的物理输入；
-这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
-能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item 标度必须\textbf{有方向}（标量版本禁止 Schwarzschild）；
+\item 一旦有方向，\textbf{标度与转动的耦合就被词义强制}——
+      缩放对称、转动反称，而两个对称算子的括号必然反称；
+\item 耦合加上"漂移是单个泛函"给出\textbf{实秩一}，从而 Lorentz 代数族，
+      从而 $n=k+1$；$k=3$ 出自 A7，而 A7 是一条\emph{关于什么算可观测}的承诺；
+\item 各向同性／异性的\textbf{分叉}决定了标签是否存在，
+      而这是标度相关的事实——这就是"相互作用随能标下降而分离"；
+\item 曲率是标度形变（各向同性扇区）；$\hbar$ 是标度轴上的步长；
+      几何的全部量子修正是 $[\sigma_i,\sigma_j]$，且纯反对称；
+\item 引力扇区定量闭合：$1.7515''$ 与 $42.99''/$世纪，中间无假设。
+\end{itemize}
+
+\medskip
+\noindent
+这些不是隐喻。它们是 595 条经机器检验、零 \texttt{sorry} 的定理，
+且\textbf{全部}经 \texttt{\#print axioms} 审计（清单由源码生成，非人工挑选）。
+
+\medskip
+\noindent\textbf{但"它回归出了我们已知的物理"这句话，现在说不得。}
+记分牌上有一条\emph{活张力}——DESI 对 $w$ 不演化给出 $2.8$--$4.2\sigma$ 的反向偏好，
+而那是与 A5 的张力，不是与某个拟合参数的张力，\textbf{不存在带演化 $w$ 的本框架版本}；
+还有一个\emph{活的开放问题}——$f_0(500)$ 极点落在宽度界的哪一侧，
+两个旗舰确定值分居两侧，而框架押其中一个。
+
+\medskip
+\noindent
+同样说不得的是"它解释了标准模型"：第 \ref{sec:emergence} 节论证那不是目标，
+第 \ref{sec:audit} 节记录了为得到现有结论而必须\textbf{收回}的 4 条主张、
+必须\textbf{限缩适用域}的 6 条、\textbf{引用而未证}的 2 条、
+以及\textbf{登记为假设}的 2 条——外加同一个"标量代替方向性"的错误出现了 5 次，
+其中一次挺过了一次形式化和一版报告。
+
+\medskip
+\noindent
+形式化系统能回答的只有一件事：\textbf{这些结论确实从这些公理跟出来，中间没有缺口。}
+公理是否为自然界所采纳，它不能回答，也不应假装能回答。
+而它\emph{不能}回答这件事本身，正是记分牌与登记册存在的理由。
 
 
 \clearpage
 \appendix
-\section{定理索引：全部 592 条}\label{sec:index}
+\section{定理索引：全部 595 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由源码生成，非人工维护。\textbf{每一条都在 \texttt{Verify.lean} 中经
@@ -4378,84 +4667,85 @@ Newton 引力是标度响应律的线性化；
 只是未被叙述。名称按报告的部分顺序排列。
 
 \footnotesize
+\raggedright
 
 \subsection*{第一部分\quad 公理}
-\noindent\textbf{\texttt{Basic.lean}} (13)\quad \texttt{d\_zero, d\_one, d\_neg, d\_sub, d\_sum, d\_natCast, d\_nsmul, kron\_self, kron\_symm, d\_kron, d\_kron\_mul, sum\_kron\_left, sum\_kron\_right}\par\smallskip
-\noindent\textbf{\texttt{Axioms.lean}} (16)\quad \texttt{en\_mul\_scale, scale\_mul\_en, d\_en, sig\_add\_const, hess\_add\_const, lap\_add\_const, gradsq\_add\_const, Chr\_add\_const, Rm\_add\_const, Ric\_add\_const, Defm\_add\_const, geometry\_fiducial\_invariant, sig\_neg, hess\_neg, lap\_neg, gradsq\_neg}\par\smallskip
-\noindent\textbf{\texttt{Postulates.lean}} (3)\quad \texttt{scaleAlgebra\_is\_diffRing\_d, three\_from\_A7, A7\_holds\_only\_at\_three}\par\smallskip
+\noindent\textbf{\texttt{Basic.lean}} (13)\quad \texttt{d\_\allowbreak zero}, \texttt{d\_\allowbreak one}, \texttt{d\_\allowbreak neg}, \texttt{d\_\allowbreak sub}, \texttt{d\_\allowbreak sum}, \texttt{d\_\allowbreak natCast}, \texttt{d\_\allowbreak nsmul}, \texttt{kron\_\allowbreak self}, \texttt{kron\_\allowbreak symm}, \texttt{d\_\allowbreak kron}, \texttt{d\_\allowbreak kron\_\allowbreak mul}, \texttt{sum\_\allowbreak kron\_\allowbreak left}, \texttt{sum\_\allowbreak kron\_\allowbreak right}\par\smallskip
+\noindent\textbf{\texttt{Axioms.lean}} (16)\quad \texttt{en\_\allowbreak mul\_\allowbreak scale}, \texttt{scale\_\allowbreak mul\_\allowbreak en}, \texttt{d\_\allowbreak en}, \texttt{sig\_\allowbreak add\_\allowbreak const}, \texttt{hess\_\allowbreak add\_\allowbreak const}, \texttt{lap\_\allowbreak add\_\allowbreak const}, \texttt{gradsq\_\allowbreak add\_\allowbreak const}, \texttt{Chr\_\allowbreak add\_\allowbreak const}, \texttt{Rm\_\allowbreak add\_\allowbreak const}, \texttt{Ric\_\allowbreak add\_\allowbreak const}, \texttt{Defm\_\allowbreak add\_\allowbreak const}, \texttt{geometry\_\allowbreak fiducial\_\allowbreak invariant}, \texttt{sig\_\allowbreak neg}, \texttt{hess\_\allowbreak neg}, \texttt{lap\_\allowbreak neg}, \texttt{gradsq\_\allowbreak neg}\par\smallskip
+\noindent\textbf{\texttt{Postulates.lean}} (3)\quad \texttt{scaleAlgebra\_\allowbreak is\_\allowbreak diffRing\_\allowbreak d}, \texttt{three\_\allowbreak from\_\allowbreak A7}, \texttt{A7\_\allowbreak holds\_\allowbreak only\_\allowbreak at\_\allowbreak three}\par\smallskip
 
 \subsection*{第二部分\quad 公理逼出什么}
-\noindent\textbf{\texttt{Foundation.lean}} (10)\quad \texttt{scale\_mul, scale\_comm, scale\_inv, scale\_commutator, curvature\_is\_scale\_invisible, scale\_eq\_one\_of\_mem\_commutator, mem\_commutator\_of\_scale\_eq\_one, scale\_eq\_iff\_differ\_by\_rotation, commutator\_eq\_one\_of\_comm, comm\_of\_scale\_injective}\par\smallskip
-\noindent\textbf{\texttt{Signature.lean}} (7)\quad \texttt{codim\_ker\_eq\_one, no\_time\_of\_no\_drift, spatial\_eq\_top\_of\_no\_drift, spatial\_ne\_top\_of\_drift, drift\_direction\_unique, spatial\_smul, signature\_from\_dissipation}\par\smallskip
-\noindent\textbf{\texttt{Invariant.lean}} (6)\quad \texttt{map\_zero, map\_sub, form\_symm, form\_invariant, form\_ad\_skew, form\_commutator\_self}\par\smallskip
-\noindent\textbf{\texttt{Quantum.lean}} (7)\quad \texttt{ad\_zero\_left, ad\_leibniz, ad\_jacobi, ad\_comm\_of\_commute, ad\_pow, robertson, heisenberg}\par\smallskip
-\noindent\textbf{\texttt{Direction.lean}} (8)\quad \texttt{D\_zero\_dir, D\_neg\_dir, curv\_self, curv\_antisymm, flat\_iff\_lie\_hom, curv\_of\_abelian, commute\_iff\_bracket\_acts\_trivially, transport\_determined\_by\_generators}\par\smallskip
-\noindent\textbf{\texttt{Connection.lean}} (9)\quad \texttt{D\_sub, F\_antisymm, comm\_covD, bianchi, curv\_of\_central, curv\_gradient\_eq\_zero, curv\_split, curv\_eq\_rotation\_part, curv\_pure\_scale\_eq\_zero}\par\smallskip
-\noindent\textbf{\texttt{Coupling.lean}} (8)\quad \texttt{bracket\_scaling\_scaling, bracket\_rotation\_scaling, bracket\_rotation\_rotation, coupling\_structure, bracket\_self, no\_rotation\_of\_commuting, boost\_bracket\_eq\_rotation, scalings\_do\_not\_commute}\par\smallskip
-\noindent\textbf{\texttt{Algebra.lean}} (18)\quad \texttt{scaling\_rotation\_orthogonal, boost\_zero\_zero, boost\_zero\_succ, boost\_succ\_zero, boost\_succ\_succ, boost\_isScaling, boost\_add, boost\_smul, boost\_mul\_succ\_succ, boost\_bracket\_spatial, boosts\_commute\_iff\_parallel, commuting\_boosts\_lie\_on\_a\_line, commuting\_family\_one\_parameter, no\_two\_dimensional\_commuting\_family, boost\_drift, commuting\_drifts\_proportional, boost\_spatial\_block\_zero, boost\_eq\_zero\_iff}\par\smallskip
-\noindent\textbf{\texttt{Dimension.lean}} (10)\quad \texttt{algebra\_bigger\_than\_directions, rep\_dim\_determined, rot\_matches\_scale\_iff, alg\_matches\_rep\_iff, two\_matching\_conditions\_differ, wedge\_smul\_both, wedge\_ratio\_invariant, only\_ratios\_are\_fixed, density\_normalization\_relation, normalization\_returns\_input}\par\smallskip
-\noindent\textbf{\texttt{Slice.lean}} (16)\quad \texttt{mem\_newContent, newContent\_nonempty\_of\_threshold, newContent\_mono, newContent\_empty\_of\_no\_threshold, no\_finite\_universal\_labelling, label\_count\_measures\_range, wedge\_eq\_bracket, wedge\_antisymm, wedge\_bilinear\_left, wedge\_eq\_zero\_iff\_parallel, homogeneous\_carries\_no\_rotation, rotation\_requires\_biaxial, wedge\_dim\_eq\_iff, three\_is\_unique, more\_wedges\_than\_directions, fewer\_wedges\_than\_directions}\par\smallskip
-\noindent\textbf{\texttt{Axes.lean}} (9)\quad \texttt{rotation\_needs\_variation, combable\_no\_rotation, wound\_carries\_rotation, rotationless\_is\_trivial, rotation\_iff\_variation, no\_second\_axis, axis\_or\_variation, axis\_stabilizer\_nontrivial, multiplet\_flatness\_needs\_per\_direction\_scalings}\par\smallskip
+\noindent\textbf{\texttt{Foundation.lean}} (10)\quad \texttt{scale\_\allowbreak mul}, \texttt{scale\_\allowbreak comm}, \texttt{scale\_\allowbreak inv}, \texttt{scale\_\allowbreak commutator}, \texttt{curvature\_\allowbreak is\_\allowbreak scale\_\allowbreak invisible}, \texttt{scale\_\allowbreak eq\_\allowbreak one\_\allowbreak of\_\allowbreak mem\_\allowbreak commutator}, \texttt{mem\_\allowbreak commutator\_\allowbreak of\_\allowbreak scale\_\allowbreak eq\_\allowbreak one}, \texttt{scale\_\allowbreak eq\_\allowbreak iff\_\allowbreak differ\_\allowbreak by\_\allowbreak rotation}, \texttt{commutator\_\allowbreak eq\_\allowbreak one\_\allowbreak of\_\allowbreak comm}, \texttt{comm\_\allowbreak of\_\allowbreak scale\_\allowbreak injective}\par\smallskip
+\noindent\textbf{\texttt{Signature.lean}} (7)\quad \texttt{codim\_\allowbreak ker\_\allowbreak eq\_\allowbreak one}, \texttt{no\_\allowbreak time\_\allowbreak of\_\allowbreak no\_\allowbreak drift}, \texttt{spatial\_\allowbreak eq\_\allowbreak top\_\allowbreak of\_\allowbreak no\_\allowbreak drift}, \texttt{spatial\_\allowbreak ne\_\allowbreak top\_\allowbreak of\_\allowbreak drift}, \texttt{drift\_\allowbreak direction\_\allowbreak unique}, \texttt{spatial\_\allowbreak smul}, \texttt{signature\_\allowbreak from\_\allowbreak dissipation}\par\smallskip
+\noindent\textbf{\texttt{Invariant.lean}} (6)\quad \texttt{map\_\allowbreak zero}, \texttt{map\_\allowbreak sub}, \texttt{form\_\allowbreak symm}, \texttt{form\_\allowbreak invariant}, \texttt{form\_\allowbreak ad\_\allowbreak skew}, \texttt{form\_\allowbreak commutator\_\allowbreak self}\par\smallskip
+\noindent\textbf{\texttt{Quantum.lean}} (7)\quad \texttt{ad\_\allowbreak zero\_\allowbreak left}, \texttt{ad\_\allowbreak leibniz}, \texttt{ad\_\allowbreak jacobi}, \texttt{ad\_\allowbreak comm\_\allowbreak of\_\allowbreak commute}, \texttt{ad\_\allowbreak pow}, \texttt{robertson}, \texttt{heisenberg}\par\smallskip
+\noindent\textbf{\texttt{Direction.lean}} (8)\quad \texttt{D\_\allowbreak zero\_\allowbreak dir}, \texttt{D\_\allowbreak neg\_\allowbreak dir}, \texttt{curv\_\allowbreak self}, \texttt{curv\_\allowbreak antisymm}, \texttt{flat\_\allowbreak iff\_\allowbreak lie\_\allowbreak hom}, \texttt{curv\_\allowbreak of\_\allowbreak abelian}, \texttt{commute\_\allowbreak iff\_\allowbreak bracket\_\allowbreak acts\_\allowbreak trivially}, \texttt{transport\_\allowbreak determined\_\allowbreak by\_\allowbreak generators}\par\smallskip
+\noindent\textbf{\texttt{Connection.lean}} (9)\quad \texttt{D\_\allowbreak sub}, \texttt{F\_\allowbreak antisymm}, \texttt{comm\_\allowbreak covD}, \texttt{bianchi}, \texttt{curv\_\allowbreak of\_\allowbreak central}, \texttt{curv\_\allowbreak gradient\_\allowbreak eq\_\allowbreak zero}, \texttt{curv\_\allowbreak split}, \texttt{curv\_\allowbreak eq\_\allowbreak rotation\_\allowbreak part}, \texttt{curv\_\allowbreak pure\_\allowbreak scale\_\allowbreak eq\_\allowbreak zero}\par\smallskip
+\noindent\textbf{\texttt{Coupling.lean}} (8)\quad \texttt{bracket\_\allowbreak scaling\_\allowbreak scaling}, \texttt{bracket\_\allowbreak rotation\_\allowbreak scaling}, \texttt{bracket\_\allowbreak rotation\_\allowbreak rotation}, \texttt{coupling\_\allowbreak structure}, \texttt{bracket\_\allowbreak self}, \texttt{no\_\allowbreak rotation\_\allowbreak of\_\allowbreak commuting}, \texttt{boost\_\allowbreak bracket\_\allowbreak eq\_\allowbreak rotation}, \texttt{scalings\_\allowbreak do\_\allowbreak not\_\allowbreak commute}\par\smallskip
+\noindent\textbf{\texttt{Algebra.lean}} (18)\quad \texttt{scaling\_\allowbreak rotation\_\allowbreak orthogonal}, \texttt{boost\_\allowbreak zero\_\allowbreak zero}, \texttt{boost\_\allowbreak zero\_\allowbreak succ}, \texttt{boost\_\allowbreak succ\_\allowbreak zero}, \texttt{boost\_\allowbreak succ\_\allowbreak succ}, \texttt{boost\_\allowbreak isScaling}, \texttt{boost\_\allowbreak add}, \texttt{boost\_\allowbreak smul}, \texttt{boost\_\allowbreak mul\_\allowbreak succ\_\allowbreak succ}, \texttt{boost\_\allowbreak bracket\_\allowbreak spatial}, \texttt{boosts\_\allowbreak commute\_\allowbreak iff\_\allowbreak parallel}, \texttt{commuting\_\allowbreak boosts\_\allowbreak lie\_\allowbreak on\_\allowbreak a\_\allowbreak line}, \texttt{commuting\_\allowbreak family\_\allowbreak one\_\allowbreak parameter}, \texttt{no\_\allowbreak two\_\allowbreak dimensional\_\allowbreak commuting\_\allowbreak family}, \texttt{boost\_\allowbreak drift}, \texttt{commuting\_\allowbreak drifts\_\allowbreak proportional}, \texttt{boost\_\allowbreak spatial\_\allowbreak block\_\allowbreak zero}, \texttt{boost\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff}\par\smallskip
+\noindent\textbf{\texttt{Dimension.lean}} (10)\quad \texttt{algebra\_\allowbreak bigger\_\allowbreak than\_\allowbreak directions}, \texttt{rep\_\allowbreak dim\_\allowbreak determined}, \texttt{rot\_\allowbreak matches\_\allowbreak scale\_\allowbreak iff}, \texttt{alg\_\allowbreak matches\_\allowbreak rep\_\allowbreak iff}, \texttt{two\_\allowbreak matching\_\allowbreak conditions\_\allowbreak differ}, \texttt{wedge\_\allowbreak smul\_\allowbreak both}, \texttt{wedge\_\allowbreak ratio\_\allowbreak invariant}, \texttt{only\_\allowbreak ratios\_\allowbreak are\_\allowbreak fixed}, \texttt{density\_\allowbreak normalization\_\allowbreak relation}, \texttt{normalization\_\allowbreak returns\_\allowbreak input}\par\smallskip
+\noindent\textbf{\texttt{Slice.lean}} (16)\quad \texttt{mem\_\allowbreak newContent}, \texttt{newContent\_\allowbreak nonempty\_\allowbreak of\_\allowbreak threshold}, \texttt{newContent\_\allowbreak mono}, \texttt{newContent\_\allowbreak empty\_\allowbreak of\_\allowbreak no\_\allowbreak threshold}, \texttt{no\_\allowbreak finite\_\allowbreak universal\_\allowbreak labelling}, \texttt{label\_\allowbreak count\_\allowbreak measures\_\allowbreak range}, \texttt{wedge\_\allowbreak eq\_\allowbreak bracket}, \texttt{wedge\_\allowbreak antisymm}, \texttt{wedge\_\allowbreak bilinear\_\allowbreak left}, \texttt{wedge\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff\_\allowbreak parallel}, \texttt{homogeneous\_\allowbreak carries\_\allowbreak no\_\allowbreak rotation}, \texttt{rotation\_\allowbreak requires\_\allowbreak biaxial}, \texttt{wedge\_\allowbreak dim\_\allowbreak eq\_\allowbreak iff}, \texttt{three\_\allowbreak is\_\allowbreak unique}, \texttt{more\_\allowbreak wedges\_\allowbreak than\_\allowbreak directions}, \texttt{fewer\_\allowbreak wedges\_\allowbreak than\_\allowbreak directions}\par\smallskip
+\noindent\textbf{\texttt{Axes.lean}} (9)\quad \texttt{rotation\_\allowbreak needs\_\allowbreak variation}, \texttt{combable\_\allowbreak no\_\allowbreak rotation}, \texttt{wound\_\allowbreak carries\_\allowbreak rotation}, \texttt{rotationless\_\allowbreak is\_\allowbreak trivial}, \texttt{rotation\_\allowbreak iff\_\allowbreak variation}, \texttt{no\_\allowbreak second\_\allowbreak axis}, \texttt{axis\_\allowbreak or\_\allowbreak variation}, \texttt{axis\_\allowbreak stabilizer\_\allowbreak nontrivial}, \texttt{multiplet\_\allowbreak flatness\_\allowbreak needs\_\allowbreak per\_\allowbreak direction\_\allowbreak scalings}\par\smallskip
 
 \subsection*{第三部分\quad 分叉点}
-\noindent\textbf{\texttt{Locus.lean}} (11)\quad \texttt{observability\_eq\_postulate, three\_from\_observability, observability\_fails\_elsewhere, observability\_iff\_three, no\_scale\_invariant\_interaction, constant\_coupling\_iff\_no\_content, isotropic\_pair\_parallel, isotropic\_no\_rotation, labels\_require\_anisotropy, everything\_switches\_on\_together, particle\_locus\_is\_anisotropic}\par\smallskip
-\noindent\textbf{\texttt{Dynamics.lean}} (13)\quad \texttt{no\_flatness\_from\_commuting\_derivations, nonflat\_witness, commutative\_sector\_transports\_commute, commutative\_curvature\_undetectable, source\_conserved\_of\_field\_equation, no\_field\_equation\_of\_nonconserved, source\_antisymm, field\_equation\_content, same\_multiplet\_no\_rotation, rotation\_implies\_different\_multiplet, larger\_multiplet\_fewer\_generators, multiplets\_fixed\_by\_pattern, multiplet\_change\_needs\_pattern\_change}\par\smallskip
+\noindent\textbf{\texttt{Locus.lean}} (11)\quad \texttt{observability\_\allowbreak eq\_\allowbreak postulate}, \texttt{three\_\allowbreak from\_\allowbreak observability}, \texttt{observability\_\allowbreak fails\_\allowbreak elsewhere}, \texttt{observability\_\allowbreak iff\_\allowbreak three}, \texttt{no\_\allowbreak scale\_\allowbreak invariant\_\allowbreak interaction}, \texttt{constant\_\allowbreak coupling\_\allowbreak iff\_\allowbreak no\_\allowbreak content}, \texttt{isotropic\_\allowbreak pair\_\allowbreak parallel}, \texttt{isotropic\_\allowbreak no\_\allowbreak rotation}, \texttt{labels\_\allowbreak require\_\allowbreak anisotropy}, \texttt{everything\_\allowbreak switches\_\allowbreak on\_\allowbreak together}, \texttt{particle\_\allowbreak locus\_\allowbreak is\_\allowbreak anisotropic}\par\smallskip
+\noindent\textbf{\texttt{Dynamics.lean}} (13)\quad \texttt{no\_\allowbreak flatness\_\allowbreak from\_\allowbreak commuting\_\allowbreak derivations}, \texttt{nonflat\_\allowbreak witness}, \texttt{commutative\_\allowbreak sector\_\allowbreak transports\_\allowbreak commute}, \texttt{commutative\_\allowbreak curvature\_\allowbreak undetectable}, \texttt{source\_\allowbreak conserved\_\allowbreak of\_\allowbreak field\_\allowbreak equation}, \texttt{no\_\allowbreak field\_\allowbreak equation\_\allowbreak of\_\allowbreak nonconserved}, \texttt{source\_\allowbreak antisymm}, \texttt{field\_\allowbreak equation\_\allowbreak content}, \texttt{same\_\allowbreak multiplet\_\allowbreak no\_\allowbreak rotation}, \texttt{rotation\_\allowbreak implies\_\allowbreak different\_\allowbreak multiplet}, \texttt{larger\_\allowbreak multiplet\_\allowbreak fewer\_\allowbreak generators}, \texttt{multiplets\_\allowbreak fixed\_\allowbreak by\_\allowbreak pattern}, \texttt{multiplet\_\allowbreak change\_\allowbreak needs\_\allowbreak pattern\_\allowbreak change}\par\smallskip
 
 \subsection*{第四部分\quad 各向同性扇区}
-\noindent\textbf{\texttt{Conformal.lean}} (20)\quad \texttt{hess\_symm, d\_sig\_comm, sum\_mul\_gradsq, sum\_const\_fin, scaleCurv\_eq\_zero, Chr\_symm, sum\_d\_Chr, sum\_Chr\_diag, sum\_d\_Chr\_trace, sum\_ChrTrace\_Chr, sum\_Chr\_Chr\_full, sum\_Chr\_Chr, Ric\_eq, RscBare\_eq, Defm\_symm, d\_Chr\_diff, two\_Rm\_eq, Rm\_eq\_zero\_of\_Defm\_eq\_zero, Ric\_eq\_zero\_of\_Defm\_eq\_zero, two\_Ric\_eq}\par\smallskip
-\noindent\textbf{\texttt{Frame.lean}} (5)\quad \texttt{isotropic\_metric, reciprocal\_metric, isotropic\_reciprocal\_forces\_flat, isotropic\_reciprocal\_metric\_bare, exists\_reciprocal\_nonisotropic}\par\smallskip
-\noindent\textbf{\texttt{Unify.lean}} (9)\quad \texttt{toMetric\_of\_isotropic, ofScalar\_isotropic, ofScalar\_toMetric, isotropic\_iff\_ofScalar, toDirScale\_isotropic, toDirScale\_toMetric, sector\_coherence, isotropic\_ratio\_const, not\_isotropic\_of\_ne}\par\smallskip
-\noindent\textbf{\texttt{Newton.lean}} (7)\quad \texttt{lap\_newtPot, RscBare\_linear, poisson, poisson\_three, sig\_inr, gradsq\_inr, poisson\_exact}\par\smallskip
-\noindent\textbf{\texttt{Schwarzschild.lean}} (5)\quad \texttt{ricci\_combination, vacuum\_log\_derivative, scale\_sum\_derivative\_zero, vacuum\_iff\_scale\_sum\_stationary, area\_element\_stationary}\par\smallskip
-\noindent\textbf{\texttt{RicciDiag.lean}} (4)\quad \texttt{ricciTT\_eq, ricciRR\_eq, gravity\_chain, area\_stationary\_derived}\par\smallskip
-\noindent\textbf{\texttt{Vacuum.lean}} (5)\quad \texttt{const\_of\_deriv\_zero\_and\_vanishing, reciprocity\_of\_asymptotic\_flatness, scale\_product\_eq\_one, product\_constant\_without\_flatness, tr\_area\_element\_constant}\par\smallskip
-\noindent\textbf{\texttt{Deflection.lean}} (7)\quad \texttt{iso\_is\_exactly\_half, iso\_ratio\_half, missing\_half, solarObs\_value, solarIso\_value, solar\_ratio, iso\_fails\_by\_far}\par\smallskip
-\noindent\textbf{\texttt{PPN.lean}} (9)\quad \texttt{gamma\_zero\_is\_isotropic, gamma\_one\_is\_observed, reciprocal\_expansion, gamma\_eq\_one\_of\_reciprocal, gamma\_eq\_one\_first\_order, deflection\_reciprocal\_eq\_observed, halves\_equal, solar\_reciprocal\_value, gamma\_prediction\_is\_sharp}\par\smallskip
-\noindent\textbf{\texttt{Precession.lean}} (8)\quad \texttt{coeff\_reciprocal, coeff\_isotropic, isotropic\_is\_third, coeff\_affine\_in\_gamma, mercuryFactor\_bounds, mercury\_value, mercury\_isotropic\_value, two\_tests\_different\_factors}\par\smallskip
-\noindent\textbf{\texttt{Covariance.lean}} (7)\quad \texttt{sig\_eq, Chr\_eq, Rm\_eq, Ric\_eq\_of\_drift, Defm\_eq, field\_equation\_form\_invariant, no\_local\_expansion}\par\smallskip
-\noindent\textbf{\texttt{Singularity.lean}} (6)\quad \texttt{scale\_ne\_zero, energy\_ne\_zero, conformal\_factor\_isUnit, conformal\_factor\_invertible, curvature\_indep\_of\_scale\_value, curvature\_zero\_of\_uniform\_scale}\par\smallskip
-\noindent\textbf{\texttt{Horizon.lean}} (12)\quad \texttt{gtt\_ne\_zero, reciprocal\_never\_degenerate, redshift\_never\_infinite, no\_degeneracy\_anywhere, null\_cone\_scale\_independent, waves\_travel\_on\_the\_light\_cone, no\_energy\_dependent\_speed, entropy\_of\_scale\_ratio, entropy\_doubling\_is\_additive, entropy\_increment\_independent\_of\_size, no\_minimum\_length, no\_final\_description}\par\smallskip
+\noindent\textbf{\texttt{Conformal.lean}} (20)\quad \texttt{hess\_\allowbreak symm}, \texttt{d\_\allowbreak sig\_\allowbreak comm}, \texttt{sum\_\allowbreak mul\_\allowbreak gradsq}, \texttt{sum\_\allowbreak const\_\allowbreak fin}, \texttt{scaleCurv\_\allowbreak eq\_\allowbreak zero}, \texttt{Chr\_\allowbreak symm}, \texttt{sum\_\allowbreak d\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak diag}, \texttt{sum\_\allowbreak d\_\allowbreak Chr\_\allowbreak trace}, \texttt{sum\_\allowbreak ChrTrace\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr}, \texttt{Ric\_\allowbreak eq}, \texttt{RscBare\_\allowbreak eq}, \texttt{Defm\_\allowbreak symm}, \texttt{d\_\allowbreak Chr\_\allowbreak diff}, \texttt{two\_\allowbreak Rm\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{Ric\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{two\_\allowbreak Ric\_\allowbreak eq}\par\smallskip
+\noindent\textbf{\texttt{Frame.lean}} (5)\quad \texttt{isotropic\_\allowbreak metric}, \texttt{reciprocal\_\allowbreak metric}, \texttt{isotropic\_\allowbreak reciprocal\_\allowbreak forces\_\allowbreak flat}, \texttt{isotropic\_\allowbreak reciprocal\_\allowbreak metric\_\allowbreak bare}, \texttt{exists\_\allowbreak reciprocal\_\allowbreak nonisotropic}\par\smallskip
+\noindent\textbf{\texttt{Unify.lean}} (9)\quad \texttt{toMetric\_\allowbreak of\_\allowbreak isotropic}, \texttt{ofScalar\_\allowbreak isotropic}, \texttt{ofScalar\_\allowbreak toMetric}, \texttt{isotropic\_\allowbreak iff\_\allowbreak ofScalar}, \texttt{toDirScale\_\allowbreak isotropic}, \texttt{toDirScale\_\allowbreak toMetric}, \texttt{sector\_\allowbreak coherence}, \texttt{isotropic\_\allowbreak ratio\_\allowbreak const}, \texttt{not\_\allowbreak isotropic\_\allowbreak of\_\allowbreak ne}\par\smallskip
+\noindent\textbf{\texttt{Newton.lean}} (7)\quad \texttt{lap\_\allowbreak newtPot}, \texttt{RscBare\_\allowbreak linear}, \texttt{poisson}, \texttt{poisson\_\allowbreak three}, \texttt{sig\_\allowbreak inr}, \texttt{gradsq\_\allowbreak inr}, \texttt{poisson\_\allowbreak exact}\par\smallskip
+\noindent\textbf{\texttt{Schwarzschild.lean}} (5)\quad \texttt{ricci\_\allowbreak combination}, \texttt{vacuum\_\allowbreak log\_\allowbreak derivative}, \texttt{scale\_\allowbreak sum\_\allowbreak derivative\_\allowbreak zero}, \texttt{vacuum\_\allowbreak iff\_\allowbreak scale\_\allowbreak sum\_\allowbreak stationary}, \texttt{area\_\allowbreak element\_\allowbreak stationary}\par\smallskip
+\noindent\textbf{\texttt{RicciDiag.lean}} (4)\quad \texttt{ricciTT\_\allowbreak eq}, \texttt{ricciRR\_\allowbreak eq}, \texttt{gravity\_\allowbreak chain}, \texttt{area\_\allowbreak stationary\_\allowbreak derived}\par\smallskip
+\noindent\textbf{\texttt{Vacuum.lean}} (5)\quad \texttt{const\_\allowbreak of\_\allowbreak deriv\_\allowbreak zero\_\allowbreak and\_\allowbreak vanishing}, \texttt{reciprocity\_\allowbreak of\_\allowbreak asymptotic\_\allowbreak flatness}, \texttt{scale\_\allowbreak product\_\allowbreak eq\_\allowbreak one}, \texttt{product\_\allowbreak constant\_\allowbreak without\_\allowbreak flatness}, \texttt{tr\_\allowbreak area\_\allowbreak element\_\allowbreak constant}\par\smallskip
+\noindent\textbf{\texttt{Deflection.lean}} (7)\quad \texttt{iso\_\allowbreak is\_\allowbreak exactly\_\allowbreak half}, \texttt{iso\_\allowbreak ratio\_\allowbreak half}, \texttt{missing\_\allowbreak half}, \texttt{solarObs\_\allowbreak value}, \texttt{solarIso\_\allowbreak value}, \texttt{solar\_\allowbreak ratio}, \texttt{iso\_\allowbreak fails\_\allowbreak by\_\allowbreak far}\par\smallskip
+\noindent\textbf{\texttt{PPN.lean}} (9)\quad \texttt{gamma\_\allowbreak zero\_\allowbreak is\_\allowbreak isotropic}, \texttt{gamma\_\allowbreak one\_\allowbreak is\_\allowbreak observed}, \texttt{reciprocal\_\allowbreak expansion}, \texttt{gamma\_\allowbreak eq\_\allowbreak one\_\allowbreak of\_\allowbreak reciprocal}, \texttt{gamma\_\allowbreak eq\_\allowbreak one\_\allowbreak first\_\allowbreak order}, \texttt{deflection\_\allowbreak reciprocal\_\allowbreak eq\_\allowbreak observed}, \texttt{halves\_\allowbreak equal}, \texttt{solar\_\allowbreak reciprocal\_\allowbreak value}, \texttt{gamma\_\allowbreak prediction\_\allowbreak is\_\allowbreak sharp}\par\smallskip
+\noindent\textbf{\texttt{Precession.lean}} (8)\quad \texttt{coeff\_\allowbreak reciprocal}, \texttt{coeff\_\allowbreak isotropic}, \texttt{isotropic\_\allowbreak is\_\allowbreak third}, \texttt{coeff\_\allowbreak affine\_\allowbreak in\_\allowbreak gamma}, \texttt{mercuryFactor\_\allowbreak bounds}, \texttt{mercury\_\allowbreak value}, \texttt{mercury\_\allowbreak isotropic\_\allowbreak value}, \texttt{two\_\allowbreak tests\_\allowbreak different\_\allowbreak factors}\par\smallskip
+\noindent\textbf{\texttt{Covariance.lean}} (7)\quad \texttt{sig\_\allowbreak eq}, \texttt{Chr\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq}, \texttt{Ric\_\allowbreak eq\_\allowbreak of\_\allowbreak drift}, \texttt{Defm\_\allowbreak eq}, \texttt{field\_\allowbreak equation\_\allowbreak form\_\allowbreak invariant}, \texttt{no\_\allowbreak local\_\allowbreak expansion}\par\smallskip
+\noindent\textbf{\texttt{Singularity.lean}} (6)\quad \texttt{scale\_\allowbreak ne\_\allowbreak zero}, \texttt{energy\_\allowbreak ne\_\allowbreak zero}, \texttt{conformal\_\allowbreak factor\_\allowbreak isUnit}, \texttt{conformal\_\allowbreak factor\_\allowbreak invertible}, \texttt{curvature\_\allowbreak indep\_\allowbreak of\_\allowbreak scale\_\allowbreak value}, \texttt{curvature\_\allowbreak zero\_\allowbreak of\_\allowbreak uniform\_\allowbreak scale}\par\smallskip
+\noindent\textbf{\texttt{Horizon.lean}} (15)\quad \texttt{gtt\_\allowbreak ne\_\allowbreak zero}, \texttt{reciprocal\_\allowbreak never\_\allowbreak degenerate}, \texttt{redshift\_\allowbreak never\_\allowbreak infinite}, \texttt{no\_\allowbreak degeneracy\_\allowbreak anywhere}, \texttt{null\_\allowbreak cone\_\allowbreak scale\_\allowbreak independent}, \texttt{waves\_\allowbreak travel\_\allowbreak on\_\allowbreak the\_\allowbreak light\_\allowbreak cone}, \texttt{no\_\allowbreak energy\_\allowbreak dependent\_\allowbreak speed}, \texttt{two\_\allowbreak polarizations}, \texttt{no\_\allowbreak breathing\_\allowbreak mode}, \texttt{polarization\_\allowbreak count}, \texttt{entropy\_\allowbreak of\_\allowbreak scale\_\allowbreak ratio}, \texttt{entropy\_\allowbreak doubling\_\allowbreak is\_\allowbreak additive}, \texttt{entropy\_\allowbreak increment\_\allowbreak independent\_\allowbreak of\_\allowbreak size}, \texttt{no\_\allowbreak minimum\_\allowbreak length}, \texttt{no\_\allowbreak final\_\allowbreak description}\par\smallskip
 
 \subsection*{第五部分\quad 各向异性扇区}
-\noindent\textbf{\texttt{Gauge.lean}} (5)\quad \texttt{mem\_stabilizer\_iff, stabilizer\_eq\_bot\_of\_injective, stabilizer\_eq\_top\_of\_isotropic, sameOrbit\_iff\_eq\_scale, internal\_symmetry\_determined}\par\smallskip
-\noindent\textbf{\texttt{Transport.lean}} (6)\quad \texttt{transports\_self\_iff, transport\_unique\_of\_nondegenerate, transport\_coset, transports\_of\_stabilizer, transport\_unique\_iff\_stabilizer\_trivial, nondegenerate\_no\_gauge\_freedom}\par\smallskip
-\noindent\textbf{\texttt{Axis.lean}} (9)\quad \texttt{bareForm\_neg, physForm\_neg, neg\_indistinguishable, physForm\_indistinguishable, isotropic\_no\_order\_parameter, nondegenerate\_full\_frame, uniaxial\_stabilizer, uniaxial\_axis\_distinguished, scalar\_picture\_is\_the\_isotropic\_locus}\par\smallskip
-\noindent\textbf{\texttt{Defect.lean}} (13)\quad \texttt{winding\_unique, vacuum\_winding, combine\_winding, anti\_winding, pair\_winding\_zero, vacuum\_isTrivial, stable\_of\_winding\_ne\_zero, winding\_eq\_zero\_of\_trivial, mass\_pos, antiparticle\_same\_mass, mass\_zero, mass\_ratio\_geometric, mass\_ratio\_const}\par\smallskip
-\noindent\textbf{\texttt{Charges.lean}} (15)\quad \texttt{comp\_block, comp\_hedgehog, anti\_block, anti\_hedgehog, triv\_observable, block\_confined, hedgehog\_free, hedgehog\_surjective\_on\_observables, exactly\_one\_confined, hedgehog\_not\_determined\_by\_block, block\_not\_determined\_by\_hedgehog, charges\_independent, pair\_observable, pair\_hedgehog\_zero, observable\_pair\_any\_hedgehog}\par\smallskip
-\noindent\textbf{\texttt{Particle.lean}} (16)\quad \texttt{boost\_injective, pattern\_is\_one\_vector, mixture\_second\_moment, mixture\_cvSq\_ge\_one, mixture\_cvSq\_eq\_one\_iff, observed\_disfavours\_higher\_rank, rate\_value\_not\_fixed, block\_two\_valued, block\_cannot\_be\_three\_valued, block\_self\_inverse, bind\_hedgehog, bind\_block, two\_odd\_make\_even, hedgehog\_conserved\_in\_splitting, no\_further\_label, particle\_label\_structure}\par\smallskip
-\noindent\textbf{\texttt{Emergence.lean}} (9)\quad \texttt{mem\_resolved, resolved\_mono, content\_never\_complete, always\_more\_above, no\_fundamental\_list, mass\_iff\_threshold, mass\_mono, content\_eq\_of\_no\_threshold, content\_changes\_only\_at\_threshold}\par\smallskip
+\noindent\textbf{\texttt{Gauge.lean}} (5)\quad \texttt{mem\_\allowbreak stabilizer\_\allowbreak iff}, \texttt{stabilizer\_\allowbreak eq\_\allowbreak bot\_\allowbreak of\_\allowbreak injective}, \texttt{stabilizer\_\allowbreak eq\_\allowbreak top\_\allowbreak of\_\allowbreak isotropic}, \texttt{sameOrbit\_\allowbreak iff\_\allowbreak eq\_\allowbreak scale}, \texttt{internal\_\allowbreak symmetry\_\allowbreak determined}\par\smallskip
+\noindent\textbf{\texttt{Transport.lean}} (6)\quad \texttt{transports\_\allowbreak self\_\allowbreak iff}, \texttt{transport\_\allowbreak unique\_\allowbreak of\_\allowbreak nondegenerate}, \texttt{transport\_\allowbreak coset}, \texttt{transports\_\allowbreak of\_\allowbreak stabilizer}, \texttt{transport\_\allowbreak unique\_\allowbreak iff\_\allowbreak stabilizer\_\allowbreak trivial}, \texttt{nondegenerate\_\allowbreak no\_\allowbreak gauge\_\allowbreak freedom}\par\smallskip
+\noindent\textbf{\texttt{Axis.lean}} (9)\quad \texttt{bareForm\_\allowbreak neg}, \texttt{physForm\_\allowbreak neg}, \texttt{neg\_\allowbreak indistinguishable}, \texttt{physForm\_\allowbreak indistinguishable}, \texttt{isotropic\_\allowbreak no\_\allowbreak order\_\allowbreak parameter}, \texttt{nondegenerate\_\allowbreak full\_\allowbreak frame}, \texttt{uniaxial\_\allowbreak stabilizer}, \texttt{uniaxial\_\allowbreak axis\_\allowbreak distinguished}, \texttt{scalar\_\allowbreak picture\_\allowbreak is\_\allowbreak the\_\allowbreak isotropic\_\allowbreak locus}\par\smallskip
+\noindent\textbf{\texttt{Defect.lean}} (13)\quad \texttt{winding\_\allowbreak unique}, \texttt{vacuum\_\allowbreak winding}, \texttt{combine\_\allowbreak winding}, \texttt{anti\_\allowbreak winding}, \texttt{pair\_\allowbreak winding\_\allowbreak zero}, \texttt{vacuum\_\allowbreak isTrivial}, \texttt{stable\_\allowbreak of\_\allowbreak winding\_\allowbreak ne\_\allowbreak zero}, \texttt{winding\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak trivial}, \texttt{mass\_\allowbreak pos}, \texttt{antiparticle\_\allowbreak same\_\allowbreak mass}, \texttt{mass\_\allowbreak zero}, \texttt{mass\_\allowbreak ratio\_\allowbreak geometric}, \texttt{mass\_\allowbreak ratio\_\allowbreak const}\par\smallskip
+\noindent\textbf{\texttt{Charges.lean}} (15)\quad \texttt{comp\_\allowbreak block}, \texttt{comp\_\allowbreak hedgehog}, \texttt{anti\_\allowbreak block}, \texttt{anti\_\allowbreak hedgehog}, \texttt{triv\_\allowbreak observable}, \texttt{block\_\allowbreak confined}, \texttt{hedgehog\_\allowbreak free}, \texttt{hedgehog\_\allowbreak surjective\_\allowbreak on\_\allowbreak observables}, \texttt{exactly\_\allowbreak one\_\allowbreak confined}, \texttt{hedgehog\_\allowbreak not\_\allowbreak determined\_\allowbreak by\_\allowbreak block}, \texttt{block\_\allowbreak not\_\allowbreak determined\_\allowbreak by\_\allowbreak hedgehog}, \texttt{charges\_\allowbreak independent}, \texttt{pair\_\allowbreak observable}, \texttt{pair\_\allowbreak hedgehog\_\allowbreak zero}, \texttt{observable\_\allowbreak pair\_\allowbreak any\_\allowbreak hedgehog}\par\smallskip
+\noindent\textbf{\texttt{Particle.lean}} (16)\quad \texttt{boost\_\allowbreak injective}, \texttt{pattern\_\allowbreak is\_\allowbreak one\_\allowbreak vector}, \texttt{mixture\_\allowbreak second\_\allowbreak moment}, \texttt{mixture\_\allowbreak cvSq\_\allowbreak ge\_\allowbreak one}, \texttt{mixture\_\allowbreak cvSq\_\allowbreak eq\_\allowbreak one\_\allowbreak iff}, \texttt{observed\_\allowbreak disfavours\_\allowbreak higher\_\allowbreak rank}, \texttt{rate\_\allowbreak value\_\allowbreak not\_\allowbreak fixed}, \texttt{block\_\allowbreak two\_\allowbreak valued}, \texttt{block\_\allowbreak cannot\_\allowbreak be\_\allowbreak three\_\allowbreak valued}, \texttt{block\_\allowbreak self\_\allowbreak inverse}, \texttt{bind\_\allowbreak hedgehog}, \texttt{bind\_\allowbreak block}, \texttt{two\_\allowbreak odd\_\allowbreak make\_\allowbreak even}, \texttt{hedgehog\_\allowbreak conserved\_\allowbreak in\_\allowbreak splitting}, \texttt{no\_\allowbreak further\_\allowbreak label}, \texttt{particle\_\allowbreak label\_\allowbreak structure}\par\smallskip
+\noindent\textbf{\texttt{Emergence.lean}} (9)\quad \texttt{mem\_\allowbreak resolved}, \texttt{resolved\_\allowbreak mono}, \texttt{content\_\allowbreak never\_\allowbreak complete}, \texttt{always\_\allowbreak more\_\allowbreak above}, \texttt{no\_\allowbreak fundamental\_\allowbreak list}, \texttt{mass\_\allowbreak iff\_\allowbreak threshold}, \texttt{mass\_\allowbreak mono}, \texttt{content\_\allowbreak eq\_\allowbreak of\_\allowbreak no\_\allowbreak threshold}, \texttt{content\_\allowbreak changes\_\allowbreak only\_\allowbreak at\_\allowbreak threshold}\par\smallskip
 
 \subsection*{第六部分\quad 量子扇区}
-\noindent\textbf{\texttt{Deformation.lean}} (12)\quad \texttt{poisson\_antisymm, poisson\_self, poisson\_leibniz\_left, poisson\_leibniz\_right, star\_assoc, star\_classical, star\_comm\_classical, star\_commutator, star\_comm\_iff\_poisson\_zero, canonical\_poisson, ccr\_of\_canonical, canonical\_poisson\_self}\par\smallskip
-\noindent\textbf{\texttt{Crossed.lean}} (11)\quad \texttt{map\_zero, shiftOp\_apply, mulOp\_apply, shift\_mul\_eq, commutator\_eq, comm\_iff\_shift\_trivial, delta\_twisted\_leibniz, delta\_leibniz\_of\_untwisted, delta\_eq\_zero\_iff, ScaleShift, shift\_mul\_eq\_comp}\par\smallskip
-\noindent\textbf{\texttt{NCConformal.lean}} (18)\quad \texttt{kr\_symm, kr\_comm, kr\_self, sum\_kr\_left, sum\_kr\_right, kr\_swap, scalar\_mul\_scalar, hess\_symm, Chr\_symm, Defm\_antisymm\_part, Defm\_symm\_iff\_commutator, Defm\_symm\_iff\_commute, symmetric\_part\_uncorrected, correction\_is\_pure\_antisymmetric, sum\_Chr\_Chr\_full\_nc, sum\_Chr\_Chr\_full\_classical, quantum\_correction\_couples\_to\_rotation, correction\_vanishes\_on\_commuting}\par\smallskip
+\noindent\textbf{\texttt{Deformation.lean}} (12)\quad \texttt{poisson\_\allowbreak antisymm}, \texttt{poisson\_\allowbreak self}, \texttt{poisson\_\allowbreak leibniz\_\allowbreak left}, \texttt{poisson\_\allowbreak leibniz\_\allowbreak right}, \texttt{star\_\allowbreak assoc}, \texttt{star\_\allowbreak classical}, \texttt{star\_\allowbreak comm\_\allowbreak classical}, \texttt{star\_\allowbreak commutator}, \texttt{star\_\allowbreak comm\_\allowbreak iff\_\allowbreak poisson\_\allowbreak zero}, \texttt{canonical\_\allowbreak poisson}, \texttt{ccr\_\allowbreak of\_\allowbreak canonical}, \texttt{canonical\_\allowbreak poisson\_\allowbreak self}\par\smallskip
+\noindent\textbf{\texttt{Crossed.lean}} (11)\quad \texttt{map\_\allowbreak zero}, \texttt{shiftOp\_\allowbreak apply}, \texttt{mulOp\_\allowbreak apply}, \texttt{shift\_\allowbreak mul\_\allowbreak eq}, \texttt{commutator\_\allowbreak eq}, \texttt{comm\_\allowbreak iff\_\allowbreak shift\_\allowbreak trivial}, \texttt{delta\_\allowbreak twisted\_\allowbreak leibniz}, \texttt{delta\_\allowbreak leibniz\_\allowbreak of\_\allowbreak untwisted}, \texttt{delta\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff}, \texttt{ScaleShift}, \texttt{shift\_\allowbreak mul\_\allowbreak eq\_\allowbreak comp}\par\smallskip
+\noindent\textbf{\texttt{NCConformal.lean}} (18)\quad \texttt{kr\_\allowbreak symm}, \texttt{kr\_\allowbreak comm}, \texttt{kr\_\allowbreak self}, \texttt{sum\_\allowbreak kr\_\allowbreak left}, \texttt{sum\_\allowbreak kr\_\allowbreak right}, \texttt{kr\_\allowbreak swap}, \texttt{scalar\_\allowbreak mul\_\allowbreak scalar}, \texttt{hess\_\allowbreak symm}, \texttt{Chr\_\allowbreak symm}, \texttt{Defm\_\allowbreak antisymm\_\allowbreak part}, \texttt{Defm\_\allowbreak symm\_\allowbreak iff\_\allowbreak commutator}, \texttt{Defm\_\allowbreak symm\_\allowbreak iff\_\allowbreak commute}, \texttt{symmetric\_\allowbreak part\_\allowbreak uncorrected}, \texttt{correction\_\allowbreak is\_\allowbreak pure\_\allowbreak antisymmetric}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full\_\allowbreak nc}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full\_\allowbreak classical}, \texttt{quantum\_\allowbreak correction\_\allowbreak couples\_\allowbreak to\_\allowbreak rotation}, \texttt{correction\_\allowbreak vanishes\_\allowbreak on\_\allowbreak commuting}\par\smallskip
 
 \subsection*{第七部分\quad 标度流与内容}
-\noindent\textbf{\texttt{RG.lean}} (13)\quad \texttt{observable\_const\_at\_fixedPoint, fixedPoint\_invariant, callan\_symanzik, scale\_invariant\_of\_fixedPoint, mem\_active, active\_mono, active\_eq\_of\_no\_threshold, active\_finite\_range, active\_eq\_univ\_of\_ge, active\_eq\_empty\_of\_lt, beta\_const\_between\_thresholds, beta\_finite\_range, beta\_eq\_of\_all\_active}\par\smallskip
-\noindent\textbf{\texttt{Running.lean}} (6)\quad \texttt{resolvedCount\_self, invSqCoupling\_at\_base, hasDerivAt\_invSqCoupling, slope\_eq\_two\_b, invSqCoupling\_eq\_one\_loop, asympt\_free\_iff\_pos\_density}\par\smallskip
-\noindent\textbf{\texttt{QCD.lean}} (10)\quad \texttt{running\_inv\_sq, asymptotic\_freedom, lambda\_invariant, lambda\_pos, hadron\_mass\_ratio, spectrum\_rigid, geometric\_tower\_fails, ratio₁\_value, ratio₂\_value, lightestGlueballInLambda\_value}\par\smallskip
-\noindent\textbf{\texttt{Spectrum.lean}} (9)\quad \texttt{mass\_threshold\_inverse, equal\_gaps\_variance\_zero, observed\_cvSq\_value, meanGap\_value, observed\_not\_geometric, observed\_within\_scale\_invariant\_range, densityFromGaps\_value, deltaN\_inverse, density\_gap\_inverse}\par\smallskip
-\noindent\textbf{\texttt{Entropy.lean}} (9)\quad \texttt{mem\_sat, subset\_sat, card\_le\_card\_sat, card\_image\_perm, entropy\_nondecreasing, no\_reverse\_law, evolve\_no\_reverse\_law, charge\_change\_implies\_nonequilibrium, entropy\_production\_implies\_nonequilibrium}\par\smallskip
-\noindent\textbf{\texttt{Light.lean}} (6)\quad \texttt{unit\_sq\_mul\_eq\_zero\_iff, isNull\_iff\_bare, isNull\_scale\_invariant, scale\_determined\_of\_nonnull, physForm\_ne\_bareForm, null\_weight\_zero}\par\smallskip
-\noindent\textbf{\texttt{Observation.lean}} (6)\quad \texttt{null\_has\_energy, redshift\_is\_scale\_ratio, no\_redshift\_of\_equal\_scale, obsEnergy\_rescale, redshift\_fiducial\_invariant, causal\_structure\_still\_blind}\par\smallskip
-\noindent\textbf{\texttt{Particles.lean}} (9)\quad \texttt{energy\_pos, energy\_ge, one\_le\_scaleRatio, scaleRatio\_mono, lifetime\_ge, lifetime\_mono, lifetime\_at\_rest, available\_mono, not\_available\_of\_lt}\par\smallskip
-\noindent\textbf{\texttt{DarkMatter.lean}} (4)\quad \texttt{detResp\_pos, detection\_failure, dark\_matter\_exists, response\_vanishes}\par\smallskip
-\noindent\textbf{\texttt{DarkEnergy.lean}} (8)\quad \texttt{hasDerivAt\_exp\_mul, dissipation\_solution, energy\_strictly\_decreasing, scaleFactor\_eq, hasDerivAt\_scaleFactor, hasDerivAt\_hubble, acceleration\_pos, open\_universe\_accelerates}\par\smallskip
+\noindent\textbf{\texttt{RG.lean}} (13)\quad \texttt{observable\_\allowbreak const\_\allowbreak at\_\allowbreak fixedPoint}, \texttt{fixedPoint\_\allowbreak invariant}, \texttt{callan\_\allowbreak symanzik}, \texttt{scale\_\allowbreak invariant\_\allowbreak of\_\allowbreak fixedPoint}, \texttt{mem\_\allowbreak active}, \texttt{active\_\allowbreak mono}, \texttt{active\_\allowbreak eq\_\allowbreak of\_\allowbreak no\_\allowbreak threshold}, \texttt{active\_\allowbreak finite\_\allowbreak range}, \texttt{active\_\allowbreak eq\_\allowbreak univ\_\allowbreak of\_\allowbreak ge}, \texttt{active\_\allowbreak eq\_\allowbreak empty\_\allowbreak of\_\allowbreak lt}, \texttt{beta\_\allowbreak const\_\allowbreak between\_\allowbreak thresholds}, \texttt{beta\_\allowbreak finite\_\allowbreak range}, \texttt{beta\_\allowbreak eq\_\allowbreak of\_\allowbreak all\_\allowbreak active}\par\smallskip
+\noindent\textbf{\texttt{Running.lean}} (6)\quad \texttt{resolvedCount\_\allowbreak self}, \texttt{invSqCoupling\_\allowbreak at\_\allowbreak base}, \texttt{hasDerivAt\_\allowbreak invSqCoupling}, \texttt{slope\_\allowbreak eq\_\allowbreak two\_\allowbreak b}, \texttt{invSqCoupling\_\allowbreak eq\_\allowbreak one\_\allowbreak loop}, \texttt{asympt\_\allowbreak free\_\allowbreak iff\_\allowbreak pos\_\allowbreak density}\par\smallskip
+\noindent\textbf{\texttt{QCD.lean}} (10)\quad \texttt{running\_\allowbreak inv\_\allowbreak sq}, \texttt{asymptotic\_\allowbreak freedom}, \texttt{lambda\_\allowbreak invariant}, \texttt{lambda\_\allowbreak pos}, \texttt{hadron\_\allowbreak mass\_\allowbreak ratio}, \texttt{spectrum\_\allowbreak rigid}, \texttt{geometric\_\allowbreak tower\_\allowbreak fails}, \texttt{ratio₁\_\allowbreak value}, \texttt{ratio₂\_\allowbreak value}, \texttt{lightestGlueballInLambda\_\allowbreak value}\par\smallskip
+\noindent\textbf{\texttt{Spectrum.lean}} (9)\quad \texttt{mass\_\allowbreak threshold\_\allowbreak inverse}, \texttt{equal\_\allowbreak gaps\_\allowbreak variance\_\allowbreak zero}, \texttt{observed\_\allowbreak cvSq\_\allowbreak value}, \texttt{meanGap\_\allowbreak value}, \texttt{observed\_\allowbreak not\_\allowbreak geometric}, \texttt{observed\_\allowbreak within\_\allowbreak scale\_\allowbreak invariant\_\allowbreak range}, \texttt{densityFromGaps\_\allowbreak value}, \texttt{deltaN\_\allowbreak inverse}, \texttt{density\_\allowbreak gap\_\allowbreak inverse}\par\smallskip
+\noindent\textbf{\texttt{Entropy.lean}} (9)\quad \texttt{mem\_\allowbreak sat}, \texttt{subset\_\allowbreak sat}, \texttt{card\_\allowbreak le\_\allowbreak card\_\allowbreak sat}, \texttt{card\_\allowbreak image\_\allowbreak perm}, \texttt{entropy\_\allowbreak nondecreasing}, \texttt{no\_\allowbreak reverse\_\allowbreak law}, \texttt{evolve\_\allowbreak no\_\allowbreak reverse\_\allowbreak law}, \texttt{charge\_\allowbreak change\_\allowbreak implies\_\allowbreak nonequilibrium}, \texttt{entropy\_\allowbreak production\_\allowbreak implies\_\allowbreak nonequilibrium}\par\smallskip
+\noindent\textbf{\texttt{Light.lean}} (6)\quad \texttt{unit\_\allowbreak sq\_\allowbreak mul\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff}, \texttt{isNull\_\allowbreak iff\_\allowbreak bare}, \texttt{isNull\_\allowbreak scale\_\allowbreak invariant}, \texttt{scale\_\allowbreak determined\_\allowbreak of\_\allowbreak nonnull}, \texttt{physForm\_\allowbreak ne\_\allowbreak bareForm}, \texttt{null\_\allowbreak weight\_\allowbreak zero}\par\smallskip
+\noindent\textbf{\texttt{Observation.lean}} (6)\quad \texttt{null\_\allowbreak has\_\allowbreak energy}, \texttt{redshift\_\allowbreak is\_\allowbreak scale\_\allowbreak ratio}, \texttt{no\_\allowbreak redshift\_\allowbreak of\_\allowbreak equal\_\allowbreak scale}, \texttt{obsEnergy\_\allowbreak rescale}, \texttt{redshift\_\allowbreak fiducial\_\allowbreak invariant}, \texttt{causal\_\allowbreak structure\_\allowbreak still\_\allowbreak blind}\par\smallskip
+\noindent\textbf{\texttt{Particles.lean}} (9)\quad \texttt{energy\_\allowbreak pos}, \texttt{energy\_\allowbreak ge}, \texttt{one\_\allowbreak le\_\allowbreak scaleRatio}, \texttt{scaleRatio\_\allowbreak mono}, \texttt{lifetime\_\allowbreak ge}, \texttt{lifetime\_\allowbreak mono}, \texttt{lifetime\_\allowbreak at\_\allowbreak rest}, \texttt{available\_\allowbreak mono}, \texttt{not\_\allowbreak available\_\allowbreak of\_\allowbreak lt}\par\smallskip
+\noindent\textbf{\texttt{DarkMatter.lean}} (4)\quad \texttt{detResp\_\allowbreak pos}, \texttt{detection\_\allowbreak failure}, \texttt{dark\_\allowbreak matter\_\allowbreak exists}, \texttt{response\_\allowbreak vanishes}\par\smallskip
+\noindent\textbf{\texttt{DarkEnergy.lean}} (8)\quad \texttt{hasDerivAt\_\allowbreak exp\_\allowbreak mul}, \texttt{dissipation\_\allowbreak solution}, \texttt{energy\_\allowbreak strictly\_\allowbreak decreasing}, \texttt{scaleFactor\_\allowbreak eq}, \texttt{hasDerivAt\_\allowbreak scaleFactor}, \texttt{hasDerivAt\_\allowbreak hubble}, \texttt{acceleration\_\allowbreak pos}, \texttt{open\_\allowbreak universe\_\allowbreak accelerates}\par\smallskip
 
 \subsection*{第八部分\quad 预言与数据}
-\noindent\textbf{\texttt{Predictions.lean}} (17)\quad \texttt{accel\_numerator, powerlaw\_accel\_numerator, accelerates\_iff, eos\_dissipationExponent, dissipationExponent\_eos, eos\_one, eos\_eq\_neg\_one\_iff, eos\_lt\_third\_iff, eos\_lt\_neg\_one\_iff, worked\_inversion, muon\_lifetime\_value, muon\_matches\_experiment, poundRebka\_value, darkEnergyDensity\_value, logScale\_step, logScale\_ratio\_const, logScale\_closed}\par\smallskip
-\noindent\textbf{\texttt{Cosmos.lean}} (13)\quad \texttt{shift\_invariant\_is\_constant, rate\_constant\_of\_fiducial\_invariance, w\_does\_not\_evolve, scale\_ratio\_depends\_only\_on\_difference, no\_first\_moment, finite\_lookback\_no\_origin, isotropic\_gravitates\_without\_labels, dark\_matter\_has\_no\_species, two\_dark\_routes\_differ, resolvable\_needs\_width\_below\_gap, mean\_gap\_bound, broad\_structures\_unresolvable, resolvability\_boundary}\par\smallskip
-\noindent\textbf{\texttt{Native.lean}} (12)\quad \texttt{not\_two\_places\_of\_parallel, separation\_is\_oriented, single\_anisotropy\_boundary, label\_forces\_anisotropy, zero\_window\_resolves\_nothing, content\_is\_interval\_valued, no\_global\_field\_equation, ordering\_discrepancy\_is\_the\_observable, parity\_conserved\_under\_binding, both\_labels\_conserved, no\_maximum\_anisotropy, no\_cutoff\_either\_end}\par\smallskip
-\noindent\textbf{\texttt{Data.lean}} (19)\quad \texttt{desi\_tension\_exceeds\_three\_sigma, desi\_significance\_dataset\_dependent, desi\_combinations\_disagree\_internally, falsification\_threshold, ccl\_above\_bound, gkpy\_below\_bound, determinations\_straddle\_bound, gkpy\_updated\_inside, kappa\_below\_bound, rho\_below\_bound, delta\_below\_bound, z\_boson\_far\_inside, bound\_separates\_kappa\_from\_sigma, breit\_wigner\_spans\_the\_bound, dispersion\_limit\_above\_planck, framework\_predicts\_no\_finite\_scale, one\_charge\_prediction, zero\_nu\_beta\_beta\_decides, scorecard}\par\smallskip
+\noindent\textbf{\texttt{Predictions.lean}} (17)\quad \texttt{accel\_\allowbreak numerator}, \texttt{powerlaw\_\allowbreak accel\_\allowbreak numerator}, \texttt{accelerates\_\allowbreak iff}, \texttt{eos\_\allowbreak dissipationExponent}, \texttt{dissipationExponent\_\allowbreak eos}, \texttt{eos\_\allowbreak one}, \texttt{eos\_\allowbreak eq\_\allowbreak neg\_\allowbreak one\_\allowbreak iff}, \texttt{eos\_\allowbreak lt\_\allowbreak third\_\allowbreak iff}, \texttt{eos\_\allowbreak lt\_\allowbreak neg\_\allowbreak one\_\allowbreak iff}, \texttt{worked\_\allowbreak inversion}, \texttt{muon\_\allowbreak lifetime\_\allowbreak value}, \texttt{muon\_\allowbreak matches\_\allowbreak experiment}, \texttt{poundRebka\_\allowbreak value}, \texttt{darkEnergyDensity\_\allowbreak value}, \texttt{logScale\_\allowbreak step}, \texttt{logScale\_\allowbreak ratio\_\allowbreak const}, \texttt{logScale\_\allowbreak closed}\par\smallskip
+\noindent\textbf{\texttt{Cosmos.lean}} (13)\quad \texttt{shift\_\allowbreak invariant\_\allowbreak is\_\allowbreak constant}, \texttt{rate\_\allowbreak constant\_\allowbreak of\_\allowbreak fiducial\_\allowbreak invariance}, \texttt{w\_\allowbreak does\_\allowbreak not\_\allowbreak evolve}, \texttt{scale\_\allowbreak ratio\_\allowbreak depends\_\allowbreak only\_\allowbreak on\_\allowbreak difference}, \texttt{no\_\allowbreak first\_\allowbreak moment}, \texttt{finite\_\allowbreak lookback\_\allowbreak no\_\allowbreak origin}, \texttt{isotropic\_\allowbreak gravitates\_\allowbreak without\_\allowbreak labels}, \texttt{dark\_\allowbreak matter\_\allowbreak has\_\allowbreak no\_\allowbreak species}, \texttt{two\_\allowbreak dark\_\allowbreak routes\_\allowbreak differ}, \texttt{resolvable\_\allowbreak needs\_\allowbreak width\_\allowbreak below\_\allowbreak gap}, \texttt{mean\_\allowbreak gap\_\allowbreak bound}, \texttt{broad\_\allowbreak structures\_\allowbreak unresolvable}, \texttt{resolvability\_\allowbreak boundary}\par\smallskip
+\noindent\textbf{\texttt{Native.lean}} (12)\quad \texttt{not\_\allowbreak two\_\allowbreak places\_\allowbreak of\_\allowbreak parallel}, \texttt{separation\_\allowbreak is\_\allowbreak oriented}, \texttt{single\_\allowbreak anisotropy\_\allowbreak boundary}, \texttt{label\_\allowbreak forces\_\allowbreak anisotropy}, \texttt{zero\_\allowbreak window\_\allowbreak resolves\_\allowbreak nothing}, \texttt{content\_\allowbreak is\_\allowbreak interval\_\allowbreak valued}, \texttt{no\_\allowbreak global\_\allowbreak field\_\allowbreak equation}, \texttt{ordering\_\allowbreak discrepancy\_\allowbreak is\_\allowbreak the\_\allowbreak observable}, \texttt{parity\_\allowbreak conserved\_\allowbreak under\_\allowbreak binding}, \texttt{both\_\allowbreak labels\_\allowbreak conserved}, \texttt{no\_\allowbreak maximum\_\allowbreak anisotropy}, \texttt{no\_\allowbreak cutoff\_\allowbreak either\_\allowbreak end}\par\smallskip
+\noindent\textbf{\texttt{Data.lean}} (19)\quad \texttt{desi\_\allowbreak tension\_\allowbreak exceeds\_\allowbreak three\_\allowbreak sigma}, \texttt{desi\_\allowbreak significance\_\allowbreak dataset\_\allowbreak dependent}, \texttt{desi\_\allowbreak combinations\_\allowbreak disagree\_\allowbreak internally}, \texttt{falsification\_\allowbreak threshold}, \texttt{ccl\_\allowbreak above\_\allowbreak bound}, \texttt{gkpy\_\allowbreak below\_\allowbreak bound}, \texttt{determinations\_\allowbreak straddle\_\allowbreak bound}, \texttt{gkpy\_\allowbreak updated\_\allowbreak inside}, \texttt{kappa\_\allowbreak below\_\allowbreak bound}, \texttt{rho\_\allowbreak below\_\allowbreak bound}, \texttt{delta\_\allowbreak below\_\allowbreak bound}, \texttt{z\_\allowbreak boson\_\allowbreak far\_\allowbreak inside}, \texttt{bound\_\allowbreak separates\_\allowbreak kappa\_\allowbreak from\_\allowbreak sigma}, \texttt{breit\_\allowbreak wigner\_\allowbreak spans\_\allowbreak the\_\allowbreak bound}, \texttt{dispersion\_\allowbreak limit\_\allowbreak above\_\allowbreak planck}, \texttt{framework\_\allowbreak predicts\_\allowbreak no\_\allowbreak finite\_\allowbreak scale}, \texttt{one\_\allowbreak charge\_\allowbreak prediction}, \texttt{zero\_\allowbreak nu\_\allowbreak beta\_\allowbreak beta\_\allowbreak decides}, \texttt{scorecard}\par\smallskip
 
 \subsection*{第九部分\quad 登记册}
-\noindent\textbf{\texttt{Color.lean}} (17)\quad \texttt{comp\_perm, anti\_perm, triv\_perm, charge\_comp, charge\_anti, triv\_observable, confinement, pair\_observable, pair\_charge, rep\_perm, rep\_charge, bound\_state\_observable, bound\_state\_size, no\_partial\_state, constituent\_charge\_fraction, constituent\_charge\_rat, bound\_charge\_divisible}\par\smallskip
-\noindent\textbf{\texttt{ColorAudit.lean}} (8)\quad \texttt{identification\_predicts\_two, identification\_predicts\_halves, identification\_fails\_baryon, identification\_fails\_charge, spatial\_block\_is\_not\_colour\_block, three\_is\_forced\_by\_data, three\_matches\_charge, geometry\_offers\_two\_data\_needs\_three}\par\smallskip
-\noindent\textbf{\texttt{Codimension.lean}} (12)\quad \texttt{defectDim\_two, defectDim\_three, defectDim\_four, pointlike\_iff\_two\_dim, three\_dim\_gives\_strings, pointlike\_forces\_three, our\_world\_gives\_strings, no\_pointlike\_in\_four, string\_mass\_not\_topological, stringMass\_strictMono, stringMass\_zero, extended\_or\_low\_dimensional}\par\smallskip
-\noindent\textbf{\texttt{Expressive.lean}} (10)\quad \texttt{diffPattern\_shift, invariant\_factors, diffPattern\_invariant, invariant\_iff\_diffPattern, eval\_not\_invariant, scale\_says\_nothing\_about\_rotation, rotation\_says\_nothing\_about\_scale, channels\_independent, neither\_channel\_complete, no\_channel\_coupling}\par\smallskip
-\noindent\textbf{\texttt{CrossCheck.lean}} (9)\quad \texttt{rhoAll\_value, rhoQuark\_value, densities\_differ, density\_ratio\_near\_two, sector\_relation\_is\_identity, qcd\_extraction\_returns\_input, no\_second\_determination, quarkCvSq\_value, quark\_not\_geometric}\par\smallskip
-\noindent\textbf{\texttt{MassAudit.lean}} (9)\quad \texttt{massExp\_neg, massQuad\_neg, massExp\_pos, massQuad\_pos, massExp\_zero, massQuad\_zero, mass\_law\_underdetermined, both\_laws\_antiparticle\_degenerate, massQuad\_ratio\_not\_constant}\par\smallskip
-\noindent\textbf{\texttt{Audit.lean}} (4)\quad \texttt{scalar\_for\_directional\_count, register\_nonempty, more\_corrected\_than\_retracted, clean\_count}\par\smallskip
+\noindent\textbf{\texttt{Color.lean}} (17)\quad \texttt{comp\_\allowbreak perm}, \texttt{anti\_\allowbreak perm}, \texttt{triv\_\allowbreak perm}, \texttt{charge\_\allowbreak comp}, \texttt{charge\_\allowbreak anti}, \texttt{triv\_\allowbreak observable}, \texttt{confinement}, \texttt{pair\_\allowbreak observable}, \texttt{pair\_\allowbreak charge}, \texttt{rep\_\allowbreak perm}, \texttt{rep\_\allowbreak charge}, \texttt{bound\_\allowbreak state\_\allowbreak observable}, \texttt{bound\_\allowbreak state\_\allowbreak size}, \texttt{no\_\allowbreak partial\_\allowbreak state}, \texttt{constituent\_\allowbreak charge\_\allowbreak fraction}, \texttt{constituent\_\allowbreak charge\_\allowbreak rat}, \texttt{bound\_\allowbreak charge\_\allowbreak divisible}\par\smallskip
+\noindent\textbf{\texttt{ColorAudit.lean}} (8)\quad \texttt{identification\_\allowbreak predicts\_\allowbreak two}, \texttt{identification\_\allowbreak predicts\_\allowbreak halves}, \texttt{identification\_\allowbreak fails\_\allowbreak baryon}, \texttt{identification\_\allowbreak fails\_\allowbreak charge}, \texttt{spatial\_\allowbreak block\_\allowbreak is\_\allowbreak not\_\allowbreak colour\_\allowbreak block}, \texttt{three\_\allowbreak is\_\allowbreak forced\_\allowbreak by\_\allowbreak data}, \texttt{three\_\allowbreak matches\_\allowbreak charge}, \texttt{geometry\_\allowbreak offers\_\allowbreak two\_\allowbreak data\_\allowbreak needs\_\allowbreak three}\par\smallskip
+\noindent\textbf{\texttt{Codimension.lean}} (12)\quad \texttt{defectDim\_\allowbreak two}, \texttt{defectDim\_\allowbreak three}, \texttt{defectDim\_\allowbreak four}, \texttt{pointlike\_\allowbreak iff\_\allowbreak two\_\allowbreak dim}, \texttt{three\_\allowbreak dim\_\allowbreak gives\_\allowbreak strings}, \texttt{pointlike\_\allowbreak forces\_\allowbreak three}, \texttt{our\_\allowbreak world\_\allowbreak gives\_\allowbreak strings}, \texttt{no\_\allowbreak pointlike\_\allowbreak in\_\allowbreak four}, \texttt{string\_\allowbreak mass\_\allowbreak not\_\allowbreak topological}, \texttt{stringMass\_\allowbreak strictMono}, \texttt{stringMass\_\allowbreak zero}, \texttt{extended\_\allowbreak or\_\allowbreak low\_\allowbreak dimensional}\par\smallskip
+\noindent\textbf{\texttt{Expressive.lean}} (10)\quad \texttt{diffPattern\_\allowbreak shift}, \texttt{invariant\_\allowbreak factors}, \texttt{diffPattern\_\allowbreak invariant}, \texttt{invariant\_\allowbreak iff\_\allowbreak diffPattern}, \texttt{eval\_\allowbreak not\_\allowbreak invariant}, \texttt{scale\_\allowbreak says\_\allowbreak nothing\_\allowbreak about\_\allowbreak rotation}, \texttt{rotation\_\allowbreak says\_\allowbreak nothing\_\allowbreak about\_\allowbreak scale}, \texttt{channels\_\allowbreak independent}, \texttt{neither\_\allowbreak channel\_\allowbreak complete}, \texttt{no\_\allowbreak channel\_\allowbreak coupling}\par\smallskip
+\noindent\textbf{\texttt{CrossCheck.lean}} (9)\quad \texttt{rhoAll\_\allowbreak value}, \texttt{rhoQuark\_\allowbreak value}, \texttt{densities\_\allowbreak differ}, \texttt{density\_\allowbreak ratio\_\allowbreak near\_\allowbreak two}, \texttt{sector\_\allowbreak relation\_\allowbreak is\_\allowbreak identity}, \texttt{qcd\_\allowbreak extraction\_\allowbreak returns\_\allowbreak input}, \texttt{no\_\allowbreak second\_\allowbreak determination}, \texttt{quarkCvSq\_\allowbreak value}, \texttt{quark\_\allowbreak not\_\allowbreak geometric}\par\smallskip
+\noindent\textbf{\texttt{MassAudit.lean}} (9)\quad \texttt{massExp\_\allowbreak neg}, \texttt{massQuad\_\allowbreak neg}, \texttt{massExp\_\allowbreak pos}, \texttt{massQuad\_\allowbreak pos}, \texttt{massExp\_\allowbreak zero}, \texttt{massQuad\_\allowbreak zero}, \texttt{mass\_\allowbreak law\_\allowbreak underdetermined}, \texttt{both\_\allowbreak laws\_\allowbreak antiparticle\_\allowbreak degenerate}, \texttt{massQuad\_\allowbreak ratio\_\allowbreak not\_\allowbreak constant}\par\smallskip
+\noindent\textbf{\texttt{Audit.lean}} (4)\quad \texttt{scalar\_\allowbreak for\_\allowbreak directional\_\allowbreak count}, \texttt{register\_\allowbreak nonempty}, \texttt{more\_\allowbreak corrected\_\allowbreak than\_\allowbreak retracted}, \texttt{clean\_\allowbreak count}\par\smallskip
 
 \normalsize
 

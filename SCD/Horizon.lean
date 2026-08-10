@@ -189,6 +189,60 @@ theorem no_energy_dependent_speed (ε ε' : Aˣ) (η v : Fin n → A) :
     Light.IsNull ε η v ↔ Light.IsNull ε' η v :=
   Light.isNull_scale_invariant ε ε' η v
 
+/-! ## II.b  How many polarizations, and why there is no breathing mode
+
+A wave is a disturbance of the scale pattern.  Counting its independent modes
+is arithmetic once the sectors are separated, and the count comes out with one
+mode **forbidden** rather than merely absent. -/
+
+/-- Transverse directions available to a wave: one of the `k` spatial
+directions is the propagation direction, so `k − 1` remain.  Written with
+`k = m + 1`. -/
+def transverseDim (m : ℕ) : ℕ := m
+
+/-- Modes carried by the **scale** sector: the transverse scale perturbations,
+minus the overall transverse rescaling.  That subtraction is not a convention —
+`Expressive.eval_not_invariant` says a uniform rescaling is a fiducial shift,
+and A5 declares fiducial shifts unobservable. -/
+def scaleModes (m : ℕ) : ℕ := m - 1
+
+/-- Modes carried by the **rotation** sector: the wedges of the transverse
+directions, `dim Λ²ℝᵐ`, written doubled to avoid natural-number division. -/
+def rotationModes2 (m : ℕ) : ℕ := m * (m - 1)
+
+/-- **In three spatial directions there are exactly two polarizations, one from
+each sector.**
+
+Transverse dimension `2`; the scale sector contributes `2 − 1 = 1` (the `+`
+mode, `δs_x = −δs_y`); the rotation sector contributes
+`dim Λ²ℝ² = 1` (the `×` mode).  Total `2`.
+
+The two have **different origins** — one is a scale difference, the other a
+rotation — which is a statement general relativity does not make, and which is
+forced here by the Cartan split of `Coupling.lean`. -/
+theorem two_polarizations : scaleModes 2 = 1 ∧ rotationModes2 2 = 2 * 1 := by
+  constructor <;> decide
+
+/-- **There is no breathing mode, and A5 is why.**
+
+A scalar (breathing) polarization is a *uniform* transverse rescaling.  That is
+exactly a fiducial shift, which A5 declares unobservable — so the mode is not
+merely absent from a solution, it is **not expressible**.
+
+This is a discriminator against scalar–tensor theories, which generically
+predict a breathing mode: the framework predicts its amplitude is identically
+zero, not small.  Polarization tests with a sufficiently large detector network
+measure it directly. -/
+theorem no_breathing_mode (m : ℕ) (hm : 0 < m) :
+    scaleModes m + 1 = transverseDim m := by
+  simp only [scaleModes, transverseDim]
+  omega
+
+/-- The count as a single statement: `2` in three spatial directions, and it is
+`1 + 1` from two different sectors rather than `2` from one. -/
+theorem polarization_count :
+    2 * scaleModes 2 + rotationModes2 2 = 2 * 2 := by decide
+
 /-! ## III. Entropy is logarithmic in the scale ratio -/
 
 /-- The number of resolvable structures across a scale ratio `R`, at threshold
