@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}634 条定理、11878 行 Lean 代码、61 个文件；
-\textbf{全部 634 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}637 条定理、11878 行 Lean 代码、61 个文件；
+\textbf{全部 637 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -289,6 +289,34 @@
 黑洞是标度比值\emph{极端但有限}的区域。外部几何原封未动，
 所以阴影、ISCO、铃宕全部与广义相对论一致；
 差别在于\textbf{没有任何东西被因果隔断，也没有信息被销毁}。
+
+\subsection{两个时间箭头其实是一个序}
+
+一个别处的长期谜题：为什么熵增的方向与宇宙膨胀的方向一致？
+通常的回答是"靠一个特殊的初条件对齐"。\textbf{在这里它们不是两件恰好一致的事。}
+
+三条事实，各自因各自的理由成立，彼此互不引用：
+第 \ref{sec:signature} 节使\textbf{时间就是标度漂移的方向}；
+第 \ref{sec:entropy} 节的 H 定理\textbf{只用有限分辨率}，其证明中\emph{完全没有出现标度}；
+第 \ref{sec:horizon} 节使区域的熵为 $\rho\ln R$。
+
+\begin{theorem}[按熵排序与按标度比值排序是同一个序]\label{thm:onearrow}
+$\rho\ln R_1 \le \rho\ln R_2 \iff R_1 \le R_2$，严格版本亦然。
+\textbf{这是等价，不是单向蕴含}——所以两个箭头是\emph{一个}箭头，
+而不是两个恰好同向的箭头。
+\leanline{Native.entropy\_order\_is\_scale\_order,
+entropy\_strict\_iff\_scale\_strict, arrows\_are\_one\_order}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{热力学箭头、宇宙学箭头、时间方向，是同一个序被读了三遍。}
+
+\textbf{内容在哪、不在哪：}H 定理确实独立于标度扇区——这是它不循环的原因。
+把二者接起来的是"熵 $=\rho\ln R$"，即把熵认作\emph{可分辨阈值的计数}。
+\textbf{那个认定是一个建模选择}，由第 \ref{sec:spectrum} 节的阈值密度所激发但并非被迫。
+故结论是：\emph{在那个熵读法之下}，两个箭头不是靠边界条件对齐的，它们是同一个关系。
+\textbf{削弱那个读法，论证随之削弱。}
+\end{mdframed}
 
 \subsection{把十条串起来}
 
@@ -4184,6 +4212,77 @@ $f_0(500)$ 极点 $\Gamma/m$ & $<1.157$ & CCL $1.234$ / GKPY $1.090$ & \textbf{�
 \leanline{Data.scorecard}
 \end{mdframed}
 
+
+\section{如何证伪本框架}\label{sec:falsify}
+
+一份内部报告最该有的一节。以下每一行给出\textbf{一个观测结果，它若成立，框架的哪一部分就死}。
+按"死得多彻底"排序，不按可能性排序。
+
+\subsection{会杀死整个框架的}
+
+\begin{center}
+\begin{tabular}{p{0.30\textwidth}p{0.28\textwidth}p{0.30\textwidth}}
+\toprule
+若观测到 & 则死的是 & 现状 \\
+\midrule
+\textbf{$w$ 随红移演化}（数据集自洽前提下 $5\sigma$） & \textbf{A5}，连同无量纲性，连同全部几何 & DESI $2.8$--$4.2\sigma$，但 BAO 单独自洽、各联合互相矛盾 \\
+\textbf{光子能量依赖时延}（任何阶） & A3 加类光锥标度盲，即第 \ref{sec:light} 节的地基 & $E_{\rm QG}\gtrsim7.6E_{\rm Pl}$，正在赢 \\
+\textbf{引力波偶极辐射} & 守恒定理，即 Bianchi 出发的整条链 & 双脉冲星 $<1.3\times10^{-4}$ \\
+\textbf{引力波呼吸模} & A5（呼吸模就是基准平移） & 张量优于标量／矢量／混合 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{这四条没有可调参数。}标量--张量理论有耦合可以调小；这里没有——
+\textbf{测到就是死，不是"需要更小的耦合"。}
+
+\subsection{会杀死一个扇区的}
+
+\begin{center}
+\begin{tabular}{p{0.30\textwidth}p{0.28\textwidth}p{0.30\textwidth}}
+\toprule
+若观测到 & 则死的是 & 现状 \\
+\midrule
+\textbf{存在最小长度} & 第 \ref{sec:horizon} 节全部（无奇点／无视界／无最大密度同源） & 与光子色散同一条界 \\
+\textbf{$f_0(500)$ 极点 $\Gamma/m>1.157$ 被确定} & 第 \ref{sec:spectrum} 节的可分辨性界 & CCL $1.234$／GKPY $1.090$，框架押 GKPY \\
+\textbf{$B-L$ 被规范化且精确守恒} & 第 \ref{sec:particle} 节"恰一个整数荷" & $0\nu\beta\beta$ 未见，引信很长 \\
+\textbf{某个标签的出现不是既有各向异性的细化} & 第 \ref{sec:locus} 节的单一开关 & 无已知反例 \\
+\textbf{总宇称改变的过程} & 第 \ref{sec:native} 节的 $\mathbb Z/2$ 算术 & 无已知过程 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{会迫使框架承认它算不了的}
+
+\begin{center}
+\begin{tabular}{p{0.30\textwidth}p{0.28\textwidth}p{0.30\textwidth}}
+\toprule
+若观测到 & 则暴露的是 & 现状 \\
+\midrule
+\textbf{高自旋致密天体因能层不稳定而衰减} & 无视界结论\textbf{要求}反射率极小，而框架\emph{算不出}它 & GW241011 $\chi_1=0.64$ 长寿，\textbf{压力最大的一条} \\
+\textbf{铃宕回波} & 同上，反向：框架预言其存在却给不出振幅 & 搜索为零结果 \\
+\textbf{黑洞熵 $\propto$ 面积而非 $\ln R$} & 第 \ref{sec:horizon} 节的对数熵 & 熵本身未被测量 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1.2pt,backgroundcolor=red!4]
+\textbf{无法被这份表证伪的，是 A7。}
+它是关于\emph{什么算一次观测}的承诺，任何人可以拒绝它并得到别的 $k$——
+\textbf{那不是一次实验能裁决的事}，这也正是它被扶正为公理而非留作判断的理由。
+
+同样无法被证伪的是那\textbf{一个自由单位}：它是预言被表达于其中的尺度，
+\textbf{不是一条可错的预言}。
+\end{mdframed}
+
+\begin{remark}[什么\emph{不}构成证伪]
+"框架没有给出标准模型的粒子表"不是证伪——第 \ref{sec:emergence} 节论证那不是目标。
+"它没算出强子质量"不是证伪——那与那一个自由单位是同一件事。
+\textbf{"它与广义相对论在引力波扇区一致"更不是证伪}——
+第 \ref{sec:waves} 节证明对称扇区在\emph{每一阶}上都与 GR 相同，
+故那个扇区\textbf{原则上}就不该指望有分歧。
+\end{remark}
+
 \clearpage
 \part{第九部分\quad 登记册：撤回、更正、与边界}
 
@@ -4966,7 +5065,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \subsection{公理审计}
 
-对全部 634 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 637 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5034,7 +5133,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 634 条}\label{sec:index}
+\section{定理索引：全部 637 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5114,7 +5213,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \subsection*{第八部分\quad 预言与数据}
 \noindent\textbf{\texttt{Predictions.lean}} (17)\quad \texttt{accel\_\allowbreak numerator}, \texttt{powerlaw\_\allowbreak accel\_\allowbreak numerator}, \texttt{accelerates\_\allowbreak iff}, \texttt{eos\_\allowbreak dissipationExponent}, \texttt{dissipationExponent\_\allowbreak eos}, \texttt{eos\_\allowbreak one}, \texttt{eos\_\allowbreak eq\_\allowbreak neg\_\allowbreak one\_\allowbreak iff}, \texttt{eos\_\allowbreak lt\_\allowbreak third\_\allowbreak iff}, \texttt{eos\_\allowbreak lt\_\allowbreak neg\_\allowbreak one\_\allowbreak iff}, \texttt{worked\_\allowbreak inversion}, \texttt{muon\_\allowbreak lifetime\_\allowbreak value}, \texttt{muon\_\allowbreak matches\_\allowbreak experiment}, \texttt{poundRebka\_\allowbreak value}, \texttt{darkEnergyDensity\_\allowbreak value}, \texttt{logScale\_\allowbreak step}, \texttt{logScale\_\allowbreak ratio\_\allowbreak const}, \texttt{logScale\_\allowbreak closed}\par\smallskip
 \noindent\textbf{\texttt{Cosmos.lean}} (13)\quad \texttt{shift\_\allowbreak invariant\_\allowbreak is\_\allowbreak constant}, \texttt{rate\_\allowbreak constant\_\allowbreak of\_\allowbreak fiducial\_\allowbreak invariance}, \texttt{w\_\allowbreak does\_\allowbreak not\_\allowbreak evolve}, \texttt{scale\_\allowbreak ratio\_\allowbreak depends\_\allowbreak only\_\allowbreak on\_\allowbreak difference}, \texttt{no\_\allowbreak first\_\allowbreak moment}, \texttt{finite\_\allowbreak lookback\_\allowbreak no\_\allowbreak origin}, \texttt{isotropic\_\allowbreak gravitates\_\allowbreak without\_\allowbreak labels}, \texttt{dark\_\allowbreak matter\_\allowbreak has\_\allowbreak no\_\allowbreak species}, \texttt{two\_\allowbreak dark\_\allowbreak routes\_\allowbreak differ}, \texttt{resolvable\_\allowbreak needs\_\allowbreak width\_\allowbreak below\_\allowbreak gap}, \texttt{mean\_\allowbreak gap\_\allowbreak bound}, \texttt{broad\_\allowbreak structures\_\allowbreak unresolvable}, \texttt{resolvability\_\allowbreak boundary}\par\smallskip
-\noindent\textbf{\texttt{Native.lean}} (12)\quad \texttt{not\_\allowbreak two\_\allowbreak places\_\allowbreak of\_\allowbreak parallel}, \texttt{separation\_\allowbreak is\_\allowbreak oriented}, \texttt{single\_\allowbreak anisotropy\_\allowbreak boundary}, \texttt{label\_\allowbreak forces\_\allowbreak anisotropy}, \texttt{zero\_\allowbreak window\_\allowbreak resolves\_\allowbreak nothing}, \texttt{content\_\allowbreak is\_\allowbreak interval\_\allowbreak valued}, \texttt{no\_\allowbreak global\_\allowbreak field\_\allowbreak equation}, \texttt{ordering\_\allowbreak discrepancy\_\allowbreak is\_\allowbreak the\_\allowbreak observable}, \texttt{parity\_\allowbreak conserved\_\allowbreak under\_\allowbreak binding}, \texttt{both\_\allowbreak labels\_\allowbreak conserved}, \texttt{no\_\allowbreak maximum\_\allowbreak anisotropy}, \texttt{no\_\allowbreak cutoff\_\allowbreak either\_\allowbreak end}\par\smallskip
+\noindent\textbf{\texttt{Native.lean}} (15)\quad \texttt{not\_\allowbreak two\_\allowbreak places\_\allowbreak of\_\allowbreak parallel}, \texttt{separation\_\allowbreak is\_\allowbreak oriented}, \texttt{single\_\allowbreak anisotropy\_\allowbreak boundary}, \texttt{label\_\allowbreak forces\_\allowbreak anisotropy}, \texttt{zero\_\allowbreak window\_\allowbreak resolves\_\allowbreak nothing}, \texttt{content\_\allowbreak is\_\allowbreak interval\_\allowbreak valued}, \texttt{no\_\allowbreak global\_\allowbreak field\_\allowbreak equation}, \texttt{ordering\_\allowbreak discrepancy\_\allowbreak is\_\allowbreak the\_\allowbreak observable}, \texttt{parity\_\allowbreak conserved\_\allowbreak under\_\allowbreak binding}, \texttt{both\_\allowbreak labels\_\allowbreak conserved}, \texttt{entropy\_\allowbreak order\_\allowbreak is\_\allowbreak scale\_\allowbreak order}, \texttt{entropy\_\allowbreak strict\_\allowbreak iff\_\allowbreak scale\_\allowbreak strict}, \texttt{arrows\_\allowbreak are\_\allowbreak one\_\allowbreak order}, \texttt{no\_\allowbreak maximum\_\allowbreak anisotropy}, \texttt{no\_\allowbreak cutoff\_\allowbreak either\_\allowbreak end}\par\smallskip
 \noindent\textbf{\texttt{Data.lean}} (19)\quad \texttt{desi\_\allowbreak tension\_\allowbreak exceeds\_\allowbreak three\_\allowbreak sigma}, \texttt{desi\_\allowbreak significance\_\allowbreak dataset\_\allowbreak dependent}, \texttt{desi\_\allowbreak combinations\_\allowbreak disagree\_\allowbreak internally}, \texttt{falsification\_\allowbreak threshold}, \texttt{ccl\_\allowbreak above\_\allowbreak bound}, \texttt{gkpy\_\allowbreak below\_\allowbreak bound}, \texttt{determinations\_\allowbreak straddle\_\allowbreak bound}, \texttt{gkpy\_\allowbreak updated\_\allowbreak inside}, \texttt{kappa\_\allowbreak below\_\allowbreak bound}, \texttt{rho\_\allowbreak below\_\allowbreak bound}, \texttt{delta\_\allowbreak below\_\allowbreak bound}, \texttt{z\_\allowbreak boson\_\allowbreak far\_\allowbreak inside}, \texttt{bound\_\allowbreak separates\_\allowbreak kappa\_\allowbreak from\_\allowbreak sigma}, \texttt{breit\_\allowbreak wigner\_\allowbreak spans\_\allowbreak the\_\allowbreak bound}, \texttt{dispersion\_\allowbreak limit\_\allowbreak above\_\allowbreak planck}, \texttt{framework\_\allowbreak predicts\_\allowbreak no\_\allowbreak finite\_\allowbreak scale}, \texttt{one\_\allowbreak charge\_\allowbreak prediction}, \texttt{zero\_\allowbreak nu\_\allowbreak beta\_\allowbreak beta\_\allowbreak decides}, \texttt{scorecard}\par\smallskip
 
 \subsection*{第九部分\quad 登记册}

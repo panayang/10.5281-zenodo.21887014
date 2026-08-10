@@ -691,6 +691,9 @@ namespace SCD.Verify
 #print axioms SCD.Native.ordering_discrepancy_is_the_observable
 #print axioms SCD.Native.parity_conserved_under_binding
 #print axioms SCD.Native.both_labels_conserved
+#print axioms SCD.Native.entropy_order_is_scale_order
+#print axioms SCD.Native.entropy_strict_iff_scale_strict
+#print axioms SCD.Native.arrows_are_one_order
 #print axioms SCD.Native.no_maximum_anisotropy
 #print axioms SCD.Native.no_cutoff_either_end
 

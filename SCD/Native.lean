@@ -282,6 +282,73 @@ theorem both_labels_conserved (x y : Particle.Species) (t : ℝ) :
     (Particle.bind x y t).charge.hedgehog
       = x.charge.hedgehog + y.charge.hedgehog := rfl
 
+/-! ## VII.b  The two arrows of time are one order relation
+
+A standing puzzle elsewhere: why does the direction in which entropy increases
+agree with the direction in which the universe expands?  They are usually
+argued to be aligned by a special initial condition.  Here they are not two
+things that happen to agree.
+
+Three facts, each established for its own reasons and none referring to the
+others:
+
+* `Signature.lean` — **time is the direction the scale drifts.**  A6 gives a
+  nonzero drift; a drift is one linear functional; that functional distinguishes
+  exactly one direction, which is time;
+* `Entropy.entropy_nondecreasing` — an **H theorem from coarse-graining alone**.
+  Finite resolution, a bijective microdynamics, no probability assumption, and
+  **no mention of scale anywhere in its proof**;
+* `Horizon.entropyOfRatio` — the entropy of a region spanning a scale ratio `R`
+  is `ρ·ln R`, the count of thresholds it can resolve.
+
+`entropy_order_is_scale_order` puts the last of these to work: because `ln` is
+strictly monotone, **ordering by entropy and ordering by scale ratio are the
+same order relation** — an `iff`, not an implication in one direction.  So:
+
+    the thermodynamic arrow, the cosmological arrow, and the time direction
+    are one order, read three ways.
+
+**Where the content is, and where it is not.**  The H theorem is genuinely
+independent of the scale sector — that is what stops this being circular.  The
+link that joins them is `entropy = ρ·ln R`, i.e. the identification of entropy
+with the count of resolvable thresholds.  That identification is a **modelling
+choice**, motivated by `Spectrum.lean`'s threshold density but not forced.  So
+the result is: *given* that reading of entropy, the two arrows are not aligned
+by a boundary condition — they are the same relation.  Weaken the reading and
+the argument weakens with it. -/
+
+/-- **Ordering by entropy and ordering by scale ratio are the same order.**
+
+Not "entropy increase implies expansion" but an equivalence, which is what makes
+the two arrows one arrow rather than two that agree. -/
+theorem entropy_order_is_scale_order (ρ R₁ R₂ : ℝ) (hρ : 0 < ρ) (h1 : 0 < R₁) (h2 : 0 < R₂) :
+    Horizon.entropyOfRatio ρ R₁ ≤ Horizon.entropyOfRatio ρ R₂ ↔ R₁ ≤ R₂ := by
+  simp only [Horizon.entropyOfRatio]
+  rw [mul_le_mul_iff_of_pos_left hρ]
+  exact Real.log_le_log_iff h1 h2
+
+/-- And strictly: entropy strictly increases exactly when the scale ratio does.
+So neither arrow can move while the other stands still. -/
+theorem entropy_strict_iff_scale_strict (ρ R₁ R₂ : ℝ) (hρ : 0 < ρ) (h1 : 0 < R₁) (h2 : 0 < R₂) :
+    Horizon.entropyOfRatio ρ R₁ < Horizon.entropyOfRatio ρ R₂ ↔ R₁ < R₂ := by
+  simp only [Horizon.entropyOfRatio]
+  rw [mul_lt_mul_iff_of_pos_left hρ]
+  exact Real.log_lt_log_iff h1 h2
+
+/-- **The three-way identification, collected.**
+
+Entropy order, scale-ratio order, and — since `Signature.lean` makes time the
+drift direction and A6 makes the drift increase the scale — the time order.
+One relation, three names.
+
+*The framework's own question this answers:* not "why are the arrows aligned"
+but "why did anyone think there were two". -/
+theorem arrows_are_one_order (ρ R₁ R₂ : ℝ) (hρ : 0 < ρ) (h1 : 0 < R₁) (h2 : 0 < R₂) :
+    (Horizon.entropyOfRatio ρ R₁ ≤ Horizon.entropyOfRatio ρ R₂ ↔ R₁ ≤ R₂)
+    ∧ (Horizon.entropyOfRatio ρ R₁ < Horizon.entropyOfRatio ρ R₂ ↔ R₁ < R₂) :=
+  ⟨entropy_order_is_scale_order ρ R₁ R₂ hρ h1 h2,
+   entropy_strict_iff_scale_strict ρ R₁ R₂ hρ h1 h2⟩
+
 /-! ## VII. No maximum density -/
 
 variable {A : Type*} [CommRing A] [Nontrivial A]
