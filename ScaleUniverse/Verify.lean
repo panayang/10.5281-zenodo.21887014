@@ -552,6 +552,42 @@ namespace ScaleUniverse.Verify
 #print axioms ScaleUniverse.Horizon.no_minimum_length
 #print axioms ScaleUniverse.Horizon.no_final_description
 
+/-! ## Sector LVII — the framework asking its own questions -/
+
+#print axioms ScaleUniverse.Native.not_two_places_of_parallel
+#print axioms ScaleUniverse.Native.separation_is_oriented
+#print axioms ScaleUniverse.Native.single_anisotropy_boundary
+#print axioms ScaleUniverse.Native.label_forces_anisotropy
+#print axioms ScaleUniverse.Native.zero_window_resolves_nothing
+#print axioms ScaleUniverse.Native.content_is_interval_valued
+#print axioms ScaleUniverse.Native.no_global_field_equation
+#print axioms ScaleUniverse.Native.ordering_discrepancy_is_the_observable
+#print axioms ScaleUniverse.Native.parity_conserved_under_binding
+#print axioms ScaleUniverse.Native.both_labels_conserved
+#print axioms ScaleUniverse.Native.no_maximum_anisotropy
+#print axioms ScaleUniverse.Native.no_cutoff_either_end
+
+/-! ## Sector LVIII — confronting the data -/
+
+#print axioms ScaleUniverse.Data.desi_tension_exceeds_three_sigma
+#print axioms ScaleUniverse.Data.desi_significance_dataset_dependent
+#print axioms ScaleUniverse.Data.falsification_threshold
+#print axioms ScaleUniverse.Data.kappa_below_bound
+#print axioms ScaleUniverse.Data.rho_below_bound
+#print axioms ScaleUniverse.Data.delta_below_bound
+#print axioms ScaleUniverse.Data.z_boson_far_inside
+#print axioms ScaleUniverse.Data.ccl_above_bound
+#print axioms ScaleUniverse.Data.gkpy_below_bound
+#print axioms ScaleUniverse.Data.determinations_straddle_bound
+#print axioms ScaleUniverse.Data.gkpy_updated_inside
+#print axioms ScaleUniverse.Data.desi_combinations_disagree_internally
+#print axioms ScaleUniverse.Data.bound_separates_kappa_from_sigma
+#print axioms ScaleUniverse.Data.breit_wigner_spans_the_bound
+#print axioms ScaleUniverse.Data.dispersion_limit_above_planck
+#print axioms ScaleUniverse.Data.one_charge_prediction
+#print axioms ScaleUniverse.Data.zero_nu_beta_beta_decides
+#print axioms ScaleUniverse.Data.scorecard
+
 /-! ## Sector IX — light -/
 
 #print axioms ScaleUniverse.Light.isNull_iff_bare

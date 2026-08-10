@@ -89,8 +89,8 @@ Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson �
 哪些是仍需外部输入的物理假设。
 
 \medskip
-\noindent\textbf{形式化规模：}587 条定理、10663 行 Lean 代码；
-367 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
+\noindent\textbf{形式化规模：}618 条定理、11306 行 Lean 代码；
+397 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
 （\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
 无 \texttt{sorryAx}。
 \end{abstract}
@@ -3443,6 +3443,319 @@ entropy\_increment\_independent\_of\_size}
 一项作为借来的问题被\textbf{谢绝}（引力子），并指明取代它的是什么。
 \end{remark}
 
+\section{框架自己的问题}\label{sec:native}
+
+此前的一切都在回答别处提出的问题——它给不给 Schwarzschild、给不给引力子、给不给面积律。
+那是正确的\emph{第一个}检验，而它已经跑过了。但那不是正确的\emph{最后一个}检验：
+\textbf{建立在不同原语上的框架，应当能\emph{问出}别人问不出的东西}，
+而那些问题正是它要么挣得存在理由、要么被揭穿为一次改写的地方。
+
+原语只有几个：\textbf{作为单位的标度、作为单个矢量的花样、单一漂移、楔积、
+阈值密度、各向同／异性二分、一个对易子}。以下逐个追问它们要求知道什么。
+
+\subsection{分离不是原语，非平行才是}
+
+这里没有空间，只有标度。故"两个地方"不能被假设，\textbf{它必须被构造}，
+而唯一可用的构造是楔积。
+
+\begin{theorem}[平行的花样不是两个地方]\label{thm:sep}
+若两个标度花样平行，则\textbf{没有任何标签区分它们}——
+无转动，故无荷，故什么也没有。
+而实际存在的分离是\textbf{有向的}：交换二者即反号。
+\leanline{Native.not\_two\_places\_of\_parallel, separation\_is\_oriented}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{框架自己的图像：}广延不是一个供区域安放其中的容器。
+两个区域相互区分的程度，恰是其标度花样偏离平行的程度；
+而\textbf{完全均匀的区域没有任何内部结构，连广延都没有}。
+距离是"非平行度"的一个导出量度。
+\end{mdframed}
+
+\emph{这引出的问题：}如果不是距离，那么度量分离程度的观测量是什么？
+候选是楔积，而它\textbf{反称}——故框架自己的分离是一个\textbf{有向面积，不是长度}。
+\textbf{标准词汇里没有这样的东西。}
+
+\subsection{只有一个开关，不是每种相互作用一个}
+
+定理 \ref{thm:iso} 说各向同性轨迹上无转动标签、无荷、无多重态、无曲率。
+\textbf{它们不是四件恰好一起消失的事——它们同源，故只有一个开关。}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{第一次各向异性之下什么都没有标签；之上一切标签同时出现。}
+其后的结构是简并花样的\emph{细化}（定理 \ref{thm:multthresh}），
+\textbf{不是第二次开启}。
+\leanline{Native.single\_anisotropy\_boundary, label\_forces\_anisotropy}
+\end{mdframed}
+
+\emph{框架自己的问题，而且很尖锐：}标准图景中，不同相互作用在不同标度上变得可分。
+此处只有一个边界，其后皆为细化。于是：
+\textbf{是否存在某个标签，其出现\emph{不是}对既有各向异性花样的细化？}
+一次真正独立的开启就会证伪它。
+\textbf{这个问题没人问，因为没有别人有一个"单一开关"需要辩护。}
+
+\subsection{内容属于区间，从不属于标度}
+
+\begin{theorem}[零宽窗口什么也分辨不出]\label{thm:interval}
+且任何内容都要求一个阈值严格落在正宽度窗口之内。
+\leanline{Native.zero\_window\_resolves\_nothing, content\_is\_interval\_valued}
+\end{theorem}
+
+\textbf{故"在能量 $E$ 上存在什么"在这里是不良定的问句。}
+存在的东西是一个标度\emph{区间}的性质，\textbf{标度轴上的一个点不携带任何内容}。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{框架自己的互补性：标度的锐利与内容的丰富互相对立。}
+完全锐利的标度分辨不出任何东西；分辨 $N$ 个结构至少要花 $N/\rho$ 的窗口。
+\textbf{这不是海森堡的移植}——此处的共轭对是\textbf{标度锐利度对内容计数}，
+而定理 \ref{thm:reso} 的共振宽度界是同一陈述的另一面。
+\end{mdframed}
+
+\emph{问题：}使\emph{单个}结构无歧义的最小窗口是多少？$1/\rho$——
+这正是可分辨性边界所在之处的原因。
+
+\subsection{没有全局场方程，而 A6 是原因}
+
+定理 \ref{thm:conserv} 证明：场方程可被写下，仅当其源满足循环守恒律。
+而 A6 说宇宙耗散——\textbf{全局源不守恒}。
+
+\begin{theorem}[没有全局场方程]\label{thm:noglobal}
+不守恒的源不容许任何场方程。故\textbf{整个宇宙没有场方程}。
+局域的仍然存在（第 \ref{sec:cov} 节证明局域协变性挺过全局耗散）。
+\textbf{宇宙学因此不是"带边界条件全局求解场方程"——没有全局的东西可解。}
+\leanline{Native.no\_global\_field\_equation}
+\end{theorem}
+
+\emph{框架自己的问题：}若无全局方程，是什么定住了大尺度历史？
+可用的答案是 A5（定理 \ref{thm:a7} 所在小节的常速率结果）——
+\textbf{那是一个对称性，不是一条动力学定律}。
+
+\begin{center}
+\textbf{大尺度历史由"什么不可观测"定住，而不是由"什么在演化"定住。}
+\end{center}
+
+这够不够，是开放问题，\textbf{而它不是广义相对论提得出的问题}。
+
+\subsection{量子引力实验是一次"次序检验"}
+
+定理 \ref{thm:ncdefm} 使全部量子修正就是标度梯度的对易子。
+\textbf{而对易子是一个\emph{次序}差}，故原生实验不是"探测引力子"，而是：
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+\textbf{沿两个方向比较标度，以两种次序各做一次，看是否有差异。}
+
+两次序之差恰为 $-2[\sigma_i,\sigma_j]$，\textbf{那就是几何的全部量子内容}。
+无需测别的，\textbf{也无需任何粒子存在}。
+\leanline{Native.ordering\_discrepancy\_is\_the\_observable}
+\end{mdframed}
+
+\emph{框架自己的问题：}"沿一个方向比较标度"由什么物理程序实现？
+标度比较是局域单位之比，故程序是一次双臂比较——
+而框架说\textbf{两臂以相反次序遍历会相差一个对易子}。
+量级由标度步长定，远低于现有一切，\textbf{这一点被明说而非隐藏}；
+原生的是\textbf{观测量是一个次序，而不是一个振幅、也不是一个量子}。
+
+\subsection{缺陷成对出现，且宇称相同}
+
+\begin{theorem}[宇称守恒，作为算术]\label{thm:parity}
+$\mathbb Z/2$ 标签相乘，且每个元素是自身的逆，
+故绑定两个同宇称缺陷得到偶。整数荷同样恒等守恒。
+\leanline{Native.parity\_conserved\_under\_binding, both\_labels\_conserved}
+\end{theorem}
+
+\textbf{框架自己的选择定则：}缺陷成对产生与湮灭，且宇称相同，
+\textbf{没有自由参数，没有耦合常数}。
+它不是加在拉氏量上的对称性——\textbf{这里没有拉氏量}——它是 $\mathbb Z/2$ 中的算术。
+
+\emph{问题：}有没有任何过程改变总宇称？框架说\textbf{绝对没有}，
+而这比"由假设的对称性导出的选择定则"更干净，\textbf{因为没有东西可供破缺}。
+
+\subsection{没有最大密度}
+
+\begin{theorem}[标度之比是单位：永不为零、永不为无穷、但量值无界]\label{thm:nomax}
+物质在此就是标度的各向异性，故\textbf{没有最大物质密度、没有 Planck 密度}，
+也没有任何标度使描述必须被另一类东西取代。
+这是定理 \ref{thm:nomin} 从物质一侧看到的同一件事。
+\leanline{Native.no\_maximum\_anisotropy, no\_cutoff\_either\_end}
+\end{theorem}
+
+\subsection{这七条的共同点}
+
+\textbf{没有一条是翻译。}每一条都来自标准词汇所没有的一个原语：
+作为单位的标度（VII）、作为单个矢量的花样（I）、阈值密度（III）、
+单一二分（II）、不守恒的全局源（IV）、
+对易子而非场（V）、以及\textbf{作为算术而非对称性}的 $\mathbb Z/2$（VI）。
+
+\begin{remark}[诚实的状态]
+七条之中，II 与 VI 原则上现在可检验；III 已通过共振宽度界被检验；
+VII 只能由其逆否命题检验；而 I、IV、V 是概念性主张，\textbf{目前没有任何测量}。
+\textbf{没有一条是对某个数值的预言。}
+\end{remark}
+
+\section{与数据对质}\label{sec:data}
+
+预言已经列出；本节把它们带到测量面前。
+\textbf{其中一条有麻烦，而且是最承重的那一条，故先说它。}
+
+\subsection{$w$ 不演化——这与 DESI 有张力}
+
+定理 \ref{thm:a7} 所在小节由 A5 导出恒定耗散速率，故 $w=-1$ 精确且每个时期皆然。
+\textbf{A5 不是框架中可调的部分}：它正是使几何无量纲的那一条，故此预言无法软化。
+
+DESI DR2（2025）把 BAO 与 CMB 及超新星联合，对演化状态方程的偏好达到
+\[
+3.1\sigma\ /\ 2.8\sigma\ /\ 3.8\sigma\ /\ 4.2\sigma
+\]
+（分别对应 CMB、Pantheon$^+$、Union3、DESY5），
+落在 $w_0>-1$、$w_a<0$ 的象限，$w$ 在 $z\approx 0.5$ 附近穿越 $-1$。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1.2pt,backgroundcolor=red!4]
+\textbf{这是本框架最严重的经验问题，我不打算把它解释掉。}
+三件事同时为真，三件都该说：
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{DESI BAO 单独与 $\Lambda$CDM 完全自洽。}张力只存在于联合中，
+      而\textbf{各联合彼此不一致}：BAO$+$CMB 给出 $w_0\approx-0.42\pm0.21$，
+      BAO$+$CMB$+$SN 给出 $w_0\approx-0.838$——
+      \textbf{同一参数上相差两个标准差}；
+\item 偏好在最弱与最强超新星编目之间\textbf{恰好差 1.5 倍}；
+\item 独立分析指出这些数据集\textbf{相互不自洽}，
+      而产生信号的正是那一步联合；
+\item \textbf{若该偏好在数据集自洽的前提下达到 $5\sigma$，A5 被证伪}，
+      连同整个开发所依赖的无量纲性一起。
+      \textbf{不存在带演化 $w$ 的本框架版本。}
+\end{itemize}
+\leanline{Data.desi\_tension\_exceeds\_three\_sigma,
+desi\_significance\_dataset\_dependent, falsification\_threshold}
+\end{mdframed}
+
+\subsection{共振宽度界——两个旗舰确定值分居两侧}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{对本节前一版本的更正。}我曾把 $f_0(500)$ 极点引作 $457-i279$，
+得 $\Gamma/m=1.22$，并报告该界被违反。
+\textbf{$279$ 不是两个标准确定值中的任何一个。}正确的两个是：
+\end{mdframed}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+方法 & 极点 & $\Gamma/m$ \\
+\midrule
+CCL（Bern，Roy 方程 $+$ ChPT 输入） & $441-i272$ & $\mathbf{1.234}$ \ 界外 \\
+GKPY（Madrid，一次减除，纯 $\pi\pi$ 数据） & $457-i249$ & $\mathbf{1.090}$ \ 界内 \\
+GKPY 更新收敛 & $(445\text{--}450)-i(220\text{--}245)$ & $0.978$--$1.101$ \ 全界内 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[界恰落在两个旗舰确定值之间]\label{thm:bound}
+$1.090 < 1.157 < 1.234$，而更新后的 Madrid 值\textbf{全部在界内}。
+\leanline{Data.ccl\_above\_bound, gkpy\_below\_bound,
+determinations\_straddle\_bound, gkpy\_updated\_inside}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{故该界目前\emph{并未}被违反。}
+它坐落在介子表中最有争议的共振的最佳确定值的分辨极限上，
+而两种方法对真极点在界的哪一侧\textbf{意见相左}。
+框架因此对一个具体的实测数值作出一条\textbf{活的、可证伪的、当前开放的}主张：
+
+\begin{center}
+$f_0(500)$ 极点满足 $\Gamma/m < 1.157$——
+\textbf{框架站在一次减除的确定值一边，反对 Roy 方程加 ChPT 的那个。}
+\end{center}
+\end{mdframed}
+
+谱的其余部分远在界内：$W,Z,t,H$ 为 $10^{-5}$--$0.03$；
+$\Delta(1232)$、$N(1440)$ 为 $0.10$、$0.15$；$\rho(770)$ 为 $0.19$；
+$f_0(1370)$ 为 $0.26$；$K_0^*(700)$ 极点为 $0.86$。
+\textbf{界仍然落在两个最宽态之间}，这正是它是检验而非描述的原因。
+\leanline{Data.bound\_separates\_kappa\_from\_sigma}
+
+而 Breit--Wigner 范围对检验\textbf{依然无用}：PDG 引用 $m\in[400,800]$、
+$\Gamma\in[100,800]$，使 $\Gamma/m$ 从 $0.125$ 跨到 $2$。
+\textbf{故陈述必须读在极点上，现在也确实如此。}
+\leanline{Data.breit\_wigner\_spans\_the\_bound}
+
+\begin{remark}[一条观察，作为观察而非推导给出]
+文献中有一支把 $f_0(500)$ 读作\textbf{标度不变性破缺的赝 Goldstone 玻色子}——
+一个膨胀子。本框架没有任何"其激发是粒子"的场，而标度不是这样的场，
+故它\textbf{不预言存在膨胀子\emph{态}}；
+它预言的是：任何扮演该角色的东西恰好坐在\textbf{可分辨性边界}上，
+既不明确是态、也不明确是连续谱。\textbf{$f_0(500)$ 正在那里。}
+有启发性；此处\textbf{不推导任何东西}。
+\end{remark}
+
+\subsection{光子无色散——通过，而且在分道}
+
+定理 \ref{thm:nodisp} 预言\textbf{恰好为零}的色散，即 $E_{\rm QG}=\infty$。
+Fermi-LAT 对 GRB 090510 的飞行时间给出
+$E_{{\rm QG},1}\gtrsim 7.6\,E_{\rm Pl}$（总色散）、$\gtrsim 2\,E_{\rm Pl}$（LIV 诱导），
+近期分析要求 $E_{{\rm QG},1}\gtrsim 1.2\times10^{19}$ GeV $\approx E_{\rm Pl}$。
+2024 年一项谱延迟研究给出后验最大值 $E_{\rm QG}\approx 9\times10^{14}$ GeV，
+但报告数据与精确 Lorentz 不变性相容。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{限已经在 Planck 能量之上}，而那正是最小长度纲领一般安置该效应之处。
+\textbf{每一次收紧都朝本框架靠、朝对手离。}
+这是框架目前最干净的活判别式，\textbf{而它正在赢}。
+\leanline{Data.dispersion\_limit\_above\_planck, framework\_predicts\_no\_finite\_scale}
+\end{mdframed}
+
+\subsection{恰好一个非禁闭精确守恒荷——而无中微子双贝塔衰变裁决它}
+
+第 \ref{sec:particle} 节给缺陷恰好一个整数荷，非禁闭且精确守恒。
+自然界的候选是电荷与 $B-L$。
+\textbf{而 $B-L$ 在标准模型中精确守恒（含非微扰），故表面上有\emph{两个}}，
+这是框架不允许的。
+
+这不是僵局：\textbf{无中微子双贝塔衰变把 $B-L$ 破坏两个单位}。于是
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{观测到 $0\nu\beta\beta$} $\Rightarrow$ $B-L$ 不守恒 $\Rightarrow$
+      电荷是唯一的非禁闭精确守恒整数荷 $\Rightarrow$ \textbf{框架的计数正确}；
+\item \textbf{排除到 $B-L$ 看起来精确且被规范化} $\Rightarrow$ 有两个 $\Rightarrow$
+      \textbf{框架的计数错误}。
+\end{itemize}
+
+\leanline{Data.one\_charge\_prediction, zero\_nu\_beta\_beta\_decides}
+
+这是一个\textbf{正在进行的实验}（KamLAND-Zen、LEGEND、nEXO），
+而框架关心它的结果，出于一个别人没有的理由。
+
+\subsection{记分牌}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+预言 & 状态 & 说明 \\
+\midrule
+$w$ 不演化 & \textbf{有张力} & $2.8$--$4.2\sigma$ 相反，有争议 \\
+$\Gamma/m$ 极点界 & \textbf{开放} & CCL 界外、GKPY 界内 \\
+光子无色散 & 通过 & 且与对手分道 \\
+引力波速恰为 $c$ & 通过 & $|\Delta v/v|\lesssim10^{-15}$ \\
+$\mathrm{CV}^2<1$（秩一） & 通过 & 实测 $0.875$ \\
+恰一个精确整数荷 & 未决 & $0\nu\beta\beta$ 裁决 \\
+宇称守恒 & 通过（弱） & 无过程可违反 \\
+无最小长度 & 通过 & 经光子色散 \\
+黑洞熵 $\propto\ln R$ & 未测 & 面积律亦未测 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{一条活张力、一个活的开放问题，都不致命。}
+宽度界在极点确定值被正确读取之后\textbf{并非一次失败}，
+而那处更正被明写在上文而非悄悄吸收。
+
+\textbf{关于电荷检验的时间尺度：}即便建立在跷跷板机制上的轻子数破坏模型，
+所预言的 $0\nu\beta\beta$ 半衰期也\textbf{远高于现有实验的排除范围}，
+故这项计数短期内不会有定论。
+\textbf{它是一个真实但引信很长的检验}，"正在进行"不应被读作"即将报告"。
+\leanline{Data.scorecard}
+\end{mdframed}
+
 \section{自我审查：已发现的思维污染}\label{sec:audit}
 
 本节是对整个体系的一次不设辩护的复查，按"基础建构"与"目标问题"两条线。
@@ -3592,7 +3905,7 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \ref{thm:detfail}、\ref{thm:dm}、\ref{thm:diss}、\ref{thm:desitter}、
 \ref{thm:h}、\ref{thm:arrow}、\ref{thm:null}、\ref{thm:massive}、
 \ref{thm:cov}、\ref{thm:covfield}、\ref{thm:sing}、\ref{thm:singcurv}、
-\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:newc}、\ref{thm:nouniv}、\ref{thm:wedge}、\ref{thm:uniax}、\ref{thm:three}、\ref{thm:rotvar}、\ref{thm:wound}、\ref{thm:noax2}、\ref{thm:stabpos}、\ref{thm:algbig}、\ref{thm:twocond}、\ref{thm:ratio}、\ref{thm:dennorm}、\ref{thm:a7}、\ref{thm:noinv}、\ref{thm:iso}、\ref{thm:noorigin}、\ref{thm:dm2}、\ref{thm:reso}、\ref{thm:ncdefm}、\ref{thm:ncclass}、\ref{thm:ncmaster}、\ref{thm:ncsym}、\ref{thm:nohor}、\ref{thm:gw}、\ref{thm:nodisp}、\ref{thm:ent}、\ref{thm:nomin}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
+\ref{thm:eos}、\ref{thm:starassoc}、\ref{thm:starcl}、\ref{thm:starcomm}、\ref{thm:poissonleib}、\ref{thm:ccr}、\ref{thm:frameflat}、\ref{thm:frameexists}、\ref{thm:winding}、\ref{thm:stable}、\ref{thm:pair}、\ref{thm:anti}、\ref{thm:unify}、\ref{thm:unifyiff}、\ref{thm:running}、\ref{thm:asympt}、\ref{thm:transmut}、\ref{thm:massratio}、\ref{thm:towerfail}、\ref{thm:commcov}、\ref{thm:bianchi}、\ref{thm:gradflat}、\ref{thm:rotpart}、\ref{thm:beta}、\ref{thm:exchange}、\ref{thm:commiff}、\ref{thm:twisted}、\ref{thm:stab}、\ref{thm:multiplet}、\ref{thm:tunique}、\ref{thm:tcoset}、\ref{thm:tiff}、\ref{thm:confine}、\ref{thm:baryon}、\ref{thm:meson}、\ref{thm:third}、\ref{thm:massgap}、\ref{thm:redshiftobs}、\ref{thm:scalecomm}、\ref{thm:curvinvis}、\ref{thm:splitcanon}、\ref{thm:sig}、\ref{thm:notime}、\ref{thm:sigfid}、\ref{thm:formsymm}、\ref{thm:forminv}、\ref{thm:half}、\ref{thm:dircurv}、\ref{thm:flatlie}、\ref{thm:abcase}、\ref{thm:expose}、\ref{thm:recexp}、\ref{thm:defectdim}、\ref{thm:strmass}、\ref{thm:recip}、\ref{thm:noflat}、\ref{thm:even}、\ref{thm:patterns}、\ref{thm:onecharge}、\ref{thm:indep}、\ref{thm:precoeff}、\ref{thm:cancel}、\ref{thm:vacstat}、\ref{thm:ricciderived}、\ref{thm:nolist}、\ref{thm:masspos}、\ref{thm:eqzero}、\ref{thm:notgeom}、\ref{thm:express}、\ref{thm:noabs}、\ref{thm:indepchan}、\ref{thm:ss}、\ref{thm:cartan}、\ref{thm:concrete}、\ref{thm:onedir}、\ref{thm:noflatcomm}、\ref{thm:commcost}、\ref{thm:conserv}、\ref{thm:nofe}、\ref{thm:multflat}、\ref{thm:rotwit}、\ref{thm:multthresh}、\ref{thm:orth}、\ref{thm:bbr}、\ref{thm:rank1}、\ref{thm:samefact}、\ref{thm:binj}、\ref{thm:mix}、\ref{thm:mixge}、\ref{thm:blk2}、\ref{thm:odd}、\ref{thm:qcons}、\ref{thm:newc}、\ref{thm:nouniv}、\ref{thm:wedge}、\ref{thm:uniax}、\ref{thm:three}、\ref{thm:rotvar}、\ref{thm:wound}、\ref{thm:noax2}、\ref{thm:stabpos}、\ref{thm:algbig}、\ref{thm:twocond}、\ref{thm:ratio}、\ref{thm:dennorm}、\ref{thm:a7}、\ref{thm:noinv}、\ref{thm:iso}、\ref{thm:noorigin}、\ref{thm:dm2}、\ref{thm:reso}、\ref{thm:ncdefm}、\ref{thm:ncclass}、\ref{thm:ncmaster}、\ref{thm:ncsym}、\ref{thm:nohor}、\ref{thm:gw}、\ref{thm:nodisp}、\ref{thm:ent}、\ref{thm:nomin}、\ref{thm:sep}、\ref{thm:interval}、\ref{thm:noglobal}、\ref{thm:parity}、\ref{thm:nomax}、\ref{thm:bound}、\ref{thm:counting}、\ref{thm:afdensity}、\ref{thm:spectrum}。
 
 \paragraph{尚未完成——本纲领当前最薄弱之处。}
 这一栏应当被优先阅读，并与第 \ref{sec:audit} 节的自我审查合看。
@@ -3726,15 +4039,17 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Cosmos.lean}     & 12 & $w$ 不演化；无初值；暗物质两路；共振宽度界 \\
 \texttt{NCConformal.lean}& 12 & 非交换曲率；修正 $=[\sigma_i,\sigma_j]$，纯反对称 \\
 \texttt{Horizon.lean}    & 12 & 无视界；波恰在光锥；熵是对数；无最小长度 \\
+\texttt{Native.lean}     & 12 & 框架自己的七个问题与图像 \\
+\texttt{Data.lean}       & 19 & 与 DESI／PDG／Fermi-LAT 数据对质 \\
 \midrule
-\textbf{合计}             & \textbf{587} & 10663 行 Lean 代码 \\
+\textbf{合计}             & \textbf{618} & 11306 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对 367 条主定理执行 \texttt{\#print axioms}，结果全部落在
+对 397 条主定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -3765,7 +4080,7 @@ Newton 引力是标度响应律的线性化；
 时间箭头是有限分辨率的必然产物；
 而光，是几何中权重为零、因而能够充当标度比较器的那一部分。
 
-这些不是隐喻。它们是 587 条经机器检验、零 \texttt{sorry} 的定理。
+这些不是隐喻。它们是 618 条经机器检验、零 \texttt{sorry} 的定理。
 它们成立的前提是本文列出的七条公理与第 \ref{sec:scope} 节明示的物理输入；
 这些前提是否为自然界所采纳，形式化系统不能回答，也不应假装能回答。
 能够回答的是：\textbf{这个图景是自洽的，并且它的确回归出了我们已知的物理。}

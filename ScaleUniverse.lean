@@ -54,3 +54,5 @@ import ScaleUniverse.Locus
 import ScaleUniverse.Cosmos
 import ScaleUniverse.NCConformal
 import ScaleUniverse.Horizon
+import ScaleUniverse.Native
+import ScaleUniverse.Data
