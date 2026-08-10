@@ -1,6 +1,8 @@
-/.lake
-**/*.aux
-**/*.log
-**/*.out
-**/*.pdf
-**/*.toc
+.lake/
+*.olean
+*.ilean
+paper/*.aux
+paper/*.log
+paper/*.toc
+paper/*.xdv
+paper/*.out
