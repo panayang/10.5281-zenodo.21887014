@@ -30,6 +30,8 @@ PARTS = [
     ("PART II.a — the isotropic sector", "第四部分\\quad 各向同性扇区",
      ["Conformal", "Frame", "Unify", "Newton", "Schwarzschild", "RicciDiag", "Vacuum",
       "Deflection", "PPN", "Precession", "Covariance", "Singularity", "Horizon", "Waves"]),
+    ("PART II.c — witnesses", "第四部分附\\quad 结构的见证",
+     ["Witness"]),
     ("PART II.b — the anisotropic sector", "第五部分\\quad 各向异性扇区",
      ["Gauge", "Transport", "Axis", "Defect", "Charges", "Particle", "Emergence"]),
     ("PART III — the quantum sector", "第六部分\\quad 量子扇区",

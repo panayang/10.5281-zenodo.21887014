@@ -346,11 +346,9 @@ dipole term is ever found — the framework simply fails.
 
 `gw_sector_matches_gr` records that this sector is agreement, not evidence. -/
 
-/-- **The wave sector agrees with general relativity by construction, so it is
-not a test between them.**  Stated as the tautology it is, so the scoreboard
-cannot be misread: the same `κ` in both sectors and the same leading multipole
-give the same rate. -/
-theorem gw_sector_matches_gr (κ : ℝ) (rate : ℝ → ℝ) : rate κ = rate κ := rfl
+/-! **No theorem is stated for this**, deliberately.  An earlier version carried
+`gw_sector_matches_gr : rate κ = rate κ`, which is `x = x` — it added a line to
+the theorem count and no content.  The claim belongs in prose, and it is here. -/
 
 /-! ## VI. Where the framework *does* part company: there is no horizon
 
@@ -630,13 +628,10 @@ effort spent reproducing general relativity.**  The one exception is the
 ringdown boundary condition above, which is not a post-Newtonian question at
 all. -/
 
-/-- **No post-Newtonian order can separate the two theories.**
-
-Stated as the consequence of `NCConformal.symmetric_part_uncorrected`: whatever
-functional of the symmetric sector one computes, the two frameworks give the
-same value, because they have the same symmetric sector. -/
-theorem pn_expansion_cannot_discriminate {α : Type*} (F : α → ℝ) (symSector : α) :
-    F symSector = F symSector := rfl
+/-! **Again no theorem is stated.**  The content is entirely
+`NCConformal.symmetric_part_uncorrected`, which is proved there; restating it as
+`F x = F x` here would have been a tautology dressed as a corollary.  Removed
+after an external audit flagged the pattern. -/
 
 /-! ## VIII. The one shared constant -/
 

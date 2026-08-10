@@ -196,4 +196,5 @@ import SCD.Data
 import SCD.MassAudit
 import SCD.ColorAudit
 import SCD.CrossCheck
+import SCD.Witness
 import SCD.Audit

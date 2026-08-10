@@ -299,7 +299,14 @@ theorem hedgehog_conserved_in_splitting (x y : Species) (t : ℝ) :
 /-- **And there is no third label.**
 
 A particle is determined by its threshold and its two charges: two particles
-agreeing on all three are equal.  Whatever else is observed about a species is
+agreeing on all three are equal.
+
+**What this is and is not.**  Formally it is structure extensionality for a
+two-field record — it holds of *any* record with these fields, so the theorem
+does not by itself establish that three labels are the right number.  The
+physical content is upstream, in the arguments that fix the label set: the
+order parameter is projective (`block_cannot_be_three_valued`) and the charge is
+its winding.  This records the consequence; it does not prove the premise.  Whatever else is observed about a species is
 therefore slice-dependent content in the sense of `Emergence.lean`, not an
 intrinsic label. -/
 theorem no_further_label (x y : Species)

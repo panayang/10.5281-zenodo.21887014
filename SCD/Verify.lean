@@ -375,7 +375,6 @@ namespace SCD.Verify
 #print axioms SCD.Waves.gw150914_equal_mass_component
 #print axioms SCD.Waves.dipole_bounded_by_double_pulsar
 #print axioms SCD.Waves.double_pulsar_tighter
-#print axioms SCD.Waves.gw_sector_matches_gr
 #print axioms SCD.Waves.reflectivity_nonzero_but_unbounded
 #print axioms SCD.Waves.echo_delay_logarithmic
 #print axioms SCD.Waves.delay_insensitive_to_reflectivity
@@ -388,8 +387,18 @@ namespace SCD.Verify
 #print axioms SCD.Waves.gw241011_spin_is_rapid
 #print axioms SCD.Waves.spin_bound_beats_echo_bound
 #print axioms SCD.Waves.no_ultralight_scalar_available
-#print axioms SCD.Waves.pn_expansion_cannot_discriminate
 #print axioms SCD.Waves.same_constant_both_sectors
+
+/-! ## PART II.c — witnesses -/
+
+
+-- Witness.lean
+#print axioms SCD.Witness.shift_is_exact
+#print axioms SCD.Witness.shift_nontrivial
+#print axioms SCD.Witness.shift_commutes_with_derivation
+#print axioms SCD.Witness.linearFlow_moves
+#print axioms SCD.Witness.constMoment_conserved
+#print axioms SCD.Witness.scaleShift_is_witnessed
 
 /-! ## PART II.b — the anisotropic sector -/
 

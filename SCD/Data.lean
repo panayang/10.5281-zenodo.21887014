@@ -132,7 +132,9 @@ a pass of the weak kind.
         Γ/m pole bound               OPEN         (CCL above, GKPY below)
         no photon dispersion         PASSES       (and diverges from rivals)
         GW speed exactly c           PASSES       (|Δv/v| ≲ 10⁻¹⁵)
-        CV² < 1 (rank one)           PASSES       (0.875 observed)
+        CV² : rank one predicts 1    PARTIAL      (0.875 observed, a 12.5% miss;
+                                      what the datum does establish is the
+                                      exclusion of mixtures, which give ≥ 1)
         one exact integer charge     UNDECIDED    (0νββ decides)
         parity conserved             PASSES       (weakly)
         no minimum length            PASSES       (via III)

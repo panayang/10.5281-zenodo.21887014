@@ -142,6 +142,28 @@ conditional:
 its hypothesis.  What is corrected here is the *reading*: they describe what
 would follow, not what the axioms deliver.
 
+**Update — `Witness.lean` now builds all six.**  `ℝ[X]` with `d/dX` satisfies
+A1, and the shift `X ↦ X + 1` is a `ScaleShift` on it with `Δ X = 1`: the step
+is **exact and finite**, not a first-order truncation.  Witnesses are also given
+for `Trace` (the matrix trace), `DirTransport` (the adjoint action), `ScaleFlow`
+(a non-degenerate translation flow), `Conserved` (a constant moment) and
+`CosmicHistory` (a spatially constant drift).
+
+**What that changes and what it does not.**  The theorems are now known
+non-vacuous, and the structures are shown *compatible* with A1 rather than
+merely assumed.  It is **not** a derivation: one model carrying both structures
+does not show that every model of A1 must carry a scale shift.  So
+`ħ = ` the step remains an **identification**, and stays in this register as
+one.  The gap between "compatible" and "forced" is real and is not closed.
+
+**Also fixed in the same pass**, all from the same audit: a vacuous
+`x = x` theorem in `Observation.lean` replaced by its contentful contrapositive;
+the deflection and precession bounds tightened from `±0.005″`/`±0.1″` to
+`±0.0001″`/`±0.001″` so the *certified* precision matches the quoted comparison;
+two literal `x = x` theorems removed from `Waves.lean`; and the docstring of
+`Particle.no_further_label` corrected to say that it is structure
+extensionality, with the physical content living upstream.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -203,7 +225,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 630
+def auditedTheorems : ℕ := 634
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
