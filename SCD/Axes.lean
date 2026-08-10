@@ -1,7 +1,8 @@
 /-
 # The dilemma dissolves, and more axes are impossible
 
-`Slice.lean` posed what it called the framework's sharpest open problem: the
+`Slice.lean` posed what it called, at the time, the framework's sharpest open
+problem — the
 label structure of `Particle.lean` was computed for a uniaxial order parameter,
 yet `homogeneous_carries_no_rotation` seemed to say a uniaxial pattern carries no
 angular momentum, which the world contradicts.

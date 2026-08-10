@@ -1,8 +1,10 @@
 /-
 # The last two inputs, and what they actually are
 
-Two items remained: `n = 4` rests on a judgement, and the scale magnitude is
-free.  Chasing the relation between them turned up a third thing sitting
+Two items remained at the time this file was written: `n = 4` rested on a
+judgement, and the scale magnitude was free.  The judgement has since been
+promoted to A7 (`Postulates.lean`); the magnitude turns out not to be a defect
+at all, which is section III.  Chasing the relation between them turned up a third thing sitting
 between them that had been conflated throughout, so that is first.
 
 ## I.  Directions are the representation, not the algebra

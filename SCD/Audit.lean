@@ -149,8 +149,9 @@ theorem more_corrected_than_retracted : retractedCount < correctedCount := by de
 
 /-! ## The standing verification claim -/
 
-/-- Number of principal theorems put through `#print axioms` in `Verify.lean`. -/
-def auditedTheorems : ℕ := 396
+/-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
+theorem in the development, generated from the sources rather than curated. -/
+def auditedTheorems : ℕ := 591
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

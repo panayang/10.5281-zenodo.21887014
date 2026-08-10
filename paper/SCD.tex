@@ -61,7 +61,9 @@
 \newcommand{\ad}{\operatorname{ad}}
 \newcommand{\covD}{\nabla}
 
-\title{\textbf{SCD —— 标度耦合动力学}\\[4pt]\large 一个无量纲公理体系，及其 0-sorry 的形式化验证} 形式化}
+\title{\textbf{SCD —— 标度耦合动力学}\\[6pt]
+\large 内部交流报告：一个无量纲公理体系的当前状态\\[2pt]
+\normalsize 全部结论在 Lean 4 中机器验证，无一处 \texttt{sorry}}
 \author{形式化验证于 Lean 4 (v4.32.2) + Mathlib}
 \date{}
 
@@ -70,29 +72,65 @@
 
 \begin{abstract}
 \noindent
-本文提出并形式化一个物理公理体系：时空并非预先给定的几何背景，而只有一个
-\emph{无量纲}的标量场 $\sigma$（对数标度），它在每一点上规定了局域的度量单位；
-能量标度由对偶关系 $\varepsilon\cdot s=1$（$s=e^{\sigma}$）确定。曲率不是独立结构，
-而恰好是标度场的二阶非均匀性。
+\textbf{这是一份内部交流报告，不是论文。}它记录一个仍在推进的公理体系的当前状态，
+包括已被推翻和已被更正的部分——那些与结论同样重要，集中列在第 \ref{sec:audit} 节。
 
-全部推论均在 Lean 4 中给出机器验证的证明，\textbf{无一处 \texttt{sorry}}。
-核心结果是一条精确的代数恒等式（定理 \ref{thm:master}）：度量 $g=e^{2\sigma}\kron$ 的
-完整 Riemann 张量等于欧氏记账张量 $\kron$ 与\emph{标度形变张量} $\Defm$ 的
-Kulkarni–Nomizu 乘积。由此依次回归得到：Newton 引力（Poisson 方程）、
-引力红移、重整化群与有效场论塔的必然性、粒子寿命的动量依赖、
-暗物质的“相互作用发生而观测失效”、暗能量作为开放系统的耗散率、
-时间箭头，以及光的数学本质（标度盲的类光锥）。
-
-我们同时明确划出边界：Lean 验证的是\emph{从公理到结论的蕴含关系}，
-而非公理本身为真。第 \ref{sec:scope} 节逐条列出哪些是定理、
-哪些是仍需外部输入的物理假设。
+体系的基本命题是：\textbf{时空不是预先给定的几何背景，标度才是基本量}。
+由 A3（$\varepsilon\cdot s=1$）局域能动量\emph{就是}局域标度；标度之差表现为曲率；
+而“存在什么”是标度轴上的一个截面，不是世界的属性。
 
 \medskip
-\noindent\textbf{形式化规模：}594 条定理、11710 行 Lean 代码；
-396 条主定理经 \texttt{\#print axioms} 审计，仅依赖 Lean 的三条标准逻辑公理
-（\texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}），
+\noindent\textbf{被导出而非假设的：}标度／转动的拆分、Lorentz 号差、记账形式、
+\textbf{标度与转动的耦合}（两次缩放的括号必为转动，由词义强制）、
+\textbf{实秩一}从而 Lorentz 代数族、$n=k+1$、
+守恒律出自 Bianchi、以及从度规到 $1.7515''$ 与 $42.99''/$世纪的完整引力链条。
+
+\medskip
+\noindent\textbf{理论的分叉点}是各向同性／异性二分：
+各向同性轨迹上无序参量、无荷、无多重态、无转动；
+各向异性轨迹上它们\emph{一并}出现。
+而花样是否各向同性是标度相关的事实——这就是“相互作用随能标下降而分离”的导出。
+
+\medskip
+\noindent\textbf{当前的记分牌：}一条活张力（DESI 对 $w$ 不演化，$2.8$--$4.2\sigma$，
+但 BAO 单独自洽且各联合互相矛盾），一个活的开放问题（$f_0(500)$ 极点落在界的哪一侧），
+其余通过。\textbf{光子无色散}这条与所有预设最小长度的纲领分道，且正在赢。
+
+\medskip
+\noindent\textbf{边界声明：}Lean 验证的是\emph{从公理到结论的蕴含}，不是公理为真。
+第 \ref{sec:scope} 节逐条区分定理与外部输入。
+
+\medskip
+\noindent\textbf{形式化规模：}594 条定理、11710 行 Lean 代码、61 个文件；
+\textbf{全部 591 条定理}经 \texttt{\#print axioms} 审计
+（清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
+仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
 \end{abstract}
+
+\section*{如何读这份报告}
+\addcontentsline{toc}{section}{如何读这份报告}
+
+九个部分按\textbf{理论最终定下的逻辑顺序}排列，不是开发顺序：
+
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item \textbf{第一部分}——七条公理，全在一处。
+\item \textbf{第二部分}——公理逼出什么。单线：地基拆分 $\to$ 号差 $\to$ 记账形式
+      $\to$ 方向 $\to$ 曲率即对易子 $\to$ \textbf{耦合（铰链）} $\to$ 实秩一
+      $\to$ 维数 $\to$ 轴数。
+\item \textbf{第三部分}——\textbf{分叉点}。此后两条路互不相同。
+\item \textbf{第四／五部分}——各向同性扇区（几何与引力）／各向异性扇区（标签与荷）。
+\item \textbf{第六／七部分}——量子扇区／标度流与内容。
+\item \textbf{第八部分}——预言，以及与 DESI／PDG／Fermi-LAT 的对质。
+\item \textbf{第九部分}——\textbf{登记册}：撤回、更正、引用未证、登记假设。
+\end{itemize}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
+\textbf{在采信任何结论之前，请先读第 \ref{sec:audit} 节。}
+那里列出被撤回的 4 条、被限缩适用域的 6 条、引用未证的 2 条、登记假设的 2 条，
+以及\textbf{同一个“标量代替方向性”错误出现的 5 次}——其中一次挺过了一次形式化和一版报告。
+\textbf{没有撤回记录的开发是没有被审计的开发。}
+\end{mdframed}
 
 \tableofcontents
 
@@ -150,7 +188,7 @@ Kronecker 记号 $\kron_{ij}$ 取值于 $A$，是纯记账量，满足 $\dd_k\kr
 对任意交换环成立。这既消除了对分析条件的依赖，也使机器验证不留缝隙。
 \end{remark}
 
-\subsection{六条公理}
+\subsection{七条公理}
 
 \begin{axiom}{A1（基底）}
 世界的基底是一个环 $A$，配备 $n$ 个满足 Leibniz 律且两两交换的导子 $\dd_i$，
@@ -207,8 +245,23 @@ $\sigma$ 只在相差一个全局常数的意义下有定义：基准单位的�
 \leanline{Cosmology.dissipation\_solution}
 \end{axiom}
 
+\begin{axiom}{A7（可观测性）}
+耦合生成的每一个结构，都携带公理所提供的标签：
+$\Lambda^2\mathfrak p$ 与 A4 所标记的 $\mathfrak p$ 同维。
+\leanline{Postulates.Observability, Locus.Observability}
+\end{axiom}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{A7 是晚期扶正的，而这是降级不是升级。}
+它曾以“判断”之名被携带数版；第 \ref{sec:dimension} 节证明这种形状的条件\emph{不止一条}
+且答案不同，故它是一个关于\textbf{什么算可观测}的选择，不是算术。
+给定 A7，$k=3$ 是定理，$n=4$ 随之。\textbf{任何人可以拒绝 A7 并得到别的 $k$。}
+\end{mdframed}
+
 A5 正是“完全无量纲化”的精确含义，我们将在定理 \ref{thm:fiducial} 中证明它
-对全部几何量严格成立。
+对全部几何量严格成立。而 A5 的承重远超其外观：
+它同时强制耗散速率恒定（第 \ref{sec:cosmos} 节），
+故\textbf{DESI 的张力是与 A5 的张力，不是与某个拟合参数的张力}。
 
 
 \clearpage
@@ -876,7 +929,7 @@ rotation\_iff\_variation}
 它同时表明这种形状的条件\emph{不止一条}且彼此不合，
 所以这一步是关于\textbf{什么算可观测}的\emph{选择}，不是算术。
 
-\textbf{这是一项哲学承诺，而且没有从其余六条公理推导出它的前景}——
+\textbf{这是一项哲学承诺，而且没有从其余七条公理推导出它的前景}——
 它就是每个物理理论都必须在某处对"什么算一次观测"所做的那种承诺。故予以扶正：
 
 \begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
@@ -4076,15 +4129,17 @@ MassAudit.both\_laws\_antiparticle\_degenerate}
 \texttt{Horizon.lean}    & 12 & 无视界；波恰在光锥；熵是对数；无最小长度 \\
 \texttt{Native.lean}     & 12 & 框架自己的七个问题与图像 \\
 \texttt{Data.lean}       & 19 & 与 DESI／PDG／Fermi-LAT 数据对质 \\
+\texttt{Postulates.lean} &  3 & A1--A7 全在一处；证明基底只有一个载体 \\
+\texttt{Audit.lean}      &  4 & 登记册：撤回／更正／引用／假设的计数 \\
 \midrule
-\textbf{合计}             & \textbf{594} & 11710 行 Lean 代码 \\
+\textbf{合计}             & \textbf{594} & 11710 行 Lean 代码，61 个文件 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对 396 条主定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 591 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]

@@ -14,7 +14,8 @@ step is a choice about **what counts as observable**, not arithmetic.
 
 That is a philosophical commitment, and there is no prospect of deriving it from
 the other six axioms — it is the same commitment every physical theory makes
-somewhere about what an observation is.  So it is promoted:
+somewhere about what an observation is.  So it is promoted, and stated
+alongside the other six in `Postulates.lean`:
 
 > **A7 (Observability).**  Every structure the coupling generates carries a
 > label the axioms provide.

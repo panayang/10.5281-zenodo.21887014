@@ -49,7 +49,8 @@ structure, with no freedom:
   rotational label.**
 
 **Correction (see `Axes.lean`).**  I originally named that theorem
-`uniaxial_carries_no_rotation` and read it as "a uniaxial pattern carries no
+`uniaxial_carries_no_rotation` — it is now
+`homogeneous_carries_no_rotation` — and read it as "a uniaxial pattern carries no
 angular momentum", which made an apparent dilemma with `Particle.lean`'s
 uniaxial order parameter.  **That reading was wrong and is withdrawn.**  The
 theorem is about a vector wedged with *itself*, so it says a **constant**

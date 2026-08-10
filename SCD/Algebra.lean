@@ -3,8 +3,8 @@
 
 `Direction.lean` moved the input from "a set of `n` commuting labels plus a flat
 metric plus a signature" to "one algebra", and stopped there: it did not say
-*which* algebra.  That has been the sharpest open item since, and everything
-downstream waits on it — the crossed product, the beta function's structure,
+*which* algebra.  That was the sharpest open item for several revisions, and everything
+downstream waited on it — the crossed product, the beta function's structure,
 any quantitative statement about the quantum sector.
 
 It turns out two theorems already proved, put together, cut the candidates down
@@ -88,8 +88,10 @@ Lorentz family, and it gets there from dissipation plus the coupling.
    coordinate as the radial direction and the renormalization flow along it.
    This was not put in.  It is what rank one is.
 
-**Honest limits.**  This derives the *family*, not the dimension: `n = 4` is
-still not predicted, and nothing here selects it.  The classification is
+**Honest limits.**  This derives the *family*, not the dimension.  `n` is fixed
+once the algebra is named — it is the defining representation's dimension,
+`k + 1` (`Dimension.lean`) — and `k = 3` follows from A7, which is a postulate
+about observability and not a theorem.  Nothing *here* selects `k`.  The classification is
 imported.  And the argument from "one drift functional" to "one-dimensional
 maximal abelian subalgebra" is a physical identification — that independent
 commuting scalings would be independent scale coordinates — not a formal

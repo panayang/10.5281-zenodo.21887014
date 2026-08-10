@@ -1,25 +1,28 @@
 /-
-# The axiom system
+# A2, A3, A5 — the scale field and exact dimensionlessness
 
-Six axioms, all dimensionless.  Nothing here carries a unit; every quantity is
-a pure number, defined as a ratio against a fiducial reference whose choice is
-itself declared unobservable (A5).
+**The axiom system is stated in `Postulates.lean`**, all seven in one place with
+the formal carrier and status of each.  This file carries three of them and
+derives their immediate consequences; it is not the place to read the axioms
+from.
 
-  A1  Substrate.        A bare affine counting structure with commuting
-                        derivations.  Carries no physics.        (`ScaleAlgebra`)
-  A2  Scale.            A dimensionless scalar `σ`, the log-scale, with a
-                        multiplicative representative `s = e^σ`.  (`ScaleField`)
-  A3  Scale–energy duality.  The local energy scale is the reciprocal of the
-                        local length scale: `ε · s = 1`.          (`ScaleField.en`)
-  A4  Measurement.      Physical length is bare length read in the local unit:
-                        `g = e^{2σ}δ`.                        (`Conformal.lean`)
-  A5  Fiducial covariance.  Only differences of `σ` are observable; a global
-                        shift `σ ↦ σ + c` is a symmetry.   (`geometry_fiducial_invariant`)
-  A6  Openness.         The universe is not closed; its total energy scale
-                        dissipates monotonically.               (`DarkEnergy.lean`)
+* **A2 — Scale.**  A dimensionless log-scale `σ` with multiplicative
+  representative `s = e^σ`, postulated as a *unit* of the ring.  Carrier:
+  `ScaleField`.
+* **A3 — Scale–energy duality.**  `ε · s = 1`.  Carrier: `ScaleField.en`.
+* **A5 — Fiducial covariance.**  Only differences of `σ` are observable.
+  Carrier: `geometry_fiducial_invariant`.
 
-This file states A2, A3, A5 and derives their immediate consequences —
-gravitational redshift and the exact dimensionlessness of the geometry.
+Working with `s` as a unit rather than an analytic exponential keeps the
+development algebraic while capturing the one property that matters: `s` is
+nowhere zero, and `d log s = dσ`.  That `s` is a unit is what later removes the
+singularity (`Singularity.lean`), the horizon (`Horizon.lean`) and the minimum
+length in one stroke.
+
+A5 is load-bearing far beyond its appearance here.  It makes the geometry
+exactly dimensionless, and it forces the dissipation rate to be constant
+(`Cosmos.rate_constant_of_fiducial_invariance`), hence `w = −1` with no
+evolution — which is the framework's most exposed prediction.
 -/
 import SCD.Conformal
 
