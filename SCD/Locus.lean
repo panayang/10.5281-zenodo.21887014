@@ -94,6 +94,7 @@ locus for the metric sector — the same demotion now applies to the charges,
 which is a coherence I had not noticed.
 -/
 import SCD.Dimension
+import SCD.Postulates
 import SCD.Running
 
 namespace SCD.Locus
@@ -102,14 +103,18 @@ open SCD Slice
 
 /-! ## I. A7 (Observability) -/
 
-/-- **A7 (Observability).**  Every structure the coupling generates carries a
-label the axioms provide: the rotations `Λ²p` are as numerous as the scale
-directions `p` that A4 labels.
+/-- **A7 (Observability)** — the axiom itself lives in `Postulates.lean` with
+the other six; this is the same proposition written in the vocabulary of
+`Dimension.lean`, so the consequences below can be stated where they are proved.
 
-Stated as a postulate.  `Dimension.two_matching_conditions_differ` shows a
-condition of this shape is a choice, and the choice is about what counts as
-observable — a commitment no set of the other axioms supplies. -/
+`Dimension.two_matching_conditions_differ` is why it has to be an axiom: a
+condition of this shape is a *choice*, and the choice is about what counts as
+observable. -/
 def Observability (m : ℕ) : Prop := Dimension.rotDim2 m = Dimension.scaleDim2 m
+
+/-- The two statements of A7 are the same proposition, not two axioms. -/
+theorem observability_eq_postulate (m : ℕ) :
+    Observability m ↔ Postulates.Observability m := Iff.rfl
 
 /-- **Given A7, `k = 3` is a theorem** — and `n = 4` with it, since
 `Dimension.rep_dim_determined` already made `n` the defining representation's

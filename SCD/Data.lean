@@ -185,8 +185,9 @@ theorem falsification_threshold : (5 : ℝ) > 4.2 := by norm_num
 
 /-! ## II. The resonance width bound against the Particle Data Group -/
 
-/-- Relative width, the quantity the bound constrains, read on the **pole**. -/
-noncomputable def relW (Γ m : ℝ) : ℝ := Γ / m
+/-- Relative width, read on the **pole**.  This is `Cosmos.relWidth`; the
+abbreviation exists only to keep the numerical statements below short. -/
+noncomputable abbrev relW (Γ m : ℝ) : ℝ := Cosmos.relWidth Γ m
 
 /-- The bound: the mean threshold spacing in log-scale, `1/ρ`. -/
 noncomputable def widthBound : ℝ := 1.157
@@ -194,7 +195,7 @@ noncomputable def widthBound : ℝ := 1.157
 /-- **CCL (Bern): `441 − i272`, so `Γ = 544` and `Γ/m = 1.234` — above the
 bound.** -/
 theorem ccl_above_bound : widthBound < relW 544 441 := by
-  norm_num [relW, widthBound]
+  norm_num [relW, Cosmos.relWidth, widthBound]
 
 /-- **GKPY (Madrid): `457 − i249`, so `Γ = 498` and `Γ/m = 1.090` — below the
 bound.**
@@ -203,7 +204,7 @@ This determination uses once-subtracted dispersion relations and `ππ` data
 alone, without the chiral-perturbation-theory input the Roy-equation analysis
 takes. -/
 theorem gkpy_below_bound : relW 498 457 < widthBound := by
-  norm_num [relW, widthBound]
+  norm_num [relW, Cosmos.relWidth, widthBound]
 
 /-- **The bound falls between the two flagship determinations.**
 
@@ -217,23 +218,23 @@ theorem determinations_straddle_bound :
 /-- And the updated Madrid values, `(445–450) − i(220–245)`, are entirely
 inside: the widest corner is `Γ/m = 490/445 = 1.101`. -/
 theorem gkpy_updated_inside : relW 490 445 < widthBound := by
-  norm_num [relW, widthBound]
+  norm_num [relW, Cosmos.relWidth, widthBound]
 
 /-- `K₀*(700)`, the second-broadest established state: pole `648 − i280`. -/
 theorem kappa_below_bound : relW 560 648 < widthBound := by
-  norm_num [relW, widthBound]
+  norm_num [relW, Cosmos.relWidth, widthBound]
 
 /-- `ρ(770)`: comfortably inside. -/
 theorem rho_below_bound : relW 149 775 < widthBound := by
-  norm_num [relW, widthBound]
+  norm_num [relW, Cosmos.relWidth, widthBound]
 
 /-- `Δ(1232)`: comfortably inside. -/
 theorem delta_below_bound : relW 117 1232 < widthBound := by
-  norm_num [relW, widthBound]
+  norm_num [relW, Cosmos.relWidth, widthBound]
 
 /-- The electroweak states are orders of magnitude inside. -/
 theorem z_boson_far_inside : relW 2.50 91.19 < 0.03 := by
-  norm_num [relW]
+  norm_num [relW, Cosmos.relWidth]
 
 /-- The bound still lands **between** the two broadest states, which is what
 makes it a test rather than a description. -/
@@ -246,7 +247,7 @@ theorem bound_separates_kappa_from_sigma :
 prediction must be read on the pole. -/
 theorem breit_wigner_spans_the_bound :
     relW 100 800 < widthBound ∧ widthBound < relW 800 400 := by
-  constructor <;> norm_num [relW, widthBound]
+  constructor <;> norm_num [relW, Cosmos.relWidth, widthBound]
 
 /-! ## III. Photon dispersion -/
 

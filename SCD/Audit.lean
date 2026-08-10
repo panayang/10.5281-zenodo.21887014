@@ -151,7 +151,7 @@ theorem more_corrected_than_retracted : retractedCount < correctedCount := by de
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 591
+def auditedTheorems : ℕ := 592
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

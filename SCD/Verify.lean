@@ -1,13 +1,13 @@
 /-
 # Verification — every theorem, through `#print axioms`
 
-This file is not part of the library: `SCD.lean` does not import it.  It imports
-`SCD` and puts **every** theorem in the development through `#print axioms`, in
-the reading order of the root file.
+Not part of the library: `SCD.lean` does not import it.  It imports `SCD` and
+puts **every** theorem in the development through `#print axioms`, in the
+reading order of the root file.
 
-A clean run prints only `propext`, `Classical.choice` and `Quot.sound` for every
-entry, and never `sorryAx`.  The list is generated from the sources rather than
-curated, so nothing can quietly fall out of it.
+The list is generated from the sources, not curated, so nothing can quietly
+fall out of the audit.  A clean run prints only `propext`, `Classical.choice`
+and `Quot.sound`, and never `sorryAx`.
 -/
 import SCD
 
@@ -192,6 +192,7 @@ namespace SCD.Verify
 
 
 -- Locus.lean
+#print axioms SCD.Locus.observability_eq_postulate
 #print axioms SCD.Locus.three_from_observability
 #print axioms SCD.Locus.observability_fails_elsewhere
 #print axioms SCD.Locus.observability_iff_three
@@ -203,7 +204,22 @@ namespace SCD.Verify
 #print axioms SCD.Locus.everything_switches_on_together
 #print axioms SCD.Locus.particle_locus_is_anisotropic
 
-/-! ## PART II.a — the isotropic sector: geometry and gravity -/
+-- Dynamics.lean
+#print axioms SCD.Dynamics.no_flatness_from_commuting_derivations
+#print axioms SCD.Dynamics.nonflat_witness
+#print axioms SCD.Dynamics.commutative_sector_transports_commute
+#print axioms SCD.Dynamics.commutative_curvature_undetectable
+#print axioms SCD.Dynamics.source_conserved_of_field_equation
+#print axioms SCD.Dynamics.no_field_equation_of_nonconserved
+#print axioms SCD.Dynamics.source_antisymm
+#print axioms SCD.Dynamics.field_equation_content
+#print axioms SCD.Dynamics.same_multiplet_no_rotation
+#print axioms SCD.Dynamics.rotation_implies_different_multiplet
+#print axioms SCD.Dynamics.larger_multiplet_fewer_generators
+#print axioms SCD.Dynamics.multiplets_fixed_by_pattern
+#print axioms SCD.Dynamics.multiplet_change_needs_pattern_change
+
+/-! ## PART II.a — the isotropic sector -/
 
 
 -- Conformal.lean
@@ -336,7 +352,7 @@ namespace SCD.Verify
 #print axioms SCD.Horizon.no_minimum_length
 #print axioms SCD.Horizon.no_final_description
 
-/-! ## PART II.b — the anisotropic sector: labels and charges -/
+/-! ## PART II.b — the anisotropic sector -/
 
 
 -- Gauge.lean
@@ -476,21 +492,6 @@ namespace SCD.Verify
 #print axioms SCD.NCConformal.quantum_correction_couples_to_rotation
 #print axioms SCD.NCConformal.correction_vanishes_on_commuting
 
--- Dynamics.lean
-#print axioms SCD.Dynamics.no_flatness_from_commuting_derivations
-#print axioms SCD.Dynamics.nonflat_witness
-#print axioms SCD.Dynamics.commutative_sector_transports_commute
-#print axioms SCD.Dynamics.commutative_curvature_undetectable
-#print axioms SCD.Dynamics.source_conserved_of_field_equation
-#print axioms SCD.Dynamics.no_field_equation_of_nonconserved
-#print axioms SCD.Dynamics.source_antisymm
-#print axioms SCD.Dynamics.field_equation_content
-#print axioms SCD.Dynamics.same_multiplet_no_rotation
-#print axioms SCD.Dynamics.rotation_implies_different_multiplet
-#print axioms SCD.Dynamics.larger_multiplet_fewer_generators
-#print axioms SCD.Dynamics.multiplets_fixed_by_pattern
-#print axioms SCD.Dynamics.multiplet_change_needs_pattern_change
-
 /-! ## PART IV — scale flow and content -/
 
 
@@ -516,6 +517,18 @@ namespace SCD.Verify
 #print axioms SCD.Running.slope_eq_two_b
 #print axioms SCD.Running.invSqCoupling_eq_one_loop
 #print axioms SCD.Running.asympt_free_iff_pos_density
+
+-- QCD.lean
+#print axioms SCD.QCD.running_inv_sq
+#print axioms SCD.QCD.asymptotic_freedom
+#print axioms SCD.QCD.lambda_invariant
+#print axioms SCD.QCD.lambda_pos
+#print axioms SCD.QCD.hadron_mass_ratio
+#print axioms SCD.QCD.spectrum_rigid
+#print axioms SCD.QCD.geometric_tower_fails
+#print axioms SCD.QCD.ratio₁_value
+#print axioms SCD.QCD.ratio₂_value
+#print axioms SCD.QCD.lightestGlueballInLambda_value
 
 -- Spectrum.lean
 #print axioms SCD.Spectrum.mass_threshold_inverse
@@ -581,63 +594,6 @@ namespace SCD.Verify
 #print axioms SCD.Cosmology.hasDerivAt_hubble
 #print axioms SCD.Cosmology.acceleration_pos
 #print axioms SCD.Cosmology.open_universe_accelerates
-
--- QCD.lean
-#print axioms SCD.QCD.running_inv_sq
-#print axioms SCD.QCD.asymptotic_freedom
-#print axioms SCD.QCD.lambda_invariant
-#print axioms SCD.QCD.lambda_pos
-#print axioms SCD.QCD.hadron_mass_ratio
-#print axioms SCD.QCD.spectrum_rigid
-#print axioms SCD.QCD.geometric_tower_fails
-#print axioms SCD.QCD.ratio₁_value
-#print axioms SCD.QCD.ratio₂_value
-#print axioms SCD.QCD.lightestGlueballInLambda_value
-
--- Color.lean
-#print axioms SCD.Color.BlockMonodromy.comp_perm
-#print axioms SCD.Color.BlockMonodromy.anti_perm
-#print axioms SCD.Color.BlockMonodromy.triv_perm
-#print axioms SCD.Color.BlockMonodromy.charge_comp
-#print axioms SCD.Color.BlockMonodromy.charge_anti
-#print axioms SCD.Color.BlockMonodromy.triv_observable
-#print axioms SCD.Color.BlockMonodromy.confinement
-#print axioms SCD.Color.BlockMonodromy.pair_observable
-#print axioms SCD.Color.BlockMonodromy.pair_charge
-#print axioms SCD.Color.BlockMonodromy.rep_perm
-#print axioms SCD.Color.BlockMonodromy.rep_charge
-#print axioms SCD.Color.BlockMonodromy.bound_state_observable
-#print axioms SCD.Color.BlockMonodromy.bound_state_size
-#print axioms SCD.Color.BlockMonodromy.no_partial_state
-#print axioms SCD.Color.BlockMonodromy.constituent_charge_fraction
-#print axioms SCD.Color.BlockMonodromy.constituent_charge_rat
-#print axioms SCD.Color.BlockMonodromy.bound_charge_divisible
-
--- Codimension.lean
-#print axioms SCD.Codimension.defectDim_two
-#print axioms SCD.Codimension.defectDim_three
-#print axioms SCD.Codimension.defectDim_four
-#print axioms SCD.Codimension.pointlike_iff_two_dim
-#print axioms SCD.Codimension.three_dim_gives_strings
-#print axioms SCD.Codimension.pointlike_forces_three
-#print axioms SCD.Codimension.our_world_gives_strings
-#print axioms SCD.Codimension.no_pointlike_in_four
-#print axioms SCD.Codimension.string_mass_not_topological
-#print axioms SCD.Codimension.stringMass_strictMono
-#print axioms SCD.Codimension.stringMass_zero
-#print axioms SCD.Codimension.extended_or_low_dimensional
-
--- Expressive.lean
-#print axioms SCD.Expressive.diffPattern_shift
-#print axioms SCD.Expressive.invariant_factors
-#print axioms SCD.Expressive.diffPattern_invariant
-#print axioms SCD.Expressive.invariant_iff_diffPattern
-#print axioms SCD.Expressive.eval_not_invariant
-#print axioms SCD.Expressive.scale_says_nothing_about_rotation
-#print axioms SCD.Expressive.rotation_says_nothing_about_scale
-#print axioms SCD.Expressive.channels_independent
-#print axioms SCD.Expressive.neither_channel_complete
-#print axioms SCD.Expressive.no_channel_coupling
 
 /-! ## PART V — predictions and data -/
 
@@ -714,16 +670,24 @@ namespace SCD.Verify
 /-! ## PART VI — the register -/
 
 
--- MassAudit.lean
-#print axioms SCD.MassAudit.massExp_neg
-#print axioms SCD.MassAudit.massQuad_neg
-#print axioms SCD.MassAudit.massExp_pos
-#print axioms SCD.MassAudit.massQuad_pos
-#print axioms SCD.MassAudit.massExp_zero
-#print axioms SCD.MassAudit.massQuad_zero
-#print axioms SCD.MassAudit.mass_law_underdetermined
-#print axioms SCD.MassAudit.both_laws_antiparticle_degenerate
-#print axioms SCD.MassAudit.massQuad_ratio_not_constant
+-- Color.lean
+#print axioms SCD.Color.BlockMonodromy.comp_perm
+#print axioms SCD.Color.BlockMonodromy.anti_perm
+#print axioms SCD.Color.BlockMonodromy.triv_perm
+#print axioms SCD.Color.BlockMonodromy.charge_comp
+#print axioms SCD.Color.BlockMonodromy.charge_anti
+#print axioms SCD.Color.BlockMonodromy.triv_observable
+#print axioms SCD.Color.BlockMonodromy.confinement
+#print axioms SCD.Color.BlockMonodromy.pair_observable
+#print axioms SCD.Color.BlockMonodromy.pair_charge
+#print axioms SCD.Color.BlockMonodromy.rep_perm
+#print axioms SCD.Color.BlockMonodromy.rep_charge
+#print axioms SCD.Color.BlockMonodromy.bound_state_observable
+#print axioms SCD.Color.BlockMonodromy.bound_state_size
+#print axioms SCD.Color.BlockMonodromy.no_partial_state
+#print axioms SCD.Color.BlockMonodromy.constituent_charge_fraction
+#print axioms SCD.Color.BlockMonodromy.constituent_charge_rat
+#print axioms SCD.Color.BlockMonodromy.bound_charge_divisible
 
 -- ColorAudit.lean
 #print axioms SCD.ColorAudit.identification_predicts_two
@@ -735,6 +699,32 @@ namespace SCD.Verify
 #print axioms SCD.ColorAudit.three_matches_charge
 #print axioms SCD.ColorAudit.geometry_offers_two_data_needs_three
 
+-- Codimension.lean
+#print axioms SCD.Codimension.defectDim_two
+#print axioms SCD.Codimension.defectDim_three
+#print axioms SCD.Codimension.defectDim_four
+#print axioms SCD.Codimension.pointlike_iff_two_dim
+#print axioms SCD.Codimension.three_dim_gives_strings
+#print axioms SCD.Codimension.pointlike_forces_three
+#print axioms SCD.Codimension.our_world_gives_strings
+#print axioms SCD.Codimension.no_pointlike_in_four
+#print axioms SCD.Codimension.string_mass_not_topological
+#print axioms SCD.Codimension.stringMass_strictMono
+#print axioms SCD.Codimension.stringMass_zero
+#print axioms SCD.Codimension.extended_or_low_dimensional
+
+-- Expressive.lean
+#print axioms SCD.Expressive.diffPattern_shift
+#print axioms SCD.Expressive.invariant_factors
+#print axioms SCD.Expressive.diffPattern_invariant
+#print axioms SCD.Expressive.invariant_iff_diffPattern
+#print axioms SCD.Expressive.eval_not_invariant
+#print axioms SCD.Expressive.scale_says_nothing_about_rotation
+#print axioms SCD.Expressive.rotation_says_nothing_about_scale
+#print axioms SCD.Expressive.channels_independent
+#print axioms SCD.Expressive.neither_channel_complete
+#print axioms SCD.Expressive.no_channel_coupling
+
 -- CrossCheck.lean
 #print axioms SCD.CrossCheck.rhoAll_value
 #print axioms SCD.CrossCheck.rhoQuark_value
@@ -745,6 +735,17 @@ namespace SCD.Verify
 #print axioms SCD.CrossCheck.no_second_determination
 #print axioms SCD.CrossCheck.quarkCvSq_value
 #print axioms SCD.CrossCheck.quark_not_geometric
+
+-- MassAudit.lean
+#print axioms SCD.MassAudit.massExp_neg
+#print axioms SCD.MassAudit.massQuad_neg
+#print axioms SCD.MassAudit.massExp_pos
+#print axioms SCD.MassAudit.massQuad_pos
+#print axioms SCD.MassAudit.massExp_zero
+#print axioms SCD.MassAudit.massQuad_zero
+#print axioms SCD.MassAudit.mass_law_underdetermined
+#print axioms SCD.MassAudit.both_laws_antiparticle_degenerate
+#print axioms SCD.MassAudit.massQuad_ratio_not_constant
 
 -- Audit.lean
 #print axioms SCD.Audit.scalar_for_directional_count
