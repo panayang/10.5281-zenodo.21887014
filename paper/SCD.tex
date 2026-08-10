@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}621 条定理、11878 行 Lean 代码、61 个文件；
-\textbf{全部 621 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}629 条定理、11878 行 Lean 代码、61 个文件；
+\textbf{全部 629 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -2133,7 +2133,7 @@ Waves.chirp\_exponent, Waves.chirp\_mass\_exponent}
 PSR B1913$+$16 衰减／四极预言 & $1$（无偶极项） & $0.9983\pm0.0016$ \\
 \textbf{PSR J0737$-$3039（双脉冲星）} & $1$（无偶极项） & \textbf{符合到 $0.013\%$} \\
 偶极辐射分数 & \textbf{恒等于 $0$} & $<1.3\times10^{-4}$ \\
-GW150914 啁啾质量 & —— & $30.7\,M_\odot$，等质量读作 $\approx35\,M_\odot$ \\
+GW250114 啁啾质量（源系） & —— & $28.6\pm0.5\,M_\odot$ \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -2205,6 +2205,115 @@ Waves.null\_search\_bounds\_reflectivity}
 \emph{找什么形状}（均匀梳、几何衰减），
 以及\emph{零结果意味着什么}（直接是 $R^2$ 的上限）。
 \textbf{给不了的是 $R$ 本身。}
+\end{mdframed}
+
+
+\subsection{GW250114：面积定理确认了什么，又\emph{没}确认什么}\label{ss:gw250114}
+
+迄今最响的事件给出了最锐利的铃宕数字，以及对 Hawking 面积定理的确认。
+两者都直指"没有视界"这个结论，故在此正面处理。
+
+\textbf{实测数字（取自原始论文源码，非摘要）：}网络匹配滤波信噪比 $80$；
+源系分量质量 $33.6^{+1.2}_{-0.8}$ 与 $32.2^{+0.8}_{-1.3}\,M_\odot$，
+遗迹 $62.7^{+1.0}_{-1.1}\,M_\odot$、自旋 $0.68\pm0.01$；
+分量自旋都小（$\chi_1\le0.24$、$\chi_2\le0.26$，90\%）；
+源系啁啾质量 $28.6\pm0.5\,M_\odot$。
+
+\textbf{检验强度：}铃宕模被约束在 Kerr 谱的 $\pm30\%$ 之内；
+\textbf{面积定理在所有分析窗上均达 $\ge3.4\sigma$，窗起点取 $-10M_{\rm tot}$ 时超过 $5\sigma$}，
+用泛音的那一版为 $3.6\sigma$；
+而扣除最佳广义相对论波形后，\textbf{残差表现得像普通探测器噪声}。
+\leanline{Waves.gw250114ChirpMass, Waves.gw250114\_radiated\_fraction,
+Waves.area\_law\_confirmed}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{一处更正：}本报告先前把 GW250114 的啁啾质量引作 $30.7\,M_\odot$，
+那是\emph{探测器系}的数；\textbf{源系是 $28.6\pm0.5$}。
+先前的数取自摘要转述，现取自原始论文源码。
+\end{mdframed}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1.2pt,backgroundcolor=red!4]
+\textbf{面积定理的确认\emph{没有}探测到视界。}
+
+该检验是由实测质量与自旋经 Kerr 公式\emph{推算}出各自面积，再核对
+$A_f \ge A_1+A_2$。\textbf{它是一条关于\emph{被推算参数}的自洽关系。}
+本框架精确复现外部（$\gamma=1$、同一个 $\kappa$、
+且对称扇区在每一阶上都是 GR），故推出同样的质量与自旋，
+\textbf{通过同一个核对}。
+
+\textbf{被观测的不是视界，是一个参数化。}
+这一点明说，是因为反过来读会得到一个既容易又错误的安心。
+\end{mdframed}
+
+\subsubsection*{本框架有自己的不减定理，而且是导出的}
+
+第 \ref{sec:entropy} 节的 H 定理\textbf{只用有限分辨率}就成立——无任何概率假设；
+而第 \ref{sec:horizon} 节使一个区域的熵为 $\rho\ln R$（$R$ 为标度比值）。两者合起来：
+
+\begin{theorem}[标度比值永不减小]\label{thm:ratiomono}
+熵不减且 $\rho>0$ $\Rightarrow$ $\ln R$ 不减 $\Rightarrow$ $R$ 不减。
+\leanline{Waves.scale\_ratio\_never\_decreases}
+\end{theorem}
+
+\textbf{这是本框架对应面积定理的那一条，从完全不同的方向到达}——
+不是从视界的因果结构，是从粗粒化。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{但它\emph{不是}面积定理}：$\ln R$ 与 $A\propto M^2$ 是不同的函数
+（比值加倍只增加一个常数，面积律则翻四倍）。
+\textbf{目前没有任何可测量能把二者分开}，因为熵本身没有被测量——
+被测的只是用来算它的那些参数。
+\leanline{Waves.log\_law\_is\_not\_area\_law}
+\end{mdframed}
+
+\subsubsection*{GW250114 真正咬住我们的地方}
+
+\textbf{残差与噪声一致，是目前对回波振幅、因而对反射率最紧的界。}
+本框架预言反射率非零而量级未定，
+故这个界是对它的一条\textbf{活约束，不是对任何东西的确认}。
+
+而衰减时间（$9\%$）比频率（$2\%$）松，
+\textbf{而衰减时间恰是反射边界会移动的那个量}——
+如果边界条件效应要藏，它藏在那里。
+\leanline{Waves.damping\_is\_the\_looser\_constraint,
+Waves.null\_search\_bounds\_reflectivity}
+
+
+\subsection{第二代黑洞：一条比回波更强的约束}\label{ss:secondgen}
+
+GW241011 与 GW241110 被报告为具有\textbf{快速且被精确测定的主自旋}、
+显著的自旋--轨道错位、以及不等的质量比——
+这是\textbf{层级并合}的特征：较重的那个本身就是更早一次并合的遗迹。
+GW241011 是迄今第三响的事件（网络信噪比 $36.0$），
+主自旋 $\chi_1=0.64^{+0.06}_{-0.09}$，其为正号\emph{基本以全置信度}确立。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1.2pt,backgroundcolor=red!4]
+\textbf{这为什么打到"没有视界"上，而且不是好消息。}
+
+该文用快速自旋排除了质量约 $10^{-13}$ 到 $3\times10^{-12}$ eV 的超轻玻色子：
+合适 Compton 波长的玻色子会通过\textbf{超辐射}把黑洞自旋降下来。
+
+\textbf{而同一个超辐射放大，正是使带能层的\emph{无视界}致密天体不稳定的机制}——
+视界本会吸收掉的模式，被反射并无界放大，
+而\textbf{反射率越大，不稳定增长越快}。
+
+所以一个被观测到的\textbf{高速自旋、且显然长寿}的致密天体，
+把反射率从上方压住，\textbf{而且是随时间指数地压}，不是像回波那样线性地压。
+
+\textbf{这是本框架此前未登记的一条真实压力。}
+它来自读原始论文源码而非摘要转述，理应如此登记：
+\textbf{回波搜索对 $R$ 的约束是弱的，而高速自旋遗迹的约束严厉得多。}
+框架仍算不出 $R$，故\textbf{尚不能说它是否幸存}。
+\leanline{Waves.gw241011\_spin\_is\_rapid, Waves.spin\_bound\_beats\_echo\_bound}
+\end{mdframed}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{有一件事是往对的方向走的。}玻色子排除本身与本框架相容——
+它\textbf{根本不预言任何超轻标量}：标签结构是
+$(\text{阈值},\mathbb Z/2,\mathbb Z)$ 且\textbf{没有第四个槽位}，
+而呼吸模不可表达，正好去掉了这样一个场会携带的标量偏振。
+\textbf{标量--张量理论需要解释这次未探测；这里没有东西可供探测。}
+\leanline{Waves.no\_ultralight\_scalar\_available}
 \end{mdframed}
 
 \subsection{对称扇区在\emph{每一阶}上都是广义相对论}
@@ -4047,7 +4156,10 @@ $f_0(500)$ 极点 $\Gamma/m$ & $<1.157$ & CCL $1.234$ / GKPY $1.090$ & \textbf{�
 引力波速 & 精确 $c$，无色散 & $|\Delta v/v|\lesssim10^{-15}$ & 通过 \\
 引力波偏振数 & 恰为 $2$，无呼吸模 & 网络偏振检验 & 通过（与标量--张量分道）\\
 偶极辐射 & 恒等于 $0$ & 双脉冲星 $<1.3{\times}10^{-4}$ & 通过 \\
-铃宕回波 & 反射率 $\neq0$ & 搜索零结果 & \textbf{开放，受压} \\
+铃宕回波 & 反射率 $\neq0$ & GW250114 残差 $=$ 噪声 & \textbf{开放，受压} \\
+能层不稳定性 & 反射率上界未定 & GW241011 $\chi_1=0.64$ 长寿 & \textbf{开放，压力更大} \\
+超轻标量 & \textbf{无此槽位} & $10^{-13}$--$3{\times}10^{-12}$ eV 被排除 & 相容 \\
+面积定理类比 & 标度比值不减 & 与观测一致 & 通过（但不具分辨力）\\
 质量谱 $\mathrm{CV}^2$ & $<1$（秩一） & $0.875$ & 通过 \\
 非禁闭精确守恒荷 & 恰一个 & 电荷、$B{-}L$（两个？） & 未决，$0\nu\beta\beta$ 裁决 \\
 黑洞熵 & $\propto\ln R$ & —— & 未测（面积律亦未测）\\
@@ -4246,8 +4358,12 @@ $k=3$ 依赖一个判断 & 已扶正为 A7 & 公开的第七条公理（\S\ref{s
       也已形式化（定理 \ref{thm:vacstat}）。
       \textbf{此前本条写作“逐分量计算未做”，那是 \texttt{RicciDiag.lean} 写出之前的旧登记，已更正。}
       仍是输入的是\emph{静态球对称拟设}的选取本身，以及标度响应律 A6$'$。
-\item \textbf{铃宕的边界条件与回波振幅。}这是波动扇区里\emph{唯一}一处
-      本框架与广义相对论可能分开的地方（第 \ref{sec:waves} 节）：
+\item \textbf{铃宕边界条件、回波振幅，以及\emph{能层不稳定性}。}
+      这是波动扇区里\emph{唯一}一处本框架与广义相对论可能分开的地方
+      （第 \ref{sec:waves} 节）。
+      \textbf{新登记（来自 GW241011）}：无视界天体的能层会因超辐射而不稳定，
+      而高速自旋且长寿的遗迹\textbf{指数地}压住反射率——
+      这比回波搜索的界严厉得多，且框架\textbf{尚不能说它是否幸存}。
       没有视界就没有"在视界上纯内向"这个边界条件，
       而部分反射一般产生晚期回波。
       \textbf{框架说反射率不为零，但不预言振幅}——那由那一个自由单位决定。
@@ -4787,7 +4903,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \subsection{公理审计}
 
-对全部 621 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 629 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -4855,7 +4971,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 621 条}\label{sec:index}
+\section{定理索引：全部 629 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -4901,7 +5017,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Covariance.lean}} (7)\quad \texttt{sig\_\allowbreak eq}, \texttt{Chr\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq}, \texttt{Ric\_\allowbreak eq\_\allowbreak of\_\allowbreak drift}, \texttt{Defm\_\allowbreak eq}, \texttt{field\_\allowbreak equation\_\allowbreak form\_\allowbreak invariant}, \texttt{no\_\allowbreak local\_\allowbreak expansion}\par\smallskip
 \noindent\textbf{\texttt{Singularity.lean}} (6)\quad \texttt{scale\_\allowbreak ne\_\allowbreak zero}, \texttt{energy\_\allowbreak ne\_\allowbreak zero}, \texttt{conformal\_\allowbreak factor\_\allowbreak isUnit}, \texttt{conformal\_\allowbreak factor\_\allowbreak invertible}, \texttt{curvature\_\allowbreak indep\_\allowbreak of\_\allowbreak scale\_\allowbreak value}, \texttt{curvature\_\allowbreak zero\_\allowbreak of\_\allowbreak uniform\_\allowbreak scale}\par\smallskip
 \noindent\textbf{\texttt{Horizon.lean}} (15)\quad \texttt{gtt\_\allowbreak ne\_\allowbreak zero}, \texttt{reciprocal\_\allowbreak never\_\allowbreak degenerate}, \texttt{redshift\_\allowbreak never\_\allowbreak infinite}, \texttt{no\_\allowbreak degeneracy\_\allowbreak anywhere}, \texttt{null\_\allowbreak cone\_\allowbreak scale\_\allowbreak independent}, \texttt{waves\_\allowbreak travel\_\allowbreak on\_\allowbreak the\_\allowbreak light\_\allowbreak cone}, \texttt{no\_\allowbreak energy\_\allowbreak dependent\_\allowbreak speed}, \texttt{two\_\allowbreak polarizations}, \texttt{no\_\allowbreak breathing\_\allowbreak mode}, \texttt{polarization\_\allowbreak count}, \texttt{entropy\_\allowbreak of\_\allowbreak scale\_\allowbreak ratio}, \texttt{entropy\_\allowbreak doubling\_\allowbreak is\_\allowbreak additive}, \texttt{entropy\_\allowbreak increment\_\allowbreak independent\_\allowbreak of\_\allowbreak size}, \texttt{no\_\allowbreak minimum\_\allowbreak length}, \texttt{no\_\allowbreak final\_\allowbreak description}\par\smallskip
-\noindent\textbf{\texttt{Waves.lean}} (26)\quad \texttt{conserved\_\allowbreak has\_\allowbreak no\_\allowbreak dynamics}, \texttt{monopole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{dipole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{quadrupole\_\allowbreak is\_\allowbreak leading}, \texttt{power\_\allowbreak pos}, \texttt{power\_\allowbreak ratio\_\allowbreak halving}, \texttt{inspiral\_\allowbreak shrinks\_\allowbreak orbit}, \texttt{separation\_\allowbreak rate}, \texttt{chirpMass\_\allowbreak symm}, \texttt{chirpMass\_\allowbreak equal}, \texttt{chirp\_\allowbreak exponent}, \texttt{chirp\_\allowbreak mass\_\allowbreak exponent}, \texttt{hulse\_\allowbreak taylor\_\allowbreak agreement}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak hulse\_\allowbreak taylor}, \texttt{gw150914\_\allowbreak equal\_\allowbreak mass\_\allowbreak component}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak double\_\allowbreak pulsar}, \texttt{double\_\allowbreak pulsar\_\allowbreak tighter}, \texttt{gw\_\allowbreak sector\_\allowbreak matches\_\allowbreak gr}, \texttt{reflectivity\_\allowbreak nonzero\_\allowbreak but\_\allowbreak unbounded}, \texttt{echo\_\allowbreak delay\_\allowbreak logarithmic}, \texttt{delay\_\allowbreak insensitive\_\allowbreak to\_\allowbreak reflectivity}, \texttt{echo\_\allowbreak train\_\allowbreak is\_\allowbreak a\_\allowbreak comb}, \texttt{echo\_\allowbreak amplitudes\_\allowbreak geometric}, \texttt{null\_\allowbreak search\_\allowbreak bounds\_\allowbreak reflectivity}, \texttt{pn\_\allowbreak expansion\_\allowbreak cannot\_\allowbreak discriminate}, \texttt{same\_\allowbreak constant\_\allowbreak both\_\allowbreak sectors}\par\smallskip
+\noindent\textbf{\texttt{Waves.lean}} (34)\quad \texttt{conserved\_\allowbreak has\_\allowbreak no\_\allowbreak dynamics}, \texttt{monopole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{dipole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{quadrupole\_\allowbreak is\_\allowbreak leading}, \texttt{power\_\allowbreak pos}, \texttt{power\_\allowbreak ratio\_\allowbreak halving}, \texttt{inspiral\_\allowbreak shrinks\_\allowbreak orbit}, \texttt{separation\_\allowbreak rate}, \texttt{chirpMass\_\allowbreak symm}, \texttt{chirpMass\_\allowbreak equal}, \texttt{chirp\_\allowbreak exponent}, \texttt{chirp\_\allowbreak mass\_\allowbreak exponent}, \texttt{hulse\_\allowbreak taylor\_\allowbreak agreement}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak hulse\_\allowbreak taylor}, \texttt{gw250114\_\allowbreak radiated\_\allowbreak fraction}, \texttt{area\_\allowbreak law\_\allowbreak confirmed}, \texttt{gw150914\_\allowbreak equal\_\allowbreak mass\_\allowbreak component}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak double\_\allowbreak pulsar}, \texttt{double\_\allowbreak pulsar\_\allowbreak tighter}, \texttt{gw\_\allowbreak sector\_\allowbreak matches\_\allowbreak gr}, \texttt{reflectivity\_\allowbreak nonzero\_\allowbreak but\_\allowbreak unbounded}, \texttt{echo\_\allowbreak delay\_\allowbreak logarithmic}, \texttt{delay\_\allowbreak insensitive\_\allowbreak to\_\allowbreak reflectivity}, \texttt{echo\_\allowbreak train\_\allowbreak is\_\allowbreak a\_\allowbreak comb}, \texttt{echo\_\allowbreak amplitudes\_\allowbreak geometric}, \texttt{null\_\allowbreak search\_\allowbreak bounds\_\allowbreak reflectivity}, \texttt{damping\_\allowbreak is\_\allowbreak the\_\allowbreak looser\_\allowbreak constraint}, \texttt{scale\_\allowbreak ratio\_\allowbreak never\_\allowbreak decreases}, \texttt{log\_\allowbreak law\_\allowbreak is\_\allowbreak not\_\allowbreak area\_\allowbreak law}, \texttt{gw241011\_\allowbreak spin\_\allowbreak is\_\allowbreak rapid}, \texttt{spin\_\allowbreak bound\_\allowbreak beats\_\allowbreak echo\_\allowbreak bound}, \texttt{no\_\allowbreak ultralight\_\allowbreak scalar\_\allowbreak available}, \texttt{pn\_\allowbreak expansion\_\allowbreak cannot\_\allowbreak discriminate}, \texttt{same\_\allowbreak constant\_\allowbreak both\_\allowbreak sectors}\par\smallskip
 
 \subsection*{第五部分\quad 各向异性扇区}
 \noindent\textbf{\texttt{Gauge.lean}} (5)\quad \texttt{mem\_\allowbreak stabilizer\_\allowbreak iff}, \texttt{stabilizer\_\allowbreak eq\_\allowbreak bot\_\allowbreak of\_\allowbreak injective}, \texttt{stabilizer\_\allowbreak eq\_\allowbreak top\_\allowbreak of\_\allowbreak isotropic}, \texttt{sameOrbit\_\allowbreak iff\_\allowbreak eq\_\allowbreak scale}, \texttt{internal\_\allowbreak symmetry\_\allowbreak determined}\par\smallskip

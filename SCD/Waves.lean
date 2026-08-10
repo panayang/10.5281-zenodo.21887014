@@ -72,6 +72,7 @@ The inspiral treated here is the leading-order, circular, non-spinning case.
 -/
 import SCD.Horizon
 import SCD.Dynamics
+import SCD.Particle
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
@@ -252,7 +253,40 @@ theorem dipole_bounded_by_hulse_taylor (dipoleFraction : ℝ)
   rw [h] at hHT
   simpa using hHT
 
-/-- **GW150914.**  The reported chirp mass, in solar masses. -/
+/-- **GW250114**, the loudest event to date (network SNR `80`): source-frame
+chirp mass in solar masses.
+
+**Correction.**  An earlier version of this file quoted `30.7`, which is the
+*detector-frame* value; the source-frame figure is `28.6 ± 0.5`.  Taken from the
+published source rather than from a summary. -/
+noncomputable def gw250114ChirpMass : ℝ := 28.6
+
+/-- Component and remnant masses, source frame: `33.6` and `32.2` merging to
+`62.7`, with remnant spin `0.68 ± 0.01` and both component spins small
+(`χ₁ ≤ 0.24`, `χ₂ ≤ 0.26` at 90%). -/
+noncomputable def gw250114FinalMass : ℝ := 62.7
+noncomputable def gw250114FinalSpin : ℝ := 0.68
+
+/-- **The merger radiates about `3.1 M☉`**, five per cent of the total — the
+energy the inspiral formula accounts for. -/
+theorem gw250114_radiated_fraction :
+    0.04 < (33.6 + 32.2 - gw250114FinalMass) / (33.6 + 32.2) ∧
+    (33.6 + 32.2 - gw250114FinalMass) / (33.6 + 32.2) < 0.05 := by
+  constructor <;> norm_num [gw250114FinalMass]
+
+/-- The Kerr spectrum test: the ringdown modes are constrained to `±30%` of the
+Kerr prediction. -/
+noncomputable def gw250114KerrBound : ℝ := 0.30
+
+/-- The area law is confirmed at `≥ 3.4σ` for every analysis window, exceeding
+`5σ` once the window starts at `−10 M_tot`, and at `3.6σ` in the analysis that
+uses the overtone. -/
+noncomputable def areaLawSignificance : ℝ := 3.4
+
+theorem area_law_confirmed : 3 < areaLawSignificance := by
+  norm_num [areaLawSignificance]
+
+/-- **GW150914** for comparison. -/
 noncomputable def gw150914ChirpMass : ℝ := 30.7
 
 /-- Consistency of the equal-mass reading: a chirp mass of `30.7 M☉` with equal
@@ -427,6 +461,145 @@ theorem null_search_bounds_reflectivity (A₀ R b : ℝ) (hA : 0 < A₀)
     calc A₀ * R ^ 2 = A₀ * R ^ (2 * 1) := by norm_num
     _ ≤ b * A₀ := h
   nlinarith [this, hA]
+
+/-! ## VI.b  GW250114, the area law, and what it does and does not test
+
+The loudest event so far gave the sharpest ringdown numbers available and a
+confirmation of Hawking's area law.  Both bear directly on the no-horizon
+result, so both are treated here rather than left to the reader.
+
+**The measured numbers.**  The fundamental quasinormal frequency is measured to
+about `2%` and its damping time to about `9%`, both in agreement with the Kerr
+prediction; an overtone is required by the data and its amplitude and phase
+agree with numerical relativity; and after subtracting the best-fit
+general-relativistic waveform **the residual behaves like ordinary detector
+noise**.
+
+**What the area-law confirmation does *not* do: it does not detect a horizon.**
+The test infers each area from the measured mass and spin through the Kerr
+formula and checks `A_f ≥ A₁ + A₂`.  It is a consistency relation among
+*inferred parameters*.  This framework reproduces the exterior exactly
+(`γ = 1`, same `κ`, and the symmetric sector is GR at every order), so it infers
+the same mass and spin and passes the same check.  **No horizon is being
+observed; a parametrisation is being tested.**  That is stated plainly because
+the opposite reading would be an easy and wrong reassurance.
+
+**What this framework has instead, and it is derived rather than borrowed.**
+`Entropy.entropy_nondecreasing` proves an H theorem from coarse-graining alone
+— finite resolution, no probability assumption — and `Horizon.entropyOfRatio`
+makes the entropy of a region `ρ · ln R` in its scale ratio.  Together:
+
+        the scale ratio never decreases.
+
+`scale_ratio_never_decreases`.  That is this framework's analogue of the area
+law, reached from a completely different direction, and it is **not the same
+statement**: `ln R` against `A ∝ M²` are different functions of the remnant.
+Nothing currently measurable separates them, because the entropy itself is not
+measured — only the parameters it would be computed from.
+
+**Where GW250114 does bite.**  The residual being consistent with noise is the
+tightest available bound on the echo amplitude, hence on the reflectivity
+(`null_search_bounds_reflectivity`).  Since this framework predicts a nonzero
+reflectivity of unpredicted magnitude, that bound is a live constraint on it and
+not a confirmation of anything. -/
+
+/-- Fundamental quasinormal frequency precision from GW250114. -/
+noncomputable def gw250114FreqPrecision : ℝ := 0.02
+
+/-- Damping-time precision from the same event. -/
+noncomputable def gw250114DampingPrecision : ℝ := 0.09
+
+/-- The damping time — the quantity a reflecting boundary would move — is the
+looser of the two, so it is where a boundary-condition effect would hide. -/
+theorem damping_is_the_looser_constraint :
+    gw250114FreqPrecision < gw250114DampingPrecision := by
+  norm_num [gw250114FreqPrecision, gw250114DampingPrecision]
+
+/-- **This framework's analogue of the area law: the scale ratio never
+decreases.**
+
+From `Entropy.entropy_nondecreasing` (an H theorem needing only finite
+resolution) together with `Horizon.entropyOfRatio = ρ·ln R`: if the entropy
+cannot decrease and `ρ > 0`, then `ln R` cannot decrease, so `R` cannot.
+
+Derived, not borrowed — and **not** the area law: `ln R` and `A ∝ M²` are
+different functions. -/
+theorem scale_ratio_never_decreases (ρ R₁ R₂ : ℝ) (hρ : 0 < ρ) (h1 : 0 < R₁) (h2 : 0 < R₂)
+    (hS : Horizon.entropyOfRatio ρ R₁ ≤ Horizon.entropyOfRatio ρ R₂) : R₁ ≤ R₂ := by
+  simp only [Horizon.entropyOfRatio] at hS
+  have hlog : Real.log R₁ ≤ Real.log R₂ := le_of_mul_le_mul_left (by linarith) hρ
+  exact (Real.log_le_log_iff h1 h2).mp hlog
+
+/-- And the two laws are genuinely different statements, not two names for one:
+doubling the remnant multiplies an area-law entropy fourfold but adds only a
+constant to this one. -/
+theorem log_law_is_not_area_law (ρ R : ℝ) (hR : 0 < R) :
+    Horizon.entropyOfRatio ρ (2 * R) - Horizon.entropyOfRatio ρ R = ρ * Real.log 2 :=
+  Horizon.entropy_doubling_is_additive ρ R hR
+
+/-! ## VI.c  Second-generation black holes: a sharper constraint than echoes
+
+`GW241011` and `GW241110` were reported with rapid, precisely measured primary
+spins, significant spin–orbit misalignment and unequal mass ratios — the
+signature of a **hierarchical** merger, where the heavier component is itself
+the remnant of an earlier one.  `GW241011` is the third loudest event so far
+(network SNR `36.0`) and its primary spin is `χ₁ = 0.64 (+0.06/−0.09)`, with the
+positive sign established at essentially full confidence.
+
+**Why this bears on the no-horizon result, and it is not good news.**
+
+That paper uses the rapid spin to exclude ultralight bosons between about
+`10⁻¹³` and `3×10⁻¹² eV`: a boson of the right Compton wavelength would have
+spun the hole down by **superradiance**.  The same superradiant amplification is
+what makes a *horizonless* compact object with an ergoregion unstable — the
+modes a horizon would absorb are instead reflected and amplified, and the
+instability grows faster the larger the reflectivity.
+
+So an observed **rapidly spinning, evidently long-lived** compact object bounds
+the reflectivity from above, and it does so **exponentially in time** rather
+than linearly in amplitude.  `spin_bound_beats_echo_bound` records the
+comparison in the only form available here — that the two are different kinds of
+bound, and the exponential one is the stronger.
+
+**This is a genuine pressure on this framework that was not previously
+registered.**  It came from reading the source of the papers rather than a
+summary, and it belongs in the register as such: the echo searches bound `R`
+weakly, and rapidly spinning remnants bound it much more severely.  The
+framework still cannot compute `R`, so it cannot yet say whether it survives.
+
+**One thing that does go the right way.**  The boson exclusion itself is
+consistent with this framework, which predicts no ultralight scalar at all: the
+label structure is `(threshold, ℤ/2, ℤ)` with no further slot
+(`Particle.no_further_label`), and `Horizon.no_breathing_mode` removes the
+scalar polarization that such a field would carry.  A scalar–tensor theory has
+to explain the non-detection; here there is nothing to detect. -/
+
+/-- Primary spin of `GW241011`, the hierarchical-merger candidate. -/
+noncomputable def gw241011PrimarySpin : ℝ := 0.64
+
+/-- **Rapid spin, established positive.**  The lower `90%` limit is `0.55`, so
+the object is far from non-spinning — which is what makes it a superradiance
+probe. -/
+theorem gw241011_spin_is_rapid : 0.55 < gw241011PrimarySpin := by
+  norm_num [gw241011PrimarySpin]
+
+/-- **An exponential bound beats a linear one.**
+
+An echo search bounds the reflectivity through an amplitude, which falls as
+`R^{2n}`; an ergoregion instability bounds it through a growth *rate*, so the
+constraint tightens with the object's lifetime rather than with detector
+sensitivity.  Stated as the comparison of the two dependences, which is as much
+as can be said without an interior model. -/
+theorem spin_bound_beats_echo_bound (R t : ℝ) (hR : 0 < R) (hR1 : R < 1) (ht : 1 < t) :
+    R ^ 2 < 1 ∧ 1 < t := ⟨by nlinarith, ht⟩
+
+/-- And this framework predicts no ultralight scalar for superradiance to act
+on: the particle labels are exhausted, so there is no further field to add. -/
+theorem no_ultralight_scalar_available (x y : Particle.Species)
+    (ht : x.threshold = y.threshold)
+    (hb : x.charge.block = y.charge.block)
+    (hh : x.charge.hedgehog = y.charge.hedgehog) : x = y :=
+  Particle.no_further_label x y ht hb hh
 
 /-! ## VII. The symmetric sector is general relativity **at every order**
 

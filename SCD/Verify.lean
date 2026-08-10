@@ -370,6 +370,8 @@ namespace SCD.Verify
 #print axioms SCD.Waves.chirp_mass_exponent
 #print axioms SCD.Waves.hulse_taylor_agreement
 #print axioms SCD.Waves.dipole_bounded_by_hulse_taylor
+#print axioms SCD.Waves.gw250114_radiated_fraction
+#print axioms SCD.Waves.area_law_confirmed
 #print axioms SCD.Waves.gw150914_equal_mass_component
 #print axioms SCD.Waves.dipole_bounded_by_double_pulsar
 #print axioms SCD.Waves.double_pulsar_tighter
@@ -380,6 +382,12 @@ namespace SCD.Verify
 #print axioms SCD.Waves.echo_train_is_a_comb
 #print axioms SCD.Waves.echo_amplitudes_geometric
 #print axioms SCD.Waves.null_search_bounds_reflectivity
+#print axioms SCD.Waves.damping_is_the_looser_constraint
+#print axioms SCD.Waves.scale_ratio_never_decreases
+#print axioms SCD.Waves.log_law_is_not_area_law
+#print axioms SCD.Waves.gw241011_spin_is_rapid
+#print axioms SCD.Waves.spin_bound_beats_echo_bound
+#print axioms SCD.Waves.no_ultralight_scalar_available
 #print axioms SCD.Waves.pn_expansion_cannot_discriminate
 #print axioms SCD.Waves.same_constant_both_sectors
 
