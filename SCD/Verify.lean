@@ -375,6 +375,12 @@ namespace SCD.Verify
 #print axioms SCD.Waves.double_pulsar_tighter
 #print axioms SCD.Waves.gw_sector_matches_gr
 #print axioms SCD.Waves.reflectivity_nonzero_but_unbounded
+#print axioms SCD.Waves.echo_delay_logarithmic
+#print axioms SCD.Waves.delay_insensitive_to_reflectivity
+#print axioms SCD.Waves.echo_train_is_a_comb
+#print axioms SCD.Waves.echo_amplitudes_geometric
+#print axioms SCD.Waves.null_search_bounds_reflectivity
+#print axioms SCD.Waves.pn_expansion_cannot_discriminate
 #print axioms SCD.Waves.same_constant_both_sectors
 
 /-! ## PART II.b — the anisotropic sector -/

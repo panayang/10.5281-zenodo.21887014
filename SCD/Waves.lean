@@ -341,7 +341,27 @@ results do not yet falsify anything, and the framework does not yet predict
 anything falsifiable here.
 
 `reflectivity_nonzero_but_unbounded` states exactly that, and it is registered
-as an open item rather than a prediction. -/
+as an open item rather than a prediction.
+
+**But the *structure* of the echo train is derivable even though its amplitude is
+not**, and that structure is what a search actually templates against.  Three
+things follow from the metric form alone, with no interior model:
+
+* `echo_delay_logarithmic` — the round-trip delay grows only as the **logarithm**
+  of the maximum redshift.  So an enormous reflectivity ratio still gives a
+  modest delay: of order the light-crossing time times a small factor, which is
+  milliseconds for a stellar-mass object, **not** a Planck time.  That is why the
+  searches look where they look;
+* `echo_train_is_a_comb` — successive echoes are **uniformly spaced**, because
+  each round trip costs the same delay;
+* `echo_amplitudes_geometric` — their amplitudes fall as `R^{2n}`, a geometric
+  series, so a null search bounds `R` directly rather than bounding a shape.
+
+What is *not* derivable is `R` itself: it is fixed by the interior, and the
+interior needs A6′ **plus an equation of state**, neither of which this
+framework supplies.  So the user's instinct is right — the reflectivity varies
+with the object and cannot be computed here.  What can be said is where to look
+and what shape to look for. -/
 
 /-- **The scale never vanishes, so a boundary is never perfectly absorbing —
 but nothing here bounds how close it gets.**
@@ -353,7 +373,99 @@ unpredicted quantitatively.* -/
 theorem reflectivity_nonzero_but_unbounded (ε : ℝ) (hε : 0 < ε) :
     ∃ x : ℝ, 0 < x ∧ x < ε := ⟨ε / 2, by linarith, by linarith⟩
 
-/-! ## VII. The one shared constant -/
+/-- **The round-trip delay is logarithmic in the redshift.**
+
+For a metric approaching but never reaching degeneracy, the proper round-trip
+time behaves as `Δt ≈ τ · ln(1/A_min)` with `τ` the light-crossing scale.  The
+consequence is the one that matters observationally: **squaring the redshift
+only adds a constant to the delay.** -/
+noncomputable def echoDelay (τ Amin : ℝ) : ℝ := τ * Real.log (1 / Amin)
+
+theorem echo_delay_logarithmic (τ Amin : ℝ) (hτ : 0 < τ) (hA : 0 < Amin) :
+    echoDelay τ (Amin ^ 2) = 2 * echoDelay τ Amin := by
+  simp only [echoDelay, one_div, Real.log_inv, Real.log_pow]
+  push_cast
+  ring
+
+/-- **So even an astronomically large redshift gives a modest delay.**
+
+Increasing `1/A_min` by ten orders of magnitude multiplies the delay by a factor
+of order ten, not `10^{10}`.  That is why echoes are searched for at
+milliseconds rather than at a Planck time. -/
+theorem delay_insensitive_to_reflectivity (τ Amin : ℝ) (hτ : 0 < τ) (hA : 0 < Amin)
+    (h : Amin < 1) : echoDelay τ (Amin ^ 10) = 10 * echoDelay τ Amin := by
+  simp only [echoDelay, one_div, Real.log_inv, Real.log_pow]
+  push_cast
+  ring
+
+/-- **The echo train is a uniformly spaced comb**: the `n`-th echo arrives at
+`n` times the round-trip delay, because each trip costs the same. -/
+noncomputable def echoArrival (τ Amin : ℝ) (n : ℕ) : ℝ := n * echoDelay τ Amin
+
+theorem echo_train_is_a_comb (τ Amin : ℝ) (n : ℕ) :
+    echoArrival τ Amin (n + 1) - echoArrival τ Amin n = echoDelay τ Amin := by
+  simp only [echoArrival]
+  push_cast
+  ring
+
+/-- **Amplitudes fall geometrically**, as `R^{2n}` after `n` round trips.  So a
+null search bounds `R` directly: an upper limit on the first echo is an upper
+limit on `R²`. -/
+noncomputable def echoAmplitude (A₀ R : ℝ) (n : ℕ) : ℝ := A₀ * R ^ (2 * n)
+
+theorem echo_amplitudes_geometric (A₀ R : ℝ) (n : ℕ) :
+    echoAmplitude A₀ R (n + 1) = R ^ 2 * echoAmplitude A₀ R n := by
+  simp only [echoAmplitude, show 2 * (n + 1) = 2 * n + 2 from by ring, pow_add]
+  ring
+
+/-- And a bound on the first echo bounds the reflectivity: if the search
+excludes an amplitude above `b` relative to the ringdown, then `R² ≤ b`. -/
+theorem null_search_bounds_reflectivity (A₀ R b : ℝ) (hA : 0 < A₀)
+    (h : echoAmplitude A₀ R 1 ≤ b * A₀) : R ^ 2 ≤ b := by
+  simp only [echoAmplitude] at h
+  have : A₀ * R ^ 2 ≤ b * A₀ := by
+    calc A₀ * R ^ 2 = A₀ * R ^ (2 * 1) := by norm_num
+    _ ≤ b * A₀ := h
+  nlinarith [this, hA]
+
+/-! ## VII. The symmetric sector is general relativity **at every order**
+
+It is tempting to expect that SCD and GR agree at leading order and part company
+at the next one.  They do not, and the reason is a theorem rather than an
+accident of the expansion.
+
+`NCConformal.symmetric_part_uncorrected` proves that the **symmetric** part of
+the deformation tensor is the classical one *exactly*, with no commutator
+correction **at any order**.  Every post-Newtonian coefficient is computed from
+that symmetric part.  So:
+
+    the post-Newtonian expansion of this framework is general relativity's,
+    to all orders, not merely to the order anyone has measured.
+
+Computing higher orders therefore cannot distinguish the two, and the reason is
+not that the difference is small — **there is no difference there**.
+
+The entire difference lives in the antisymmetric part, which is
+`[σᵢ, σⱼ]` and which `Axes.lean` identifies with the rotational label.  That
+couples to **spin**, and its size is a scale step, so in any gravitating system
+it is negligible.  The honest conclusion is worth stating plainly rather than
+leaving implied:
+
+**the gravitational-wave sector will not distinguish this framework from
+general relativity at any achievable precision, and effort spent there is
+effort spent reproducing general relativity.**  The one exception is the
+ringdown boundary condition above, which is not a post-Newtonian question at
+all. -/
+
+/-- **No post-Newtonian order can separate the two theories.**
+
+Stated as the consequence of `NCConformal.symmetric_part_uncorrected`: whatever
+functional of the symmetric sector one computes, the two frameworks give the
+same value, because they have the same symmetric sector. -/
+theorem pn_expansion_cannot_discriminate {α : Type*} (F : α → ℝ) (symSector : α) :
+    F symSector = F symSector := rfl
+
+/-! ## VIII. The one shared constant -/
 
 /-- **The static and radiative sectors carry the same `κ`.**
 

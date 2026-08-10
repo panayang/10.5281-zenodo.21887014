@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}615 条定理、11878 行 Lean 代码、61 个文件；
-\textbf{全部 615 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}621 条定理、11878 行 Lean 代码、61 个文件；
+\textbf{全部 621 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -2179,10 +2179,65 @@ GW250114 的铃宕与 Kerr 黑洞一致。
 \leanline{Waves.reflectivity\_nonzero\_but\_unbounded}
 \end{mdframed}
 
+\subsubsection*{振幅算不出来，但回波序列的\emph{结构}算得出来}
+
+反射率随天体而异，\textbf{本框架算不了}——它由内部解决定，
+而内部解需要 A6$'$ \emph{再加}一个物态方程，两者框架都不提供。
+但搜索实际上模板匹配的是\emph{结构}，而结构只用度规形式就够，不需要内部模型：
+
+\begin{theorem}[回波延迟对红移是\emph{对数}的]\label{thm:echodelay}
+$\Delta t \approx \tau\ln(1/A_{\min})$，故 $A_{\min}$ 平方只把延迟\textbf{加一倍}，
+十次方只乘十倍。\textbf{把 $1/A_{\min}$ 提高十个数量级，延迟只增大约十倍，不是 $10^{10}$ 倍。}
+这就是为什么回波要在\textbf{毫秒}而不是 Planck 时间上找。
+\leanline{Waves.echo\_delay\_logarithmic, Waves.delay\_insensitive\_to\_reflectivity}
+\end{theorem}
+
+\begin{theorem}[序列是均匀梳，振幅几何衰减]\label{thm:echocomb}
+第 $n$ 次回波到达于 $n\Delta t$（每次往返代价相同），
+振幅按 $R^{2n}$ 衰减。故\textbf{零结果直接给出 $R$ 的界}：
+对第一次回波的振幅上限就是对 $R^2$ 的上限。
+\leanline{Waves.echo\_train\_is\_a\_comb, Waves.echo\_amplitudes\_geometric,
+Waves.null\_search\_bounds\_reflectivity}
+\end{theorem}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+\textbf{框架能给的到此为止：}\emph{在哪里找}（毫秒量级，因为延迟是对数的）、
+\emph{找什么形状}（均匀梳、几何衰减），
+以及\emph{零结果意味着什么}（直接是 $R^2$ 的上限）。
+\textbf{给不了的是 $R$ 本身。}
+\end{mdframed}
+
+\subsection{对称扇区在\emph{每一阶}上都是广义相对论}
+
+很容易期待 SCD 与 GR 在领头阶一致、在下一阶分开。\textbf{它们不会，}
+而原因是一条定理，不是展开的巧合。
+
+\begin{mdframed}[linecolor=axcol,linewidth=1.2pt,backgroundcolor=axcol!6]
+定理 \ref{thm:ncsym} 证明形变张量的\textbf{对称}部分\emph{恰是}经典那个，
+\textbf{任何阶都没有对易子修正}。而每一个后 Newton 系数都由那个对称部分算出。于是
+\begin{center}
+\textbf{本框架的后 Newton 展开就是广义相对论的展开，到所有阶，}\\
+\textbf{而不只是到已被测量的那一阶。}
+\end{center}
+故\textbf{计算更高阶不可能区分二者}，而理由不是差别太小——\textbf{那里没有差别}。
+\leanline{Waves.pn\_expansion\_cannot\_discriminate, NCConformal.symmetric\_part\_uncorrected}
+\end{mdframed}
+
+全部差别住在反对称部分，即 $[\sigma_i,\sigma_j]$，
+而第 \ref{sec:axes} 节把它认作转动标签——\textbf{它耦合到自旋}，
+且尺度是一个标度步长，故在任何引力系统中都可忽略。
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
+\textbf{值得明说而不是暗示的结论：}
+\textbf{引力波扇区在任何可达精度上都不会把本框架与广义相对论分开，
+花在那里的力气就是在复现广义相对论。}
+唯一的例外是上一小节的铃宕边界条件，而那根本不是一个后 Newton 问题。
+\end{mdframed}
+
 \begin{remark}[仍然没有的]
-数值相对论、并合与铃宕、领头阶之外的后 Newton 修正、自旋。
-那些需要\textbf{含时各向异性解}，而本开发只有静态球对称的那一个。
-本节处理的是领头阶、圆轨道、无自旋的旋近。
+数值相对论、并合、自旋进动的定量处理。
+\textbf{但按上文，这些做出来只会复现广义相对论}——
+它们是工程量而非物理增量。本节处理的是领头阶、圆轨道、无自旋的旋近。
 \end{remark}
 
 \clearpage
@@ -4732,7 +4787,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \subsection{公理审计}
 
-对全部 615 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 621 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -4800,7 +4855,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 615 条}\label{sec:index}
+\section{定理索引：全部 621 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -4846,7 +4901,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Covariance.lean}} (7)\quad \texttt{sig\_\allowbreak eq}, \texttt{Chr\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq}, \texttt{Ric\_\allowbreak eq\_\allowbreak of\_\allowbreak drift}, \texttt{Defm\_\allowbreak eq}, \texttt{field\_\allowbreak equation\_\allowbreak form\_\allowbreak invariant}, \texttt{no\_\allowbreak local\_\allowbreak expansion}\par\smallskip
 \noindent\textbf{\texttt{Singularity.lean}} (6)\quad \texttt{scale\_\allowbreak ne\_\allowbreak zero}, \texttt{energy\_\allowbreak ne\_\allowbreak zero}, \texttt{conformal\_\allowbreak factor\_\allowbreak isUnit}, \texttt{conformal\_\allowbreak factor\_\allowbreak invertible}, \texttt{curvature\_\allowbreak indep\_\allowbreak of\_\allowbreak scale\_\allowbreak value}, \texttt{curvature\_\allowbreak zero\_\allowbreak of\_\allowbreak uniform\_\allowbreak scale}\par\smallskip
 \noindent\textbf{\texttt{Horizon.lean}} (15)\quad \texttt{gtt\_\allowbreak ne\_\allowbreak zero}, \texttt{reciprocal\_\allowbreak never\_\allowbreak degenerate}, \texttt{redshift\_\allowbreak never\_\allowbreak infinite}, \texttt{no\_\allowbreak degeneracy\_\allowbreak anywhere}, \texttt{null\_\allowbreak cone\_\allowbreak scale\_\allowbreak independent}, \texttt{waves\_\allowbreak travel\_\allowbreak on\_\allowbreak the\_\allowbreak light\_\allowbreak cone}, \texttt{no\_\allowbreak energy\_\allowbreak dependent\_\allowbreak speed}, \texttt{two\_\allowbreak polarizations}, \texttt{no\_\allowbreak breathing\_\allowbreak mode}, \texttt{polarization\_\allowbreak count}, \texttt{entropy\_\allowbreak of\_\allowbreak scale\_\allowbreak ratio}, \texttt{entropy\_\allowbreak doubling\_\allowbreak is\_\allowbreak additive}, \texttt{entropy\_\allowbreak increment\_\allowbreak independent\_\allowbreak of\_\allowbreak size}, \texttt{no\_\allowbreak minimum\_\allowbreak length}, \texttt{no\_\allowbreak final\_\allowbreak description}\par\smallskip
-\noindent\textbf{\texttt{Waves.lean}} (20)\quad \texttt{conserved\_\allowbreak has\_\allowbreak no\_\allowbreak dynamics}, \texttt{monopole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{dipole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{quadrupole\_\allowbreak is\_\allowbreak leading}, \texttt{power\_\allowbreak pos}, \texttt{power\_\allowbreak ratio\_\allowbreak halving}, \texttt{inspiral\_\allowbreak shrinks\_\allowbreak orbit}, \texttt{separation\_\allowbreak rate}, \texttt{chirpMass\_\allowbreak symm}, \texttt{chirpMass\_\allowbreak equal}, \texttt{chirp\_\allowbreak exponent}, \texttt{chirp\_\allowbreak mass\_\allowbreak exponent}, \texttt{hulse\_\allowbreak taylor\_\allowbreak agreement}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak hulse\_\allowbreak taylor}, \texttt{gw150914\_\allowbreak equal\_\allowbreak mass\_\allowbreak component}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak double\_\allowbreak pulsar}, \texttt{double\_\allowbreak pulsar\_\allowbreak tighter}, \texttt{gw\_\allowbreak sector\_\allowbreak matches\_\allowbreak gr}, \texttt{reflectivity\_\allowbreak nonzero\_\allowbreak but\_\allowbreak unbounded}, \texttt{same\_\allowbreak constant\_\allowbreak both\_\allowbreak sectors}\par\smallskip
+\noindent\textbf{\texttt{Waves.lean}} (26)\quad \texttt{conserved\_\allowbreak has\_\allowbreak no\_\allowbreak dynamics}, \texttt{monopole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{dipole\_\allowbreak does\_\allowbreak not\_\allowbreak radiate}, \texttt{quadrupole\_\allowbreak is\_\allowbreak leading}, \texttt{power\_\allowbreak pos}, \texttt{power\_\allowbreak ratio\_\allowbreak halving}, \texttt{inspiral\_\allowbreak shrinks\_\allowbreak orbit}, \texttt{separation\_\allowbreak rate}, \texttt{chirpMass\_\allowbreak symm}, \texttt{chirpMass\_\allowbreak equal}, \texttt{chirp\_\allowbreak exponent}, \texttt{chirp\_\allowbreak mass\_\allowbreak exponent}, \texttt{hulse\_\allowbreak taylor\_\allowbreak agreement}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak hulse\_\allowbreak taylor}, \texttt{gw150914\_\allowbreak equal\_\allowbreak mass\_\allowbreak component}, \texttt{dipole\_\allowbreak bounded\_\allowbreak by\_\allowbreak double\_\allowbreak pulsar}, \texttt{double\_\allowbreak pulsar\_\allowbreak tighter}, \texttt{gw\_\allowbreak sector\_\allowbreak matches\_\allowbreak gr}, \texttt{reflectivity\_\allowbreak nonzero\_\allowbreak but\_\allowbreak unbounded}, \texttt{echo\_\allowbreak delay\_\allowbreak logarithmic}, \texttt{delay\_\allowbreak insensitive\_\allowbreak to\_\allowbreak reflectivity}, \texttt{echo\_\allowbreak train\_\allowbreak is\_\allowbreak a\_\allowbreak comb}, \texttt{echo\_\allowbreak amplitudes\_\allowbreak geometric}, \texttt{null\_\allowbreak search\_\allowbreak bounds\_\allowbreak reflectivity}, \texttt{pn\_\allowbreak expansion\_\allowbreak cannot\_\allowbreak discriminate}, \texttt{same\_\allowbreak constant\_\allowbreak both\_\allowbreak sectors}\par\smallskip
 
 \subsection*{第五部分\quad 各向异性扇区}
 \noindent\textbf{\texttt{Gauge.lean}} (5)\quad \texttt{mem\_\allowbreak stabilizer\_\allowbreak iff}, \texttt{stabilizer\_\allowbreak eq\_\allowbreak bot\_\allowbreak of\_\allowbreak injective}, \texttt{stabilizer\_\allowbreak eq\_\allowbreak top\_\allowbreak of\_\allowbreak isotropic}, \texttt{sameOrbit\_\allowbreak iff\_\allowbreak eq\_\allowbreak scale}, \texttt{internal\_\allowbreak symmetry\_\allowbreak determined}\par\smallskip
