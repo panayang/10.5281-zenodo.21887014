@@ -1,5 +1,9 @@
 # The Scale-Coupled Dynamics (SCD) Theory
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21887014.svg)](https://doi.org/10.5281/zenodo.21887014)
+[![Zulip Chat](https://img.shields.io/badge/chat-on%20Zulip-5e7ce2?logo=zulip&logoColor=white)](https://apich.zulipchat.com/)
+[![Discord Server](https://img.shields.io/discord/1459399539403522074.svg?label=Discord&logo=discord&color=blue)](https://discord.gg/D5e2czMTT9)
+
 Formal proof of the Scale-Coupled Dynamics (SCD) Theory: An axiomatic framework for the recovery of physical phenomena verified via Lean 4.
 
 ## Verifying
@@ -30,4 +34,3 @@ reflectivity whose magnitude the framework cannot compute, while rapidly
 spinning remnants bound it from above.
 
 The report (Chinese, ~95pp) is `paper/SCD.pdf`.
-
