@@ -143,6 +143,95 @@ def gen_index(total):
     return ''.join(out)
 
 
+
+# One-line Chinese description per module for the report's file table.
+# Editorial content; the counts beside them are generated, these are not.
+DESCRIPTIONS = {
+    "Basic": r"标度代数、Kronecker 收缩原语",
+    "Axioms": r"A2/A3/A5、红移、基准协变性",
+    "Postulates": r"A1--A7 全在一处；证明基底只有一个载体",
+    "Foundation": r"地基重建：标度即交换化，拆分被导出",
+    "Signature": r"时间即漂移方向；号差由耗散导出",
+    "Invariant": r"记账形式由迹导出",
+    "Quantum": r"对易子即导数、Heisenberg 不确定性",
+    "Direction": r"方向是定义表示（原说法已更正）",
+    "Connection": r"曲率即对易子、Bianchi",
+    "Coupling": r"两次缩放生成转动；耦合被词义强制",
+    "Algebra": r"实秩一；筛出 Lorentz 族",
+    "Dimension": r"方向是表示；比值不变；量值即单位",
+    "Slice": r"广延即标签；转动是楔积；$k=3$ 唯一",
+    "Axes": r"两难消解；轴数被迫为一",
+    "Locus": r"A7；标签只活在各向异性轨迹上",
+    "Dynamics": r"守恒出自 Bianchi",
+    "Conformal": r"共形曲率恒等式、Ricci、标量曲率",
+    "Frame": r"A4$'$ 方向性；旧公理禁止 Schwarzschild",
+    "Unify": r"A4 是 A4$'$ 的各向同性轨迹",
+    "Newton": r"线性化、Poisson、对偶数模型",
+    "Schwarzschild": r"使倒数关系成立的相消",
+    "RicciDiag": r"由联络导出 Ricci，引力链条闭合",
+    "Vacuum": r"倒数关系的常数由渐近平直定出",
+    "Deflection": r"各向同性扇区恰好只给一半",
+    "PPN": r"$\gamma=1$；付清另一半",
+    "Precession": r"水星 $42.989''$",
+    "Covariance": r"耗散下的局域协变性",
+    "Singularity": r"无度规退化",
+    "Waves": r"旋近动力学；守恒杀掉单极与偶极；总量桥接",
+    "Horizon": r"无视界；波在光锥；熵是对数；无最小长度",
+    "Witness": r"六个结构的见证：$\mathbb R[X]$ 承载精确标度平移",
+    "Gauge": r"内禀对称性即标度花样稳定子",
+    "Transport": r"输运由花样定出；规范自由即简并",
+    "Axis": r"点粒子回来了",
+    "Defect": r"标度缺陷、绕数即荷",
+    "Charges": r"两个拓扑荷，恰一个被禁闭",
+    "Particle": r"标签结构 $(\mathbb R,\mathbb Z/2,\mathbb Z)$",
+    "Emergence": r"没有基本粒子",
+    "Deformation": r"一阶形变、对应原理、CCR",
+    "Crossed": r"精确非交换；$\hbar$ 是标度步长（见证见 Witness）",
+    "NCConformal": r"非交换曲率；修正 $=[\sigma_i,\sigma_j]$，纯反对称",
+    "RG": r"标度流、Callan--Symanzik、EFT 塔",
+    "Running": r"由计数导出线性跑动",
+    "QCD": r"渐近自由、量纲嬗变",
+    "Spectrum": r"阈值密度、$\mathrm{CV}$ 检验、换算",
+    "Entropy": r"H 定理、不可逆性",
+    "Light": r"类光锥标度无关",
+    "Observation": r"红移属于观察者而非光",
+    "Particles": r"标度比、寿命、阈值",
+    "DarkMatter": r"探测失效",
+    "DarkEnergy": r"耗散唯一性、de Sitter",
+    "Predictions": r"$w(q)$ 状态方程、数值核对",
+    "Cosmos": r"$w$ 不演化；无初值；暗物质两路；共振宽度界",
+    "Native": r"框架自己的问题；两个时间箭头是一个序",
+    "Data": r"与 DESI／PDG／Fermi-LAT 对质；第二个开关检验",
+    "Color": r"块单值性（色解释已撤回）",
+    "ColorAudit": r"块 $\ne$ 色块",
+    "Codimension": r"（已被方向性 A4 取代）",
+    "Expressive": r"可表达性（独立性结论已推翻）",
+    "CrossCheck": r"跨扇区检验并不存在",
+    "MassAudit": r"拓扑不决定质量律（撤回）",
+    "Audit": r"登记册：撤回／更正／引用／假设",
+}
+
+
+def gen_filetable(total):
+    """The report's per-file table: grouped by part, counts read from the sources."""
+    missing = [m for _, _, ms in PARTS for m in ms if m not in DESCRIPTIONS]
+    if missing:
+        raise SystemExit(f"  DESCRIPTIONS missing entries for {missing}")
+    rows = [r"\begin{center}", r"\begin{longtable}{lrl}", r"\toprule",
+            r"文件 & 定理数 & 内容 \\", r"\midrule", r"\endhead"]
+    for _, zh, mods in PARTS:
+        rows.append(r"\multicolumn{3}{l}{\emph{%s}}\\" % zh)
+        for mod in mods:
+            rows.append(r"\texttt{%s.lean} & %d & %s \\"
+                        % (mod, len(theorems(mod)), DESCRIPTIONS[mod]))
+        rows.append(r"\midrule")
+    nfiles = len([f for f in os.listdir(SRC) if f.endswith('.lean')])
+    loc = sum(1 for f in os.listdir(SRC) if f.endswith('.lean') for _ in open(f'{SRC}/{f}'))
+    rows.append(r"\textbf{合计} & \textbf{%d} & %d 个文件，%d 行 Lean 代码 \\"
+                % (total, nfiles, loc))
+    rows += [r"\bottomrule", r"\end{longtable}", r"\end{center}"]
+    return "\n".join(rows)
+
 def check_citations():
     real = set()
     for f in os.listdir(SRC):
@@ -188,6 +277,22 @@ def main():
                 ok = False
         else:
             print("  theorem index in step")
+
+    tex = open(TEX).read()
+    lt = tex.find(r"\begin{longtable}{lrl}")
+    if lt > 0:
+        a = tex.rfind(r"\begin{center}", 0, lt)
+        b = tex.find(r"\end{center}", tex.find(r"\end{longtable}", lt)) + len(r"\end{center}")
+        tbl = gen_filetable(total)
+        if tex[a:b].strip() != tbl.strip():
+            if write:
+                open(TEX, "w").write(tex[:a] + tbl + tex[b:])
+                print("  wrote the file table")
+            else:
+                print("  DRIFT: the file table is stale")
+                ok = False
+        else:
+            print("  file table in step")
 
     bad = check_citations()
     if bad:

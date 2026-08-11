@@ -1,13 +1,33 @@
-# ScaleUniverse
+# The Scale-Coupled Dynamics (SCD) Theory
 
-## GitHub configuration
+Formal proof of the Scale-Coupled Dynamics (SCD) Theory: An axiomatic framework for the recovery of physical phenomena verified via Lean 4.
 
-To set up your new GitHub repository, follow these steps:
+## Verifying
 
-* Under your repository name, click **Settings**.
-* In the **Actions** section of the sidebar, click "General".
-* Check the box **Allow GitHub Actions to create and approve pull requests**.
-* Click the **Pages** section of the settings sidebar.
-* In the **Source** dropdown menu, select "GitHub Actions".
+```
+lake exe cache get
+lake build                       # 0 errors
+lake env lean SCD/Verify.lean    # #print axioms on all 644 theorems
+python3 tools/sync_report.py     # consistency check; exit 1 on drift
+```
 
-After following the steps above, you can remove this section from the README file.
+All 644 theorems are audited: every one reduces to `propext`,
+`Classical.choice` and `Quot.sound`, and none to `sorryAx`. The audit list, the
+report's file table and its theorem index are **generated from the sources**, so
+nothing can quietly fall out of them.
+
+## Status
+
+Read `SCD/Audit.lean` before relying on any result. It is the register of what
+has been **retracted** (4), **narrowed in scope** (6), **cited without proof**
+(2) and **assumed** (3, including A6′ and A7). The seven axioms are stated
+together in `SCD/Postulates.lean`; `SCD.lean` is the intended reading order.
+
+Two live empirical problems, both stated in `SCD/Data.lean`: DESI prefers an
+evolving dark-energy equation of state at 2.8–4.2σ, which A5 forbids with no
+adjustable parameter; and the no-horizon result implies a nonzero ringdown
+reflectivity whose magnitude the framework cannot compute, while rapidly
+spinning remnants bound it from above.
+
+The report (Chinese, ~95pp) is `paper/SCD.pdf`.
+

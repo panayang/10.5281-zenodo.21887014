@@ -5118,11 +5118,14 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Vacuum.lean} & 5 & 倒数关系的常数由渐近平直定出 \\
 \texttt{Deflection.lean} & 7 & 各向同性扇区恰好只给一半 \\
 \texttt{PPN.lean} & 9 & $\gamma=1$；付清另一半 \\
-\texttt{Precession.lean} & 8 & 水星 $42.99''$ \\
+\texttt{Precession.lean} & 8 & 水星 $42.989''$ \\
 \texttt{Covariance.lean} & 7 & 耗散下的局域协变性 \\
 \texttt{Singularity.lean} & 6 & 无度规退化 \\
-\texttt{Waves.lean} & 16 & 旋近动力学：守恒杀掉单极与偶极 \\
-\texttt{Horizon.lean} & 12 & 无视界；波在光锥；熵是对数；无最小长度 \\
+\texttt{Horizon.lean} & 15 & 无视界；波在光锥；熵是对数；无最小长度 \\
+\texttt{Waves.lean} & 35 & 旋近动力学；守恒杀掉单极与偶极；总量桥接 \\
+\midrule
+\multicolumn{3}{l}{\emph{第四部分附\quad 结构的见证}}\\
+\texttt{Witness.lean} & 6 & 六个结构的见证：$\mathbb R[X]$ 承载精确标度平移 \\
 \midrule
 \multicolumn{3}{l}{\emph{第五部分\quad 各向异性扇区}}\\
 \texttt{Gauge.lean} & 5 & 内禀对称性即标度花样稳定子 \\
@@ -5135,7 +5138,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \midrule
 \multicolumn{3}{l}{\emph{第六部分\quad 量子扇区}}\\
 \texttt{Deformation.lean} & 12 & 一阶形变、对应原理、CCR \\
-\texttt{Crossed.lean} & 11 & 精确非交换；$\hbar$ 是标度步长 \\
+\texttt{Crossed.lean} & 11 & 精确非交换；$\hbar$ 是标度步长（见证见 Witness） \\
 \texttt{NCConformal.lean} & 18 & 非交换曲率；修正 $=[\sigma_i,\sigma_j]$，纯反对称 \\
 \midrule
 \multicolumn{3}{l}{\emph{第七部分\quad 标度流与内容}}\\
@@ -5153,8 +5156,8 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \multicolumn{3}{l}{\emph{第八部分\quad 预言与数据}}\\
 \texttt{Predictions.lean} & 17 & $w(q)$ 状态方程、数值核对 \\
 \texttt{Cosmos.lean} & 13 & $w$ 不演化；无初值；暗物质两路；共振宽度界 \\
-\texttt{Native.lean} & 12 & 框架自己的七个问题 \\
-\texttt{Data.lean} & 19 & 与 DESI／PDG／Fermi-LAT 对质 \\
+\texttt{Native.lean} & 15 & 框架自己的问题；两个时间箭头是一个序 \\
+\texttt{Data.lean} & 23 & 与 DESI／PDG／Fermi-LAT 对质；第二个开关检验 \\
 \midrule
 \multicolumn{3}{l}{\emph{第九部分\quad 登记册}}\\
 \texttt{Color.lean} & 17 & 块单值性（色解释已撤回） \\
@@ -5163,9 +5166,9 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Expressive.lean} & 10 & 可表达性（独立性结论已推翻） \\
 \texttt{CrossCheck.lean} & 9 & 跨扇区检验并不存在 \\
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
-\texttt{Audit.lean} & 4 & 登记册：撤回／更正／引用／假设 \\
+\texttt{Audit.lean} & 5 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{611} & 62 个文件，12055 行 Lean 代码 \\
+\textbf{合计} & \textbf{644} & 63 个文件，12997 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -5188,9 +5191,29 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \begin{verbatim}
     lake exe cache get
-    lake build
-    lake env lean SCD/Verify.lean   # 公理审计
+    lake build                       # 应为 0 error
+    lake env lean SCD/Verify.lean    # 公理审计：全部 644 条
+    python3 tools/sync_report.py     # 一致性核查，漂移时退出码 1
 \end{verbatim}
+
+\subsection{一致性由脚本强制，不靠人工}
+
+本报告的三处生成内容——\texttt{Verify.lean} 的审计清单、上表、以及附录的定理索引——
+\textbf{全部由 \texttt{tools/sync\_report.py} 从源码生成}，不是人工维护的。
+该脚本强制四件事：
+
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item \textbf{每条定理都在审计清单里}——新文件若未登记，脚本报模块漂移；
+\item \textbf{每个 \texttt{\textbackslash leanline} 引用都指向真实存在的对象}；
+\item \textbf{报告引用的计数与源码一致}；
+\item \textbf{上表的每文件定理数与源码一致}。
+\end{itemize}
+
+\begin{mdframed}[linecolor=axcol,linewidth=1pt,backgroundcolor=axcol!5]
+写这个脚本是因为\textbf{人工维护已经失败过三次}：
+补了定理忘记重生成审计清单、删了定理留下悬空引用、加了新文件而它的定理\emph{根本没被审计}。
+\textbf{三次都是脚本发现的，不是我发现的。}
+\end{mdframed}
 
 \section{结语}
 
