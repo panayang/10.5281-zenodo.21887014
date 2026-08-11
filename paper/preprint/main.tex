@@ -1,0 +1,1838 @@
+\documentclass[aps,prd,twocolumn,superscriptaddress,nofootinbib]{revtex4-2}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{orcidlink}
+\usepackage{mdframed}
+
+\newtheorem{axiom}{Axiom}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\lean}[1]{\texttt{\small #1}}
+\newcommand{\SM}{Supplemental Material}
+
+\begin{document}
+
+\title{Scale-Coupled Dynamics: Gravity and Charge from a Single Non-Commuting Scale Field}
+
+\author{Xinyu Yang\,\orcidlink{0009-0007-2600-0948}}
+\noaffiliation
+
+\date{\today}
+
+\begin{abstract}
+We develop an axiomatic theory in which \emph{scale} — a dimensionless
+local unit ratio — rather than spacetime is primitive. From seven axioms
+we derive that the local scale must be directional (a scalar version is
+refuted by its own consequences), that two scalings along different
+directions must fail to commute with an antisymmetric residue that is
+exactly a rotation, that the resulting Lie algebra has real rank one and
+hence belongs to the Lorentz family, and that the number of directions is
+fixed by a single postulate about what counts as an observation.
+Curvature, the gauge connection, and the renormalization group turn out
+to be different readings of one object — the scale vector field and its
+own rate of change. The isotropic sector reproduces the Schwarzschild
+metric and closes quantitatively: light bending $1.7515''$ and Mercury's
+perihelion advance $42.989''/\mathrm{century}$, both to the precision
+quoted, with no free parameter beyond the single dimensionless unit any
+dimensionless theory must carry. The anisotropic sector produces point
+particles as unresolvable knots of the scale vector field, carrying
+exactly a $\mathbb{Z}$ winding charge and a $\mathbb{Z}/2$ confined
+charge. Non-commutativity of the scale generators produces $\hbar$ as an
+exact step along the scale axis and makes the entire quantum correction
+to curvature purely antisymmetric, proving that the radiative sector of
+gravitational waves is identical to general relativity at \emph{every}
+post-Newtonian order — the two theories differ, if at all, only through
+the absence of a horizon. We confront the framework with GW250114's
+area-law test, the ergoregion-instability constraint from rapidly
+spinning remnants, DESI's dark-energy equation of state, the $f_0(500)$
+pole width, and fourteen decades of the measured particle spectrum, and
+report honestly where the framework currently loses: a
+$2.8$–$4.2\sigma$ tension with DESI's preference for an evolving equation
+of state, and an open question at the $f_0(500)$ pole. The argument has
+been verified end to end in the Lean~4 proof assistant — 644
+machine-checked theorems, zero admitted gaps — reproduced as ordinary
+mathematics in the \SM, which this self-contained paper does not require
+to be read.
+\end{abstract}
+
+\maketitle
+
+%======================================================================
+\section{Introduction}\label{sec:intro}
+%======================================================================
+
+General relativity and the Standard Model both take a four-dimensional
+spacetime manifold as given and place fields upon it. Each has open
+seams at the place where it meets the other, or meets its own
+foundations: a singularity where curvature diverges and the classical
+description simply stops; a cosmological constant whose value is
+measured, not explained, by either theory; a renormalization group
+whose running couplings are computed order by order in perturbation
+theory rather than obtained in closed form; a particle spectrum whose
+labels — charge, color, generation — are read off experiment and then
+built into the group-theoretic structure of the Lagrangian by hand. None
+of these are failures of either theory on its own terms; they are the
+places where a choice was made — a manifold, a gauge group, a set of
+fields — that the theory itself does not derive.
+
+This paper explores a different starting point, one deliberately more
+austere than either: take the \emph{scale} at a point — a dimensionless
+ratio of a local unit to a reference — as the only primitive, and ask
+what follows if that scale is directional, because the physical sources
+that produce it (energy-momentum) are tensorial rather than scalar, and
+non-commuting, because performing two scalings along different
+directions in the wrong order leaves a residue. Spacetime curvature, the
+gauge connection, particle content, and $\hbar$ are then not
+independently postulated; they are different questions asked of a single
+object, the scale vector field, and several of the open seams listed
+above turn out to be forced closed by that object's own algebra rather
+than left as free choices: the dimension and signature of spacetime, the
+particle-label alphabet, the leading term of the renormalization group,
+and the relation between the metric connection and the gauge connection
+all become theorems rather than inputs.
+
+This is not a claim that spacetime does not exist, nor a claim that the
+program competes with approaches that quantize the metric directly (loop
+quantum gravity), posit extended objects and extra dimensions (string
+theory), or build spacetime from discrete causal order (causal set
+theory). Those programs start by choosing what is fundamental among
+geometry, matter, and causal structure, and then quantize or discretize
+it. This paper asks a prior question: whether geometry, gauge structure,
+and particle content are themselves derivable from something more
+primitive than any of the three — and answers it constructively, by
+exhibiting the derivation rather than arguing for its possibility in the
+abstract. The claim is that the four-dimensional, Lorentzian, curved
+structure usually assumed can instead be \emph{derived} from a single
+forced algebraic fact: two symmetric operators bracket to an
+antisymmetric one. Everything that follows is the working-out of that
+one fact's consequences, and nothing else is smuggled in along the way —
+a claim that Section~\ref{sec:register} exists specifically to make
+checkable rather than asserted.
+
+Every derivation summarized here has an independent, complete proof; we
+have verified the entire argument mechanically in the Lean~4 proof
+assistant against no axioms beyond those of standard mathematics
+(\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}),
+and the \SM\ reproduces every statement and proof — 644 theorems in
+total, spanning definitions, lemmas, and closing numerical bounds — in
+full mathematical detail, organized to mirror this paper section by
+section. This paper does not depend on that verification to be read; it
+is a self-contained physics argument, written so that a reader who
+never opens the \SM\ still receives every derivation's actual content
+rather than a pointer to it. What the verification adds is a guarantee
+that cannot be obtained by proofreading alone: that every ``Theorem'' in
+what follows is exactly what it claims to be, with every hypothesis
+stated and no step skipped, because a proof assistant does not accept an
+argument it cannot check line by line.
+
+The remainder of the paper is organized as follows. Section~\ref{sec:picture}
+states the physical picture in ordinary language before any algebra,
+because a statement built from commutators and a Lie-algebra
+classification is not obviously less abstract than the curved geometry
+it replaces, unless a picture is attached to it first; the picture
+introduces, informally, every structural result the later sections
+derive formally, so that the algebra which follows always has a physical
+question attached to it. Section~\ref{sec:axioms} states the seven
+axioms precisely. Section~\ref{sec:chain} derives the forced chain from
+the axioms to a four-dimensional Lorentzian structure carrying both a
+metric connection and a gauge connection — the single argument on which
+the rest of the paper depends. Section~\ref{sec:branch} states the
+branch point between the isotropic and anisotropic sectors, which
+determines whether a given region of the scale field carries curvature
+alone or curvature together with charge. Section~\ref{sec:gravity} gives
+the isotropic (gravitational) sector in full: the Schwarzschild solution
+and the two classical solar-system tests, the Newtonian limit obtained
+exactly rather than as a truncated series, local covariance under global
+dissipation, the absence of singularities and horizons, and
+gravitational-wave dynamics from inspiral through ringdown, including a
+concrete confrontation with GW250114~\cite{GW250114} and
+GW241011~\cite{GW241011}.
+Section~\ref{sec:particles} gives the anisotropic (particle) sector: the
+two topological charges, their independence, and the resulting bound on
+the mass spectrum. Section~\ref{sec:flow} gives the renormalization
+group, obtained as a theorem about a defect density rather than a
+perturbative computation, and the strong-interaction scale.
+Section~\ref{sec:quantum} gives the quantum sector — $\hbar$ as an exact
+step along the scale axis — and the all-orders equivalence with general
+relativity in the gravitational-wave sector that follows from it.
+Section~\ref{sec:cosmology} gives dark matter, dark energy, and the
+scale-blindness of light. Section~\ref{sec:data} confronts the framework
+with data, in one table. Section~\ref{sec:falsify} states, observation by
+observation, what would kill which part of the framework.
+Section~\ref{sec:register} is a register of what has been retracted,
+corrected, cited without proof, and assumed — the standing answer to
+whether any of the foregoing rests on more than the seven axioms plus one
+external physical input. Section~\ref{sec:concl} concludes.
+
+%======================================================================
+\section{The physical picture}\label{sec:picture}
+%======================================================================
+
+Sixteen statements, in the order they compose, with the algebra deferred
+to the sections that follow. Each previews a result proved formally
+later; the section reference at the end of a paragraph is where the
+informal claim becomes a theorem.
+
+\emph{There is no space, only a ratio.} At every point there is a
+number, and that number is a ratio: the local unit compared to some
+reference. The choice of reference is unobservable by construction, so
+only \emph{differences} of this number are meaningful. Picture a map
+that records, everywhere, how long a meter is there — with no grid drawn
+on it. The grid, i.e.\ spacetime, is what emerges from the
+\emph{inconsistency} between these numbers at nearby points, not
+something the numbers are written onto. This is a stronger claim than
+``spacetime is emergent'' in the sense usually meant by that phrase: it
+is not that a smooth manifold approximates some discrete substrate at
+long wavelengths, but that the manifold structure itself — the fact that
+nearby points have well-defined relations at all — is read off
+differences in a single scalar-valued field, with no independent
+metrical input.
+
+\emph{``Two places'' is constructed, not primitive.} If the scale
+pattern at two points is parallel, no observable distinguishes them —
+not two places that look alike, but no second place at all, since every
+question one could ask of one point has the identical answer at the
+other. A perfectly uniform region has no internal structure and no
+extent: distance is the accumulated \emph{non-parallelism} between
+points, and because the wedge product of two vectors is antisymmetric,
+separation is naturally a signed area, not a length. Two consequences
+follow immediately, both proved in Section~\ref{sec:chain}: a truly
+homogeneous universe would be a single point no matter how large a
+coordinate volume one assigns it, and the ordinary notion of distance as
+a positive scalar is recovered only after choosing an orientation, which
+this framework does not supply for free.
+
+\emph{Scale is directional because energy-momentum is tensorial.} At
+each point the scale is not a number but a \emph{vector}: a fluid
+carries different energy density along its flow than transverse to it,
+and a tensorial source cannot be matched by a single scalar scale. This
+is not an aesthetic preference for more structure; Section~\ref{sec:gravity}
+proves the scalar version of this requirement is not too weak but too
+strong — it \emph{forbids} the Schwarzschild metric outright, so a
+scalar scale is not merely insufficient to describe the solar system, it
+actively excludes the possibility of describing it. Directionality is
+consequently not an enrichment chosen for generality; it is the minimum
+needed for the theory to be compatible with a single measured orbit.
+
+\emph{Gravity is the ruler changing, not space bending.} A change in the
+\emph{magnitude} of the scale vector across position is exactly gravity;
+curvature is the second-order inhomogeneity of scale — not a first-order
+gradient, which is unobservable, but the rate at which that gradient
+itself changes. Nothing is bent: light follows what looks locally
+straight, but the ruler used to judge straightness changes along the
+path, so the trajectory appears curved. Tidal forces are the
+\emph{second}-order change in the ruler — the first-order, uniform-dilation
+part is unobservable, being exactly a reference shift. Two bodies in
+free fall separate or approach not because a force acts between them but
+because the local unit of length differs infinitesimally at their two
+positions, and that difference is what a tidal-force meter actually
+measures; the entire content of the gravitational field, on this
+reading, is a statement about how a ruler's length varies from place to
+place, encoded completely in the second derivative of one scalar field
+per direction (Section~\ref{sec:gravity}).
+
+\emph{Rotation is direction changing — and it is \emph{generated} by
+scaling.} A change in the \emph{direction} of the scale vector across
+position is rotation, and here is the theory's sharpest forced step:
+performing two scalings along different directions in the two possible
+orders must differ by a rotation. This is not a chosen coupling; it is
+forced by the meaning of the words — a scaling is a pure stretch and
+hence symmetric, a rotation preserves length and hence is antisymmetric,
+and the bracket of two symmetric operators is necessarily antisymmetric
+(Theorem~\ref{thm:coupling}). Physically this is the Thomas–Wigner
+rotation~\cite{Thomas1926}, and the
+Terrell–Penrose effect~\cite{Terrell1959,Penrose1959} is its visual form: a
+fast-moving object is \emph{seen} as rotated rather than contracted,
+because a change of scale is being read as a rotation. One direction:
+flat. Two or more: curvature, generated by the scalings themselves, with
+no separate assumption about how gravity and rotation relate — they are
+the symmetric and antisymmetric parts of one algebra, and the bracket
+between them is arithmetic, not physics chosen to fit.
+
+\emph{The gauge connection and the gravitational connection are the same
+object.} Both are built from the same log-derivative of the scale
+pattern, evaluated on two different loci of the same field: where the
+pattern is directionally uniform (isotropic), the connection reads as
+curvature; where it is not (anisotropic), the same construction reads as
+a Yang–Mills field strength. A gauge theory and a metric theory are, in
+this framework, two questions asked of one connection, not two
+structures glued together after the fact (Section~\ref{sec:chain}).
+
+\emph{Whether charge exists at all is itself a fact about scale.} The
+branch between the isotropic and anisotropic loci is not fixed once and
+for all; it is a property of the scale pattern at a given resolution,
+and the same region of the substrate can sit on one side of the branch
+at one energy scale and the other side at a different one. This is the
+framework's reading of the empirical fact that interactions separate as
+energy falls: it is not that several independent forces happen to
+decouple at different scales, but that whether an order parameter, and
+hence a charge, is present at all is a scale-dependent question with a
+single underlying source (Section~\ref{sec:branch}).
+
+\emph{$\hbar$ is a step along the scale axis.} Not a mysterious
+constant: translating one step along the scale axis fails to commute
+with position, and the size of the mismatch is $\hbar$ — exactly, not as
+a first-order approximation in some formal deformation parameter that is
+later set to a physical value. Uncertainty is then not measurement
+disturbance but the mutual exclusion of scale sharpness and content
+richness: a perfectly sharp scale is a single point on the scale axis,
+and a point carries no content, so resolving any finite amount of
+structure requires a finite window, and the width of that window times
+the density of what it must resolve is bounded below
+(Section~\ref{sec:quantum}).
+
+\emph{The entire quantum correction to geometry is a rotation, never a
+stretch.} Once the scale algebra is made non-commutative, the correction
+it produces to curvature is exactly the commutator of two scale
+generators — and a commutator, by the same symmetric/antisymmetric split
+that produces gravity and rotation in the classical theory, is purely
+antisymmetric. The symmetric, radiative part of the geometry is
+consequently untouched by quantization to any order: gravitational waves
+are the one observable sector in which this framework and general
+relativity cannot differ, not merely one in which the difference is
+currently too small to see (Section~\ref{sec:quantum}).
+
+\emph{``What exists'' is a slice, not a property of the world.} Changing
+resolution does not mean knowing more about the same particles; it means
+looking at a different set of them. ``The list of fundamental
+particles'' is accordingly ill-posed: there is always unresolved content
+above any scale, with no final layer. The size of the Standard Model's
+label set measures the logarithmic range it covers, not physical depth
+— a theory that must remain valid over thirty orders of magnitude in
+energy needs a label for everything that appears anywhere in that range,
+whether or not it is realized at any particular scale one happens to
+probe.
+
+\emph{A particle is an unresolvable knot in the scale vector field.} Not
+a field excitation but a configuration: the vector winds around a point
+and cannot be combed flat. Its integer charge is the winding number of
+the vector around a sphere; its mass is not a property it carries but
+the location at which it appears on the scale axis; its rotational label
+is $v \wedge \nabla v$, so charge necessarily comes with spin. A second,
+independent label — a confinement class rather than a winding number —
+is available from the same construction, and the two are logically
+independent of each other: knowing one fixes nothing about the other
+(Section~\ref{sec:particles}). Exactly two labels are available, not
+three and not one, because the scale pattern in the anisotropic sector
+has already been shown to collapse to a single vector
+(Section~\ref{sec:chain}), and a single vector supports exactly a
+winding number and a monodromy class and nothing further.
+
+\emph{The renormalization group is a theorem about counting, not a
+perturbative expansion.} A coupling read as a ratio of defect densities
+changes with the logarithm of scale at a rate fixed directly by the same
+dissipation constant that drives cosmic expansion (Section~\ref{sec:flow}).
+No diagram is summed and no loop order is chosen; the leading term of
+the beta function is an algebraic consequence of what a coupling
+\emph{is} in this framework; a subject usually organized around
+successive orders of a perturbative expansion is organized here around a
+single exact linear relation.
+
+\emph{The universe is not expanding; scale is running.} Galaxies are not
+flying apart — the ruler is shrinking, and because energy scale is the
+reciprocal of length scale, the energy scale is dissipating. There is no
+first moment, because there is no zero scale: scale is a unit and is
+never zero, so ``the age of the universe'' is not a quantity — what
+exists is an elapsed ratio, finite and measurable, with no origin
+(Section~\ref{sec:cosmology}).
+
+\emph{Black holes are arbitrarily dark, never fully black.} The horizon
+is where the time component of the metric vanishes, and that component
+is minus the square of a scale unit — never zero. No singularity, no
+horizon, no infinite redshift, all three the same fact: ratios are
+invertible. A black hole is a region of extreme but finite scale ratio;
+the exterior geometry is untouched, so shadow, ISCO, and the early
+ringdown all agree with general relativity, but nothing is causally cut
+off and no information is destroyed (Section~\ref{sec:gravity}).
+
+\emph{A horizonless remnant should ring the way a black hole does, then
+echo.} Because nothing in the metric is ever exactly reflecting or
+exactly absorbing, a gravitational-wave signal that would terminate at a
+horizon in general relativity instead partially reflects back and forth
+in this framework, producing a train of echoes evenly spaced in time
+after the main ringdown, with amplitude falling geometrically from one
+echo to the next. This is the one place this framework's predictions are
+qualitatively distinctive without being quantitatively computable, since
+the reflectivity itself depends on physics — the interior equation of
+state — that is explicitly outside this framework's scope
+(Section~\ref{sec:gravity}).
+
+\emph{The two arrows of time are one order.} A long-standing puzzle
+elsewhere is why the direction of entropy increase coincides with the
+direction of cosmic expansion; the usual answer invokes a special
+initial condition aligning two otherwise independent facts. Here they
+are not two facts. Three results, proved independently and never
+invoking one another — that time is the direction along which scale
+drifts (Section~\ref{sec:chain}), that an $H$-theorem for coarse-grained
+content holds using only finite resolution, with no scale dependence
+anywhere in its own proof, and that the entropy of a region of scale
+ratio $R$ is $\rho \ln R$ (Section~\ref{sec:cosmology}) — combine into
+the following.
+
+\begin{theorem}[The two arrows are one order]\label{thm:onearrow}
+For $\rho>0$ and $R_1,R_2>0$,
+\[
+\rho\ln R_1 \le \rho\ln R_2 \iff R_1\le R_2,
+\]
+and likewise with strict inequalities.
+\end{theorem}
+\begin{proof}
+$\rho \ln$ is a strictly increasing function of $R$ for fixed $\rho > 0$,
+since $\ln$ is strictly increasing and multiplication by a positive
+constant preserves order.
+\end{proof}
+
+Ranking regions by entropy and ranking them by scale ratio are
+\emph{literally} the same order relation, not two arrows that happen to
+align. The one modeling choice this rests on is reading entropy as
+$\rho \ln R$, the count of resolvable thresholds within a region of scale
+ratio $R$; that reading is motivated by, but not forced by, the
+threshold-density construction of Section~\ref{sec:flow}, so the identity
+is exact given the reading and the reading itself is a choice, stated as
+such.
+
+\emph{Summary.} A number (ratio) becomes a vector because its source is
+tensorial; the vector's magnitude changing is gravity, its direction
+changing is rotation; the two are coupled by the meaning of the words
+involved; the commutator of that coupling gives $\hbar$ and the quantum
+correction; where the vector cannot be combed flat is a particle; the
+vector running overall is cosmology. All physics here is a different
+reading of the same vector field. What this picture does \emph{not} buy
+is stated equally plainly: no coupling constants, no mass values, no
+generation structure, no scattering amplitudes. It answers ``what,'' not
+``how much''; the quantitative part closes fully only in the
+gravitational sector, and the particle sector delivers label structure
+and bounds, not numbers.
+
+%======================================================================
+\section{Axioms}\label{sec:axioms}
+%======================================================================
+
+The substrate is a commutative differential ring over $n$ directions; an
+earlier version of this development posited three distinct carrier
+structures for different sectors of the theory, later shown to reduce to
+one. Seven axioms are used throughout.
+
+\begin{axiom}[A1 — substrate]
+There is a commutative ring $A$ with $n$ commuting derivations
+$d_1,\dots,d_n : A \to A$, each additive and satisfying the Leibniz rule.
+\end{axiom}
+
+\begin{axiom}[A2 — scale field]
+A distinguished unit $s \in A^\times$, the local scale.
+\end{axiom}
+
+\begin{axiom}[A3 — scale-energy duality]
+An energy unit $\varepsilon\in A^\times$ with $\varepsilon\cdot s = 1$.
+\end{axiom}
+
+\begin{axiom}[A4$'$ — directional measurement]
+Scale is assigned per direction: $s : \{1,\dots,n\}\to A^\times$, not a
+single scalar. (An earlier, scalar version, A4, is refuted in
+Section~\ref{sec:gravity}: it forbids the Schwarzschild metric outright.)
+\end{axiom}
+
+\begin{axiom}[A5 — fiducial covariance]
+Physical content is invariant under $s \mapsto u\cdot s$ for any global
+unit $u$: only ratios of scale are observable.
+\end{axiom}
+
+\begin{axiom}[A6 — openness / dissipation]
+The scale field is not conserved by a global potential: no functional's
+gradient equals the full drift.
+\end{axiom}
+
+\begin{axiom}[A7 — observability]
+A commitment about what counts as a single observation, formalized as a
+dimension-matching condition between the rotation sector the coupling
+generates and the direction sector A4$'$ labels; it fixes the number of
+\emph{independent} directions rather than leaving it a free integer.
+\end{axiom}
+
+A7 is deliberately an axiom and not an informal judgment: it is a
+commitment about what an observation is rather than a claim about the
+world, and Section~\ref{sec:falsify} returns to the consequence that it
+cannot be falsified by any single experiment.
+
+One further ingredient, the scale response law
+\begin{equation}
+e^{2\sigma}R = \kappa \rho, \tag{A6$'$}
+\end{equation}
+relating the curvature scalar $R$ built from the scale field to a matter
+density $\rho$, is used in the gravity sector. \textbf{It is not one of
+the seven axioms.} It is an external physical input — the one place
+general relativity's own field equation is assumed rather than derived —
+and it is registered as such in Section~\ref{sec:register}.
+
+%======================================================================
+\section{The forced chain to a four-dimensional Lorentzian gauge structure}\label{sec:chain}
+%======================================================================
+
+This section is the spine of the paper: a single chain of implications,
+each step forced rather than chosen, from A1–A7 to a four-dimensional
+Lorentzian structure carrying both a metric and a gauge connection.
+
+\textbf{The scale/rotation split is not a choice.} Given A1–A4$'$, any
+endomorphism of the tangent data at a point decomposes canonically into a
+symmetric part (a scaling) and an antisymmetric part (a rotation); this
+is a fact about the algebra of endomorphisms of an inner-product space,
+not a modeling decision, since every such endomorphism is the sum of its
+symmetric and antisymmetric parts and that decomposition is unique. An
+earlier stage of this development reached the same split by a different
+route, an abelianization of an abstract comparison group applicable only
+to the scalar case; that construction is superseded by, and is a special
+case of, the endomorphism decomposition used from here on, and the two
+are not independently combined into a stronger joint claim.
+
+\textbf{Time is the direction along which scale drifts.} Given A6
+(dissipation), exactly one direction carries a definite, non-cancelling
+sign of drift; the signature is forced to a codimension-one split,
+$(1,n-1)$. A theory in which every direction could drift in either sign
+with no distinguished one would admit no consistent notion of ``before''
+and ``after''; A6 rules that out. Labeling the distinguished direction
+\emph{timelike} rather than merely \emph{distinguished} is a convention
+consistent with the split, not a further consequence A6 forces on its
+own — a distinction registered explicitly rather than smoothed over
+(Section~\ref{sec:register}).
+
+\textbf{The bookkeeping form is $\tau(xy)$ for a trace $\tau$ alone,} not
+an independent postulate: any bilinear form on the ring compatible with
+both the ring product and the derivations must take this shape, because a
+trace is (up to scale) the unique linear functional invariant under
+conjugation, and conjugation invariance is what compatibility with the
+derivations demands.
+
+\textbf{Curvature is the commutator of transports.} Let $\nabla_i$ denote
+parallel transport of a tensorial quantity along direction $i$, built
+directly from the scale pattern rather than postulated independently.
+Then the curvature of the connection is
+\begin{equation}
+F_{ij} := [\nabla_i, \nabla_j],
+\end{equation}
+literally the failure of two transports to commute, rather than an
+independently defined tensor whose vanishing is imposed or assumed. Two
+consequences follow directly from this definition rather than from extra
+input: first, commuting \emph{derivations} ($d_id_j = d_jd_i$, part of
+A1) does not imply a flat \emph{connection} — $F_{ij}$ can be nonzero
+even when the underlying derivations commute, because curvature lives in
+the connection, not in the chart; second, the same commutator $F_{ij}$ is
+what is computed in the gravitational sector as the Riemann curvature and
+what is computed in the anisotropic sector as the Yang–Mills field
+strength (Section~\ref{sec:particles}) — \textbf{gravity and gauge
+structure are the same object, read under two different questions about
+which sector's scale pattern is being transported.} Neither is assumed;
+both are the same commutator.
+
+\textbf{Directions are the defining representation, not the algebra
+itself.} Once the algebra generated by the scalings and rotations is
+named explicitly, its dimension as a Lie algebra ($\dim\mathrm{so}(3,1)=6$
+for the eventual case $n=4$) exceeds the number of directions ($4$), so
+directions form the vector representation on which the algebra acts, not
+the algebra's own coordinates — a distinction an earlier version of this
+development conflated.
+
+\begin{theorem}[Coupling is forced]\label{thm:coupling}
+Let $\Sigma_i$ be the scaling generator along direction $i$. Then
+$[\Sigma_i,\Sigma_j]$ is nonzero for $i\neq j$ and is purely
+antisymmetric, i.e.\ a rotation generator.
+\end{theorem}
+\begin{proof}
+A scaling is symmetric with respect to the pairing induced by the trace
+form (it preserves direction and only rescales magnitude, so it is
+self-adjoint); a rotation is antisymmetric (it preserves length, so its
+generator satisfies $R^T = -R$). For symmetric $A,B$,
+\[
+(AB-BA)^T = B^TA^T - A^TB^T = BA - AB = -(AB-BA),
+\]
+so the commutator of two symmetric operators is antisymmetric. That the
+bracket is additionally \emph{nonzero} for $i\neq j$ — that the coupling
+is not merely well-defined but genuinely active — is witnessed concretely
+rather than argued in general: an explicit boost pair in three spatial
+dimensions exhibits a nonvanishing bracket, and no general
+nondegeneracy argument beyond that concrete witness is claimed.
+\end{proof}
+
+No coupling constant is chosen here; the coupling exists purely because
+of what the words ``scaling'' and ``rotation'' mean algebraically.
+
+\textbf{Real rank one, hence the Lorentz family.} The Lie algebra
+generated by one vector's worth of scalings together with the rotations
+they force has real rank one: the maximal abelian subalgebra of
+diagonalizable elements is one-dimensional, since a second independent
+scaling direction would, by Theorem~\ref{thm:coupling}, generate a
+rotation mixing it with the first, destroying simultaneous
+diagonalizability. Citing, without reproving, the classification of
+real-rank-one real simple Lie algebras — $\mathrm{so}(n,1)$,
+$\mathrm{su}(n,1)$, $\mathrm{sp}(n,1)$, $\mathrm{f}_{4(-20)}$ — this
+places the algebra in the Lorentz family $\mathrm{so}(n,1)$; the other
+branches require additional structure (a complex, quaternionic, or
+octonionic module structure on the directions) absent from a real
+scale-vector construction, leaving $\mathrm{so}(n,1)$ as the surviving
+case. The step from ``one drift functional'' to ``one-dimensional
+maximal abelian subalgebra'' above is a physical identification of what
+counts as a single independent scaling direction, not a formal
+deduction from A1–A7 alone — stated here rather than left implicit, since
+it is exactly the kind of step where a numerical coincidence can hide a
+choice (Section~\ref{sec:register}).
+
+\textbf{$n=k+1$, and $k=3$ from A7.} The number of directions $n$ is one
+(time) plus the number of independent spatial directions $k$. $k$ is not
+free once A7's dimension-matching condition is imposed: requiring the
+number of rotations the coupling generates to match the number of
+directions A4$'$ labels gives $k=3$. This is not the only matching
+condition one could write down — comparing the dimension of the full
+algebra to the dimension of its own defining representation instead
+gives $k=2$, and the two conditions provably disagree — so A7 is doing
+real work: it is a specific commitment about \emph{which} two quantities
+must be equal, not an arithmetic inevitability. The framework's own
+argument for preferring the first condition is that the labels available
+are the directions A4$'$ actually assigns scales to, and the coupling's
+output must match \emph{those}, not the abstract size of the algebra
+that generates it — but this is an argument for a modeling choice, not a
+proof that no other choice is coherent, and it is why A7 is registered
+as a postulate about what counts as an observation rather than presented
+as forced by pure counting.
+
+\textbf{The pattern is one vector; more axes are unavailable.} An
+apparent dilemma between a ``uniaxial'' and a ``biaxial'' reading of an
+earlier theorem is resolved once the relevant vanishing identity,
+$v \wedge v = 0$, is recognized as a statement about \emph{homogeneity} —
+a vector wedged with itself is always zero, regardless of how many axes
+exist — rather than a constraint on the number of axes. Once that
+misreading is removed, the scale pattern is shown to collapse to exactly
+one vector, and additional independent axes are not merely disfavored
+but structurally unavailable given the coupling of Theorem~\ref{thm:coupling}.
+
+The chain therefore delivers, from A1–A7 with no further input: a
+Lorentzian signature, four dimensions, a metric and a gauge connection
+that are the same underlying commutator, and a coupling between scaling
+and rotation forced by algebra rather than fit to data.
+
+%======================================================================
+\section{The branch point}\label{sec:branch}
+%======================================================================
+
+The scale pattern at a point is either \emph{isotropic} — the same in
+every direction — or \emph{anisotropic}, and whether it is one or the
+other is a scale-dependent fact, not a fixed property of the point:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+isotropic & anisotropic \\
+\midrule
+no order parameter & order parameter present \\
+no charge & charges present \\
+no multiplet & multiplets present \\
+no rotation-sector charge & curvature/rotation active \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Both columns have one source: isotropy is a single algebraic condition
+on the pattern (uniform direction across the pattern's components), and
+charge, multiplet structure, and rotation-sector activity all switch on
+or off together with it, not independently. The formal branch condition
+itself is a static property of a given pattern, not a function of a
+separate energy-scale variable; the further, motivating reading — that
+the same physical region can present as isotropic at one probing
+resolution and anisotropic at another, giving this framework's account
+of interactions separating as energy falls — is an interpretation
+connecting this branch to the scale-flow structure of
+Section~\ref{sec:flow}, not itself a theorem proved from the branch
+condition alone, and is stated here as such. Section~\ref{sec:gravity}
+treats the isotropic sector; Section~\ref{sec:particles} the anisotropic
+one.
+
+An apparent contradiction is worth forestalling: Section~\ref{sec:gravity}
+computes curvature in a sector called ``isotropic.'' ``Isotropic'' here
+means uniform \emph{direction} of the scale vector, not uniform
+\emph{magnitude} — a radially varying but directionally uniform scale
+pattern has no charge and no rotation-sector label, and still has
+curvature, because curvature is generated by magnitude inhomogeneity
+(Section~\ref{sec:picture}), which is an axis independent of direction
+uniformity.
+
+A second consequence of the branch structure fixes what happens
+\emph{inside} a multiplet once one exists: two directions assigned to
+the same multiplet (Section~\ref{sec:particles}) cannot rotate into each
+other without the underlying scale pattern itself changing first. This
+is not an instance of the general coupling of Theorem~\ref{thm:coupling}
+but a separate, simpler fact: a scaling generator bracketed with
+\emph{itself} vanishes identically, and two directions sharing a
+multiplet by definition share a scale value, hence share a scaling
+generator, hence generate no internal rotation between them — a binary
+fact about equal versus unequal scale values, not a count that
+decreases gradually with multiplet size. Any change in which directions
+belong to which multiplet accordingly requires a change in the
+underlying scale pattern itself: multiplet structure cannot rotate on
+its own, it can only be re-partitioned by the pattern that defines it
+changing.
+
+%======================================================================
+\section{The isotropic sector: gravity}\label{sec:gravity}
+%======================================================================
+
+\subsection{The Schwarzschild solution and the two classical tests}
+
+With the scale pattern isotropic in direction, a metric is built directly
+from the scale field: writing the local scale along the time and radial
+directions as $s_t, s_r$, the line element takes the diagonal form
+$ds^2 = -s_t^2\,dt^2 + s_r^2\,dr^2 + r^2 d\Omega^2$. The connection of
+Section~\ref{sec:chain}, specialized to this static, spherically
+symmetric ansatz, gives the Ricci tensor component by component; the
+vacuum condition (Ricci flat away from a source) becomes the
+stationarity of a particular sum of scale-derivative terms rather than
+an independently imposed differential equation. Imposing asymptotic
+flatness — $s_t, s_r \to 1$ at spatial infinity, the only boundary
+condition consistent with A5 (no preferred finite reference scale) —
+fixes the single remaining integration constant by itself, with no
+further input: the stationarity condition only pins down the
+\emph{derivative} of $\sigma_t+\sigma_r$, and asymptotic flatness alone
+supplies the boundary value that makes the constant zero. A6$'$ plays no
+role in this particular step; it enters later, in the Newtonian limit
+and in fixing the overall normalization of the source term. Reciprocity
+\begin{equation}
+s_t \cdot s_r = 1
+\end{equation}
+follows as a theorem, not an ansatz: the Schwarzschild form is recovered
+exactly, not approximately, as the unique solution consistent with the
+axioms and the one external input A6$'$.
+
+From $s_t s_r=1$, the PPN parameter is exactly $\gamma=1$, and the two
+classical solar-system tests follow with no further assumption:
+\begin{align}
+\delta\phi_\odot &= 1.7515'' \quad(\text{measured } 1.7509\pm0.0002''\text{~\cite{Lambert2011}})\\
+\Delta\varpi_{\text{Mercury}} &= 42.989''/\text{cent.}\quad(\text{measured } 42.98\pm0.04'')
+\end{align}
+Both bounds are certified to the precision quoted. Two internally
+excluded alternatives are worth stating explicitly because they show the
+framework can fail its own tests: computing deflection or precession
+from the isotropic sector's magnitude change \emph{alone}, discarding the
+directional structure of Section~\ref{sec:chain}, gives $0.8758''$ and
+$14.33''$ respectively — both wrong by a clean integer factor (2 and 3)
+relative to the measured values. Each is excluded by the same underlying
+apparatus but through a distinct step: the deflection case is excluded
+by the theorem that full isotropy together with reciprocity forces flat
+space outright, while the precession case is excluded by the same
+$\gamma=1$ derivation used for deflection, evaluated at the isotropic
+sector's $\gamma=0$ instead. Neither exclusion is merely a comparison
+with data.
+
+\subsection{The Newtonian limit and gravitational redshift}
+
+Linearizing $s_t = e^{\sigma}$ about the asymptotic value $\sigma=0$, the
+scale response law A6$'$ reduces, to leading order in $\sigma$, to a
+Poisson-type equation for $\sigma$ sourced by the same density $\rho$ that
+appears in A6$'$, with the reciprocal constant fixed by the same
+asymptotic-flatness argument used above. Since
+$g_{tt}=-s_t^2=-e^{2\sigma}\approx -(1+2\sigma)$, a weak, static source
+gives the standard Newtonian potential to leading order, recovering
+Newtonian gravity as the linear regime of the same reciprocity relation
+that gives $1.7515''$ at higher order — not a separately posited limit.
+Gravitational redshift between two static observers at different $\sigma$
+follows directly from the ratio of their local scale units,
+$s_t(\sigma_2)/s_t(\sigma_1)$, and evaluated for a laboratory height
+difference this reproduces the Pound--Rebka--Snider
+result~\cite{PoundRebka1960,PoundSnider1965} to the precision of
+Table~\ref{tab:scoreboard} — an arithmetic check of the A3 reading of
+scale as a clock rate, not an independent prediction, since it uses the
+same reciprocity relation already fixed above.
+
+The linear regime above is not an approximation whose error one hopes is
+small; it is realized \emph{exactly} by extending the substrate ring to
+the dual numbers $A[\epsilon]/(\epsilon^2)$, a square-zero infinitesimal
+extension, and setting $\sigma = \epsilon\varphi$ for an ordinary
+function $\varphi$. Every derivation carries over componentwise to this
+extended ring, and the quadratic invariant $|\nabla\sigma|^2$ vanishes
+\emph{identically} rather than merely being small, since
+$\sigma_i^2 = \epsilon^2(\partial_i\varphi)^2 = 0$ by $\epsilon^2=0$.
+Poisson's equation $2(n-1)\Delta\Phi = \kappa\rho$ therefore holds with
+no term discarded and no linearization error, for the entirely
+algebraic reason that there is nothing to discard: the ``weak-field
+limit'' is not a truncation of the exact theory but an exact statement
+about a different, infinitesimally-deformed ring, related to the finite
+theory only by which numbers one is willing to admit as the value of
+$\sigma$.
+
+\subsection{Local covariance survives global dissipation}
+
+A6 makes the theory globally non-conservative: there is no functional
+whose gradient reproduces the total drift of the scale field. This does
+not threaten local Lorentz covariance, because the two facts live at
+different scopes. The coupling of Theorem~\ref{thm:coupling} and the
+Lorentz algebra of Section~\ref{sec:chain} are pointwise, algebraic
+facts, holding identically at every point regardless of how the scale
+field as a whole evolves; A6 is a global, integrated statement about the
+\emph{sum} of the drift across all points. A local Lorentz frame is
+constructed at each point from the coupling alone and is exactly as
+covariant there as in a theory with a globally conserved potential;
+openness only says that no single potential accounts for the drift
+\emph{everywhere at once}, which is compatible with, and does not
+weaken, covariance at any one point.
+
+\subsection{No singularity, no horizon}
+
+Because $g_{tt}=-s_t^2$ with $s_t$ a unit — nonzero everywhere by A2 —
+$g_{tt}$ never vanishes: there is no horizon and no curvature
+singularity. The exterior geometry away from the would-be horizon is
+unchanged from Schwarzschild, so shadow shape, ISCO location, and the
+early ringdown spectrum are unaffected; the difference between this
+framework and general relativity is concentrated entirely in the
+boundary condition at small radius, where general relativity imposes
+absorption (a horizon) and this framework cannot, since nothing in it is
+ever exactly zero.
+
+The absence of a singularity is not merely the absence of a place where
+$s_t$ hits zero; it is structural at the level of what curvature is
+built from. The Riemann tensor of Section~\ref{sec:chain} is a fixed
+linear function of a deformation tensor built entirely from the
+\emph{first and second derivatives} of $\sigma$ — the scale value $s$
+itself never appears in the curvature formula, only its rate of change.
+Two scale fields with identical derivatives at every point therefore
+have identical curvature even if their values differ arbitrarily, and a
+region where the scale becomes extreme is on that account alone no more
+curved than a region where it does not: what general relativity would
+read as an approach to a singularity, this framework reads as a region
+where $\sigma$ is large in magnitude but changing no faster than
+elsewhere, which is exactly what asymptotic flatness combined with
+reciprocity $s_ts_r=1$ guarantees, since a large $\sigma$ in one
+direction is bought by an equally large and opposite $\sigma$ in the
+reciprocal direction, without either derivative diverging.
+
+A scale ratio, being built from units, is itself a unit — never zero,
+never infinite, but with no upper bound on its magnitude either. There
+is consequently no minimum resolvable length and, on the matter side of
+the same statement, no maximum density
+(Section~\ref{ss:native}): for any proposed shortest scale a finer one
+is always available, so there is no final effective description this
+framework's own structure ever forces a halt at, only successive
+replacement at each threshold crossed.
+
+\subsection{Two polarizations, from two different sectors, and no breathing mode}\label{ss:pol}
+
+A transverse gravitational wave in $k$ spatial dimensions can, a priori,
+carry perturbations from two independent sources at each point on the
+propagation plane: a change in the local scale magnitude (the scaling
+sector) and a change in the local scale direction (the rotation sector),
+matching the split of Section~\ref{sec:chain}. In the two transverse
+directions available for $k=3$, the scaling sector contributes
+$\dim(\text{transverse}) - 1 = 1$ independent mode — not $2$, because a
+uniform rescaling of both transverse directions together is exactly a
+fiducial shift, and A5 declares fiducial shifts unobservable, removing
+that mode from the physical spectrum entirely rather than merely making
+it small. The rotation sector contributes $\dim\Lambda^2(\text{transverse}) = 1$
+independent mode, the wedge of the two transverse directions. The total
+is
+\begin{equation}
+1_{\text{scale}} + 1_{\text{rotation}} = 2,
+\end{equation}
+matching the two tensor polarizations of gravitational-wave observation,
+but arrived at as a sum of contributions from two structurally distinct
+sectors rather than as a single count. This gives a discriminator sharper
+than the count alone: the framework has \textbf{no scalar (breathing)
+mode at any amplitude}, since that mode is precisely the uniform
+rescaling A5 removes, whereas scalar–tensor theories of gravity generically
+predict one at some coupling-dependent amplitude. A breathing-mode
+detection would not merely disfavor this framework; A5 gives it nowhere
+to appear at all, so the correct statement is not ``predicted small'' but
+``predicted absent.''
+
+\subsection{Gravitational waves: what radiates, and what does not}
+
+Conservation, read from the Bianchi identity as a statement about the
+scale field's own algebra, kills the monopole and dipole moments of
+radiation. This is established purely algebraically: divergences form the
+additive subgroup generated by images of the non-drift derivations, and
+because A1's derivations commute, the drift direction descends
+consistently to the quotient by that subgroup — no measure, no Stokes'
+theorem, and no decay condition at infinity is used; what survives is one
+purely algebraic condition, that this subgroup of divergences is proper
+rather than the whole ring. Dipole radiation is accordingly identically
+zero, consistent with the double-pulsar bound
+$|\dot P_b^{\text{excess}}/\dot P_b|<1.3\times10^{-4}$; the quadrupole
+leads, giving the standard inspiral chirp.
+
+The one constant $\kappa$ supplied by A6$'$ appears exactly once, not
+twice: it fixes both the Newtonian-limit Poisson normalization and the
+quadrupole radiation coefficient, so fixing it from the static, weak-field
+limit leaves the radiated power with no remaining freedom — a binary
+pulsar's orbital decay is consequently a genuine test rather than a fit
+to a second free constant. For a circular binary with component masses
+$m_1, m_2$ and separation $r$, the orbital energy $E=-Gm_1m_2/2r$ and the
+quadrupole radiated power
+$P = \tfrac{32}{5}G^4(m_1m_2)^2(m_1+m_2)/(c^5r^5)$ together force the
+orbit to shrink, $dr/dt<0$, at a closed-form rate obtained by nothing
+more than the chain rule applied to $dE/dt=-P$. The gravitational-wave
+frequency evolution depends on the two masses only through the chirp
+mass $\mathcal{M}=(m_1m_2)^{3/5}/(m_1+m_2)^{1/5}$, via
+$df/dt \propto \mathcal{M}^{5/3}f^{11/3}$ — the same combination and the
+same two exponents, $5/3$ and $11/3$, that a gravitational-wave detector
+template actually fits. The chirp mass combination and its two exponents
+are read off directly from the same quadrupole formula used for the
+binary-pulsar prediction; the further step from the time-domain
+separation rate to this frequency-domain form uses Kepler's third law in
+its standard, uncontested form, which is cited rather than re-derived
+here — the exponents are not an independent input chosen to match
+observation, but the derivation is not carried through in full from
+first principles either. Applied to PSR~B1913+16
+(Hulse–Taylor)~\cite{HulseTaylor1975,WeisbergHuang2016}, the
+predicted-to-observed
+ratio of orbital decay is $0.9983$, agreeing to two parts in a thousand
+and bounding any dipole contamination below $0.2\%$; applied to the
+double pulsar PSR~J0737$-$3039~\cite{Kramer2021}, sixteen years of timing bound the same
+dipole fraction below $1.3\times10^{-4}$, an order of magnitude tighter,
+with every improvement in timing precision tightening a prediction that
+has no parameter left to retune.
+
+\begin{theorem}[All-order equivalence with general relativity]\label{thm:allorder}
+The symmetric (radiative) part of the deformation tensor equals its
+classical, general-relativistic counterpart at \emph{every}
+post-Newtonian order.
+\end{theorem}
+
+This is an exact statement, not a leading-order approximation, and its
+origin is given in Section~\ref{sec:quantum}: the entire quantum
+correction to curvature is purely antisymmetric, so the symmetric sector
+carries none of it, at any order. There is accordingly no order at which
+the two theories' gravitational-wave predictions could differ — not
+merely an order too small to currently measure. The gravitational-wave
+sector can discriminate this framework from general relativity only
+through the ringdown boundary condition, the presence or absence of a
+horizon, never through the inspiral or the post-Newtonian expansion
+itself.
+
+\subsection{The horizon-absence signature: echoes and the ergoregion bound}\label{ss:echo}
+
+Absence of a horizon permits, but does not predict the amplitude of, late
+echoes. Writing $A_{\min}$ for the field's reflectivity at the would-be
+horizon (a quantity this framework does not compute, Section~\ref{ss:eos-out})
+and $\tau$ for the light-travel time to that surface, the round-trip
+delay is $\tau_{\text{echo}}=\tau\ln(1/A_{\min})$ — logarithmic, not
+linear, in the redshift $1/A_{\min}$: ten orders of magnitude of
+additional redshift lengthen the delay by only a factor of order ten, not
+$10^{10}$, which is why an echo search looks for a comb of arrivals at
+millisecond spacing rather than at a Planck time. The $n$-th echo arrives
+at $n\,\tau_{\text{echo}}$, evenly spaced, with amplitude falling as
+$A_0 R^{2n}$ for reflectivity $R$ after $n$ round trips — a null search
+excluding an amplitude above some fraction $b$ of the ringdown directly
+bounds $R^2 \leq b$.
+
+Two independent observational handles exist, and they scale with $R$
+differently. Echo searches place a direct bound on $R$ that is
+polynomial in the excluded amplitude fraction, as above. Ergoregion
+(superradiant) instability of a rapidly spinning, long-lived compact
+remnant places an \emph{exponential} bound on $\mathcal{R}$, because a
+horizonless spinning object whose reflectivity is not exponentially
+close to unity is unstable on an observationally short timescale — the
+growth rate of the instability, not merely the detector's sensitivity to
+a faint echo, sets the bound, so a longer-lived remnant tightens the
+constraint exponentially rather than linearly. GW241011's~\cite{GW241011}
+primary spin, $\chi_1=0.64>0.55$ at the reported $90\%$ lower limit, is in the rapid
+regime, and the remnant's evident long-term stability makes this the
+tighter of the two constraints currently available — and, honestly
+stated, a real and previously unregistered pressure on this framework:
+because $\mathcal{R}$ is not computable here (Section~\ref{ss:eos-out}),
+the framework cannot currently say whether it survives this constraint,
+only that the constraint applies and tightens with every additional
+rapidly-spinning long-lived remnant observed. The comparison
+between GW250114's~\cite{GW250114} ringdown and its inspiral-predicted remnant is itself
+a genuine confirmation, independent of the reflectivity question: the
+inferred final mass ($62.7\,M_\odot$, from components $33.6$ and
+$32.2\,M_\odot$ radiating $3.1\,M_\odot$, about $5\%$ of the total) and
+final spin ($0.68$) predict a ringdown spectrum whose first overtone
+matches the fundamental-mode inference to within the Kerr-family bound
+of $30\%$, and the area law — that the horizon area cannot decrease — is
+confirmed at $3.4\sigma$ across every analysis window and above $5\sigma$
+in the most sensitive one; both are area-law-family statements this
+framework's exterior geometry inherits unchanged from general relativity,
+since nothing about the exterior solution differs. The damping-time
+precision of that same ringdown measurement ($9\%$) is looser than the
+frequency precision ($2\%$) by a factor of about $4.5$, which matters because
+the damping time is exactly the observable a partially reflecting
+boundary would shift, while the frequency would not — so the ringdown
+measurement is currently most sensitive in precisely the channel where a
+reflecting-boundary effect would first appear, and has not yet reached
+the precision needed to see one.
+
+The magnitude of $\mathcal{R}$ itself requires an
+equation of state for whatever replaces the interior — a computation
+explicitly outside this framework's scope (Section~\ref{ss:eos-out}) —
+but the qualitative structure, comb-like echoes and an exponential rather
+than linear bound, is a genuine, falsifiable prediction independent of
+that missing input.
+
+%======================================================================
+\section{The anisotropic sector: labels and charges}\label{sec:particles}
+%======================================================================
+
+Where the scale pattern is anisotropic, an order parameter, charges, and
+multiplets appear together, from the same source as the gauge connection
+of Section~\ref{sec:chain}. A particle is a point defect in the scale
+vector field — an unresolvable knot — completely characterized by a
+triple: a threshold (its position on the scale axis, read as mass), a
+$\mathbb{Z}/2$ confined charge, and a $\mathbb{Z}$ winding charge, and
+nothing else. This is not an assumption about how many labels a particle
+may carry; the pattern having collapsed to a single vector
+(Section~\ref{sec:chain}) leaves two topological invariants available in
+three spatial dimensions — a winding number (valued in $\mathbb{Z}$,
+from the vector's degree as a map to a sphere) and a monodromy class of
+the order parameter (valued in $\mathbb{Z}/2$, because the order
+parameter lives in a projective, not a linear, space). That these are
+the invariants a projective order parameter in three dimensions admits
+is a standard fact of algebraic topology, cited rather than proved
+in-repo; what \emph{is} proved directly is the sharper, load-bearing
+half — that the confinement group is specifically $\mathbb{Z}/2$ and not
+some other value, which is what rules out the three-valued color
+identification below.
+
+The $\mathbb{Z}/2$ nature of the confined charge is structural rather
+than a numerical near-miss: an earlier attempt to read this charge as
+color required three distinguishable values, and failed against the data
+by giving two. The order parameter's home is a projective space, and a
+projective order parameter simply does not have a three-valued invariant
+available to it — no adjustment of the construction changes this.
+
+Mass, in this picture, is not a third label alongside the two charges; it
+is the position on the scale axis at which unresolved content first
+becomes a distinguishable defect, so ``mass'' and ``threshold'' are the
+same statement read two ways rather than an independent property a
+particle additionally carries. This is also the precise sense in which
+there is no final, complete list of fundamental particles
+(Section~\ref{sec:picture}): resolving further along the scale axis
+always exposes more threshold structure above whatever has already been
+resolved, and the claim is not merely that undiscovered particles might
+exist but that, given an unbounded supply of ever-finer thresholds to
+resolve — itself a physical premise about the scale axis rather than a
+theorem derived from A1–A7 alone — the content strictly above any given
+resolution is never empty, so ``the complete particle table'' is not a
+question this framework's content structure can answer even in
+principle, for any resolution one names.
+
+\subsection{The two charges are independent, and exactly one is confined}
+
+The winding charge and the monodromy (block) charge are logically
+independent: neither is determined by the other, since they are computed
+from different topological data — a degree and a monodromy class — of
+the same underlying configuration, and it is possible to exhibit
+configurations agreeing on one label while differing on the other. This
+independence is what makes ``particle'' a genuine pair of quantum
+numbers rather than one label in disguise, and it is what makes the
+statement ``exactly one of the two is confined'' non-trivial rather than
+automatic: confinement is a further, structural fact about the
+monodromy charge specifically — a configuration whose block labelling
+fails to close up after a circuit is not merely rare or energetically
+disfavored, it is not single-valued and so does not describe a state
+that can exist in isolation — while the winding charge carries no such
+obstruction and every winding number is freely realizable on its own. A
+defect paired with its own opposite always closes up and carries zero
+net charge in \emph{both} labels simultaneously, independent of which
+block permutation either one carries, which is the framework's account
+of why bound pairs (mesons, in the language of the withdrawn color
+identification) are always available regardless of the confined
+partner's internal labelling.
+
+The same rank-one collapse that limits particles to two labels also
+bounds the shape of the mass spectrum. If particle masses were drawn from
+a mixture of two or more structurally distinct populations rather than a
+single rank-one family, the squared coefficient of variation of the mass
+distribution satisfies $\mathrm{CV}^2 \geq 1$, with equality exactly when
+the population is the single-family (rank-one) case this framework
+predicts; a mixture is not merely disfavored numerically, it is excluded
+whenever the measured $\mathrm{CV}^2$ is below $1$. The measured value,
+$0.875$ (Table~\ref{tab:scoreboard}), sits below the bound and is
+consistent with rank one, though $0.875 \neq 1$ exactly, so the
+comparison establishes exclusion of mixtures rather than confirmation of
+the exact rank-one value — a distinction Section~\ref{sec:register}
+records explicitly rather than eliding.
+
+\subsection{Gauge symmetry is the stabilizer of the pattern}
+
+Internal symmetry in this framework has no independent space to act on;
+the only structure at a point is the scale pattern across directions, so
+any symmetry that is not a motion of the substrate itself must be a
+relabeling of directions that leaves every local scale value unchanged.
+The group of such relabelings — the \emph{stabilizer} of the pattern
+under the permutation action on directions — is not chosen; it is read
+off the pattern directly, and two directions belong to the same
+multiplet exactly when they carry the same local scale, so multiplets
+\emph{are} the degeneracy classes of the pattern and multiplet sizes are
+the sizes of those classes. Where the pattern is injective (no two
+directions share a value) the stabilizer is trivial and there is no
+internal symmetry at all; where the pattern is fully isotropic the
+stabilizer is the entire permutation group.
+
+This has a direct consequence for what a connection is. A transport
+between two scale patterns is a relabeling that matches them; where the
+target pattern is injective, that relabeling is unique — the connection
+is a function of the scale field alone, with nothing left to choose —
+and wherever it is not unique, the freedom in choosing it is exactly a
+coset of the stabilizer, meaning gauge freedom is not a separate
+structure layered onto the geometry but is \emph{identical to} the
+degeneracy of the underlying pattern: gauge freedom exists at a point if
+and only if that point's scale pattern is degenerate there, and its size
+is exactly the size of the degeneracy. A theory with no coincident scale
+values anywhere has no gauge freedom anywhere, not as a choice of gauge
+but as a consequence of the pattern being injective; internal symmetry is
+consequently never posited as an independent input; it is measured by
+counting coincidences in a single scalar-valued function per direction.
+
+\subsection{Particle lifetimes are scale ratios}
+
+Because energy scale and length scale are reciprocal (A3), a particle's
+proper lifetime $\tau_0$ and its lab-frame lifetime $\tau$ are related by
+the same ratio that appears everywhere else in this theory:
+\begin{equation}
+\tau = \gamma\,\tau_0, \qquad \gamma = \frac{\varepsilon}{\varepsilon_0},
+\end{equation}
+the ratio of the particle's energy scale in the lab frame to its energy
+scale at rest. Time dilation is accordingly not a separate relativistic
+postulate but the same scale-ratio statement that produces every other
+result in this paper, evaluated for a moving particle; applied to the
+CERN muon storage ring measurement~\cite{Bailey1977} this reproduces
+the measured lifetime to the precision of
+Table~\ref{tab:scoreboard}.
+
+\subsection{Is there a second switch?}\label{ss:secondswitch}
+
+The framework predicts exactly one kind of label-opening event: an
+anisotropic pattern appearing where an isotropic one was, always in the
+direction of \emph{refinement} — a multiplet only ever splits into
+smaller pieces as the scale is probed, never the reverse. The framework
+does not itself prove this refinement direction — only that a change of
+label structure requires a change of scale pattern — so testing the
+refinement direction against data is not circular.
+
+We count exactly-conserved label \emph{types} (not states) across the
+directly probed particle spectrum~\cite{PDG2024}, spanning
+\begin{equation}
+\frac{E_{\max}}{E_{\min}} = \frac{1.3\times10^{4}\,\text{GeV}}{5\times10^{-11}\,\text{GeV}} > 10^{14},
+\end{equation}
+fourteen orders of magnitude in energy. Over that range the electroweak
+multiplet only ever shrinks ($2\to1$, a strict refinement) and the color
+multiplet is unchanged ($3\to3$); no observed symmetry breaking has ever
+enlarged a multiplet, and no additional exactly-conserved label beyond
+the four already in the framework's inventory has been found. This is a
+genuine, if limited, empirical check: it can only detect \emph{exact}
+degeneracies opening or closing, and fourteen decades, while large, is
+finite.
+
+%======================================================================
+\section{Scale flow: renormalization group and the strong scale}\label{sec:flow}
+%======================================================================
+
+A fiducial shift is a symmetry of the geometry (A5) but not automatically
+of the description of matter: to keep predictions fixed while the
+reference unit moves, the couplings used to describe matter must move to
+compensate, and that compensating motion is the renormalization group.
+Three structural facts follow from A5 alone, before any coupling is
+specified. First, the scale flow is forced to be a one-parameter group —
+shifting the fiducial by $t$ and then by $u$ is shifting it once by
+$t+u$, with no other composition law available. Second, self-similarity
+forces exponential solutions: any observable obeying the
+Callan–Symanzik-type equation $dO/dt=\gamma O$ satisfies
+$O(t)=O(0)e^{\gamma t}$ exactly, the same mathematical fact that produces
+exact de Sitter expansion in Section~\ref{sec:cosmology} — the same
+equation read at two different scales, not the same numerical constant
+in both places. Third, the effective-field-theory tower is forced: each
+excitation carries a log-threshold, the set of excitations available at
+a given log-energy is monotone increasing in that energy, and it is
+exactly constant between thresholds — the description does not merely
+happen to be piecewise constant, it is provably unchanged wherever no
+threshold is crossed. These three facts fix the \emph{shape} of any beta
+function forced by A5: piecewise constant, jumping only where the
+active content changes. They do not, by themselves, fix the coefficient
+at any single jump — that remains external input at this level of the
+argument.
+
+The strong-interaction sector closes that remaining gap for one specific
+coupling. Reading a coupling not as a diagrammatic sum but as an
+accumulated \emph{count} — how many resolvable defects a probe at a
+given log-scale has responded to — A5 forces that count's density to be
+constant in log-scale, since a scale-covariant world has no preferred
+log-scale for defects to bunch around. A constant density $\rho$
+integrated over an interval is linear, giving
+\begin{equation}
+g^{-2}(t) = g^{-2}(t_0) + \kappa\rho\,(t-t_0),
+\end{equation}
+exactly the one-loop running form, with the one-loop coefficient
+identified as $b=\kappa\rho/2$ — a density of defects per unit log-scale
+in place of an imported group-theory coefficient (with $\kappa>0$
+retained as a hypothesis, not itself derived). Given that, asymptotic
+freedom is \emph{equivalent} to $\rho>0$: $g(t)^2\to0$ as $t\to\infty$
+exactly when there are defects to resolve, so which sign of density
+gives a free theory is read off the count rather than fitted
+separately. The combination
+$\Lambda := \exp\bigl(t-g(t)^{-2}/(2b)\bigr)$ is constant along this
+flow — a scale-\emph{invariant} axiom system has produced a definite
+scale not by breaking the invariance in the axioms but by the solution
+of a scale-covariant equation secreting one, and A5 guarantees no choice
+of fiducial can shift it. Every hadron mass, read as $c\cdot\Lambda$ for
+a pure number $c$, then has a mass \emph{ratio} $c_1/c_2$ independent of
+$\Lambda$ and hence of every free input to the theory, in contrast to
+the overall scale $\Lambda$ itself, which is measured rather than
+predicted, consistent with the one-free-unit statement running through
+this paper.
+
+One caution is necessary about $\rho$, and it is the framework's own
+internal correction rather than an external criticism. The density
+entering the running above is \emph{sector-restricted and signed}: a
+coupling responds only to the structures actually charged under it, not
+to every threshold in the spectrum, so it is emphatically not the same
+quantity as the raw threshold density used elsewhere
+(Section~\ref{sec:register}) to bound the mass spectrum. A proposed
+cross-check — measuring this running-coupling density independently from
+the raw spectral count and comparing — was attempted and found not to be
+a test at all: the two counts differ by roughly a factor of two ($0.864$
+counting all twelve Standard Model mass scales against $0.444$ counting
+the six quarks alone), and within a single sector the relating equation
+has one free coefficient and one measurement, so it fixes the
+coefficient rather than checking anything. This is registered
+(Section~\ref{sec:register}) as a proposal that was made and retracted,
+not as a claim that survives.
+
+Measured against data, the simplest possible ratio law for the confined
+sector — an equal-ratio geometric tower of defect masses — was checked
+against lattice glueball ratios~\cite{MorningstarPeardon1999} ($1.39$–$1.40$ and $1.07$–$1.08$ for the
+two lightest ratios, differing by more than $0.3$) and
+\textbf{failed}, refuting that specific hypothesis about the mass law
+rather than the parameter-free ratio construction itself
+(Section~\ref{sec:register} records the retraction and why the
+underlying flow result survives it).
+
+%======================================================================
+\section{The quantum sector}\label{sec:quantum}
+%======================================================================
+
+Promoting the commutative substrate to a non-commutative one and asking
+what changes gives the quantum sector. The commutators of the
+non-commutative scale algebra reproduce the Leibniz rule, the Jacobi
+identity, the power rule for derivatives, and the canonical commutation
+relation as theorems rather than postulates. Consequently, A3's scale-energy
+duality $\varepsilon\cdot s=1$ continues to hold exactly only up to a
+correction of order $\hbar$ in the non-commutative sector — the classical
+relation is the $\hbar\to0$ limit of a relation that is otherwise
+corrected, not an independent low-energy postulate.
+
+Uncertainty is a general fact about symmetric (self-adjoint) operators on
+an inner-product space and does not require the scale algebra
+specifically: for any two symmetric operators $A,B$ and any unit vector
+$\psi$,
+\begin{equation}
+|\langle\psi,[A,B]\psi\rangle| \le 2\|A\psi\|\,\|B\psi\|,
+\end{equation}
+by the Hermiticity of $A,B$, the triangle inequality, and Cauchy–Schwarz
+applied to the resulting inner products. Specializing to a commutator
+that acts as the scalar $i\hbar$ — which is what the canonical
+Poisson-bracket construction below produces for position and its
+conjugate momentum, once quantized — gives the Heisenberg relation
+$\Delta A\cdot\Delta B \ge \hbar/2$ as a corollary of the general
+inequality, not as an independently assumed postulate: the constant
+$\hbar$ enters only through evaluating the commutator, and the
+inequality itself is pure linear algebra.
+
+Before the exact (Theorem~\ref{thm:hbar}) construction, a first-order
+deformation-quantization~\cite{Bayen1978} version fixes what
+quantization must mean here. On $A[\hbar]/(\hbar^2)$,
+a square-zero extension of the substrate ring, a star product is built
+directly from a biderivation $P$ (a Leibniz bilinear pairing of two
+derivations, not itself required to be antisymmetric):
+$(f_0,f_1)\star(g_0,g_1) := (f_0g_0,\, f_0g_1+f_1g_0+P(f_0,g_0))$. This
+product is associative and reduces exactly — with nothing approximated —
+to the ordinary commutative product at $\hbar^0$, and its commutator
+reproduces the \emph{antisymmetric part} of $P$ at $\hbar^1$:
+$\hbar^{-1}[f,g]_\star = \{f_0,g_0\}_P := P(f_0,g_0)-P(g_0,f_0)$, the
+Poisson bracket, so two quantities commute in the deformed algebra
+exactly when this antisymmetric part vanishes on them, and the
+commutative (gravitational) sector is recovered exactly as the locus
+where that bracket is zero — $P$ itself need not vanish there, only its
+antisymmetrization. This is a first-order formal deformation, useful for
+identifying what non-commutativity must mean
+before asking whether it can be realized exactly; Theorem~\ref{thm:hbar}
+below removes the formal parameter and replaces it with an honest
+additive-and-multiplicative shift map.
+
+\begin{theorem}[$\hbar$ as an exact scale step]\label{thm:hbar}
+There exists a scale shift $T$ — a map on the scale algebra additive and
+multiplicative, though not required to fix the multiplicative identity —
+such that $T$ fails to commute with position by exactly one unit:
+$\Delta X := T(X)-X=1$, exactly, not as a leading term in an expansion.
+\end{theorem}
+
+This structure is never itself constructed from A1–A7 alone by the
+argument above; it asks only for a map with this weaker-than-ring-endomorphism
+property.
+We therefore exhibit an explicit model: the polynomial ring
+$\mathbb{R}[X]$ with $d/dX$ satisfies A1 for $n=1$, and the translation
+$X\mapsto X+1$ is a ring homomorphism realizing $T$ exactly, so the shift
+is a legitimate, exact, finite — not infinitesimal — translation along
+the scale axis. This shows the theorem is non-vacuous and the structure
+compatible with the axioms; it does \textbf{not} show that every model of
+the axioms must carry such a shift, so the identification of $\hbar$ with
+this step remains an identification, not a derivation, and is registered
+as such (Section~\ref{sec:register}).
+
+\begin{theorem}[The quantum correction to curvature is purely antisymmetric]\label{thm:ncconf}
+The entire non-commutative correction to the deformation tensor is given
+by the commutator $[\sigma_i,\sigma_j]$ of scale generators, which is
+purely antisymmetric.
+\end{theorem}
+
+This is the origin of Theorem~\ref{thm:allorder}: since the symmetric
+sector carries no quantum correction at all, the gravitational-wave
+radiative sector is untouched by non-commutativity to any order, while
+the antisymmetric (rotational/gauge) sector carries the entire quantum
+correction.
+
+%======================================================================
+\section{Dark matter, dark energy, and light}\label{sec:cosmology}
+%======================================================================
+
+\subsection{Dark matter: two routes, making opposite predictions}
+
+This framework offers not one account of dark matter but two, and it
+does not choose between them — an honest state of affairs rather than an
+oversight, since the two are logically independent and observationally
+distinguishable.
+
+The first is a detection-threshold mechanism, requiring no branch-point
+argument at all. A detector is itself a physical system sitting at some
+energy scale $\varepsilon_D$; by A3 that scale is the reciprocal of its
+spatial resolution, so what it can register is not ``an interaction''
+but an interaction that moves its own state by at least its threshold
+$\theta$. An excitation whose own energy scale $\varepsilon$ sits far
+below $\varepsilon_D$ deposits a fraction $\varepsilon/\varepsilon_D$ of
+the detector's scale — strictly positive, so the interaction genuinely
+happens, but driven below threshold whenever $\varepsilon$ is small
+enough, so the observation genuinely fails. Gravity, meanwhile, couples
+to the total energy $N\varepsilon$ of a population of such excitations,
+which is blind to how that total is partitioned among them. A large
+multiplicity of very-low-scale excitations is consequently
+gravitationally loud and non-gravitationally silent \emph{simultaneously
+and for the same population}, for any fixed gravitational signal and any
+fixed detector: the theorem constructs, for any target mass $M$ and any
+detector threshold, a scale and multiplicity reproducing $M$
+gravitationally while sitting strictly below that threshold. On this
+route dark matter has thresholds and hence a genuine mass spectrum, and
+a sufficiently well-matched probe would eventually see a signal.
+
+The second is the isotropic-trajectory mechanism of
+Section~\ref{sec:branch}: a region whose scale pattern is isotropic in
+direction still has curvature, since magnitude inhomogeneity, not
+direction inhomogeneity, sources gravity, so such a region gravitates
+with no anisotropic order parameter and hence no electromagnetic or
+confined charge (Section~\ref{sec:particles}) at any scale whatsoever —
+not a small coupling waiting to be resolved, but no label to couple to
+in the first place. On this route dark matter has no thresholds and
+hence no mass spectrum and no species to enumerate: it is one structural
+condition on the scale pattern, not a family of candidate particles with
+different masses and couplings, and it forbids exactly what the first
+route permits — a charge-type self-interaction, since that requires the
+directional order parameter this route's matter provably lacks.
+
+The two routes make \textbf{opposite} predictions and the framework
+states this as a fork rather than resolving it: the low-scale route
+gives a coupling that is small but strictly nonzero at every finite
+separation, hence a spectrum in principle detectable by a sufficiently
+sensitive or well-matched probe; the isotropic route gives a rotational
+label that is identically zero at \emph{every} scale, hence collisionless
+behavior and no spectrum to find by any amount of improved sensitivity.
+A null result at ever-improving direct-detection sensitivity favors the
+isotropic route; a spectral feature or a self-interaction signature
+favors the low-scale route; the framework hosts both constructions and
+does not adjudicate between them, which is a weaker but more honest
+position than committing to either.
+
+\subsection{The direction of time from finite resolution alone}
+
+The entropy ordering used in Theorem~\ref{thm:onearrow} rests on an
+$H$-theorem that uses nothing about scale in its own proof, which is
+precisely what makes the later identification with the scale-drift
+arrow a substantive fact rather than a definition chasing its own tail.
+The construction is elementary: let $X$ be a finite set of
+microscopic configurations and $\pi:X\to Y$ a resolution map, generally
+non-injective because observation happens at finite resolution. The
+\emph{saturation} of a subset $S\subseteq X$ under $\pi$ is the set of
+all configurations $\pi$ cannot distinguish from something in $S$; a
+configuration set is always contained in its own saturation, so
+coarse-graining can only add configurations, never remove them, giving
+$|S|\le|\mathrm{sat}(\pi,S)|$. Microscopic evolution, being a bijection
+(the substrate is reversible — nothing in A1–A7 privileges a direction of
+time at the microscopic level), preserves the cardinality of any subset
+exactly. Composing one step of reversible evolution with one step of
+coarse-graining therefore cannot decrease the number of configurations
+compatible with what is observed: entropy, read as the log of that
+count, is non-decreasing by counting alone, with no statistical
+assumption beyond finite resolution — and once it has strictly increased
+at one step, no entropy-non-decreasing law can undo the evolution,
+which is the precise sense in which a reversible microscopic law
+produces an irreversible macroscopic one, matching the status of the
+Boltzmann equation.
+
+\subsection{Dark energy is the dissipation rate, squared}
+
+Cosmic expansion is, in this framework, not the motion of anything
+through space but the running down of the total dimensionless energy
+scale $\varepsilon$, read through the duality A3 as a growing length
+scale. Dissipation at a constant fractional rate $\lambda$ has a unique
+solution, $\varepsilon(t)=\varepsilon_0e^{-\lambda t}$ — no ansatz is
+assumed, the exponential is forced by the differential equation alone —
+and the corresponding scale factor $a=1/\varepsilon$ is exact de Sitter
+expansion, $a(t)=a_0e^{\lambda t}$, with constant Hubble rate $H=\lambda$
+and $\ddot a=\lambda^2a>0$: the expansion accelerates for any nonzero
+dissipation rate, with no repulsive substance posited anywhere.
+``Dark energy'' is accordingly not a substance with negative pressure;
+it is this dissipation rate, and matching the observed density gives
+$\Lambda \propto \lambda^2$ (specifically $\rho_\Lambda = 3\lambda^2/8\pi G$
+once $\lambda$ is identified with the asymptotic Hubble rate) — the
+\emph{square} of the dissipation rate, since $\Lambda$ enters through the
+acceleration $\ddot a$ rather than through $\lambda$ itself, not the
+dissipation rate directly.
+
+Pure exponential dissipation is the sharpest and most falsifiable case,
+not the only one available: generalizing $\dot\varepsilon=-\lambda\varepsilon$
+to a power law $\dot\varepsilon=-\lambda\varepsilon^q$ for a single
+dimensionless exponent $q$ fixes the equation of state exactly,
+$w=(2q-5)/3$, invertibly, $q=(3w+5)/2$. The case $q=1$ is exactly
+$w=-1$ with no freedom at all — pure exponential dissipation — and it is
+the only value of $q$ that gives $w=-1$, not one case among several that
+happen to agree. This is the framework's sharpest exposure in this
+sector: if $w=-1$ is excluded by observation, pure exponential
+dissipation is dead, and the surviving theory must have $q\neq1$, read
+off the data by the inversion formula. What the power-law generalization
+does \emph{not} provide is a mechanism for $w$ to \emph{evolve}: for any
+fixed $q$, $w$ is still a constant, since $q$ is a single dimensionless
+exponent rather than a function of time, so DESI's~\cite{DESIDR2}
+preference for an
+evolving $w_0,w_a$ remains a tension with the shape of the construction
+itself and not merely with the value $q=1$ — a constant-but-shifted $w$
+is available to this framework in principle, a genuinely time-varying
+one is not, which is why the DESI tension of Section~\ref{sec:data} is
+correctly read as a tension with A5's constancy requirement rather than
+with a single fittable number.
+
+\subsection{Light is scale-blind, but redshift is not}
+
+Reciprocity $s_t\cdot s_r=1$ (Section~\ref{sec:gravity}) holds pointwise,
+not only in vacuum, so the null cone defined by $g_{tt}g_{rr}=-1$ is
+invariant under any global rescaling $s\mapsto u\cdot s$ permitted by A5.
+Since a photon's trajectory is defined purely by the null condition, its
+propagation is insensitive to the overall scale — the light cone is
+scale-blind by the same fiducial covariance that makes any single scale
+unobservable. This gives photon dispersion identically zero at every
+energy, a stronger and structurally distinct statement than merely
+``dispersion smaller than currently measurable,'' and it is the basis for
+the Fermi-LAT comparison of Table~\ref{tab:scoreboard}~\cite{FermiLAT2009}.
+
+This appears to contradict the cosmological picture directly above: if
+light cannot see the scale field at all, how can a redshift measurement
+ever register cosmic dissipation, which is exactly a change in that
+field? And Section~\ref{sec:gravity}'s local-covariance result sharpens
+the puzzle rather than resolving it, since it proves a spatially
+constant cosmic drift changes \emph{nothing} measured locally. Both
+results are theorems, so both are true, and the appearance of
+contradiction is a sign that two different things were being called by
+the same name. They were. A null vector has no length, but assigning it
+an \emph{energy} is not a property of the vector alone — it is the
+pairing of the vector with an observer's own direction, and an observer
+is made of matter, which (unlike light) does carry the scale. The
+\emph{causal structure} light defines is scale-blind, exactly as above;
+the \emph{energy} an observer assigns to a light ray is not, because
+assigning it requires a scale-carrying observer in the first place.
+Redshift is consequently not a property of light at all: it is the
+\emph{ratio of two observers' scales}, $(u_1/u_2)^2$, with light
+contributing nothing to that ratio beyond carrying the comparison from
+one event to another. This simultaneously resolves the apparent tension
+with local covariance: a redshift measurement is not a local measurement
+of the drift, it compares the scale at emission with the scale at
+absorption, and that is a scale \emph{difference}, which A5 declares
+physical, while local covariance concerns what a single observer measures
+at one point — cosmology observes exactly the quantity the axioms permit
+and no more.
+
+\subsection{Questions only this framework can ask}\label{ss:native}
+
+Everything so far has answered questions posed elsewhere: does the
+theory give Schwarzschild, does it give a graviton-like sector, does it
+give an area law. That is the right first test, and every section above
+has run it. It is not the right last one, because a framework built on
+different primitives should be able to \emph{ask} things the usual
+vocabulary cannot pose at all, and whether it can is where it either
+earns its keep or is exposed as a paraphrase of existing physics in new
+notation. Seven such questions follow from the primitives already in
+use — a scale that is a unit, a pattern that collapses to one vector, a
+single global drift, the antisymmetric wedge, a threshold density, the
+isotropic/anisotropic dichotomy, and one commutator — each pushed for
+what it demands to know rather than for what it was built to answer.
+
+\emph{Separation is not primitive; non-parallelism is.} With no space as
+a primitive, ``two places'' cannot be assumed — it must be constructed,
+and the wedge is the only construction available (Section~\ref{sec:picture}).
+The question this opens, unavailable in a theory that starts from a
+manifold: what is the observable that measures \emph{degree} of
+separation, if not a distance? The wedge answers it, and being
+antisymmetric, the framework's own separation is necessarily
+\emph{oriented} — a signed area, not a length, which is not in the
+standard vocabulary at all.
+
+\emph{There is one switch, not one per interaction.} The isotropic locus
+has no rotational label, no charge, no multiplet, and no curvature
+simultaneously, because all four have one source (Section~\ref{sec:branch}).
+The framework's own question: the usual account has separate energy
+scales at which separate interactions become distinct; here there is one
+boundary and then refinement. So — is there any label whose appearance
+is \emph{not} a refinement of an already-anisotropic pattern? A
+genuinely independent switching-on would falsify the single-source claim,
+and it is a question no other framework needs to ask, because no other
+framework has only one switch to defend (Section~\ref{ss:secondswitch}
+runs this test against fourteen decades of data).
+
+\emph{Content belongs to intervals, never to a single scale.} A window
+of zero width resolves nothing; with threshold density $\rho$, a window
+of width $\Delta$ contains $\rho\Delta$ structures, vanishing with the
+window. ``What exists at energy $E$'' is consequently malformed as a
+question in this framework: what exists is a property of a scale
+\emph{interval}, never of a point. The complementarity this produces —
+sharpness in scale opposed to richness in content — is not Heisenberg
+transplanted; the conjugate pair is scale-sharpness against
+content-count, and the smallest window in which a single structure is
+unambiguous is exactly $1/\rho$.
+
+\emph{There is no global field equation, and A6 is why.} A field
+equation can be written only if its source obeys a cyclic conservation
+law, and A6 says the universe's global source is not conserved — so
+there is no field equation for the universe as a whole, only local ones,
+which survive because local covariance survives global dissipation
+(Section~\ref{sec:gravity}). The framework's own question: if nothing
+global is being solved, what fixes the large-scale history at all? The
+only candidate is A5 itself, a symmetry rather than a dynamical law —
+the large-scale history is fixed by what is \emph{unobservable}, not by
+what evolves, and whether that is sufficient is an open question this
+framework poses that general relativity, built around a global field
+equation, cannot.
+
+\emph{The quantum-gravity experiment is an ordering test, not a
+particle search.} The entire quantum correction to geometry is a
+commutator of scale gradients (Section~\ref{sec:quantum}), and a
+commutator is an order discrepancy: the native experiment is not
+``detect a graviton'' but ``compare the scale along two directions, in
+both orders, and look for a discrepancy.'' The magnitude of that
+discrepancy is set by the scale step and sits far below anything
+currently measurable, stated here rather than hidden; what is
+distinctive is that the observable this framework proposes is an
+\emph{ordering}, not an amplitude, and no particle needs to exist for
+the question to be well posed.
+
+\emph{Defects change parity in pairs, with no coupling constant.} The
+confined charge's $\mathbb{Z}/2$ label composes multiplicatively, so the
+total parity of any collection cannot change under binding or splitting.
+This is not a selection rule imposed on a Lagrangian — there is no
+Lagrangian here — it is arithmetic in $\mathbb{Z}/2$: is there any
+process that changes total parity? The framework says no, categorically,
+which is a cleaner statement than a selection rule derived from an
+assumed symmetry, since there is no symmetry being assumed and hence
+nothing to break.
+
+\emph{There is no maximum density.} A ratio of scale units is itself a
+unit — never zero, never infinite, but unbounded in magnitude — and
+matter, in the anisotropic sector, \emph{is} anisotropy of the scale, so
+there is no maximum matter density, no Planck-scale density cutoff, and
+no scale at which the description must be replaced by a qualitatively
+different kind of theory. This is the same statement as the absence of a
+minimum length (Section~\ref{sec:gravity}), seen from the matter side
+rather than the geometry side, and it is the framework's sharpest
+structural disagreement with programs that posit a fundamental cutoff.
+
+None of these seven is a translation of a question asked elsewhere; each
+follows from a primitive the standard vocabulary lacks. Their honest
+status varies and is stated here rather than left implicit: the
+one-switch question and the parity question are testable now in
+principle; the interval-content complementarity is already tested
+through the resonance-width bound of Section~\ref{sec:flow}; the
+no-maximum-density question is testable only through its contrapositive
+(a confirmed minimum length would falsify it); the separation, global-history,
+and ordering-test questions are conceptual claims with no current
+measurement attached. None of the seven is a prediction of a number.
+
+%======================================================================
+\section{Confrontation with data}\label{sec:data}
+%======================================================================
+
+Table~\ref{tab:scoreboard} is the single scoreboard of this paper.
+
+\begin{table*}
+\centering
+\small
+\begin{tabular}{p{0.24\textwidth}p{0.24\textwidth}p{0.26\textwidth}p{0.18\textwidth}}
+\toprule
+Quantity & This framework & Measured & Status \\
+\midrule
+\multicolumn{4}{l}{\emph{Derived from the axiom chain (plus A6$'$); certified to the precision quoted}}\\
+Solar light deflection & $1.7515''$ & $1.7509 \pm 0.0002''$ & agrees \\
+Mercury perihelion advance & $42.989''$ & $42.98 \pm 0.04''$ & agrees \\
+PPN $\gamma$ & $1$ (exact) & $|\gamma-1| \lesssim 2\times10^{-5}$~\cite{Bertotti2003} & agrees \\
+\midrule
+\multicolumn{4}{l}{\emph{Arithmetic check of the A3 reading, not an independent prediction}}\\
+Muon time dilation & $64.43\,\mu\mathrm{s}$ & $64.378 \pm 0.026\,\mu\mathrm{s}$ & agrees ($10^{-3}$) \\
+Pound--Rebka & $2.455\times10^{-15}$ & $(2.46\pm0.03)\times10^{-15}$ & agrees \\
+\midrule
+\multicolumn{4}{l}{\emph{Converted; $\lambda$ itself is measured — the one free unit}}\\
+Dark energy density & $5.845\times10^{-27}\,\mathrm{kg/m^3}$ & $5.86\times10^{-27}\,\mathrm{kg/m^3}$~\cite{Planck2018} & agrees \\
+\midrule
+\multicolumn{4}{l}{\emph{Currently live tests}}\\
+$w$ non-evolution (forced by A5) & $w=-1$, no running & DESI: $w_0>-1,\,w_a<0$ & \textbf{tension, $2.8$--$4.2\sigma$} \\
+$f_0(500)$ pole $\Gamma/m$ & $<1.157$ & CCL $1.234$~\cite{CCL2006} / GKPY $1.090$~\cite{GKPY2011} & \textbf{open} \\
+Photon energy-dependent delay & exactly zero & $E_{\rm QG}\gtrsim 7.6\,E_{\rm Pl}$ & passes, distinct prediction \\
+Gravitational wave speed & exactly $c$, no dispersion & $|\Delta v/v|\lesssim10^{-15}$ & passes \\
+GW polarization count & exactly $2$, no breathing mode & network polarization tests & passes \\
+Dipole radiation & identically $0$ & double pulsar $<1.3\times10^{-4}$ & passes \\
+Ringdown echoes & reflectivity $\neq 0$ & GW250114 residual $=$ noise & \textbf{open, under pressure} \\
+Ergoregion instability & reflectivity bound uncomputed & GW241011 $\chi_1=0.64$, long-lived & \textbf{open, tighter pressure} \\
+Ultralight scalar & \textbf{no such slot} & $10^{-13}$--$3\times10^{-12}\,$eV excluded & compatible \\
+Area-law analogue & scale ratio never decreases & consistent with observation & passes (not discriminating) \\
+Mass spectrum $\mathrm{CV}^2$ & $=1$ (rank one; mixtures need $\geq1$) & $0.875$ & partial \\
+Exactly-conserved unconfined charge & exactly one & electric charge, $B{-}L$(?) & undecided, awaits $0\nu\beta\beta$ \\
+Black hole entropy & $\propto \ln R$ & --- & unmeasured (area law also unmeasured) \\
+\midrule
+\multicolumn{4}{l}{\emph{Excluded by the framework itself — the most informative rows}}\\
+Equal-ratio mass tower & $\mathrm{CV}=0$ & $0.935$ & \textbf{excluded} \\
+Isotropic-sector-only deflection & $0.8758''$ & $1.7509''$ & \textbf{excluded (factor 2)} \\
+Isotropic-sector-only precession & $14.33''$ & $42.98''$ & \textbf{excluded (factor 3)} \\
+Color $=$ block charge & $\mathbb{Z}/2$ (two values) & needs three values & \textbf{excluded (structurally)} \\
+\bottomrule
+\end{tabular}
+\caption{The complete numerical scoreboard.}
+\label{tab:scoreboard}
+\end{table*}
+
+One live tension and one live open question are not fatal — both sectors
+are under active measurement — and the last four rows are options the
+framework itself rejects; these are more informative than the passing
+rows because they demonstrate the framework is capable of being wrong
+internally. On timescale: even a seesaw-based lepton-number-violating
+model predicts a $0\nu\beta\beta$ half-life far above current exclusion
+limits~\cite{KamLANDZen2023}, so this is a genuine but slow-fused test.
+
+\subsection{Equation of state is out of scope}\label{ss:eos-out}
+
+The magnitude of the ringdown reflectivity $\mathcal{R}$
+(Section~\ref{ss:echo}) requires an equation of state for the interior
+structure replacing a horizon, which varies enormously between candidate
+compact objects and which this framework does not attempt to compute —
+this is explicitly outside its scope, not a gap it intends to close. What
+the framework \emph{does} deliver without an equation of state is the
+qualitative echo/ergoregion structure of Section~\ref{ss:echo} and the
+comparison between the linear and exponential strength of the two
+observational bounds.
+
+%======================================================================
+\section{How to falsify this framework}\label{sec:falsify}
+%======================================================================
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{p{0.24\linewidth}p{0.24\linewidth}p{0.44\linewidth}}
+\toprule
+Observation & Kills & Status \\
+\midrule
+\multicolumn{3}{l}{\textbf{Kills the whole framework}}\\
+$w$ evolves with redshift ($5\sigma$, dataset-consistent) & A5, dimensionlessness, all geometry & DESI $2.8$--$4.2\sigma$, but BAO alone self-consistent \\
+Energy-dependent photon delay, any order & A3 + light-cone scale-blindness & $E_{\rm QG}\gtrsim7.6E_{\rm Pl}$, winning \\
+GW dipole radiation & the conservation theorem, hence Bianchi & double pulsar $<1.3\times10^{-4}$ \\
+GW breathing mode & A5 (a breathing mode is a fiducial shift) & tensor favored over scalar/vector/mixed \\
+\bottomrule
+\end{tabular}
+\caption{No adjustable parameter absorbs any of these four: a detection is fatal, not a call for retuning.}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{p{0.24\linewidth}p{0.28\linewidth}p{0.40\linewidth}}
+\toprule
+Observation & Kills & Status \\
+\midrule
+\multicolumn{3}{l}{\textbf{Kills one sector}}\\
+A minimum length exists & horizon, singularity and max-density results & same bound as photon dispersion \\
+$f_0(500)$ pole $\Gamma/m>1.157$ confirmed & Section~\ref{sec:particles}'s resolvability bound & CCL above, GKPY below \\
+$B{-}L$ gauged and exactly conserved & the ``exactly one charge'' result & $0\nu\beta\beta$ not seen, slow fuse \\
+A label opens that is not a refinement & Section~\ref{ss:secondswitch}'s single switch & no counterexample in 14 decades \\
+Total-parity-violating process & the $\mathbb{Z}/2$ arithmetic & none known \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{p{0.28\linewidth}p{0.22\linewidth}p{0.42\linewidth}}
+\toprule
+Observation & Exposes & Status \\
+\midrule
+\multicolumn{3}{l}{\textbf{Forces an admission of what cannot be computed}}\\
+Rapid spinning compact object decays via ergoregion instability & horizon-absence requires small reflectivity, uncomputed & GW241011 $\chi_1=0.64$, long-lived; tightest current pressure \\
+Ringdown echoes seen & same, reversed: predicted to exist, amplitude not predicted & null searches so far \\
+BH entropy $\propto$ area, not $\ln R$ & the log-entropy result & entropy itself unmeasured \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{A7 cannot be falsified by this table.} It is a commitment about
+what counts as an observation; anyone may reject it and obtain a
+different $k$, and no experiment adjudicates that choice — which is
+precisely why it was promoted to an axiom rather than left an informal
+judgment. The one free unit is likewise not falsifiable: it is the scale
+in which predictions are expressed, not itself a prediction.
+
+What does \emph{not} constitute falsification: the absence of a Standard
+Model particle table (Section~\ref{sec:particles} argues this was never
+a goal); the absence of computed hadron masses (the same free unit
+again); and, emphatically, agreement with general relativity in the
+gravitational-wave sector — Theorem~\ref{thm:allorder} proves the
+symmetric sector agrees at every order, so no discrepancy is expected
+there in principle.
+
+%======================================================================
+\section{Register: retracted, corrected, cited, and assumed}\label{sec:register}
+%======================================================================
+
+A theory should carry its own history of correction, not erase it. This
+section is a standing answer to the question ``does this rest on the
+axioms alone?''
+
+\textbf{Retracted (4).} A geometric mass-tower law, later shown to be an
+unproved assumption rather than a derived consequence, and refuted by
+lattice glueball data under that assumption; a color identification that
+required three values where the projective order parameter structurally
+provides only two; a proposed cross-sector consistency test comparing two
+quantities that were not, on inspection, the same quantity; a
+codimension analysis that described a circle-valued rather than
+directional scale.
+
+\textbf{Corrected in scope (6).} In each case the underlying result
+survives and the physical interpretation attached to it does not — most
+notably, an earlier reading in which the rotational and scaling sectors
+were treated as independent channels is true only of the scalar version
+of the theory; the directional scale makes the rotation sector
+\emph{generated by} the scaling sector (Theorem~\ref{thm:coupling}).
+
+\textbf{A recurring error (5 occurrences).} Five of the corrections above
+share one root cause: scalar reasoning applied where the structure is
+directional. The diagnostic that catches it: whenever a claim mentions a
+count — one axis, one scale, one direction — ask a count of \emph{what};
+value and direction are never the same count.
+
+\textbf{Cited, not proved (2).} The classification of real-rank-one real
+simple Lie algebras invoked in Section~\ref{sec:chain}, and the relevant
+homotopy facts about projective spaces used in the particle-charge
+construction of Section~\ref{sec:particles}. If either citation fails,
+the weaker statement proved before invoking it still stands; only the
+identification built on top does not.
+
+\textbf{Assumed, registered rather than smuggled (3).} A6$'$, the scale
+response law, external to the seven axioms; a uniform-density assumption
+needed for one dimension-counting step in Section~\ref{sec:chain}; A7
+itself, promoted to an axiom rather than left implicit.
+
+\textbf{Structures now witnessed (6 of 6).} Six structures carrying
+load-bearing theorems — most importantly the scale-shift structure
+carrying Theorem~\ref{thm:hbar} — were, as found by external audit, never
+constructed from A1–A7 anywhere in the original development, making the
+associated theorems true but conditional. All six are now witnessed by
+explicit models: the polynomial-ring construction of
+Section~\ref{sec:quantum} witnesses the scale-shift structure itself and
+a cosmic-history example; the remaining four are witnessed by separate,
+unrelated concrete models — a matrix trace, an adjoint action on a
+general ring, a real-valued translation flow, and a constant function —
+chosen for whichever structure each was needed for, not by one uniform
+construction. This shows the structures are \emph{compatible} with the
+axioms, not that the axioms \emph{force} them — the gap between
+compatible and forced is real and is not closed by exhibiting a witness.
+
+\textbf{What rests on the axioms alone.} The scale/rotation split, the
+codimension-one signature split, the bookkeeping form, the coupling
+(Theorem~\ref{thm:coupling}), real rank one (subject to the physical
+identification just above), conservation from Bianchi, the full gravity
+chain through $1.7515''$ and $42.989''/$century, the label structure of
+the anisotropic sector, every statement in Section~\ref{ss:native}
+including the one-arrow-of-time identity (Theorem~\ref{thm:onearrow}).
+$\hbar$ as an exact scale step is deliberately absent from this list: it
+is witnessed, not forced, exactly as stated above.
+
+%======================================================================
+\section{Conclusion}\label{sec:concl}
+%======================================================================
+
+Taking scale rather than spacetime as primitive, a single chain runs from
+axioms to numbers. Scale must be directional, since a scalar version
+forbids the Schwarzschild metric outright. Once directional, the
+scale–rotation coupling is forced by the meaning of the two words:
+scaling is symmetric, rotation is antisymmetric, and the bracket of two
+symmetric operators is necessarily antisymmetric. The coupling, together
+with the drift being a single functional, gives real rank one, hence the
+Lorentz family, hence a fixed dimension with three spatial directions set
+by A7 — a commitment about what counts as an observation, not a free
+parameter. The metric connection and the gauge connection turn out to be
+the same commutator, read under two different questions. The
+isotropic/anisotropic branch determines whether labels exist at all,
+itself a scale-dependent fact, giving this framework's account of why
+interactions separate as energy falls. Curvature is scale deformation,
+the renormalization group is the same drift read as a running coupling,
+$\hbar$ is a step along the scale axis, and the entire quantum correction
+to geometry is purely antisymmetric. Dark matter is the isotropic
+trajectory of the same field that produces ordinary gravity, and dark
+energy is that field's own dissipation rate. The gravity sector closes
+quantitatively at $1.7515''$ and $42.989''/$century with nothing assumed
+in between.
+
+These are not metaphors; every claim stated as a theorem in this paper
+has an independent, complete proof, verified end to end by machine — 644
+checked theorems, no admitted gaps, and no hidden axioms beyond those of
+standard mathematics. But the statement that this framework reproduces
+known physics cannot currently be made without qualification: the
+scoreboard carries one live tension, DESI's $2.8$–$4.2\sigma$ preference
+against $w$ non-evolution, which is a tension with A5 itself and not with
+a fittable parameter, since no version of this framework admits an
+evolving $w$; and one live open question, the side of the resolvability
+bound on which the true $f_0(500)$ pole lies. Nor does the framework
+explain the Standard Model — Section~\ref{sec:particles} argues that was
+never the goal — and Section~\ref{sec:register} records four retracted
+claims, six claims corrected in scope, two citations of results not
+reproved here, and three assumptions registered rather than hidden, along
+with one recurring scalar-for-directional error caught five times.
+
+What a fully verified argument can establish is exactly one thing: that
+these conclusions follow from these axioms, with no gap in between.
+Whether nature adopts the axioms is a separate question that this paper
+does not, and should not be read to, answer — which is exactly why the
+scoreboard and the register are given in full.
+
+\begin{acknowledgments}
+The complete formal development and its supporting tooling are available
+in the project repository, along with a companion technical report.
+\end{acknowledgments}
+
+\onecolumngrid
+\appendix
+\section{Note on the Supplemental Material}
+The \SM\ gives, in the same order as the sections above, a complete
+mathematical restatement of every one of the 644 machine-verified
+theorems underlying this paper — full formal statements and full proofs,
+organized to mirror the structure of this paper section by section, with
+each item individually identifiable for cross-reference. This paper does
+not depend on the \SM\ to be read; the \SM\ exists so that every claim
+made informally above can be checked in complete formal detail.
+
+\bibliography{refs}
+
+\end{document}
