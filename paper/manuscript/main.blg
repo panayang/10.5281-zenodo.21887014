@@ -20,19 +20,12 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: refs.bib
-Reallocated buffer (elt_size=1) to 40000 items from 20000.
-Reallocated sv_buffer (elt_size=1) to 40000 items from 20000.
-Reallocated ex_buf (elt_size=1) to 40000 items from 20000.
-Reallocated out_buf (elt_size=1) to 40000 items from 20000.
-Reallocated name_tok (elt_size=4) to 40000 items from 20000.
-Reallocated name_sep_char (elt_size=1) to 40000 items from 20000.
 Warning--string name "sept" is undefined
 --line 12 of file refs.bib
-Reallocated str_pool (elt_size=1) to 130000 items from 65000.
 Warning--string name "sept" is undefined
---line 116 of file refs.bib
+--line 115 of file refs.bib
 Warning--string name "sept" is undefined
---line 162 of file refs.bib
+--line 161 of file refs.bib
 sn-mathphys-num.bst [2024/07/19 v1.1  bibliography style]
 Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
@@ -41,43 +34,43 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 You've used 34 entries,
             7485 wiz_defined-function locations,
-            1485 strings with 93053 characters,
-and the built_in function-call counts, 2516527 in all, are:
-= -- 301192
-> -- 18620
-< -- 424
-+ -- 54827
-- -- 9158
-* -- 232006
-:= -- 500912
+            1484 strings with 17239 characters,
+and the built_in function-call counts, 419137 in all, are:
+= -- 76704
+> -- 1016
+< -- 433
++ -- 46072
+- -- 363
+* -- 10737
+:= -- 73202
 add.period$ -- 38
 call.type$ -- 34
 change.case$ -- 216
 chr.to.int$ -- 1110
 cite$ -- 34
-duplicate$ -- 19051
-empty$ -- 191204
-format.name$ -- 27171
-if$ -- 529867
+duplicate$ -- 1443
+empty$ -- 6786
+format.name$ -- 765
+if$ -- 107796
 int.to.chr$ -- 2
-int.to.str$ -- 45
+int.to.str$ -- 47
 missing$ -- 0
-newline$ -- 4933
+newline$ -- 529
 num.names$ -- 173
-pop$ -- 18271
+pop$ -- 681
 preamble$ -- 1
 purify$ -- 146
 quote$ -- 0
-skip$ -- 104388
+skip$ -- 46537
 stack$ -- 0
-substring$ -- 471951
-swap$ -- 9590
-text.length$ -- 440
+substring$ -- 39961
+swap$ -- 748
+text.length$ -- 444
 text.prefix$ -- 0
 top$ -- 1
 type$ -- 1417
 warning$ -- 0
-while$ -- 14167
+while$ -- 965
 width$ -- 0
-write$ -- 5138
+write$ -- 736
 (There were 3 warnings)
