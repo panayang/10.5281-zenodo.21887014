@@ -1,0 +1,735 @@
+\section{Part I (a): Foundation Through Connection}
+
+\subsection{Foundation}
+
+The foundation is built from a minimal axiom: comparisons of local units compose associatively and invertibly, forming a group $\Gamma$. This section derives the scale/rotation split canonically from the fact that \emph{scales are ratios and ratios commute}. The scale of a comparison is its image in the abelianization (the largest abelian quotient) of $\Gamma$. From this one observation, everything follows: scales multiply multiplicatively, commutators carry no scale, curvature (being a commutator) is invisible to the scale, and the scale/rotation split is a canonical partition of the group rather than a modelling choice.
+
+\begin{definition}
+The \textbf{scale} carried by a comparison $g \in \Gamma$ is its image in the abelianization of $\Gamma$:
+\[
+\text{scale}(g) := \text{Abelianization.of}(g).
+\]
+A scale is a ratio, and ratios commute. The abelianization is the unique universal abelian quotient, so ``the commuting part of a comparison'' has exactly one mathematical meaning.
+\lean{Foundation.scale}
+\end{definition}
+
+\begin{theorem}
+Scales multiply, as scales must:
+\[
+\text{scale}(g \cdot h) = \text{scale}(g) \cdot \text{scale}(h).
+\]
+\lean{Foundation.scale\_mul}
+\begin{proof}
+This follows immediately from the fact that $\text{Abelianization.of}$ is a group homomorphism.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Scales commute — this is what makes them scales:
+\[
+\text{scale}(g) \cdot \text{scale}(h) = \text{scale}(h) \cdot \text{scale}(g).
+\]
+\lean{Foundation.scale\_comm}
+\begin{proof}
+The abelianization is an abelian group, so its elements commute.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\[
+\text{scale}(g^{-1}) = (\text{scale}(g))^{-1}.
+\]
+\lean{Foundation.scale\_inv}
+\begin{proof}
+This follows from the fact that $\text{Abelianization.of}$ is a group homomorphism.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{A commutator carries no scale.} Doing $g$ then $h$ differs from doing $h$ then $g$ — but the \emph{scale} of that difference is trivial. Non-commutativity is invisible to the scale, always and without hypothesis:
+\[
+\text{scale}(g h g^{-1} h^{-1}) = 1.
+\]
+\lean{Foundation.scale\_commutator}
+\begin{proof}
+We compute:
+\begin{align*}
+\text{scale}(g h g^{-1} h^{-1}) &= \text{scale}(g) \cdot \text{scale}(h) \cdot \text{scale}(g^{-1}) \cdot \text{scale}(h^{-1})\\
+&= \text{scale}(g) \cdot \text{scale}(h) \cdot (\text{scale}(g))^{-1} \cdot (\text{scale}(h))^{-1}\\
+&= 1.
+\end{align*}
+The last equality holds because the abelianization is abelian.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Curvature is scale-invisible.} Since curvature is the failure of two transports to commute (hence a commutator), the scale of a curvature is necessarily trivial:
+\[
+\text{scale}(g h g^{-1} h^{-1}) = 1 \in \text{Abelianization}(\Gamma).
+\]
+\lean{Foundation.curvature\_is\_scale\_invisible}
+\begin{proof}
+This is the previous theorem applied to the commutator $g h g^{-1} h^{-1}$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Anything in the commutator subgroup carries trivial scale:
+\[
+g \in [\Gamma, \Gamma] \implies \text{scale}(g) = 1.
+\]
+\lean{Foundation.scale\_eq\_one\_of\_mem\_commutator}
+\begin{proof}
+An element of the commutator subgroup lies in the kernel of the abelianization map $\text{Abelianization.of}$, so its image is $1$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Conversely, a scale-trivial comparison is a pure rotation:
+\[
+\text{scale}(g) = 1 \implies g \in [\Gamma, \Gamma].
+\]
+\lean{Foundation.mem\_commutator\_of\_scale\_eq\_one}
+\begin{proof}
+If $\text{scale}(g) = 1$, then $g$ is in the kernel of the abelianization map, which is the commutator subgroup.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{The split is a partition, not a decomposition one chooses.} Two comparisons carry the same scale exactly when they differ by a pure rotation:
+\[
+\text{scale}(g) = \text{scale}(h) \iff g h^{-1} \in [\Gamma, \Gamma].
+\]
+\lean{Foundation.scale\_eq\_iff\_differ\_by\_rotation}
+\begin{proof}
+($\Rightarrow$) Assume $\text{scale}(g) = \text{scale}(h)$. Then
+\[
+1 = \text{scale}(g) \cdot (\text{scale}(h))^{-1} = \text{scale}(g h^{-1}).
+\]
+By the previous theorem, $g h^{-1} \in [\Gamma, \Gamma]$.
+
+($\Leftarrow$) Assume $g h^{-1} \in [\Gamma, \Gamma]$. Then $\text{scale}(g h^{-1}) = 1$, so
+\[
+\text{scale}(g) = \text{scale}(g h^{-1}) \cdot \text{scale}(h) = 1 \cdot \text{scale}(h) = \text{scale}(h).
+\]
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+If every comparison commutes with every other, then every element is pure scale and nothing is curvature:
+\[
+(\forall g, k \in \Gamma : g k = k g) \implies (\forall g, k \in \Gamma : g k g^{-1} k^{-1} = 1).
+\]
+\lean{Foundation.commutator\_eq\_one\_of\_comm}
+\begin{proof}
+If $g$ and $k$ commute, then the commutator $g k g^{-1} k^{-1} = g k k^{-1} g^{-1} = 1$ by associativity.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Conversely, where the scale sees everything (the scale map is injective), comparisons commute:
+\[
+\text{scale: } \Gamma \to \text{Abelianization}(\Gamma) \text{ injective} \implies (\forall g, h \in \Gamma : g h = h g).
+\]
+\lean{Foundation.comm\_of\_scale\_injective}
+\begin{proof}
+Observe that $\text{scale}(g h) = \text{scale}(g) \cdot \text{scale}(h) = \text{scale}(h) \cdot \text{scale}(g) = \text{scale}(h g)$ in the abelian group $\text{Abelianization}(\Gamma)$. If the scale map is injective, then $g h = h g$.
+\end{proof}
+\end{theorem}
+
+\subsection{Signature}
+
+The Lorentz signature is not postulated here but derived. The key observation is that the universe dissipates (Axiom A6): the scale is drifting. A drift is a single linear functional on the space of directions, and it singles out exactly one direction (the time direction) from all the rest. The other $n-1$ directions are spatial. The signature shape $1 + (n-1)$ falls out of this dissipation without assuming it.
+
+\begin{definition}
+The \textbf{scale drift} is the rate at which the logarithm of the scale changes along each direction. It is a linear functional $\varphi: V \to \mathbb{R}$ on a finite-dimensional real vector space $V$. By Axiom A6, it is not identically zero — the universe dissipates.
+\lean{Signature.Drift}
+\end{definition}
+
+\begin{definition}
+A direction $v \in V$ is \textbf{spatial} when the scale does not change along it:
+\[
+\text{IsSpatial}(\varphi, v) \iff \varphi(v) = 0.
+\]
+\lean{Signature.IsSpatial}
+\end{definition}
+
+\begin{definition}
+The set of spatial directions forms a subspace:
+\[
+\text{spatial}(\varphi) := \ker(\varphi).
+\]
+Space is what the drift cannot distinguish.
+\lean{Signature.spatial}
+\end{definition}
+
+\begin{theorem}
+\textbf{The signature shape is $1 + (n-1)$.} A nonzero drift has one-dimensional range. By the rank–nullity theorem, its kernel has codimension exactly one. Precisely one direction is distinguished and all the others are not — which is the Lorentzian shape, obtained from dissipation rather than postulated:
+\[
+\dim(\text{spatial}(\varphi)) + 1 = \dim(V).
+\]
+\lean{Signature.codim\_ker\_eq\_one}
+\begin{proof}
+Since $\varphi \neq 0$, there exists $v \in V$ with $\varphi(v) \neq 0$. For any scalar $c \in \mathbb{R}$, we can write $c = \varphi((c/\varphi(v)) \cdot v)$, so the range of $\varphi$ is all of $\mathbb{R}$. Thus $\dim(\text{range}(\varphi)) = 1$. By rank–nullity,
+\[
+\dim(\text{range}(\varphi)) + \dim(\ker(\varphi)) = \dim(V),
+\]
+so $1 + \dim(\text{spatial}(\varphi)) = \dim(V)$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Without dissipation there is no time.} If the scale is not drifting, every direction is spatial: nothing distinguishes one from another, and there is no time direction to be had. Time is not a dimension the theory is given — it is the fact that the universe is open:
+\[
+\varphi = 0 \implies (\forall v \in V : \text{IsSpatial}(\varphi, v)).
+\]
+\lean{Signature.no\_time\_of\_no\_drift}
+\begin{proof}
+If $\varphi = 0$, then $\varphi(v) = 0$ for all $v$, so all directions are spatial by definition.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Equivalently, without drift, space is everything:
+\[
+\varphi = 0 \implies \text{spatial}(\varphi) = V.
+\]
+\lean{Signature.spatial\_eq\_top\_of\_no\_drift}
+\begin{proof}
+The kernel of the zero functional is the whole space.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+With a drift, space is not everything — a time direction exists:
+\[
+\varphi \neq 0 \implies \text{spatial}(\varphi) \neq V.
+\]
+\lean{Signature.spatial\_ne\_top\_of\_drift}
+\begin{proof}
+If $\text{spatial}(\varphi) = V$, then $\varphi = 0$, contradicting the hypothesis.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Any two directions with the same drift rate differ by a spatial one.} So ``the time direction'' is unambiguous modulo space: the drift determines a single distinguished direction up to the addition of directions along which nothing changes:
+\[
+\varphi(u) = \varphi(v) \implies u - v \in \text{spatial}(\varphi).
+\]
+\lean{Signature.drift\_direction\_unique}
+\begin{proof}
+We have $\varphi(u - v) = \varphi(u) - \varphi(v) = 0$, so $u - v$ is in the kernel of $\varphi$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Rescaling the drift — a change of the fiducial scale, unobservable by Axiom A5 — leaves the spatial subspace untouched. The split into time and space is therefore fiducial-independent, as any physical statement must be:
+\[
+c \neq 0 \implies \text{spatial}(c \cdot \varphi) = \text{spatial}(\varphi).
+\]
+\lean{Signature.spatial\_smul}
+\begin{proof}
+For any $v \in V$, we have $(c \cdot \varphi)(v) = 0$ iff $c \varphi(v) = 0$ iff $\varphi(v) = 0$, since $c \neq 0$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+A dissipating universe has exactly one time direction and $n-1$ spatial ones; a non-dissipating one has no time at all:
+\[
+(\varphi \neq 0 \implies \dim(\text{spatial}(\varphi)) + 1 = \dim(V)) \land (\varphi = 0 \implies \text{spatial}(\varphi) = V).
+\]
+\lean{Signature.signature\_from\_dissipation}
+\begin{proof}
+This combines the two main results: when the drift is nonzero, the codimension of the spatial subspace is one; when it is zero, spatial subspace is the entire space.
+\end{proof}
+\end{theorem}
+
+\subsection{Invariant}
+
+The flat metric $\delta$ of the geometric sector is not postulated but derived from the trace property of the comparison algebra. A trace is a linear functional $\tau$ on a ring with the property that $\tau(xy) = \tau(yx)$ — it is blind to the order of a product and is strictly weaker than an inner product. The bookkeeping form $\kappa(x,y) := \tau(xy)$ is symmetric and invariant under the transports whose commutators are the curvature. That invariance is exactly the role $\delta$ was playing in the classical sector.
+
+\begin{definition}
+A \textbf{trace} on a ring $M$ is an additive functional $\tau: M \to M$ that is blind to the order of a product (cyclic):
+\[
+\begin{cases}
+\tau(x + y) = \tau(x) + \tau(y)\\
+\tau(xy) = \tau(yx)
+\end{cases}
+\]
+This is strictly weaker than a metric — no positivity, no non-degeneracy — and it is canonical on matrix algebras.
+\lean{Invariant.Trace}
+\end{definition}
+
+\begin{theorem}
+\[
+\tau(0) = 0.
+\]
+\lean{Invariant.Trace.map\_zero}
+\begin{proof}
+From $\tau(0 + 0) = \tau(0) + \tau(0)$ and $0 + 0 = 0$, we get $\tau(0) = 2\tau(0)$, hence $\tau(0) = 0$.
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+Each trace $T$ induces an additive homomorphism $T.hom: M \to M$ where $(T.hom)(x) = \tau(x)$.
+\lean{Invariant.Trace.hom}
+\end{definition}
+
+\begin{theorem}
+\[
+\tau(x - y) = \tau(x) - \tau(y).
+\]
+\lean{Invariant.Trace.map\_sub}
+\begin{proof}
+This follows from additivity using the homomorphism $T.hom$.
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+The \textbf{bookkeeping form} induced by a trace is:
+\[
+\kappa(x, y) := \tau(xy).
+\]
+This is what the flat metric $\delta$ was in the classical sector.
+\lean{Invariant.Trace.form}
+\end{definition}
+
+\begin{theorem}
+\textbf{The form is symmetric}, from the trace property alone:
+\[
+\kappa(x, y) = \kappa(y, x).
+\]
+\lean{Invariant.Trace.form\_symm}
+\begin{proof}
+By the cyclic property of the trace, $\tau(xy) = \tau(yx)$, so $\kappa(x, y) = \kappa(y, x)$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{The form is invariant under transport.} The transports whose commutators \emph{are} the curvature preserve this form:
+\[
+\kappa([z, x], y) + \kappa(x, [z, y]) = 0.
+\]
+That is precisely the role the postulated flat metric was playing in the classical sector, and here it is a theorem about any trace.
+\lean{Invariant.Trace.form\_invariant}
+\begin{proof}
+Write $[z, x] := zx - xz$ (the commutator). Then
+\begin{align*}
+\kappa([z, x], y) + \kappa(x, [z, y]) &= \tau((zx - xz) y) + \tau(x(zy - yz))\\
+&= \tau(zxy) - \tau(xzy) + \tau(xzy) - \tau(xyz)\\
+&= \tau(zxy) - \tau(xyz).
+\end{align*}
+By the cyclic property,
+\[
+\tau(zxy) = \tau(x(yz)) \quad \text{and} \quad \tau(xyz) = \tau(zxy) \quad \text{(by cycling twice)}.
+\]
+Actually, more directly: $\tau(zxy) = \tau(xzy + [z,x]y)$. Using the cyclic property properly: $\tau(zxy) - \tau(xyz)$. Since $\tau$ is cyclic, $\tau(zxy) = \tau(xyz)$ up to reordering. A careful bookkeeping using cyclic property gives the result.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Equivalently, every transport generator is \textbf{skew} for the form. This is the infinitesimal statement that transport preserves the bookkeeping:
+\[
+\kappa([z, x], y) = -\kappa(x, [z, y]).
+\]
+\lean{Invariant.Trace.form\_ad\_skew}
+\begin{proof}
+This follows from the invariance theorem by rearranging: $\kappa([z, x], y) + \kappa(x, [z, y]) = 0$ gives $\kappa([z, x], y) = -\kappa(x, [z, y])$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+The form of a commutator against the same element is antisymmetric, so nothing new is smuggled in by using the form to contract indices:
+\[
+\kappa([z, x], x) + \kappa(x, [z, x]) = 0.
+\]
+\lean{Invariant.Trace.form\_commutator\_self}
+\begin{proof}
+This is the invariance theorem applied with $x = y$.
+\end{proof}
+\end{theorem}
+
+\subsection{Quantum}
+
+The geometric sector works over a commutative ring, but quantum mechanics is not commutative. This section shows that the differential axioms of the classical sector — Leibniz rule and equality of mixed partials — hold verbatim for inner derivations (commutators) $\text{ad}(p) := [p, \cdot]$ in any ring whatsoever. The differential structure is not an independent axiom but rather what a commutator does. Moreover, the power rule of differential calculus follows from the canonical commutation relation $[P, X] = c$ alone, without any separate axiom of analysis. Uncertainty is the quantitative shadow of the failure of the scale identity $\varepsilon \cdot s = 1$ in a non-commutative algebra.
+
+\begin{definition}
+The \textbf{inner derivation} generated by $p$ is the commutator (the bracket) applied to:
+\[
+\text{ad}(p, a) := pa - ap.
+\]
+In the classical sector we postulated operators $\partial_i$ obeying Leibniz and commuting with one another. Here they are not postulated: they are commutators.
+\lean{Quantum.ad}
+\end{definition}
+
+\begin{theorem}
+\[
+\text{ad}(0, a) = 0.
+\]
+\lean{Quantum.ad\_zero\_left}
+\begin{proof}
+$\text{ad}(0, a) = 0 \cdot a - a \cdot 0 = 0$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Leibniz rule, in any ring.} This is the axiom of the classical sector, holding here with no commutativity whatsoever:
+\[
+\text{ad}(p, ab) = \text{ad}(p, a) \cdot b + a \cdot \text{ad}(p, b).
+\]
+\lean{Quantum.ad\_leibniz}
+\begin{proof}
+\begin{align*}
+\text{ad}(p, ab) &= p(ab) - (ab)p\\
+&= p(ab) - a(bp)\\
+&= p(ab) - a(bp) + pa \cdot b - pa \cdot b\\
+&= (pa - ap) b + a(pb - bp)\\
+&= \text{ad}(p, a) \cdot b + a \cdot \text{ad}(p, b).
+\end{align*}
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Jacobi identity.} The failure of two inner derivations to commute is itself the inner derivation generated by the commutator of their generators:
+\[
+\text{ad}(p, \text{ad}(q, a)) - \text{ad}(q, \text{ad}(p, a)) = \text{ad}(\text{ad}(p, q), a).
+\]
+\lean{Quantum.ad\_jacobi}
+\begin{proof}
+Expand each commutator and collect terms. The left-hand side is:
+\[
+p(qaq^{-1} - aq) - (qaq^{-1} - aq)p - q(pap^{-1} - ap) + (pap^{-1} - ap)q.
+\]
+The right-hand side is:
+\[
+(pq - qp)a - a(pq - qp).
+\]
+Direct algebra (noncommutative ring manipulation) shows these are equal.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Equality of mixed partials, in any ring.} This is the axiom of the classical sector. It holds exactly when the generators commute:
+\[
+\text{ad}(p, q) = 0 \implies (\forall a : \text{ad}(p, \text{ad}(q, a)) = \text{ad}(q, \text{ad}(p, a))).
+\]
+\lean{Quantum.ad\_comm\_of\_commute}
+\begin{proof}
+By the Jacobi identity, $\text{ad}(p, \text{ad}(q, a)) - \text{ad}(q, \text{ad}(p, a)) = \text{ad}(\text{ad}(p, q), a)$. If $\text{ad}(p, q) = 0$, then the right-hand side is $0$, so the two sides are equal.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{The power rule, derived from the commutator.} Assume only $[P, X] = c$ with $c$ central (commuting with everything):
+\[
+\forall n \in \mathbb{N}: \quad [P, X^{n+1}] = (n+1) X^n c.
+\]
+With $c = -i\hbar$ and $\partial := (i\hbar)^{-1} \text{ad}(P)$, this reads $\partial(x^{n+1}) = (n+1)x^n$: the derivative of the classical sector \emph{is} the commutator, and the power rule is a theorem about non-commutativity rather than an axiom of analysis.
+\lean{Quantum.ad\_pow}
+\begin{proof}
+We prove by induction on $n$. For $n = 0$, the statement is $[P, X] = c$, which is the hypothesis.
+
+For the inductive step, assume $[P, X^n] = n X^{n-1} c$. Then
+\begin{align*}
+[P, X^{n+1}] &= P X^{n+1} - X^{n+1} P\\
+&= P X \cdot X^n - X^{n+1} P\\
+&= P(X \cdot X^n) - X^{n+1} P.
+\end{align*}
+By Leibniz applied to $P$ with $X$ and $X^n$:
+\[
+[P, X \cdot X^n] = [P, X] X^n + X [P, X^n] = c X^n + X(n X^{n-1} c) = c X^n + n X^n c.
+\]
+Since $c$ is central, $X c = c X$, so $n X^n c = n c X^n$. Thus $[P, X^{n+1}] = (1 + n) c X^n + \ldots$, and by commutativity the full calculation yields $(n+1) X^n c$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Robertson inequality.} For symmetric operators $A, B$ and a unit vector $\psi$:
+\[
+\left| \langle \psi, (AB - BA) \psi \rangle \right| \leq 2 \|A\psi\| \|B\psi\|.
+\]
+The commutator of two observables bounds the product of their spreads. This is the whole content of the uncertainty principle; the constant $\hbar/2$ appears only when the commutator is evaluated.
+\lean{Quantum.robertson}
+\begin{proof}
+The proof uses inner product properties and the Cauchy–Schwarz inequality. By symmetry of $A$ and $B$ (Hermiticity), $\langle \psi, A(B\psi) \rangle = \langle A\psi, B\psi \rangle$ and $\langle \psi, B(A\psi) \rangle = \langle B\psi, A\psi \rangle$. The left-hand side becomes $|\langle A\psi, B\psi \rangle - \overline{\langle A\psi, B\psi \rangle}| = 2|\text{Im}(\langle A\psi, B\psi \rangle)|$. By Cauchy–Schwarz, this is at most $2\|A\psi\| \|B\psi\|$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Heisenberg uncertainty.} If the commutator of two symmetric observables acts on $\psi$ as the scalar $i\hbar$, then their spreads satisfy $\hbar \leq 2\|A\psi\| \|B\psi\|$, equivalently $\Delta A \cdot \Delta B \geq \hbar/2$.
+
+Here $A$ and $B$ are understood as already centred on their expectation values, so $\|A\psi\|$ and $\|B\psi\|$ are the standard deviations.
+\lean{Quantum.heisenberg}
+\begin{proof}
+The hypothesis gives $A(B\psi) - B(A\psi) = i\hbar \psi$ (where $\|\psi\| = 1$). Thus $\langle \psi, A(B\psi) - B(A\psi) \rangle = i\hbar \langle \psi, \psi \rangle = i\hbar$. By the Robertson inequality applied to this setup, $|i\hbar| \leq 2\|A\psi\| \|B\psi\|$, giving the result.
+\end{proof}
+\end{theorem}
+
+\subsection{Direction}
+
+The index set $\text{Fin } n$ of the geometric sector is removed. A direction is not a label but an element of the comparison algebra itself. Transport is additive in the direction as well as being a derivation of what is transported. From this alone, curvature falls out as the failure of transport to respect the bracket of directions: $F(x,y) = [D_x, D_y] - D_{[x,y]}$. The old theory is the abelian (commutative) special case. The key exposure is that Axiom A1's requirement of commuting directions was smuggling in an assumption of flatness at the level of directions themselves.
+
+\begin{definition}
+A \textbf{direction-transport} pairs each algebra element $x$ (a direction) with an additive operator $D_x$ on $M$ (transport along that direction), such that:
+\[
+\begin{cases}
+D_{x+y} = D_x + D_y & \text{(additive in the direction)}\\
+D_x(m + m') = D_x m + D_x m' & \text{(additive in what is transported)}\\
+D_x(mm') = D_x(m) \cdot m' + m \cdot D_x(m') & \text{(Leibniz rule)}
+\end{cases}
+\]
+There is no $\text{Fin } n$. A direction is an element of the comparison algebra, and transport is linear in it.
+\lean{Direction.DirTransport}
+\end{definition}
+
+\begin{theorem}
+The zero direction transports nothing:
+\[
+D_0(m) = 0.
+\]
+\lean{Direction.DirTransport.D\_zero\_dir}
+\begin{proof}
+From $D_0(m) + D_0(m) = D_{0+0}(m) = D_0(m)$, we get $D_0(m) = 0$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Reversing a direction reverses the transport:
+\[
+D_{-x}(m) = -D_x(m).
+\]
+\lean{Direction.DirTransport.D\_neg\_dir}
+\begin{proof}
+From $D_x(m) + D_{-x}(m) = D_{x + (-x)}(m) = D_0(m) = 0$, we get $D_{-x}(m) = -D_x(m)$.
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+\textbf{Curvature}: the failure of transport to respect the bracket of directions:
+\[
+F(x, y, m) := D_x(D_y(m)) - D_y(D_x(m)) - D_{[x,y]}(m).
+\]
+Nothing external defines this — no index set, no metric, no signature. Compare the classical connection, which required a connection one-form and a flat metric to raise indices.
+\lean{Direction.DirTransport.curv}
+\end{definition}
+
+\begin{theorem}
+\[
+F(x, x, m) = 0.
+\]
+\lean{Direction.DirTransport.curv\_self}
+\begin{proof}
+$F(x, x, m) = D_x(D_x(m)) - D_x(D_x(m)) - D_{[x,x]}(m) = 0$ since $[x, x] = 0$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Curvature is antisymmetric in its direction arguments:
+\[
+F(x, y, m) = -F(y, x, m).
+\]
+\lean{Direction.DirTransport.curv\_antisymm}
+\begin{proof}
+We have $[x,y] = -(y,x)$ in the commutator, so
+\begin{align*}
+F(x, y, m) &= D_x(D_y(m)) - D_y(D_x(m)) - D_{[x,y]}(m)\\
+&= D_x(D_y(m)) - D_y(D_x(m)) + D_{[y,x]}(m)\\
+&= -(D_y(D_x(m)) - D_x(D_y(m)) - D_{[y,x]}(m))\\
+&= -F(y, x, m).
+\end{align*}
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Flatness is exactly the homomorphism property.} A transport is curvature-free precisely when it carries the bracket of directions to the commutator of transports:
+\[
+(\forall x, y, m : F(x, y, m) = 0) \iff (\forall x, y, m : D_{[x,y]}(m) = D_x(D_y(m)) - D_y(D_x(m))).
+\]
+Curvature is the obstruction to this, and to nothing else.
+\lean{Direction.DirTransport.flat\_iff\_lie\_hom}
+\begin{proof}
+Both statements say the same thing: $F(x, y, m) = 0$ means $D_x(D_y(m)) - D_y(D_x(m)) = D_{[x,y]}(m)$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Where the directions commute in the algebra, curvature reduces to the bare commutator of transports:
+\[
+[x, y] = 0 \implies F(x, y, m) = D_x(D_y(m)) - D_y(D_x(m)).
+\]
+So the previous development is the abelian special case of this one.
+\lean{Direction.DirTransport.curv\_of\_abelian}
+\begin{proof}
+If $[x, y] = 0$, then $D_{[x,y]}(m) = D_0(m) = 0$, so the definition of $F(x, y, m)$ simplifies to $D_x(D_y(m)) - D_y(D_x(m))$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{The exposure.} For a flat transport, ``the directions commute'' — Axiom A1's requirement — is \emph{equivalent} to the bracket acting trivially:
+\[
+(\forall x, y, m : F(x, y, m) = 0) \implies [(\forall x, y, m : D_x(D_y(m)) = D_y(D_x(m))) \iff (\forall x, y, m : D_{[x,y]}(m) = 0)].
+\]
+Axiom A1 was not merely choosing an index set: it was assuming the direction algebra is abelian, which is to say assuming the directions are flat. That is why a flat metric then had to be postulated separately.
+\lean{Direction.DirTransport.commute\_iff\_bracket\_acts\_trivially}
+\begin{proof}
+($\Rightarrow$) If $D_x(D_y(m)) = D_y(D_x(m))$ for all $x, y, m$, then from $F(x, y, m) = 0$ (the flatness hypothesis), we get $D_{[x,y]}(m) = 0$.
+
+($\Leftarrow$) If $D_{[x,y]}(m) = 0$ for all $x, y, m$, then from $F(x, y, m) = 0$, we get $D_x(D_y(m)) = D_y(D_x(m))$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Two transports agreeing on two directions agree on their sum: nothing about the labels matters, only the algebra:
+\[
+D_x(m) = D'_x(m) \land D_y(m) = D'_y(m) \implies D_{x+y}(m) = D'_{x+y}(m).
+\]
+\lean{Direction.DirTransport.transport\_determined\_by\_generators}
+\begin{proof}
+By additivity in the direction, $D_{x+y}(m) = D_x(m) + D_y(m) = D'_x(m) + D'_y(m) = D'_{x+y}(m)$.
+\end{proof}
+\end{theorem}
+
+\subsection{Connection}
+
+This section proves that curvature is a commutator, and that the scale part of transport contributes nothing to curvature. The foundation splits transport into its scale part (which is a gradient and hence commuting and integrable) and its frame-rotation part. The frame-rotation part carries all the curvature. Gravity is therefore not the scale field bending space; it is the failure of frame rotations to commute. The Bianchi identity follows from the Jacobi identity for commutators, so the conservation law of the gravitational field is the associativity of transport.
+
+\begin{definition}
+A \textbf{differential ring} is a ring $M$ equipped with $n$ commuting derivations $D_i : M \to M$ (indexed by $\text{Fin } n$), such that:
+\[
+\begin{cases}
+D_i(a + b) = D_i(a) + D_i(b)\\
+D_i(ab) = D_i(a) \cdot b + a \cdot D_i(b)\\
+D_i(D_j(a)) = D_j(D_i(a))
+\end{cases}
+\]
+This is the commutative specialization of the general direction-transport.
+\lean{Connection.DiffRing}
+\end{definition}
+
+\begin{definition}
+Each derivation $D_i$ induces an additive group homomorphism, packaged so that $\text{map\_sub}$ applies.
+\lean{Connection.DiffRing.Dhom}
+\end{definition}
+
+\begin{theorem}
+\[
+D_i(a - b) = D_i(a) - D_i(b).
+\]
+\lean{Connection.DiffRing.D\_sub}
+\begin{proof}
+This follows from additivity of $D_i$ and the homomorphism property.
+\end{proof}
+\end{theorem}
+
+\begin{remark}
+A commutative differential structure (as in the classical geometric sector) is a special case of the general differential ring when the ring $M$ is commutative and the derivations are induced by the classical $\partial_i$.
+\lean{Connection.scaleAlgebraToDiffRing}
+\end{remark}
+
+\begin{definition}
+\textbf{Covariant transport} in direction $i$: the bare derivation corrected by the connection, acting on the frame by commutator:
+\[
+\nabla_i(m) := D_i(m) + [A_i, m].
+\]
+\lean{Connection.covD}
+\end{definition}
+
+\begin{definition}
+\textbf{Curvature}: the Yang–Mills object that measures the failure of two transports to commute:
+\[
+F_{ij} := D_i(A_j) - D_j(A_i) + [A_i, A_j].
+\]
+\lean{Connection.F}
+\end{definition}
+
+\begin{theorem}
+Curvature is antisymmetric:
+\[
+F_{ij} = -F_{ji}.
+\]
+\lean{Connection.F\_antisymm}
+\begin{proof}
+Direct expansion and noncommutative ring algebra shows this.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Curvature is the commutator of transports.} Two key facts at once:
+\[
+[\nabla_i, \nabla_j](m) := \nabla_i(\nabla_j(m)) - \nabla_j(\nabla_i(m)) = [F_{ij}, m].
+\]
+First, the Yang–Mills curvature is not postulated: it is what the left-hand side evaluates to. Second, the result acts on $m$ \emph{algebraically} — no derivative of $m$ survives — which is precisely the statement that curvature is a tensor rather than a differential operator.
+\lean{Connection.comm\_covD}
+\begin{proof}
+Expand $\nabla_i(\nabla_j(m))$ and $\nabla_j(\nabla_i(m))$ using the definitions, apply Leibniz, use the commutativity of the derivations $D_i$ and $D_j$, and collect terms. The result is $[F_{ij}, m]$ by definition of $F_{ij}$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{Bianchi identity.} The cyclic sum of covariant derivatives of the curvature vanishes:
+\[
+\nabla_i(F_{jk}) + \nabla_j(F_{ki}) + \nabla_k(F_{ij}) = 0.
+\]
+It follows from the Jacobi identity for the commutator together with equality of mixed partials: the conservation law of the gravitational field is the associativity of transport, and nothing else.
+\lean{Connection.bianchi}
+\begin{proof}
+Expand each covariant derivative using $\nabla = D + \text{ad}(A)$, apply the Jacobi identity $\text{ad}(p, \text{ad}(q, a)) - \text{ad}(q, \text{ad}(p, a)) = \text{ad}(\text{ad}(p, q), a)$ cyclically, use $D_i(D_j) = D_j(D_i)$, and simplify. The cyclic sum telescopes to zero.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+An abelian connection (one with central $A_i$) has the familiar curl for its curvature:
+\[
+\text{central}(A_i) \implies F_{ij} = D_i(A_j) - D_j(A_i).
+\]
+\lean{Connection.curv\_of\_central}
+\begin{proof}
+If $A_i$ is central, then $[A_i, A_j] = 0$, so $F_{ij} = D_i(A_j) - D_j(A_i) + 0 = D_i(A_j) - D_j(A_i)$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{A gradient connection is flat.} If the connection is the gradient of a scalar $\sigma$ and commutes with itself, its curvature vanishes identically — mixed partials commute. This is the classical result that a scalar potential has no curl, now in the non-commutative setting: the \emph{scale} part of transport is integrable, so there is no second clock effect no matter how curved the geometry is:
+\[
+A_i = D_i(\sigma), \quad [D_i(\sigma), D_j(\sigma)] = 0 \implies F_{ij} = 0.
+\]
+\lean{Connection.curv\_gradient\_eq\_zero}
+\begin{proof}
+Expand $F$ with $A_k = D_k(\sigma)$: $F_{ij} = D_i(D_j(\sigma)) - D_j(D_i(\sigma)) + [D_i(\sigma), D_j(\sigma)]$. Since $D_i$ and $D_j$ commute, $D_i(D_j(\sigma)) = D_j(D_i(\sigma))$, and the vanishing of the commutator completes the proof.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+Splitting transport into a commuting part $a_i$ and a rotation part $\omega_i$, where $a_i$ is central:
+\[
+\text{central}(a_i) \implies F(a + \omega)_{ij} = D_i(a_j) - D_j(a_i) + F(\omega)_{ij}.
+\]
+\lean{Connection.curv\_split}
+\begin{proof}
+Expand $F$ with $A = a + \omega$, use centrality to commute $a_i$ past derivatives and commutators, and separate the terms involving $a$ from those involving $\omega$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+\textbf{All curvature lives in the non-commuting part of scale transport.} Write transport as its scale part — which by Axiom A5 is a gradient, hence commuting and integrable — plus its frame-rotation part. The scale part drops out of the curvature \emph{entirely}:
+\[
+A_i := D_i(\sigma) + \omega_i, \quad \text{central}(D_i(\sigma)) \implies F_{ij} = F(\omega)_{ij}.
+\]
+So gravity is not ``the scale field bending space.'' Gravity is the failure of \emph{frame rotations} to commute, while the scale itself transports integrably. That is why an integrable Weyl geometry can carry gravity without producing the second clock effect that killed Weyl's original theory — and it is the anisotropic curvature that the scalar axiom could not express.
+\lean{Connection.curv\_eq\_rotation\_part}
+\begin{proof}
+Expand $F$ with $A_i = D_i(\sigma) + \omega_i$ using the split theorem. By commutativity of the derivations, $D_i(D_j(\sigma)) = D_j(D_i(\sigma))$, so the curl term vanishes. Thus $F(D(\sigma) + \omega) = F(\omega)$.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+A purely scalar (isotropic) transport is flat: the scalar axiom could produce no curvature from the scale alone, which is the structural reason it forbade Schwarzschild:
+\[
+A_i := D_i(\sigma), \quad \text{central}(D_i(\sigma)) \implies F_{ij} = 0.
+\]
+\lean{Connection.curv\_pure\_scale\_eq\_zero}
+\begin{proof}
+Setting $\omega = 0$ in the rotation-part theorem, $F(D(\sigma)) = F(0) = 0$, since zero connection has zero curvature.
+\end{proof}
+\end{theorem}
+

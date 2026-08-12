@@ -1,0 +1,663 @@
+\section{Part III: The Quantum Sector}
+
+\subsection{Deformation}
+
+First-order deformation quantization bridges the commutative and non-commutative sectors. The classical limit is recovered exactly (not as an approximation) by evaluating at zero in the deformation parameter $\hbar$. The commutator of the deformed algebra encodes the Poisson bracket of the original commutative algebra, establishing that classical derivations arise as inner derivations of the quantum algebra divided by $\hbar$. The canonical commutation relation then closes the circle by showing that momentum and position satisfy $[p, q]_\star = \hbar$ in this deformation.
+
+\begin{definition}
+A \textbf{biderivation} of a commutative ring $A$ is a pair $(B, \text{add\_left}, \text{add\_right}, \text{leibniz\_left}, \text{leibniz\_right})$ where $B : A \to A \to A$ satisfies:
+\begin{align}
+B(a+b,c) &= B(a,c) + B(b,c) \quad \text{(additive in first argument)} \\
+B(a,b+c) &= B(a,b) + B(a,c) \quad \text{(additive in second argument)} \\
+B(ab,c) &= a \cdot B(b,c) + b \cdot B(a,c) \quad \text{(Leibniz in first argument)} \\
+B(a,bc) &= b \cdot B(a,c) + c \cdot B(a,b) \quad \text{(Leibniz in second argument)}
+\end{align}
+for all $a, b, c \in A$. This is the algebraic data of a first-order deformation.
+\end{definition}
+
+\begin{definition}
+Given a biderivation $P$ of $A$, the \textbf{Poisson bracket} induced by $P$ is the antisymmetric part of the bilinear map:
+\[
+\{a, b\}_P := P.B(a,b) - P.B(b,a) .
+\]
+\lean{Deformation.Biderivation.poisson}
+\end{definition}
+
+\begin{theorem}[Antisymmetry of the Poisson bracket]
+For any biderivation $P$ of $A$ and elements $a, b \in A$,
+\[
+\{a, b\}_P = -\{b, a\}_P .
+\]
+\begin{proof}
+Immediate from the definition of antisymmetric subtraction.
+\end{proof}
+\lean{Deformation.Biderivation.poisson\_antisymm}
+\end{theorem}
+
+\begin{theorem}[Poisson bracket vanishes on diagonal]
+For any biderivation $P$ of $A$ and element $a \in A$,
+\[
+\{a, a\}_P = 0 .
+\]
+\begin{proof}
+Since $\{a,a\}_P = P.B(a,a) - P.B(a,a) = 0$ by definition.
+\end{proof}
+\lean{Deformation.Biderivation.poisson\_self}
+\end{theorem}
+
+\begin{theorem}[Poisson bracket is a derivation in the first argument]
+For any biderivation $P$ of $A$ and elements $a, b, c \in A$,
+\[
+\{ab, c\}_P = a \cdot \{b,c\}_P + b \cdot \{a,c\}_P .
+\]
+This is the precise sense in which the classical derivations of axiom A1 are recovered from the deformation: each map $\{-, g\}_P$ is a derivation of the commutative ring $A$.
+\begin{proof}
+We compute:
+\begin{align}
+\{ab, c\}_P &= P.B(ab,c) - P.B(c,ab) \\
+&= [a \cdot P.B(b,c) + b \cdot P.B(a,c)] - [c \cdot P.B(a,b) + c \cdot P.B(b,a)] \\
+&= a \cdot [P.B(b,c) - P.B(c,b)] + b \cdot [P.B(a,c) - P.B(c,a)] \\
+&= a \cdot \{b,c\}_P + b \cdot \{a,c\}_P ,
+\end{align}
+using the Leibniz properties and rearranging.
+\end{proof}
+\lean{Deformation.Biderivation.poisson\_leibniz\_left}
+\end{theorem}
+
+\begin{theorem}[Poisson bracket is a derivation in the second argument]
+For any biderivation $P$ of $A$ and elements $a, b, c \in A$,
+\[
+\{a, bc\}_P = b \cdot \{a,c\}_P + c \cdot \{a,b\}_P .
+\]
+\begin{proof}
+Similar to the first-argument case, using the Leibniz properties in the second argument.
+\end{proof}
+\lean{Deformation.Biderivation.poisson\_leibniz\_right}
+\end{theorem}
+
+\begin{definition}
+The \textbf{star product to first order in $\hbar$} defined by a biderivation $P$ is the product on formal series $A[\hbar]/(\hbar^2) \cong A \times A$ (identifying $f_0 + \hbar f_1$ with the pair $(f_0, f_1)$) given by:
+\[
+(f_0, f_1) \star (g_0, g_1) := \bigl(f_0 g_0, \, f_0 g_1 + f_1 g_0 + P.B(f_0, g_0)\bigr) .
+\]
+This product is independent of the choice of basis and depends only on $P$.
+\lean{Deformation.star}
+\end{definition}
+
+\begin{theorem}[The deformation is associative]
+For any biderivation $P$ and elements $f, g, h \in A \times A$,
+\[
+(f \star g) \star h = f \star (g \star h) .
+\]
+The Leibniz axioms for $P$ are precisely the Hochschild cocycle condition at first order, ensuring that $A[\hbar]/(\hbar^2)$ is a genuine associative algebra.
+\begin{proof}
+Expand both sides using the star product definition. The first component is $f_0 g_0 h_0$ on both sides by associativity of multiplication in $A$. For the second component, the Leibniz axioms in both arguments of $P$ ensure that the $\hbar$-coefficient also matches after collecting terms. The calculation is a verification that the cocycle condition holds.
+\end{proof}
+\lean{Deformation.star\_assoc}
+\end{theorem}
+
+\begin{theorem}[The classical limit]
+The constant term of the star product recovers the ordinary commutative product:
+\[
+(f_0, f_1) \star (g_0, g_1) \big|_{\text{coeff of } \hbar^0} = f_0 g_0 .
+\]
+There is no approximation or limit process; this is exact at first order.
+\begin{proof}
+Immediate from the definition: the first component of the product is always $f_0 g_0$.
+\end{proof}
+\lean{Deformation.star\_classical}
+\end{theorem}
+
+\begin{theorem}[Commutativity to zeroth order]
+The deformed product is commutative at the zeroth order in $\hbar$:
+\[
+(f_0, f_1) \star (g_0, g_1) \big|_{\hbar^0} = (g_0, g_1) \star (f_0, f_1) \big|_{\hbar^0} .
+\]
+That is, $f_0 g_0 = g_0 f_0$, which is immediate since $A$ is commutative.
+\begin{proof}
+This follows from the classical limit theorem: both sides reduce to $f_0 g_0$ by commutativity of $A$.
+\end{proof}
+\lean{Deformation.star\_comm\_classical}
+\end{theorem}
+
+\begin{theorem}[The commutator encodes the Poisson bracket]
+For any biderivation $P$ and elements $f, g \in A \times A$, the commutator
+\[
+[f, g]_\star := f \star g - g \star f
+\]
+has the form:
+\begin{align}
+\text{(coefficient of $\hbar^0$)} &: \quad (f_0, f_1) \star (g_0, g_1) \big|_{\hbar^0} - (g_0, g_1) \star (f_0, f_1) \big|_{\hbar^0} = 0 , \\
+\text{(coefficient of $\hbar^1$)} &: \quad (f_0, f_1) \star (g_0, g_1) \big|_{\hbar^1} - (g_0, g_1) \star (f_0, f_1) \big|_{\hbar^1} = \{f_0, g_0\}_P .
+\end{align}
+Thus $\hbar^{-1}[f, g]_\star = \{f_0, g_0\}_P$ exactly, with no limiting process to justify. This is the statement that $\partial_i = \hbar^{-1} \text{ad}_{P_i}$ in the classical sector.
+\begin{proof}
+The first component is $f_0 g_0 - g_0 f_0 = 0$ since $A$ is commutative. The second component is:
+\begin{align}
+&[f_0 g_1 + f_1 g_0 + P.B(f_0, g_0)] - [g_0 f_1 + g_1 f_0 + P.B(g_0, f_0)] \\
+&= P.B(f_0, g_0) - P.B(g_0, f_0) = \{f_0, g_0\}_P .
+\end{align}
+\end{proof}
+\lean{Deformation.star\_commutator}
+\end{theorem}
+
+\begin{theorem}[Commutativity iff the Poisson bracket vanishes]
+Two elements $f, g \in A \times A$ commute in the star product if and only if their Poisson bracket vanishes:
+\[
+f \star g = g \star f \quad \iff \quad \{f_0, g_0\}_P = 0 .
+\]
+Non-commutativity is exactly the failure of $P$ to be symmetric; a vanishing bracket recovers a commutative algebra (the gravitational sector).
+\begin{proof}
+From the commutator formula, $f \star g - g \star f$ has zero second component if and only if $\{f_0, g_0\}_P = 0$. Since the first component is always zero, this holds if and only if the products coincide.
+\end{proof}
+\lean{Deformation.star\_comm\_iff\_poisson\_zero}
+\end{theorem}
+
+\begin{definition}
+For a scale algebra with $n$ directions and derivations $(d_i)_{i \in \text{Fin } n}$, the \textbf{canonical biderivation} associated to two directions $p, q \in \text{Fin } n$ is defined by:
+\[
+P_{pq}.B(a, b) := d_q(a) \cdot d_p(b) .
+\]
+A pair of canonically conjugate coordinates of the substrate — one varying only along $p$, the other only along $q$ — gives rise to a biderivation, hence a deformation.
+\lean{Deformation.canonical}
+\end{definition}
+
+\begin{theorem}[The Poisson bracket of canonical coordinates]
+For directions $p, q \in \text{Fin } n$ and elements $a, b$ in the scale algebra,
+\[
+\{a, b\}_{P_{pq}} = d_q(a) \cdot d_p(b) - d_q(b) \cdot d_p(a) .
+\]
+\begin{proof}
+Immediate from the definition of the canonical biderivation and the Poisson bracket.
+\end{proof}
+\lean{Deformation.canonical\_poisson}
+\end{theorem}
+
+\begin{theorem}[The canonical commutation relation]
+Let $X$ and $\text{Mom}$ be coordinates of the substrate that are canonically conjugate with respect to directions $p, q$:
+\begin{align}
+d_p(X) = 1, \quad d_q(X) = 0, \quad d_p(\text{Mom}) = 0, \quad d_q(\text{Mom}) = 1 .
+\end{align}
+Then their Poisson bracket is
+\[
+\{\text{Mom}, X\}_{P_{pq}} = 1 ,
+\]
+which means in the deformed algebra, $[\text{Mom}, X]_\star = \hbar \cdot 1$. Taking $\hbar = i\hbar$ recovers the canonical commutation relation $[\text{Mom}, X] = i\hbar$ of quantum mechanics. Combined with the power rule of calculus (recovered via inner derivations in the commutative sector), the circle is closed: the differential structure of the gravitational sector and the canonical commutation relation are two ends of one first-order deformation.
+\begin{proof}
+Applying the definition:
+\begin{align}
+\{\text{Mom}, X\}_{P_{pq}} &= d_q(\text{Mom}) \cdot d_p(X) - d_q(X) \cdot d_p(\text{Mom}) \\
+&= 1 \cdot 1 - 0 \cdot 0 = 1 .
+\end{align}
+\end{proof}
+\lean{Deformation.ccr\_of\_canonical}
+\end{theorem}
+
+\begin{theorem}[Poisson bracket of a coordinate with itself]
+For any directions $p, q$ and element $a$,
+\[
+\{a, a\}_{P_{pq}} = 0 .
+\]
+\begin{proof}
+This is the diagonal case of the Poisson bracket antisymmetry.
+\end{proof}
+\lean{Deformation.canonical\_poisson\_self}
+\end{theorem}
+
+\subsection{Crossed}
+
+Non-commutativity arises exactly from the scale step itself, with no expansion parameter. The substrate has two operations: reading a quantity where you are (multiplication) and moving to the adjacent scale (the shift endomorphism $T$). These do not commute; their failure to commute is not a small parameter but a finite, exact quantity—the scale difference $\delta a = Ta - a$. Position and scale do not commute, which is the operator form of axiom A3. Everything follows exactly, with the classical differential structure emerging as the zero-scale-step limit.
+
+\begin{definition}
+A \textbf{scale shift} is a ring endomorphism that re-reads the substrate one step along the scale direction. Formally, it is a triple $(T, \text{map\_add}, \text{map\_mul})$ where $T : A \to A$ preserves addition and multiplication:
+\begin{align}
+T(x + y) &= T(x) + T(y), \\
+T(xy) &= T(x) \cdot T(y) .
+\end{align}
+Only the ring structure is preserved; nothing is assumed about the size of the step.
+\lean{Crossed.ScaleShift}
+\end{definition}
+
+\begin{theorem}[Scale shift preserves zero]
+For any scale shift $S$,
+\[
+S.T(0) = 0 .
+\]
+\begin{proof}
+From $S.T(0 + 0) = S.T(0) + S.T(0)$, we get $S.T(0) = 2 \cdot S.T(0)$, whence $S.T(0) = 0$ by cancellation.
+\end{proof}
+\lean{Crossed.ScaleShift.map\_zero}
+\end{theorem}
+
+\begin{definition}
+The shift as an additive endomorphism $\text{shiftOp}(S) \in \text{End}_{\text{add}}(A)$ is the formal operator on the substrate where moving to an adjacent scale is a separate operation from multiplication.
+\lean{Crossed.ScaleShift.shiftOp}
+\end{definition}
+
+\begin{theorem}[Action of shiftOp]
+For any scale shift $S$ and element $x \in A$,
+\[
+\text{shiftOp}(S) \cdot x = S.T(x) .
+\]
+\begin{proof}
+By definition of the additive endomorphism structure.
+\end{proof}
+\lean{Crossed.ScaleShift.shiftOp\_apply}
+\end{theorem}
+
+\begin{definition}
+Reading a quantity where you are is represented by left multiplication in the operator ring: for $a \in A$,
+\[
+\text{mulOp}(a) \cdot x := a \cdot x .
+\]
+\lean{Crossed.mulOp}
+\end{definition}
+
+\begin{theorem}[Action of mulOp]
+For any elements $a, x \in A$,
+\[
+\text{mulOp}(a) \cdot x = a \cdot x .
+\]
+\begin{proof}
+Immediate from the definition as left multiplication.
+\end{proof}
+\lean{Crossed.mulOp\_apply}
+\end{theorem}
+
+\begin{theorem}[The exchange relation]
+Moving to the adjacent scale and then reading $a$ is the same as reading $T(a)$ and then moving:
+\[
+\text{shiftOp}(S) \circ \text{mulOp}(a) = \text{mulOp}(T(a)) \circ \text{shiftOp}(S) .
+\]
+This is exact; no approximation is involved.
+\begin{proof}
+Applying both sides to $x \in A$:
+\begin{align}
+\text{LHS}(x) &= \text{shiftOp}(S)(\text{mulOp}(a)(x)) = S.T(a \cdot x) = S.T(a) \cdot S.T(x) , \\
+\text{RHS}(x) &= \text{mulOp}(T(a))(\text{shiftOp}(S)(x)) = T(a) \cdot S.T(x) = S.T(a) \cdot S.T(x) .
+\end{align}
+\end{proof}
+\lean{Crossed.shift\_mul\_eq}
+\end{theorem}
+
+\begin{definition}
+The \textbf{scale difference} operator measures how much a quantity changes over one scale step:
+\[
+\delta_S(a) := S.T(a) - a .
+\]
+At finite step this is the exact analogue of a derivative.
+\lean{Crossed.delta}
+\end{definition}
+
+\begin{theorem}[The commutator in closed form]
+The commutator of the shift operator with multiplication is
+\[
+[\text{shiftOp}(S), \text{mulOp}(a)] := \text{shiftOp}(S) \circ \text{mulOp}(a) - \text{mulOp}(a) \circ \text{shiftOp}(S) = \text{mulOp}(\delta_S(a)) \circ \text{shiftOp}(S) .
+\]
+Writing this in operator form: $[U, M_a] = M_{\delta a} \cdot U$. Non-commutativity is not a small parameter; it is the scale difference, exactly. Planck's constant $\hbar$ is the size of a scale step.
+\begin{proof}
+From the exchange relation, $\text{shiftOp}(S) \circ \text{mulOp}(a) = \text{mulOp}(S.T(a)) \circ \text{shiftOp}(S)$. Thus:
+\begin{align}
+[\text{shiftOp}(S), \text{mulOp}(a)](x) &= S.T(a) \cdot S.T(x) - a \cdot S.T(x) \\
+&= (S.T(a) - a) \cdot S.T(x) = \delta_S(a) \cdot S.T(x) ,
+\end{align}
+which is the action of $\text{mulOp}(\delta_S(a)) \circ \text{shiftOp}(S)$.
+\end{proof}
+\lean{Crossed.commutator\_eq}
+\end{theorem}
+
+\begin{theorem}[Commutativity is absence of scale step]
+The two operations commute if and only if the scale difference vanishes:
+\[
+\text{shiftOp}(S) \circ \text{mulOp}(a) = \text{mulOp}(a) \circ \text{shiftOp}(S) \quad \iff \quad \text{mulOp}(\delta_S(a)) \circ \text{shiftOp}(S) = 0 .
+\]
+Classical geometry is not a limit one takes; it is the case in which nothing moves along the scale.
+\begin{proof}
+The commutator vanishes if and only if the right-hand side of the commutator formula is zero, which happens if and only if $\delta_S(a) = 0$ for all $a$.
+\end{proof}
+\lean{Crossed.comm\_iff\_shift\_trivial}
+\end{theorem}
+
+\begin{theorem}[The twisted Leibniz rule at finite scale step]
+For any scale shift $S$ and elements $a, b \in A$,
+\[
+\delta_S(ab) = \delta_S(a) \cdot S.T(b) + a \cdot \delta_S(b) .
+\]
+The rule is twisted: the second factor is read at the shifted scale. This is exact for any step, however large.
+\begin{proof}
+\begin{align}
+\delta_S(ab) &= S.T(ab) - ab \\
+&= S.T(a) \cdot S.T(b) - ab \\
+&= [S.T(a) - a] \cdot S.T(b) + a \cdot [S.T(b) - b] \\
+&= \delta_S(a) \cdot S.T(b) + a \cdot \delta_S(b) .
+\end{align}
+\end{proof}
+\lean{Crossed.delta\_twisted\_leibniz}
+\end{theorem}
+
+\begin{theorem}[Axiom A1 is the zero-step case]
+When the shift acts trivially on the second factor—that is, $S.T(b) = b$—the twisted Leibniz rule reduces to the ordinary product rule:
+\[
+\delta_S(ab) = \delta_S(a) \cdot b + a \cdot \delta_S(b) .
+\]
+So the classical differential structure postulated in axiom A1 is not an expansion truncated at first order in $\hbar$; it is the exact relation evaluated at zero scale step.
+\begin{proof}
+Substitute $S.T(b) = b$ into the twisted rule.
+\end{proof}
+\lean{Crossed.delta\_leibniz\_of\_untwisted}
+\end{theorem}
+
+\begin{theorem}[Scale difference vanishes iff shift is trivial]
+For a scale shift $S$ and element $a$,
+\[
+\delta_S(a) = 0 \quad \iff \quad S.T(a) = a .
+\]
+\begin{proof}
+Immediate from the definition $\delta_S(a) = S.T(a) - a$.
+\end{proof}
+\lean{Crossed.delta\_eq\_zero\_iff}
+\end{theorem}
+
+\begin{definition}
+Composing two scale shifts gives another scale shift. The composition $(S \circ R).T := S.T \circ R.T$ preserves addition and multiplication because both $S.T$ and $R.T$ do.
+\lean{Crossed.ScaleShift.comp}
+\end{definition}
+
+\begin{theorem}[Composition applies as function composition]
+For scale shifts $S, R$ and element $x$,
+\[
+(S \circ R).T(x) = S.T(R.T(x)) .
+\]
+\begin{proof}
+By definition of composition.
+\end{proof}
+\lean{Crossed.ScaleShift.comp\_apply}
+\end{theorem}
+
+\begin{theorem}[Exchange relation holds for composed steps]
+The exchange relation holds for arbitrary compositions of scale shifts:
+\[
+\text{shiftOp}(S \circ R) \circ \text{mulOp}(a) = \text{mulOp}((S \circ R).T(a)) \circ \text{shiftOp}(S \circ R) .
+\]
+The structure is consistent across arbitrary scale separations rather than only infinitesimal ones.
+\begin{proof}
+This is immediate from the exchange relation theorem applied to the composed shift $S \circ R$.
+\end{proof}
+\lean{Crossed.shift\_mul\_eq\_comp}
+\end{theorem}
+
+\subsection{NCConformal}
+
+The quantum-gravitational correction enters the geometry as a purely antisymmetric contribution to the deformation tensor, arising from the non-commutativity of scale gradients. The entire correction is antisymmetric in the index pair, so it vanishes from the symmetric part of the deformation tensor—and hence from every classical gravitational observable (orbit deflection, perihelion precession, gravitational redshift). The prediction is that quantum-gravitational effects appear first in spin–geometry coupling, which is sensitive to antisymmetric geometric structure.
+
+\begin{definition}
+The Kronecker delta is represented as a central element (cast of $0$ or $1$):
+\[
+\kappa(i,j) := \begin{cases} 1 & \text{if } i = j \\ 0 & \text{otherwise} \end{cases} \in M .
+\]
+\lean{NCConformal.kr}
+\end{definition}
+
+\begin{theorem}[Kronecker delta is symmetric]
+For all $i, j \in \text{Fin } n$,
+\[
+\kappa(i,j) = \kappa(j,i) .
+\]
+\begin{proof}
+If $i = j$ then $j = i$ and both sides are $1$. Otherwise both are $0$.
+\end{proof}
+\lean{NCConformal.kr\_symm}
+\end{theorem}
+
+\begin{theorem}[Kronecker delta is central]
+For all $i, j \in \text{Fin } n$ and $x \in M$,
+\[
+\kappa(i,j) \cdot x = x \cdot \kappa(i,j) .
+\]
+Being $0$ or $1$, it commutes with every element.
+\begin{proof}
+When $i = j$, both sides are $x$. When $i \ne j$, both sides are $0$.
+\end{proof}
+\lean{NCConformal.kr\_comm}
+\end{theorem}
+
+\begin{theorem}[Diagonal Kronecker delta]
+For all $i \in \text{Fin } n$,
+\[
+\kappa(i,i) = 1 .
+\]
+\begin{proof}
+By definition.
+\end{proof}
+\lean{NCConformal.kr\_self}
+\end{theorem}
+
+\begin{theorem}[Summing against Kronecker delta on the left]
+For $i \in \text{Fin } n$ and a function $f : \text{Fin } n \to M$,
+\[
+\sum_{m} \kappa(i,m) \cdot f(m) = f(i) .
+\]
+\begin{proof}
+Only the term $m = i$ contributes, where $\kappa(i,i) = 1$, so the sum is $f(i)$.
+\end{proof}
+\lean{NCConformal.sum\_kr\_left}
+\end{theorem}
+
+\begin{theorem}[Summing against Kronecker delta on the right]
+For $i \in \text{Fin } n$ and a function $f : \text{Fin } n \to M$,
+\[
+\sum_{m} \kappa(m,i) \cdot f(m) = f(i) .
+\]
+\begin{proof}
+Since $\kappa(m,i) = \kappa(i,m)$, this reduces to the left case.
+\end{proof}
+\lean{NCConformal.sum\_kr\_right}
+\end{theorem}
+
+\begin{theorem}[Kronecker deltas commute]
+For indices $i, j, p, q \in \text{Fin } n$ and $x \in M$,
+\[
+\kappa(i,j) \cdot (\kappa(p,q) \cdot x) = \kappa(p,q) \cdot (\kappa(i,j) \cdot x) .
+\]
+\begin{proof}
+Since both $\kappa$ factors are central, they pass through each other and reorder freely.
+\end{proof}
+\lean{NCConformal.kr\_swap}
+\end{theorem}
+
+\begin{theorem}[Scalar-prefixed factors merge]
+For indices $i, j, p, q \in \text{Fin } n$ and $x, y \in M$,
+\[
+(\kappa(i,j) \cdot x) \cdot (\kappa(p,q) \cdot y) = (\kappa(i,j) \cdot \kappa(p,q)) \cdot (x \cdot y) .
+\]
+\begin{proof}
+The $\kappa$ factors are central, so they collect on the left and the ring elements keep their order.
+\end{proof}
+\lean{NCConformal.scalar\_mul\_scalar}
+\end{theorem}
+
+\begin{definition}
+The \textbf{scale gradient} in direction $i$ is the derivation $D_i$ applied to the scale field $\sigma$:
+\[
+\sigma_i := D_i(\sigma) .
+\]
+\lean{NCConformal.sig}
+\end{definition}
+
+\begin{definition}
+The \textbf{scale Hessian}—second derivatives of the scale field—is:
+\[
+H_{ij} := D_i(D_j(\sigma)) = D_i(\sigma_j) .
+\]
+\lean{NCConformal.hess}
+\end{definition}
+
+\begin{theorem}[The scale Hessian is symmetric]
+For all $i, j \in \text{Fin } n$,
+\[
+H_{ij} = H_{ji} .
+\]
+This symmetry comes from the commutativity of the derivations (a chart choice in axiom A1) and survives untouched in the non-commutative setting.
+\begin{proof}
+Since $D_i$ and $D_j$ commute by assumption (axiom A1 for commuting derivations),
+\[
+H_{ij} = D_i(D_j(\sigma)) = D_j(D_i(\sigma)) = H_{ji} .
+\]
+\end{proof}
+\lean{NCConformal.hess\_symm}
+\end{theorem}
+
+\begin{definition}
+The \textbf{squared gradient} is the sum of squares of all scale gradients:
+\[
+|\nabla \sigma|^2 := \sum_{i \in \text{Fin } n} \sigma_i \cdot \sigma_i .
+\]
+\lean{NCConformal.gradsq}
+\end{definition}
+
+\begin{definition}
+The \textbf{Christoffel symbols} in the non-commutative setting are:
+\[
+\Gamma^a_{bc} := \kappa(a,b) \cdot \sigma_c + \kappa(a,c) \cdot \sigma_b - \kappa(b,c) \cdot \sigma_a .
+\]
+They have the same form as in the commutative case because the Kronecker deltas are central.
+\lean{NCConformal.Chr}
+\end{definition}
+
+\begin{theorem}[Christoffel symbols are symmetric in lower indices]
+For all $a, b, c \in \text{Fin } n$,
+\[
+\Gamma^a_{bc} = \Gamma^a_{cb} .
+\]
+\begin{proof}
+Since $\kappa(b,c) = \kappa(c,b)$ (symmetry of Kronecker delta), swapping $b$ and $c$ leaves the expression unchanged.
+\end{proof}
+\lean{NCConformal.Chr\_symm}
+\end{theorem}
+
+\begin{definition}
+The \textbf{deformation tensor}, which encodes curvature, is:
+\[
+\text{Defm}_{ij} := 2 H_{ij} - 2 \sigma_i \cdot \sigma_j + \kappa(i,j) \cdot |\nabla \sigma|^2 .
+\]
+It is defined exactly as in the commutative case, but now $\sigma_i$ and $\sigma_j$ need not commute.
+\lean{NCConformal.Defm}
+\end{definition}
+
+\begin{theorem}[The quantum-gravitational correction is antisymmetric]
+The deformation tensor is no longer symmetric. The antisymmetric part—the whole quantum correction—is exactly twice the commutator of the scale gradients:
+\[
+\text{Defm}_{ij} - \text{Defm}_{ji} = -2 [\sigma_i, \sigma_j] ,
+\]
+where $[\sigma_i, \sigma_j] := \sigma_i \cdot \sigma_j - \sigma_j \cdot \sigma_i$ is the commutator. Everything else in the curvature computation is unchanged, because the Kronecker deltas are central and $H_{ij}$ is still symmetric.
+\begin{proof}
+\begin{align}
+\text{Defm}_{ij} - \text{Defm}_{ji} &= [2 H_{ij} - 2 \sigma_i \cdot \sigma_j + \kappa(i,j) \cdot |\nabla \sigma|^2] \\
+&\quad - [2 H_{ji} - 2 \sigma_j \cdot \sigma_i + \kappa(j,i) \cdot |\nabla \sigma|^2] \\
+&= 2[H_{ij} - H_{ji}] - 2[\sigma_i \cdot \sigma_j - \sigma_j \cdot \sigma_i] + 0 \\
+&= 0 - 2[\sigma_i, \sigma_j] = -2[\sigma_i, \sigma_j] ,
+\end{align}
+using the symmetry of the Hessian and Kronecker delta.
+\end{proof}
+\lean{NCConformal.Defm\_antisymm\_part}
+\end{theorem}
+
+\begin{theorem}[Symmetry is equivalent to commuting gradients]
+The deformation tensor is symmetric if and only if twice the commutator vanishes:
+\[
+\text{Defm}_{ij} = \text{Defm}_{ji} \quad \iff \quad 2 \cdot [\sigma_i, \sigma_j] = 0 .
+\]
+The classical geometry is exactly the commuting case—not an approximation to it, but the precise locus where the correction vanishes.
+\begin{proof}
+This follows directly from the antisymmetry formula: $\text{Defm}_{ij} = \text{Defm}_{ji}$ if and only if $-2[\sigma_i, \sigma_j] = 0$.
+\end{proof}
+\lean{NCConformal.Defm\_symm\_iff\_commutator}
+\end{theorem}
+
+\begin{theorem}[Clean statement when 2 is invertible]
+When the ring $M$ has $2$ invertible, symmetry of the deformation tensor is equivalent to commutativity of the scale gradients:
+\[
+\text{Defm}_{ij} = \text{Defm}_{ji} \quad \iff \quad \sigma_i \cdot \sigma_j = \sigma_j \cdot \sigma_i .
+\]
+\begin{proof}
+From the previous theorem, symmetry means $2 \cdot [\sigma_i, \sigma_j] = 0$. When $2$ is invertible, this is equivalent to $[\sigma_i, \sigma_j] = 0$, i.e., $\sigma_i \cdot \sigma_j = \sigma_j \cdot \sigma_i$.
+\end{proof}
+\lean{NCConformal.Defm\_symm\_iff\_commute}
+\end{theorem}
+
+\begin{theorem}[The symmetric part is uncorrected]
+The symmetric part of the deformation tensor is:
+\[
+\text{Defm}_{ij} + \text{Defm}_{ji} = 4 H_{ij} - 2(\sigma_i \cdot \sigma_j + \sigma_j \cdot \sigma_i) + 2 \kappa(i,j) \cdot |\nabla \sigma|^2 .
+\]
+This is exactly what appears classically; the quantum correction contributes nothing to it at any order.
+\begin{proof}
+Adding the formulas:
+\begin{align}
+\text{Defm}_{ij} + \text{Defm}_{ji} &= [2 H_{ij} - 2 \sigma_i \sigma_j + \kappa(i,j) |\nabla \sigma|^2] \\
+&\quad + [2 H_{ji} - 2 \sigma_j \sigma_i + \kappa(j,i) |\nabla \sigma|^2] \\
+&= 4 H_{ij} - 2(\sigma_i \sigma_j + \sigma_j \sigma_i) + 2 \kappa(i,j) |\nabla \sigma|^2 ,
+\end{align}
+using $H_{ij} = H_{ji}$ and $\kappa(i,j) = \kappa(j,i)$.
+\end{proof}
+\lean{NCConformal.symmetric\_part\_uncorrected}
+\end{theorem}
+
+\begin{theorem}[Entire correction is antisymmetric]
+The deformation tensor can be decomposed as symmetric plus antisymmetric parts, with the correction appearing only in the antisymmetric part:
+\begin{align}
+\text{Defm}_{ij} + \text{Defm}_{ji} + (\text{Defm}_{ij} - \text{Defm}_{ji}) &= 2 \text{Defm}_{ij} , \\
+\text{Defm}_{ij} - \text{Defm}_{ji} &= -2 [\sigma_i, \sigma_j] .
+\end{align}
+\begin{proof}
+The first identity is algebraic; the second is the antisymmetry formula already proved.
+\end{proof}
+\lean{NCConformal.correction\_is\_pure\_antisymmetric}
+\end{theorem}
+
+\begin{theorem}[Master contraction with quantum correction]
+The sum of Christoffel products is:
+\begin{align}
+\sum_m \Gamma^a_{cm} \Gamma^m_{be} &= \kappa(a,c) \cdot (\sigma_b \sigma_e + \sigma_e \sigma_b) - \kappa(a,c) \cdot (\kappa(b,e) \cdot |\nabla \sigma|^2) \\
+&\quad + \kappa(a,b) \cdot (\sigma_c \sigma_e) + \kappa(a,e) \cdot (\sigma_c \sigma_b) \\
+&\quad - \kappa(c,b) \cdot (\sigma_a \sigma_e) - \kappa(c,e) \cdot (\sigma_a \sigma_b) + \kappa(b,e) \cdot [\sigma_a, \sigma_c] .
+\end{align}
+Classically, the product $\sum_m \Gamma^a_{cm} \Gamma^m_{be}$ contains $2 \kappa(a,c) \sigma_b \sigma_e$. Non-commutatively, the factor of $2$ becomes the anticommutator $\sigma_b \sigma_e + \sigma_e \sigma_b$ (the symmetric part), the mixed terms keep their order, and one genuinely new commutator term appears: $\kappa(b,e) [\sigma_a, \sigma_c]$.
+\begin{proof}
+Expand $\Gamma^a_{cm} = \kappa(a,c) \sigma_m + \kappa(a,m) \sigma_c - \kappa(c,m) \sigma_a$ and $\Gamma^m_{be} = \kappa(m,b) \sigma_e + \kappa(m,e) \sigma_b - \kappa(b,e) \sigma_m$, multiply them, collect terms using the centrality of Kronecker deltas, and sum over $m$ using $\sum_m \kappa(i,m) \kappa(m,j) = \kappa(i,j)$ and the sifting properties of $\kappa$.
+\end{proof}
+\lean{NCConformal.sum\_Chr\_Chr\_full\_nc}
+\end{theorem}
+
+\begin{theorem}[Classical limit is the commuting case]
+When the scale gradients commute—that is, $\sigma_i \sigma_j = \sigma_j \sigma_i$ for all $i, j$—the anticommutator collapses to $2 \sigma_b \sigma_e$ and the commutator term vanishes, returning the classical formula exactly. The commutative computation is not an approximation; it is the vanishing-commutator case.
+\begin{proof}
+Substitute $\sigma_i \sigma_j = \sigma_j \sigma_i$ into the non-commutative formula. The anticommutator becomes $2 \sigma_b \sigma_e$, and $[\sigma_a, \sigma_c] = 0$ eliminates the last term.
+\end{proof}
+\lean{NCConformal.sum\_Chr\_Chr\_full\_classical}
+\end{theorem}
+
+\begin{theorem}[Quantum correction couples to rotation]
+The commutator of scale gradients is antisymmetric in its indices and couples to the rotational label of the framework:
+\[
+[\sigma_i, \sigma_j] = -[\sigma_j, \sigma_i] .
+\]
+The framework's rotational label (from \textit{Axes.lean}) is the wedge of two scale directions, which is also antisymmetric in the same pair. Both vanish together. Hence the prediction: quantum-gravitational corrections appear first in spin–geometry coupling, not in orbits.
+\begin{proof}
+The commutator is antisymmetric by definition: $[\sigma_i, \sigma_j] = \sigma_i \sigma_j - \sigma_j \sigma_i = -(\sigma_j \sigma_i - \sigma_i \sigma_j) = -[\sigma_j, \sigma_i]$.
+\end{proof}
+\lean{NCConformal.quantum\_correction\_couples\_to\_rotation}
+\end{theorem}
+
+\begin{theorem}[Correction vanishes on commuting gradients]
+On any pattern where the scale gradients are parallel—that is, $\sigma_i \sigma_j = \sigma_j \sigma_i$—the deformation tensor is symmetric:
+\[
+\sigma_i \sigma_j = \sigma_j \sigma_i \implies \text{Defm}_{ij} = \text{Defm}_{ji} .
+\]
+This is the isotropic locus of the framework; it is precisely where the quantum correction and the rotational label both vanish.
+\begin{proof}
+When the gradients commute, $[\sigma_i, \sigma_j] = 0$, so by the symmetry equivalence theorem, $\text{Defm}_{ij} = \text{Defm}_{ji}$.
+\end{proof}
+\lean{NCConformal.correction\_vanishes\_on\_commuting}
+\end{theorem}
+

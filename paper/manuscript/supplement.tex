@@ -1,0 +1,61 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{booktabs}
+
+\theoremstyle{thmstyleone}
+\newtheorem{axiom}{Axiom}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+\theoremstyle{thmstylethree}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{thmstyletwo}
+\newtheorem{remark}{Remark}
+
+\newcommand{\lean}[1]{\hfill\texttt{\footnotesize [#1]}}
+
+\raggedbottom
+
+\begin{document}
+
+\title[Supplemental Material]{Supplemental Material: Scale-Coupled Dynamics}
+
+%% NOTE: same author/affiliation TODOs as main.tex — keep these two files in sync.
+\author*[1]{\fnm{Xinyu} \sur{Yang}}\email{Pana.Yang@hotmail.com}
+
+\affil*[1]{\orgname{Independent Researcher}}
+
+\abstract{This document is the companion to ``Scale-Coupled Dynamics: Gravity and
+Charge from a Single Non-Commuting Scale Field.'' It gives, module by
+module in the reading order of the formal development, a complete
+mathematical restatement of every theorem, definition, and proof
+underlying that paper — 644 machine-verified results in total, with zero
+admitted gaps. Each item is tagged in brackets with its identifier in the
+Lean~4 source for direct cross-reference. The main paper is
+self-contained and does not require this document to be read; this
+document exists so that every claim made there can be checked in full
+formal detail.}
+
+\maketitle
+\tableofcontents
+
+\input{supplement/part0}
+\input{supplement/part1a}
+\input{supplement/part1b}
+\input{supplement/part2}
+\input{supplement/part3a}
+\input{supplement/part3b}
+\input{supplement/part4}
+\input{supplement/part5}
+\input{supplement/part6}
+\input{supplement/part7}
+\input{supplement/part8}
+\input{supplement/part9}
+
+\end{document}

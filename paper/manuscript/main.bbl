@@ -1,0 +1,410 @@
+%% BioMed_Central_Bib_Style_v1.01
+
+\begin{thebibliography}{26}
+% BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
+\ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
+\ifx \binits  \undefined \def \binits#1{#1}\fi
+\ifx \bauthor  \undefined \def \bauthor#1{#1}\fi
+\ifx \batitle  \undefined \def \batitle#1{#1}\fi
+\ifx \bjtitle  \undefined \def \bjtitle#1{#1}\fi
+\ifx \bvolume  \undefined \def \bvolume#1{\textbf{#1}}\fi
+\ifx \byear  \undefined \def \byear#1{#1}\fi
+\ifx \bissue  \undefined \def \bissue#1{#1}\fi
+\ifx \bfpage  \undefined \def \bfpage#1{#1}\fi
+\ifx \blpage  \undefined \def \blpage #1{#1}\fi
+\ifx \burl  \undefined \def \burl#1{\textsf{#1}}\fi
+\ifx \doiurl  \undefined \def \doiurl#1{\url{https://doi.org/#1}}\fi
+\ifx \betal  \undefined \def \betal{\textit{et al.}}\fi
+\ifx \binstitute  \undefined \def \binstitute#1{#1}\fi
+\ifx \binstitutionaled  \undefined \def \binstitutionaled#1{#1}\fi
+\ifx \bctitle  \undefined \def \bctitle#1{#1}\fi
+\ifx \beditor  \undefined \def \beditor#1{#1}\fi
+\ifx \bpublisher  \undefined \def \bpublisher#1{#1}\fi
+\ifx \bbtitle  \undefined \def \bbtitle#1{#1}\fi
+\ifx \bedition  \undefined \def \bedition#1{#1}\fi
+\ifx \bseriesno  \undefined \def \bseriesno#1{#1}\fi
+\ifx \blocation  \undefined \def \blocation#1{#1}\fi
+\ifx \bsertitle  \undefined \def \bsertitle#1{#1}\fi
+\ifx \bsnm \undefined \def \bsnm#1{#1}\fi
+\ifx \bsuffix \undefined \def \bsuffix#1{#1}\fi
+\ifx \bparticle \undefined \def \bparticle#1{#1}\fi
+\ifx \barticle \undefined \def \barticle#1{#1}\fi
+\bibcommenthead
+\ifx \bconfdate \undefined \def \bconfdate #1{#1}\fi
+\ifx \botherref \undefined \def \botherref #1{#1}\fi
+\ifx \url \undefined \def \url#1{\textsf{#1}}\fi
+\ifx \bchapter \undefined \def \bchapter#1{#1}\fi
+\ifx \bbook \undefined \def \bbook#1{#1}\fi
+\ifx \bcomment \undefined \def \bcomment#1{#1}\fi
+\ifx \oauthor \undefined \def \oauthor#1{#1}\fi
+\ifx \citeauthoryear \undefined \def \citeauthoryear#1{#1}\fi
+\ifx \endbibitem  \undefined \def \endbibitem {}\fi
+\ifx \bconflocation  \undefined \def \bconflocation#1{#1}\fi
+\ifx \arxivurl  \undefined \def \arxivurl#1{\textsf{#1}}\fi
+\csname PreBibitemsHook\endcsname
+
+%%% 1
+\bibitem[\protect\citeauthoryear{{LIGO Scientific Collaboration, Virgo
+  Collaboration, and KAGRA Collaboration}}{2025a}]{GW250114}
+\begin{botherref}
+\oauthor{\bsnm{{LIGO Scientific Collaboration, Virgo Collaboration, and KAGRA
+  Collaboration}}}:
+{GW250114}: Testing {Hawking}'s area law and the {Kerr} nature of black holes.
+arXiv e-prints
+(2025)
+{\href{https://arxiv.org/abs/2509.08054}{{arXiv:2509.08054}}}
+{[gr-qc]}
+\end{botherref}
+\endbibitem
+
+%%% 2
+\bibitem[\protect\citeauthoryear{{LIGO Scientific Collaboration, Virgo
+  Collaboration, and KAGRA Collaboration}}{2025b}]{GW241011}
+\begin{botherref}
+\oauthor{\bsnm{{LIGO Scientific Collaboration, Virgo Collaboration, and KAGRA
+  Collaboration}}}:
+{GW241011} and {GW241110}: Exploring binary formation and fundamental physics
+  with asymmetric, high-spin black hole coalescences.
+arXiv e-prints
+(2025)
+{\href{https://arxiv.org/abs/2510.26931}{{arXiv:2510.26931}}}
+{[gr-qc]}
+\end{botherref}
+\endbibitem
+
+%%% 3
+\bibitem[\protect\citeauthoryear{Weyl}{1918}]{Weyl1918}
+\begin{botherref}
+\oauthor{\bsnm{Weyl}, \binits{H.}}:
+Gravitation und elektrizit\"at.
+Sitzungsber. Preuss. Akad. Wiss.,
+465--480
+(1918)
+\end{botherref}
+\endbibitem
+
+%%% 4
+\bibitem[\protect\citeauthoryear{Thomas}{1926}]{Thomas1926}
+\begin{barticle}
+\bauthor{\bsnm{Thomas}, \binits{L.T.}}:
+\batitle{The motion of the spinning electron}.
+\bjtitle{Nature}
+\bvolume{117},
+\bfpage{514}
+(\byear{1926})
+\doiurl{10.1038/117514a0}
+\end{barticle}
+\endbibitem
+
+%%% 5
+\bibitem[\protect\citeauthoryear{Terrell}{1959}]{Terrell1959}
+\begin{barticle}
+\bauthor{\bsnm{Terrell}, \binits{J.}}:
+\batitle{Invisibility of the {Lorentz} contraction}.
+\bjtitle{Phys. Rev.}
+\bvolume{116},
+\bfpage{1041}--\blpage{1045}
+(\byear{1959})
+\doiurl{10.1103/PhysRev.116.1041}
+\end{barticle}
+\endbibitem
+
+%%% 6
+\bibitem[\protect\citeauthoryear{Penrose}{1959}]{Penrose1959}
+\begin{barticle}
+\bauthor{\bsnm{Penrose}, \binits{R.}}:
+\batitle{The apparent shape of a relativistically moving sphere}.
+\bjtitle{Proc. Cambridge Philos. Soc.}
+\bvolume{55},
+\bfpage{137}--\blpage{139}
+(\byear{1959})
+\doiurl{10.1017/S0305004100033776}
+\end{barticle}
+\endbibitem
+
+%%% 7
+\bibitem[\protect\citeauthoryear{Reichenbach}{1958}]{Reichenbach1958}
+\begin{bbook}
+\bauthor{\bsnm{Reichenbach}, \binits{H.}}:
+\bbtitle{The Philosophy of Space and Time}.
+\bpublisher{Dover},
+\blocation{New York}
+(\byear{1958}).
+\bcomment{Translated by Maria Reichenbach and John Freund; German original
+  1928}
+\end{bbook}
+\endbibitem
+
+%%% 8
+\bibitem[\protect\citeauthoryear{Cartwright}{1999}]{Cartwright1999}
+\begin{bbook}
+\bauthor{\bsnm{Cartwright}, \binits{N.}}:
+\bbtitle{The Dappled World: A Study of the Boundaries of Science}.
+\bpublisher{Cambridge University Press},
+\blocation{Cambridge}
+(\byear{1999})
+\end{bbook}
+\endbibitem
+
+%%% 9
+\bibitem[\protect\citeauthoryear{Lambert and
+  Le~Poncin-Lafitte}{2011}]{Lambert2011}
+\begin{barticle}
+\bauthor{\bsnm{Lambert}, \binits{S.B.}},
+\bauthor{\bsnm{Le~Poncin-Lafitte}, \binits{C.}}:
+\batitle{Improved determination of $\gamma$ by {VLBI}}.
+\bjtitle{Astron. Astrophys.}
+\bvolume{529},
+\bfpage{70}
+(\byear{2011})
+\doiurl{10.1051/0004-6361/201016370}
+\end{barticle}
+\endbibitem
+
+%%% 10
+\bibitem[\protect\citeauthoryear{Pound and Rebka}{1960}]{PoundRebka1960}
+\begin{barticle}
+\bauthor{\bsnm{Pound}, \binits{R.V.}},
+\bauthor{\bsnm{Rebka}, \binits{G.A.}}:
+\batitle{Apparent weight of photons}.
+\bjtitle{Phys. Rev. Lett.}
+\bvolume{4},
+\bfpage{337}--\blpage{341}
+(\byear{1960})
+\doiurl{10.1103/PhysRevLett.4.337}
+\end{barticle}
+\endbibitem
+
+%%% 11
+\bibitem[\protect\citeauthoryear{Pound and Snider}{1965}]{PoundSnider1965}
+\begin{barticle}
+\bauthor{\bsnm{Pound}, \binits{R.V.}},
+\bauthor{\bsnm{Snider}, \binits{J.L.}}:
+\batitle{Effect of gravity on gamma radiation}.
+\bjtitle{Phys. Rev.}
+\bvolume{140},
+\bfpage{788}--\blpage{803}
+(\byear{1965})
+\doiurl{10.1103/PhysRev.140.B788}
+\end{barticle}
+\endbibitem
+
+%%% 12
+\bibitem[\protect\citeauthoryear{Hulse and Taylor}{1975}]{HulseTaylor1975}
+\begin{barticle}
+\bauthor{\bsnm{Hulse}, \binits{R.A.}},
+\bauthor{\bsnm{Taylor}, \binits{J.H.}}:
+\batitle{Discovery of a pulsar in a binary system}.
+\bjtitle{Astrophys. J.}
+\bvolume{195},
+\bfpage{51}--\blpage{53}
+(\byear{1975})
+\doiurl{10.1086/181708}
+\end{barticle}
+\endbibitem
+
+%%% 13
+\bibitem[\protect\citeauthoryear{Weisberg and Huang}{2016}]{WeisbergHuang2016}
+\begin{barticle}
+\bauthor{\bsnm{Weisberg}, \binits{J.M.}},
+\bauthor{\bsnm{Huang}, \binits{Y.}}:
+\batitle{Relativistic measurements from timing the binary pulsar {PSR
+  B1913+16}}.
+\bjtitle{Astrophys. J.}
+\bvolume{829},
+\bfpage{55}
+(\byear{2016})
+\doiurl{10.3847/0004-637X/829/1/55}
+\end{barticle}
+\endbibitem
+
+%%% 14
+\bibitem[\protect\citeauthoryear{Kramer et~al.}{2021}]{Kramer2021}
+\begin{barticle}
+\bauthor{\bsnm{Kramer}, \binits{M.}}, \betal:
+\batitle{Strong-field gravity tests with the double pulsar}.
+\bjtitle{Phys. Rev. X}
+\bvolume{11},
+\bfpage{041050}
+(\byear{2021})
+\doiurl{10.1103/PhysRevX.11.041050}
+\end{barticle}
+\endbibitem
+
+%%% 15
+\bibitem[\protect\citeauthoryear{Bailey et~al.}{1977}]{Bailey1977}
+\begin{barticle}
+\bauthor{\bsnm{Bailey}, \binits{J.}}, \betal:
+\batitle{Measurements of relativistic time dilatation for positive and negative
+  muons in a circular orbit}.
+\bjtitle{Nature}
+\bvolume{268},
+\bfpage{301}--\blpage{305}
+(\byear{1977})
+\doiurl{10.1038/268301a0}
+\end{barticle}
+\endbibitem
+
+%%% 16
+\bibitem[\protect\citeauthoryear{Navas et~al.}{2024}]{PDG2024}
+\begin{barticle}
+\bauthor{\bsnm{Navas}, \binits{S.}}, \betal:
+\batitle{Review of particle physics}.
+\bjtitle{Phys. Rev. D}
+\bvolume{110},
+\bfpage{030001}
+(\byear{2024})
+\doiurl{10.1103/PhysRevD.110.030001}
+\end{barticle}
+\endbibitem
+
+%%% 17
+\bibitem[\protect\citeauthoryear{Morningstar and
+  Peardon}{1999}]{MorningstarPeardon1999}
+\begin{barticle}
+\bauthor{\bsnm{Morningstar}, \binits{C.J.}},
+\bauthor{\bsnm{Peardon}, \binits{M.}}:
+\batitle{Glueball spectrum from an anisotropic lattice study}.
+\bjtitle{Phys. Rev. D}
+\bvolume{60},
+\bfpage{034509}
+(\byear{1999})
+\doiurl{10.1103/PhysRevD.60.034509}
+\end{barticle}
+\endbibitem
+
+%%% 18
+\bibitem[\protect\citeauthoryear{Batterman}{2002}]{Batterman2002}
+\begin{bbook}
+\bauthor{\bsnm{Batterman}, \binits{R.W.}}:
+\bbtitle{The Devil in the Details: Asymptotic Reasoning in Explanation,
+  Reduction, and Emergence}.
+\bpublisher{Oxford University Press},
+\blocation{Oxford}
+(\byear{2002})
+\end{bbook}
+\endbibitem
+
+%%% 19
+\bibitem[\protect\citeauthoryear{Bayen et~al.}{1978}]{Bayen1978}
+\begin{barticle}
+\bauthor{\bsnm{Bayen}, \binits{F.}},
+\bauthor{\bsnm{Flato}, \binits{M.}},
+\bauthor{\bsnm{Fronsdal}, \binits{C.}},
+\bauthor{\bsnm{Lichnerowicz}, \binits{A.}},
+\bauthor{\bsnm{Sternheimer}, \binits{D.}}:
+\batitle{Deformation theory and quantization. {I}. {Deformations} of symplectic
+  structures}.
+\bjtitle{Ann. Phys.}
+\bvolume{111},
+\bfpage{61}--\blpage{110}
+(\byear{1978})
+\doiurl{10.1016/0003-4916(78)90224-5}
+\end{barticle}
+\endbibitem
+
+%%% 20
+\bibitem[\protect\citeauthoryear{{DESI Collaboration}}{2025}]{DESIDR2}
+\begin{botherref}
+\oauthor{\bsnm{{DESI Collaboration}}}:
+{DESI DR2} results {II}: Measurements of baryon acoustic oscillations and
+  cosmological constraints.
+arXiv e-prints
+(2025)
+{\href{https://arxiv.org/abs/2503.14738}{{arXiv:2503.14738}}}
+{[astro-ph.CO]}
+\end{botherref}
+\endbibitem
+
+%%% 21
+\bibitem[\protect\citeauthoryear{Abdo et~al.}{2009}]{FermiLAT2009}
+\begin{barticle}
+\bauthor{\bsnm{Abdo}, \binits{A.A.}}, \betal:
+\batitle{A limit on the variation of the speed of light arising from quantum
+  gravity effects}.
+\bjtitle{Nature}
+\bvolume{462},
+\bfpage{331}--\blpage{334}
+(\byear{2009})
+\doiurl{10.1038/nature08574}
+\end{barticle}
+\endbibitem
+
+%%% 22
+\bibitem[\protect\citeauthoryear{Bertotti et~al.}{2003}]{Bertotti2003}
+\begin{barticle}
+\bauthor{\bsnm{Bertotti}, \binits{B.}},
+\bauthor{\bsnm{Iess}, \binits{L.}},
+\bauthor{\bsnm{Tortora}, \binits{P.}}:
+\batitle{A test of general relativity using radio links with the {Cassini}
+  spacecraft}.
+\bjtitle{Nature}
+\bvolume{425},
+\bfpage{374}--\blpage{376}
+(\byear{2003})
+\doiurl{10.1038/nature01997}
+\end{barticle}
+\endbibitem
+
+%%% 23
+\bibitem[\protect\citeauthoryear{{Planck Collaboration}}{2020}]{Planck2018}
+\begin{barticle}
+\bauthor{\bsnm{{Planck Collaboration}}}:
+\batitle{Planck 2018 results. {VI}. cosmological parameters}.
+\bjtitle{Astron. Astrophys.}
+\bvolume{641},
+\bfpage{6}
+(\byear{2020})
+\doiurl{10.1051/0004-6361/201833910}
+{\href{https://arxiv.org/abs/1807.06209}{{arXiv:1807.06209}}}
+\end{barticle}
+\endbibitem
+
+%%% 24
+\bibitem[\protect\citeauthoryear{Caprini et~al.}{2006}]{CCL2006}
+\begin{barticle}
+\bauthor{\bsnm{Caprini}, \binits{I.}},
+\bauthor{\bsnm{Colangelo}, \binits{G.}},
+\bauthor{\bsnm{Leutwyler}, \binits{H.}}:
+\batitle{Mass and width of the lowest resonance in {QCD}}.
+\bjtitle{Phys. Rev. Lett.}
+\bvolume{96},
+\bfpage{132001}
+(\byear{2006})
+\doiurl{10.1103/PhysRevLett.96.132001}
+\end{barticle}
+\endbibitem
+
+%%% 25
+\bibitem[\protect\citeauthoryear{Garc{\'i}a-Mart{\'i}n et~al.}{2011}]{GKPY2011}
+\begin{barticle}
+\bauthor{\bsnm{Garc{\'i}a-Mart{\'i}n}, \binits{R.}},
+\bauthor{\bsnm{Kami{\'n}ski}, \binits{R.}},
+\bauthor{\bsnm{Pel{\'a}ez}, \binits{J.R.}},
+\bauthor{\bsnm{Elvira}, \binits{J.}}:
+\batitle{Precise determination of the $f_0(600)$ and $f_0(980)$ pole parameters
+  from a dispersive data analysis}.
+\bjtitle{Phys. Rev. Lett.}
+\bvolume{107},
+\bfpage{072001}
+(\byear{2011})
+\doiurl{10.1103/PhysRevLett.107.072001}
+\end{barticle}
+\endbibitem
+
+%%% 26
+\bibitem[\protect\citeauthoryear{{KamLAND-Zen
+  Collaboration}}{2023}]{KamLANDZen2023}
+\begin{barticle}
+\bauthor{\bsnm{{KamLAND-Zen Collaboration}}}:
+\batitle{Search for the {Majorana} nature of neutrinos in the inverted mass
+  ordering region with {KamLAND-Zen}}.
+\bjtitle{Phys. Rev. Lett.}
+\bvolume{130},
+\bfpage{051801}
+(\byear{2023})
+\doiurl{10.1103/PhysRevLett.130.051801}
+\end{barticle}
+\endbibitem
+
+\end{thebibliography}

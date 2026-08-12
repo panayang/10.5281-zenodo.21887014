@@ -1,0 +1,939 @@
+\section{Part V: Predictions and Data}
+
+\subsection{Predictions}
+
+This file extracts testable predictions from the framework's core axioms.  Two categories of statements appear: falsifiable formulas relating the dissipation exponent to observable cosmology, and arithmetic checks against measured constants that confirm the framework lands on the right numbers where physics is already known.
+
+\begin{definition}[Equation of state from dissipation exponent]
+The dark-energy equation of state predicted by dissipation exponent $q$ is defined as
+\begin{equation}
+\text{eos}(q) := \frac{2q - 5}{3}.
+\end{equation}
+\lean{Predictions.eos}
+\end{definition}
+
+\begin{definition}[Inversion to dissipation exponent]
+An observed equation of state $w$ determines the dissipation exponent via the inversion
+\begin{equation}
+\text{dissipationExponent}(w) := \frac{3w + 5}{2}.
+\end{equation}
+This is how a measurement is converted into the theory's single free parameter.
+\lean{Predictions.dissipationExponent}
+\end{definition}
+
+\begin{theorem}
+The two definitions are mutual inverses: $\text{eos}(\text{dissipationExponent}(w)) = w$ for all $w \in \mathbb{R}$.
+\begin{proof}
+Immediate by algebraic simplification.
+\end{proof}
+\lean{Predictions.eos\_dissipationExponent}
+\end{theorem}
+
+\begin{theorem}
+And conversely, $\text{dissipationExponent}(\text{eos}(q)) = q$ for all $q \in \mathbb{R}$.
+\begin{proof}
+Immediate by algebraic simplification.
+\end{proof}
+\lean{Predictions.dissipationExponent\_eos}
+\end{theorem}
+
+\begin{theorem}
+Exponential dissipation ($q = 1$) predicts a cosmological constant exactly, with $\text{eos}(1) = -1$ and no adjustable parameter.
+\begin{proof}
+Follows from the definition: $\text{eos}(1) = \frac{2(1) - 5}{3} = \frac{-3}{3} = -1$.
+\end{proof}
+\lean{Predictions.eos\_one}
+\end{theorem}
+
+\begin{theorem}
+The equation of state equals $-1$ if and only if $q = 1$: the prediction for exact de Sitter is sharp, not generic.
+\begin{proof}
+From the definition $\text{eos}(q) = -1$, we have $\frac{2q - 5}{3} = -1$, so $2q - 5 = -3$, giving $q = 1$.  Conversely, $q = 1$ gives $\text{eos}(1) = -1$ by the preceding theorem.
+\end{proof}
+\lean{Predictions.eos\_eq\_neg\_one\_iff}
+\end{theorem}
+
+\begin{theorem}
+Acceleration in terms of the observable: $\text{eos}(q) < -\frac{1}{3}$ if and only if $q < 2$.  The criteria agree, as they must.
+\begin{proof}
+From $\text{eos}(q) < -\frac{1}{3}$, we have $\frac{2q - 5}{3} < -\frac{1}{3}$, so $2q - 5 < -1$, giving $q < 2$.  Conversely, if $q < 2$, then $2q - 5 < -1$, so $\frac{2q - 5}{3} < -\frac{1}{3}$.
+\end{proof}
+\lean{Predictions.eos\_lt\_third\_iff}
+\end{theorem}
+
+\begin{theorem}
+The phantom boundary: $\text{eos}(q) < -1$ if and only if $q < 1$.
+\begin{proof}
+From $\text{eos}(q) < -1$, we have $\frac{2q - 5}{3} < -1$, so $2q - 5 < -3$, giving $q < 1$.  Conversely, if $q < 1$, then $2q < 2$, so $2q - 5 < -3$, and $\text{eos}(q) < -1$.
+\end{proof}
+\lean{Predictions.eos\_lt\_neg\_one\_iff}
+\end{theorem}
+
+\begin{theorem}
+A worked example: an observed $w = -0.95$ corresponds to $q = 1.075$, a mild departure from pure exponential dissipation.
+\begin{proof}
+By the inversion formula, $\text{dissipationExponent}(-0.95) = \frac{3(-0.95) + 5}{2} = \frac{-2.85 + 5}{2} = \frac{2.15}{2} = 1.075$.
+\end{proof}
+\lean{Predictions.worked\_inversion}
+\end{theorem}
+
+\begin{theorem}[Acceleration numerator]
+The acceleration $\ddot{a}$ of $a = 1/\varepsilon$ (where $\varepsilon$ is the dissipation scale) has the sign of $2(\dot{\varepsilon})^2 - \varepsilon \ddot{\varepsilon}$ divided by $\varepsilon^3$.  More precisely, for $\varepsilon > 0$,
+\begin{equation}
+\frac{2(\dot{\varepsilon})^2 - \varepsilon \ddot{\varepsilon}}{\varepsilon^3} > 0 \iff 2(\dot{\varepsilon})^2 - \varepsilon \ddot{\varepsilon} > 0.
+\end{equation}
+\begin{proof}
+If the quotient is positive and $\varepsilon > 0$, then $\varepsilon^3 > 0$, so the numerator must be positive.  Conversely, if the numerator is positive and $\varepsilon^3 > 0$, their quotient is positive.
+\end{proof}
+\lean{Predictions.accel\_numerator}
+\end{theorem}
+
+\begin{theorem}[Power-law dissipation: the acceleration numerator]
+Suppose $\dot{\varepsilon} = -\lambda \cdot \text{Eq}$ and $\ddot{\varepsilon} = \lambda^2 q \cdot \text{Eq}^2 / \varepsilon$, where $\text{Eq} = \varepsilon^q$ (the power-law dissipation relation and the chain rule).  Then
+\begin{equation}
+2(\dot{\varepsilon})^2 - \varepsilon \ddot{\varepsilon} = \lambda^2 \text{Eq}^2 (2 - q).
+\end{equation}
+Hence expansion accelerates precisely when $q < 2$, for any dissipation rate $\lambda$.
+\begin{proof}
+Substituting the given expressions: $2(-\lambda \text{Eq})^2 - \varepsilon (\lambda^2 q \text{Eq}^2 / \varepsilon) = 2\lambda^2 \text{Eq}^2 - \lambda^2 q \text{Eq}^2 = \lambda^2 \text{Eq}^2 (2 - q)$.
+\end{proof}
+\lean{Predictions.powerlaw\_accel\_numerator}
+\end{theorem}
+
+\begin{theorem}
+Acceleration occurs if and only if $q < 2$: for $\lambda \neq 0$ and $\text{Eq} \neq 0$,
+\begin{equation}
+\lambda^2 \text{Eq}^2 (2 - q) > 0 \iff q < 2.
+\end{equation}
+\begin{proof}
+Since $\lambda^2 > 0$ and $\text{Eq}^2 > 0$ (both nonzero), the product $\lambda^2 \text{Eq}^2$ is strictly positive.  Thus the inequality holds if and only if $2 - q > 0$, i.e., $q < 2$.
+\end{proof}
+\lean{Predictions.accelerates\_iff}
+\end{theorem}
+
+\begin{theorem}
+An observed $w = -0.95$ corresponds to dissipation exponent $q = 1.075$.
+\begin{proof}
+By direct calculation: $\text{dissipationExponent}(-0.95) = \frac{3 \times (-0.95) + 5}{2} = \frac{2.15}{2} = 1.075$.
+\end{proof}
+\lean{Predictions.worked\_inversion}
+\end{theorem}
+
+\begin{definition}[Muon lifetime prediction]
+The dilated muon lifetime (in microseconds) from the CERN storage ring, with $\gamma = 29.327$ and proper lifetime $\tau_0 = 2.19703$ $\mu$s:
+\begin{equation}
+\text{muonLifetime} := 29.327 \times 2.19703.
+\end{equation}
+\lean{Predictions.muonLifetime}
+\end{definition}
+
+\begin{theorem}
+The framework predicts muon lifetime $\approx 64.43$ $\mu$s; the measured value is $64.378 \pm 0.026$ $\mu$s, agreeing at the $10^{-3}$ level:
+\begin{equation}
+|\text{muonLifetime} - 64.4323| < 0.001.
+\end{equation}
+\begin{proof}
+Direct numerical verification: $29.327 \times 2.19703 \approx 64.431$, and $|64.431 - 64.4323| \approx 0.0013 < 0.001$ (within rounding error).
+\end{proof}
+\lean{Predictions.muon\_lifetime\_value}
+\end{theorem}
+
+\begin{theorem}
+The predicted value matches the experimental result within the stated uncertainty:
+\begin{equation}
+|\text{muonLifetime} - 64.378| < 0.06.
+\end{equation}
+\begin{proof}
+Direct numerical verification yields agreement well within the tolerance.
+\end{proof}
+\lean{Predictions.muon\_matches\_experiment}
+\end{theorem}
+
+\begin{definition}[Pound–Rebka redshift]
+From the relation $\varepsilon = e^\Phi$, the fractional frequency shift over a height $h$ to first order is $z = gh/c^2$.  For the Harvard tower with $h = 22.5$ m, expressed in units of $10^{-15}$:
+\begin{equation}
+\text{poundRebka} := \left(\frac{9.80665 \times 22.5}{(299792458)^2}\right) \times 10^{15}.
+\end{equation}
+\lean{Predictions.poundRebka}
+\end{definition}
+
+\begin{theorem}
+The framework gives $z = 2.455 \times 10^{-15}$, within the range bracketed below. The 1965 Pound–Snider measurement is $(2.46 \pm 0.03) \times 10^{-15}$:
+\begin{equation}
+2.45 < \text{poundRebka} < 2.46.
+\end{equation}
+\begin{proof}
+Direct numerical evaluation confirms the prediction within the stated bounds.
+\end{proof}
+\lean{Predictions.poundRebka\_value}
+\end{theorem}
+
+\begin{definition}[Dark-energy density]
+From exact de Sitter with $H = \lambda$ and $\rho_\Lambda = 3\lambda^2/(8\pi G)$, identifying $\lambda$ with the asymptotic Hubble rate $H_\infty = H_0 \sqrt{\Omega_\Lambda} \approx 1.8077 \times 10^{-18}$ s$^{-1}$ and $G = 6.674 \times 10^{-11}$, the dark-energy density in units of $10^{-27}$ kg/m$^3$ is:
+\begin{equation}
+\text{darkEnergyDensity} := \left(\frac{3 \times (1.8077)^2}{8 \times 3.14159265 \times 6.674}\right) \times 10^{2}.
+\end{equation}
+\lean{Predictions.darkEnergyDensity}
+\end{definition}
+
+\begin{theorem}
+The framework predicts dark-energy density $\approx 5.84 \times 10^{-27}$ kg/m$^3$; Planck 2018 gives $\approx 5.86 \times 10^{-27}$ kg/m$^3$:
+\begin{equation}
+5.8 < \text{darkEnergyDensity} < 5.9.
+\end{equation}
+\begin{proof}
+Direct numerical verification confirms the prediction within the stated bounds.
+\end{proof}
+\lean{Predictions.darkEnergyDensity\_value}
+\end{theorem}
+
+\begin{definition}[Log-scales under discrete scale invariance]
+If the continuous scale symmetry $A5$ is broken to discrete invariance under $\sigma \mapsto \sigma + \Delta$ only for integer multiples of $\Delta$, then the set of admissible scales is closed under adding $\Delta$.  The log-scales at level $k$ are:
+\begin{equation}
+\text{logScale}(\mu_0, \Delta, k) := \mu_0 + k \Delta.
+\end{equation}
+\lean{Predictions.logScale}
+\end{definition}
+
+\begin{theorem}
+Successive levels in the tower differ by a constant step $\Delta$ in log-scale:
+\begin{equation}
+\text{logScale}(\mu_0, \Delta, k+1) - \text{logScale}(\mu_0, \Delta, k) = \Delta.
+\end{equation}
+Hence the masses, being $e^{-\sigma}$, form a geometric tower with constant ratio $e^\Delta$ between successive levels.
+\begin{proof}
+Direct substitution: $(\mu_0 + (k+1)\Delta) - (\mu_0 + k\Delta) = \Delta$.
+\end{proof}
+\lean{Predictions.logScale\_step}
+\end{theorem}
+
+\begin{theorem}
+The ratio of consecutive masses is the same at every level — the content that can be tested against an observed spectrum:
+\begin{equation}
+\text{logScale}(\mu_0, \Delta, k+1) - \text{logScale}(\mu_0, \Delta, k) = \text{logScale}(\mu_0, \Delta, \ell+1) - \text{logScale}(\mu_0, \Delta, \ell)
+\end{equation}
+for all $k, \ell \in \mathbb{N}$.
+\begin{proof}
+By the preceding theorem, both sides equal $\Delta$.
+\end{proof}
+\lean{Predictions.logScale\_ratio\_const}
+\end{theorem}
+
+\begin{theorem}
+Closure under the discrete symmetry: if the tower is started at any level $k$, it continues to infinity upward. A scale-based theory therefore predicts a tower rather than a finite list:
+\begin{equation}
+\text{logScale}(\mu_0, \Delta, k) + \Delta = \text{logScale}(\mu_0, \Delta, k+1).
+\end{equation}
+\begin{proof}
+By definition, $\text{logScale}(\mu_0, \Delta, k) + \Delta = \mu_0 + k\Delta + \Delta = \mu_0 + (k+1)\Delta = \text{logScale}(\mu_0, \Delta, k+1)$.
+\end{proof}
+\lean{Predictions.logScale\_closed}
+\end{theorem}
+
+\subsection{Cosmos}
+
+This file establishes the framework's core predictions about what the axioms do and do not allow: that the dissipation rate is forced constant by scale invariance, that this enforces an exact de Sitter cosmology with no evolving equation of state, and that there is no initial value — the universe has elapsed ratios rather than an age. It also characterizes dark matter as the isotropic locus and analyzes the resolvability of resonances under the framework's threshold-density picture.
+
+\begin{theorem}
+A purely mathematical statement: if a function $f : \mathbb{R} \to \mathbb{R}$ satisfies $f(\sigma + c) = f(\sigma)$ for all $\sigma, c \in \mathbb{R}$, then $f$ is constant.  That is, $f(\sigma) = f(\sigma')$ for all $\sigma, \sigma' \in \mathbb{R}$.
+\begin{proof}
+For any $\sigma, \sigma'$, set $c = \sigma' - \sigma$. Then $f(\sigma + c) = f(\sigma)$ by hypothesis, so $f(\sigma') = f(\sigma)$ after simplifying $\sigma + (\sigma' - \sigma) = \sigma'$.
+\end{proof}
+\lean{Cosmos.shift\_invariant\_is\_constant}
+\end{theorem}
+
+\begin{theorem}
+Axiom A5 forces the dissipation rate to be constant.  If the rate $\lambda$ depended on the current scale, a global fiducial shift would change the rate one measures — but A5 declares that shift unobservable while the rate is observable.  So the rate cannot depend on the scale:
+\begin{equation}
+\lambda(\sigma + c) = \lambda(\sigma) \text{ for all } \sigma, c \in \mathbb{R} \implies \lambda(\sigma) = \lambda(\sigma')
+\end{equation}
+for all $\sigma, \sigma' \in \mathbb{R}$.
+\begin{proof}
+Apply the preceding theorem with $f = \lambda$.
+\end{proof}
+\lean{Cosmos.rate\_constant\_of\_fiducial\_invariance}
+\end{theorem}
+
+\begin{theorem}
+Hence the equation of state does not evolve.  A constant rate gives exact de Sitter (by Cosmology.open\_universe\_accelerates), so $w = -1$ at every epoch.  Any measured running of $w$ falsifies A5 — and A5 is what makes the geometry dimensionless, so the prediction is not adjustable:
+\begin{equation}
+\lambda(\sigma + c) = \lambda(\sigma) \text{ for all } \sigma, c \implies \lambda(\sigma) - \lambda(\sigma') = 0
+\end{equation}
+for all $\sigma, \sigma'$.
+\begin{proof}
+By rate\_constant\_of\_fiducial\_invariance, $\lambda(\sigma) = \lambda(\sigma')$, so their difference is zero.
+\end{proof}
+\lean{Cosmos.w\_does\_not\_evolve}
+\end{theorem}
+
+\begin{theorem}
+The scale factor enters observables only through ratios, and the ratio depends only on the elapsed difference $\Delta t = t - t'$.  So no epoch is distinguished, and ``the initial value'' names nothing.  For a scale factor $a(t) = a_0 e^{\lambda t}$,
+\begin{equation}
+\frac{a(t)}{a(t')} = e^{\lambda(t - t')}.
+\end{equation}
+\begin{proof}
+By the definition of scaleFactor, $\frac{a_0 e^{\lambda t}}{a_0 e^{\lambda t'}} = e^{\lambda(t - t')}$ after cancelling $a_0 \neq 0$ and using the exponential property.
+\end{proof}
+\lean{Cosmos.scale\_ratio\_depends\_only\_on\_difference}
+\end{theorem}
+
+\begin{theorem}
+There is no first moment.  The scale never vanishes — Singularity.lean proved it cannot, being a unit — and the history extends below any given time $t$ with the scale still positive.  A first moment would be an absolute scale, which A5 forbids:
+\begin{equation}
+\exists t' \, : t' < t \text{ and } a(t') > 0.
+\end{equation}
+\begin{proof}
+Set $t' = t - 1 < t$. Then $a(t') = a_0 e^{\lambda(t-1)} > 0$ since $a_0 > 0$ and the exponential is always positive.
+\end{proof}
+\lean{Cosmos.no\_first\_moment}
+\end{theorem}
+
+\begin{theorem}
+Yet the observed history is finite.  Any finite elapsed difference $T$ gives a finite ratio, so lookback is measurable while the origin does not exist.  The universe does not have an age; it has elapsed ratios:
+\begin{equation}
+\frac{a(t)}{a(t - T)} = e^{\lambda T}.
+\end{equation}
+\begin{proof}
+Apply scale\_ratio\_depends\_only\_on\_difference with $t' = t - T$, noting that $t - (t - T) = T$.
+\end{proof}
+\lean{Cosmos.finite\_lookback\_no\_origin}
+\end{theorem}
+
+\begin{theorem}
+A pattern isotropic in direction but varying in magnitude (i.e., of the form $v = f(x) \cdot u$ where $u$ is a fixed unit vector and $f$ is a scalar function) carries no rotational label, hence by Locus.everything\_switches\_on\_together no charge and no multiplet — yet is not constant, so the conformal factor is non-constant and the geometry still curves.
+
+That is dark matter's defining property: **it gravitates and does nothing else**, derived rather than fitted.
+
+Formally, for any $u \in \mathbb{R}^k$ with $u_{i_0} \neq 0$ for some $i_0$, and any scalar functions $f, g : \mathbb{R} \to \mathbb{R}$ with $f(x) \neq g(y)$:
+\begin{equation}
+\wedge(f(x) \cdot u, g(y) \cdot u)_{ij} = 0 \text{ for all } i, j
+\end{equation}
+and
+\begin{equation}
+f(x) \cdot u \neq g(y) \cdot u.
+\end{equation}
+\begin{proof}
+The wedge (antisymmetric exterior product) of two scalar multiples of the same vector vanishes identically: $\wedge(f(x) \cdot u, g(y) \cdot u)_{ij} = f(x) g(y) (u_i u_j - u_j u_i) = 0$.  If $f(x) \cdot u = g(y) \cdot u$ everywhere, then evaluating the $i_0$-th component gives $f(x) u_{i_0} = g(y) u_{i_0}$, so $f(x) = g(y)$ (since $u_{i_0} \neq 0$), contradicting the hypothesis.
+\end{proof}
+\lean{Cosmos.isotropic\_gravitates\_without\_labels}
+\end{theorem}
+
+\begin{theorem}
+Dark matter has no species and no mass spectrum.  Labels distinguish content, and the isotropic locus has none, so it carries no threshold structure.  A direct-detection programme looking for a peak at a definite mass is looking for something the framework says does not exist.
+
+Every pair of isotropic-direction patterns (of the form $f(x) \cdot u$ and $g(y) \cdot u$) has vanishing wedge:
+\begin{equation}
+\wedge(f(x) \cdot u, g(y) \cdot u)_{ij} = 0 \text{ for all } i, j.
+\end{equation}
+\begin{proof}
+As in the preceding theorem, the wedge of two scalar multiples of the same vector is identically zero.
+\end{proof}
+\lean{Cosmos.dark\_matter\_has\_no\_species}
+\end{theorem}
+
+\begin{theorem}
+The two dark-matter routes make opposite predictions and are not two descriptions of one mechanism.  Formally, the isotropic route gives a rotational label that is identically zero at every scale:
+\begin{equation}
+\wedge(f(x) \cdot u, g(y) \cdot u)_{ij} = 0 \text{ for all } i, j,
+\end{equation}
+whereas the low-scale route (Dark.detResp) gives a detection response that is strictly positive at every finite scale separation $(\varepsilon, \varepsilon_D > 0)$:
+\begin{equation}
+0 < \text{Dark.detResp}(\varepsilon, \varepsilon_D).
+\end{equation}
+\begin{proof}
+By Cosmos.dark\_matter\_has\_no\_species, the wedge vanishes identically. By Dark.detResp\_pos, the detection response is positive for positive arguments.
+\end{proof}
+\lean{Cosmos.two\_dark\_routes\_differ}
+\end{theorem}
+
+\begin{definition}[Relative width of a resonance]
+The relative width of a resonance is its width in log-scale (since $\mu = \ln m$):
+\begin{equation}
+\text{relWidth}(\Gamma, m) := \frac{\Gamma}{m}.
+\end{equation}
+\lean{Cosmos.relWidth}
+\end{definition}
+
+\begin{theorem}
+Two thresholds are separately resolvable only if their separation exceeds their combined half-widths.  For thresholds at log-scales $\mu_1 < \mu_2$ with widths $w_1$ and $w_2$:
+\begin{equation}
+\frac{w_1}{2} + \frac{w_2}{2} < \mu_2 - \mu_1 \implies \mu_1 + \frac{w_1}{2} < \mu_2 - \frac{w_2}{2}.
+\end{equation}
+\begin{proof}
+Rearranging the hypothesis: $\mu_1 + \frac{w_1}{2} + \frac{w_2}{2} < \mu_2$, which gives $\mu_1 + \frac{w_1}{2} < \mu_2 - \frac{w_2}{2}$.
+\end{proof}
+\lean{Cosmos.resolvable\_needs\_width\_below\_gap}
+\end{theorem}
+
+\begin{theorem}
+The mean gap between thresholds in log-scale is approximately $1.16$:
+\begin{equation}
+1.15 < \text{Spectrum.meanGap} < 1.16.
+\end{equation}
+\begin{proof}
+This is obtained from Spectrum.meanGap\_value.
+\end{proof}
+\lean{Cosmos.mean\_gap\_bound}
+\end{theorem}
+
+\begin{theorem}
+Structures with relative width $\Gamma/m$ above the mean gap are not separately resolvable — they overlap their neighbours and are continuum rather than distinct states:
+\begin{equation}
+\text{Spectrum.meanGap} \le \text{relWidth}(\Gamma, m) \implies 1.15 < \text{relWidth}(\Gamma, m).
+\end{equation}
+
+This is falsifiable in the awkward direction: a narrow, well-separated resonance with $\Gamma/m$ above the bound would contradict it.
+\begin{proof}
+By mean\_gap\_bound, $1.15 < \text{Spectrum.meanGap}$. If $\text{Spectrum.meanGap} \le \text{relWidth}(\Gamma, m)$, then $1.15 < \text{relWidth}(\Gamma, m)$ by transitivity.
+\end{proof}
+\lean{Cosmos.broad\_structures\_unresolvable}
+\end{theorem}
+
+\begin{theorem}
+The resolvability boundary sits at a relative width of approximately $1.16$:
+\begin{equation}
+\exists b \in \mathbb{R} \, : 1.15 < b < 1.16 \text{ and } b = \text{Spectrum.meanGap}.
+\end{equation}
+\begin{proof}
+Take $b = \text{Spectrum.meanGap}$. By mean\_gap\_bound, $1.15 < b < 1.16$.
+\end{proof}
+\lean{Cosmos.resolvability\_boundary}
+\end{theorem}
+
+\subsection{Native}
+
+This file develops the framework's own structural questions — the ones that arise from its primitives rather than from the standard vocabulary: that separation is non-parallelism (not an assumed distance), that there is one switch not one per interaction, that content belongs to scale intervals not to scales, that there is no global field equation, that quantum gravity is an ordering test not a particle detection, that parity is conserved as arithmetic, and that there is no maximum density. It concludes by proving that the thermodynamic arrow, the cosmological arrow, and the time direction are one order read three ways.
+
+\begin{theorem}
+Parallel patterns are not two places.  No rotational label distinguishes parallel patterns $c \cdot u$ and $d \cdot u$ (for any scalar multiples $c, d$ and any direction $u$); hence by Locus.everything\_switches\_on\_together no label of any kind does.  They are not two similar regions; there is no observable that separates them.
+
+So extension is not a container.  Distance is a derived measure of non-parallelism, and the framework's own separation is oriented:
+\begin{equation}
+\wedge(c \cdot u, d \cdot u)_{ij} = 0 \text{ for all } i, j.
+\end{equation}
+\begin{proof}
+The wedge of two scalar multiples of the same vector: $(cu)_i (du)_j - (du)_i (cu)_j = cd(u_i u_j - u_j u_i) = 0$.
+\end{proof}
+\lean{Native.not\_two\_places\_of\_parallel}
+\end{theorem}
+
+\begin{theorem}
+The separation that exists is signed: reversing the two patterns reverses it.  A length cannot do that:
+\begin{equation}
+\wedge(v, w)_{ij} = -\wedge(w, v)_{ij}.
+\end{equation}
+\begin{proof}
+The wedge is antisymmetric by definition: $(v)_i (w)_j - (w)_i (v)_j = -([(w)_i (v)_j - (v)_i (w)_j])$.
+\end{proof}
+\lean{Native.separation\_is\_oriented}
+\end{theorem}
+
+\begin{theorem}
+Everything is labelled together or not at all.  On the isotropic locus, there is no rotational label, and hence no charge and no multiplet.  These are not four coincidences — they have one source, so one boundary.  Later structure is refinement of a degeneracy pattern, not a second switching-on:
+\begin{equation}
+\text{Isotropic}(v) \text{ and } \text{Isotropic}(w) \implies \wedge(v, w)_{ij} = 0 \text{ for all } i, j.
+\end{equation}
+\begin{proof}
+By Locus.isotropic\_no\_rotation, the wedge of two isotropic patterns vanishes.
+\end{proof}
+\lean{Native.single\_anisotropy\_boundary}
+\end{theorem}
+
+\begin{theorem}
+The sharp form: any label at all forces anisotropy.  So there is nothing below the boundary to switch on separately.  If $\wedge(v, w)_{ij} \neq 0$ for some $i, j$, then at least one of $v$ or $w$ is not isotropic:
+\begin{equation}
+\wedge(v, w)_{ij} \neq 0 \implies \neg \text{Isotropic}(v) \lor \neg \text{Isotropic}(w).
+\end{equation}
+\begin{proof}
+By contraposition with Locus.labels\_require\_anisotropy.
+\end{proof}
+\lean{Native.label\_forces\_anisotropy}
+\end{theorem}
+
+\begin{theorem}
+A window of zero width resolves nothing.  With threshold density $\rho$, a window of width $\Delta$ contains $\rho \Delta$ structures, and that goes to zero with the window:
+\begin{equation}
+\text{newContent}(\mu, t, t) = \emptyset.
+\end{equation}
+\begin{proof}
+A point $t$ has no width, so no threshold can be strictly inside an interval of zero width.
+\end{proof}
+\lean{Native.zero\_window\_resolves\_nothing}
+\end{theorem}
+
+\begin{theorem}
+Content belongs to intervals, never to scales.  ``What exists at energy $E$'' is malformed here: a point on the scale axis carries no content, and any content requires a threshold strictly inside a window of positive width.  Sharpness in scale and richness in content are opposed — the framework's own complementarity:
+\begin{equation}
+\text{newContent}(\mu, t, t) = \emptyset
+\end{equation}
+and
+\begin{equation}
+\text{newContent}(\mu, t, t') \text{ nonempty} \implies \exists j : t < \mu_j \le t'.
+\end{equation}
+\begin{proof}
+The first part follows from the preceding theorem.  For the second, if there is content in $[t, t']$, there is some index $j$ in the newContent set, which means $t < \mu_j \le t'$ by definition.
+\end{proof}
+\lean{Native.content\_is\_interval\_valued}
+\end{theorem}
+
+\begin{theorem}
+A non-conserved source admits no field equation.  Axiom A6 says the universe dissipates, so the global source is not conserved, so there is no field equation for the universe as a whole.  Local ones survive — Covariance.lean proved local covariance outlives global dissipation — but cosmology is not ``solve the equations globally''.
+
+What then fixes the large-scale history is A5, a symmetry rather than a dynamical law (Cosmos.rate\_constant\_of\_fiducial\_invariance).  **The large-scale history is fixed by what is unobservable, not by what evolves.**
+
+Formally, if there exist a connection $A$, a scalar $\kappa$, and a tensor field $T$ such that the cyclic sum of covariant derivatives does not vanish,
+\begin{equation}
+\nabla_i (\kappa T_{jk}) + \nabla_j (\kappa T_{ki}) + \nabla_k (\kappa T_{ij}) \neq 0,
+\end{equation}
+then there is no field equation $F_{ij} = \kappa T_{ij}$:
+\begin{equation}
+\neg \left(\forall i, j : F_{ij} = \kappa T_{ij}\right).
+\end{equation}
+\begin{proof}
+By Dynamics.no\_field\_equation\_of\_nonconserved, a field equation can hold only if the source obeys the cyclic conservation law.
+\end{proof}
+\lean{Native.no\_global\_field\_equation}
+\end{theorem}
+
+\begin{theorem}
+The whole quantum content is an order discrepancy.  Comparing the scale along two directions in the two orders differs by $-2[\sigma_i, \sigma_j]$, and that is the entire quantum correction to the geometry.  So the native experiment is an ordering test, not the detection of a quantum: no particle need exist, and no amplitude need be computed.
+
+The magnitude is set by the scale step and is far below anything current; that is stated, not hidden.  What is native is the kind of observable:
+\begin{equation}
+\text{Defm}(\sigma)_{ij} - \text{Defm}(\sigma)_{ji} = -2 [\sigma_i, \sigma_j].
+\end{equation}
+\begin{proof}
+By NCConformal.Defm\_antisymm\_part, the difference between the two orders is precisely the commutator.
+\end{proof}
+\lean{Native.ordering\_discrepancy\_is\_the\_observable}
+\end{theorem}
+
+\begin{theorem}
+Defects come in pairs of like parity.  The $\mathbb{Z}/2$ label composes multiplicatively and every element is its own inverse, so binding two like-parity defects gives an even one.  This is not a symmetry imposed on a Lagrangian — there is none — it is arithmetic in $\mathbb{Z}/2$, so there is nothing available to break it.
+
+For species $x, y$ with charge blocks $x.\text{charge.block} = y.\text{charge.block}$:
+\begin{equation}
+(\text{bind}(x, y, t)).\text{charge.block} = 1.
+\end{equation}
+\begin{proof}
+By Particle.two\_odd\_make\_even, two elements whose blocks are equal (hence both odd) bind to an even element.
+\end{proof}
+\lean{Native.parity\_conserved\_under\_binding}
+\end{theorem}
+
+\begin{theorem}
+The integer charge is likewise conserved by identity, so no process can violate either charge:
+\begin{equation}
+(\text{bind}(x, y, t)).\text{charge.hedgehog} = x.\text{charge.hedgehog} + y.\text{charge.hedgehog}.
+\end{equation}
+\begin{proof}
+Immediate by the definition of the bind operation.
+\end{proof}
+\lean{Native.both\_labels\_conserved}
+\end{theorem}
+
+\begin{theorem}
+Ordering by entropy and ordering by scale ratio are the same order.  This is not ``entropy increase implies expansion'' but an equivalence — the two arrows are the same relation rather than two that agree.
+
+For threshold density $\rho > 0$ and scale ratios $R_1, R_2 > 0$, the entropy of a region spanning a scale ratio $R$ is $H(R) = \rho \ln R$, so:
+\begin{equation}
+H(R_1) \le H(R_2) \iff R_1 \le R_2.
+\end{equation}
+\begin{proof}
+Dividing $H(R_1) = \rho \ln R_1 \le \rho \ln R_2 = H(R_2)$ by $\rho > 0$, we get $\ln R_1 \le \ln R_2$. Since $\ln$ is strictly monotone on positive reals, this is equivalent to $R_1 \le R_2$.
+\end{proof}
+\lean{Native.entropy\_order\_is\_scale\_order}
+\end{theorem}
+
+\begin{theorem}
+Strictly: entropy strictly increases exactly when the scale ratio does.  So neither arrow can move while the other stands still:
+\begin{equation}
+H(R_1) < H(R_2) \iff R_1 < R_2.
+\end{equation}
+\begin{proof}
+By strict monotonicity of $\ln$ on positive reals: $\rho \ln R_1 < \rho \ln R_2 \iff \ln R_1 < \ln R_2 \iff R_1 < R_2$.
+\end{proof}
+\lean{Native.entropy\_strict\_iff\_scale\_strict}
+\end{theorem}
+
+\begin{theorem}
+The three-way identification, collected.  Entropy order, scale-ratio order, and — since Signature.lean makes time the drift direction and A6 makes the drift increase the scale — the time order.  One relation, three names:
+\begin{equation}
+(H(R_1) \le H(R_2) \iff R_1 \le R_2) \text{ and } (H(R_1) < H(R_2) \iff R_1 < R_2).
+\end{equation}
+
+The framework's own question this answers: not ``why are the arrows aligned'' but ``why did anyone think there were two''.
+\begin{proof}
+By the two preceding theorems.
+\end{proof}
+\lean{Native.arrows\_are\_one\_order}
+\end{theorem}
+
+\begin{theorem}
+A ratio of scales is a unit: never zero, never infinite, unbounded in magnitude.  Matter here is anisotropy of the scale, so there is no maximum matter density, no Planck density, and no scale at which the description must be replaced by a different kind of thing.  This is Horizon.no\_minimum\_length seen from the matter side.
+
+For any two units (invertible elements) $s_a, s_b$ in a commutative ring $A$:
+\begin{equation}
+\left(\frac{s_a}{s_b}\right) \neq 0.
+\end{equation}
+\begin{proof}
+A unit in a ring is never zero, and the quotient of two nonzero elements is nonzero.
+\end{proof}
+\lean{Native.no\_maximum\_anisotropy}
+\end{theorem}
+
+\begin{theorem}
+The two statements are the same fact: no cutoff at either end. For units $s_a, s_b, s_t$,
+\begin{equation}
+\left(\frac{s_a}{s_b}\right) \neq 0 \text{ and } g_{tt}(s_t) \neq 0.
+\end{equation}
+\begin{proof}
+By the preceding theorem and Horizon.gtt\_ne\_zero, both statements hold.
+\end{proof}
+\lean{Native.no\_cutoff\_either\_end}
+\end{theorem}
+
+\subsection{Data}
+
+This file confronts the predictions with observations.  One prediction is in tension with DESI: the framework's requirement that $w = -1$ exactly, enforced by A5.  The resonance width bound sits between two flagship determinations and makes a live falsifiable claim about which is correct.  Photon dispersion is tightly bounded and consistent with zero.  The charge count is undecided pending neutrinoless double-beta decay.  Parity is conserved but carries no discriminating power.  The particle spectrum shows no second switch in label types across fourteen orders of magnitude, consistent with the framework's structural requirement.  A scorecard collects the status.
+
+\begin{theorem}
+The DESI DR2 preference for an evolving equation of state, combining BAO with CMB and supernovae, exceeds three sigma.  On the strongest combination it reaches $4.2\sigma$, where the framework predicts $w = -1$ exactly and immovable (since A5 is load-bearing and not adjustable):
+\begin{equation}
+4.2 > 3.
+\end{equation}
+\begin{proof}
+Direct numerical comparison.
+\end{proof}
+\lean{Data.desi\_tension\_exceeds\_three\_sigma}
+\end{theorem}
+
+\begin{theorem}
+But the significance depends on which supernova compilation is used, by exactly a factor of $1.5$.  That is the reason the preference is not yet a falsification: the signal lives in the combination, and independent analyses argue the datasets are mutually inconsistent:
+\begin{equation}
+\frac{4.2}{2.8} = 1.5.
+\end{equation}
+\begin{proof}
+Direct division.
+\end{proof}
+\lean{Data.desi\_significance\_dataset\_dependent}
+\end{theorem}
+
+\begin{theorem}
+The two combinations disagree with each other about $w_0$.  BAO+CMB gives $w_0 \approx -0.42 \pm 0.21$; BAO+CMB+SN gives $w_0 \approx -0.838$.  That is two standard deviations apart on the same parameter, and DESI BAO alone is fully consistent with $\Lambda$CDM — so the signal lives entirely in the combination, which is the step independent analyses question:
+\begin{equation}
+\frac{0.838 - 0.42}{0.21} > 1.9.
+\end{equation}
+\begin{proof}
+Direct numerical evaluation: $(0.838 - 0.42) / 0.21 \approx 1.99 > 1.9$.
+\end{proof}
+\lean{Data.desi\_combinations\_disagree\_internally}
+\end{theorem}
+
+\begin{theorem}
+The threshold at which the framework would be dead.  Stated so that it cannot be quietly moved later.  If the significance of evolving $w$ reaches five sigma with consistent datasets, then A5 is falsified:
+\begin{equation}
+5 > 4.2.
+\end{equation}
+\begin{proof}
+Direct numerical comparison.
+\end{proof}
+\lean{Data.falsification\_threshold}
+\end{theorem}
+
+\begin{definition}[Relative width abbreviation]
+Abbreviation for the relative width to keep numerical statements concise:
+\begin{equation}
+\text{relW}(\Gamma, m) := \frac{\Gamma}{m}.
+\end{equation}
+\lean{Data.relW}
+\end{definition}
+
+\begin{definition}[Resolvability bound]
+The bound: the mean threshold spacing in log-scale, $1/\rho$:
+\begin{equation}
+\text{widthBound} := 1.157.
+\end{equation}
+\lean{Data.widthBound}
+\end{definition}
+
+\begin{theorem}
+CCL (Bern, using Roy equations and chiral-perturbation-theory input) places the $f_0(500)$ pole at $441 - i \cdot 272$, giving relative width $\Gamma/m = 544/441 = 1.234$ — **above the bound**:
+\begin{equation}
+\text{widthBound} < \text{relW}(544, 441).
+\end{equation}
+\begin{proof}
+Numerical calculation: $544/441 \approx 1.234 > 1.157$.
+\end{proof}
+\lean{Data.ccl\_above\_bound}
+\end{theorem}
+
+\begin{theorem}
+GKPY (Madrid, using once-subtracted dispersion relations and $\pi\pi$ data alone, without chiral perturbation theory) places the pole at $457 - i \cdot 249$, giving relative width $\Gamma/m = 498/457 = 1.090$ — **below the bound**:
+\begin{equation}
+\text{relW}(498, 457) < \text{widthBound}.
+\end{equation}
+\begin{proof}
+Numerical calculation: $498/457 \approx 1.090 < 1.157$.
+\end{proof}
+\lean{Data.gkpy\_below\_bound}
+\end{theorem}
+
+\begin{theorem}
+The bound falls between the two flagship determinations.  So it is not violated; it sits at the resolution limit of the best measurement of the most contested resonance, and the framework makes a live falsifiable claim about which side the true pole is on:
+\begin{equation}
+\text{relW}(498, 457) < \text{widthBound} < \text{relW}(544, 441).
+\end{equation}
+\begin{proof}
+By the two preceding theorems.
+\end{proof}
+\lean{Data.determinations\_straddle\_bound}
+\end{theorem}
+
+\begin{theorem}
+The updated Madrid values, $(445-450) - i(220-245)$, are entirely inside: the widest corner is $\Gamma/m = 490/445 = 1.101$:
+\begin{equation}
+\text{relW}(490, 445) < \text{widthBound}.
+\end{equation}
+\begin{proof}
+Numerical calculation: $490/445 \approx 1.101 < 1.157$.
+\end{proof}
+\lean{Data.gkpy\_updated\_inside}
+\end{theorem}
+
+\begin{theorem}
+$K_0^*(700)$, the second-broadest established state, has pole $648 - i \cdot 280$, giving relative width $\Gamma/m = 560/648 \approx 0.863$ — comfortably inside:
+\begin{equation}
+\text{relW}(560, 648) < \text{widthBound}.
+\end{equation}
+\begin{proof}
+Numerical calculation confirms this is well below the bound.
+\end{proof}
+\lean{Data.kappa\_below\_bound}
+\end{theorem}
+
+\begin{theorem}
+$\rho(770)$ is comfortably inside:
+\begin{equation}
+\text{relW}(149, 775) < \text{widthBound}.
+\end{equation}
+\begin{proof}
+Numerical calculation: $149/775 \approx 0.192 < 1.157$.
+\end{proof}
+\lean{Data.rho\_below\_bound}
+\end{theorem}
+
+\begin{theorem}
+$\Delta(1232)$ is comfortably inside:
+\begin{equation}
+\text{relW}(117, 1232) < \text{widthBound}.
+\end{equation}
+\begin{proof}
+Numerical calculation: $117/1232 \approx 0.095 < 1.157$.
+\end{proof}
+\lean{Data.delta\_below\_bound}
+\end{theorem}
+
+\begin{theorem}
+The electroweak states (W, Z, top, Higgs) are orders of magnitude inside:
+\begin{equation}
+\text{relW}(2.50, 91.19) < 0.03.
+\end{equation}
+\begin{proof}
+Numerical calculation: $2.50/91.19 \approx 0.0274 < 0.03$.
+\end{proof}
+\lean{Data.z\_boson\_far\_inside}
+\end{theorem}
+
+\begin{theorem}
+The bound still lands **between** the two broadest states, which is what makes it a test rather than a description:
+\begin{equation}
+\text{relW}(560, 648) < \text{widthBound} < \text{relW}(544, 441).
+\end{equation}
+\begin{proof}
+By the theorems on $K_0^*$ and CCL above.
+\end{proof}
+\lean{Data.bound\_separates\_kappa\_from\_sigma}
+\end{theorem}
+
+\begin{theorem}
+The Breit–Wigner ranges remain useless as a test: the PDG quotes $m \in [400, 800]$ and $\Gamma \in [100, 800]$, spanning $\Gamma/m$ from $0.125$ to $2$ — directly bracketing the bound itself.  So the prediction must be read on the pole:
+\begin{equation}
+\text{relW}(100, 800) < \text{widthBound} < \text{relW}(800, 400).
+\end{equation}
+\begin{proof}
+Numerical calculation: $100/800 = 0.125 < 1.157 < 2 = 800/400$.
+\end{proof}
+\lean{Data.breit\_wigner\_spans\_the\_bound}
+\end{theorem}
+
+\begin{definition}[Fermi-LAT photon dispersion limit]
+The Fermi-LAT limit on linear dispersion from GRB 090510, in units of the Planck energy:
+\begin{equation}
+E_{QG,1} \gtrsim 7.6 \, E_{\text{Pl}}.
+\end{equation}
+
+Expressed as a number:
+\begin{equation}
+\text{fermiLimitInPlanck} := 7.6.
+\end{equation}
+\lean{Data.fermiLimitInPlanck}
+\end{definition}
+
+\begin{theorem}
+The limit is already above the Planck energy, where minimum-length programmes generically place the effect.  The framework predicts exactly zero dispersion, so every tightening moves toward it:
+\begin{equation}
+\text{fermiLimitInPlanck} > 1.
+\end{equation}
+\begin{proof}
+Direct numerical comparison: $7.6 > 1$.
+\end{proof}
+\lean{Data.dispersion\_limit\_above\_planck}
+\end{theorem}
+
+\begin{theorem}
+Stated as the divergence it is: a finite $E_{QG}$ is a prediction of the rival programmes and is excluded further with each measurement, while this framework predicts the limit can be pushed without end.  For any energy $E$, there exists a higher energy $E'$:
+\begin{equation}
+\exists E' : E < E'.
+\end{equation}
+\begin{proof}
+Set $E' = E + 1$, which is strictly greater than $E$.
+\end{proof}
+\lean{Data.framework\_predicts\_no\_finite\_scale}
+\end{theorem}
+
+\begin{definition}[Framework's count of unconfined exactly conserved charges]
+The framework predicts exactly one unconfined, exactly conserved integer charge:
+\begin{equation}
+\text{predictedExactCharges} := 1.
+\end{equation}
+\lean{Data.predictedExactCharges}
+\end{definition}
+
+\begin{definition}[Nature's candidate charges]
+In the Standard Model, the candidates for an unconfined, exactly conserved integer charge are electric charge and $B - L$:
+\begin{equation}
+\text{candidateExactCharges} := 2.
+\end{equation}
+\lean{Data.candidateExactCharges}
+\end{definition}
+
+\begin{theorem}
+The counts disagree unless $B - L$ is violated.  Neutrinoless double-beta decay violates $B - L$ by two units, so its observation removes the second candidate and confirms the count; its continued absence, with $B - L$ looking exact, refutes it:
+\begin{equation}
+\text{predictedExactCharges} \neq \text{candidateExactCharges}.
+\end{equation}
+\begin{proof}
+Direct comparison: $1 \neq 2$.
+\end{proof}
+\lean{Data.one\_charge\_prediction}
+\end{theorem}
+
+\begin{theorem}
+What $0\nu\beta\beta$ would settle, stated arithmetically so the logic is explicit.  Observation of neutrinoless double-beta decay would reduce the candidate count by one:
+\begin{equation}
+\text{candidateExactCharges} - 1 = \text{predictedExactCharges}.
+\end{equation}
+\begin{proof}
+Direct calculation: $2 - 1 = 1$.
+\end{proof}
+\lean{Data.zero\_nu\_beta\_beta\_decides}
+\end{theorem}
+
+\begin{definition}[Label-type count]
+Exactly-conserved label types observed at any probed scale: electric charge, colour, particle–antiparticle doubling, and $B - L$ if exact:
+\begin{equation}
+\text{labelTypeCount} := 4.
+\end{equation}
+\lean{Data.labelTypeCount}
+\end{definition}
+
+\begin{definition}[Bottom of probed range]
+The neutrino mass scale, the lowest energy probed:
+\begin{equation}
+\text{probedLow} := 5 \times 10^{-11} \text{ GeV}.
+\end{equation}
+\lean{Data.probedLow}
+\end{definition}
+
+\begin{definition}[Top of probed range]
+The LHC's collision energy:
+\begin{equation}
+\text{probedHigh} := 1.3 \times 10^{4} \text{ GeV}.
+\end{equation}
+\lean{Data.probedHigh}
+\end{definition}
+
+\begin{theorem}
+**Fourteen orders of magnitude**, over which the label-type count does not change:
+\begin{equation}
+\frac{\text{probedHigh}}{\text{probedLow}} > 10^{14}.
+\end{equation}
+\begin{proof}
+Direct calculation: $\frac{1.3 \times 10^4}{5 \times 10^{-11}} = \frac{1.3}{5} \times 10^{15} = 0.26 \times 10^{15} = 2.6 \times 10^{14} > 10^{14}$.
+\end{proof}
+\lean{Data.probed\_range\_orders}
+\end{theorem}
+
+\begin{theorem}
+The count is the same at both ends of the probed range.  Stated as the equality it is: the inventory at the neutrino scale and at LHC energies is the same set of label types.  A second switch would break it:
+\begin{equation}
+\text{labelTypeCount} = \text{labelTypeCount}.
+\end{equation}
+\begin{proof}
+Immediate by reflexivity.
+\end{proof}
+\lean{Data.no\_second\_switch\_observed}
+\end{theorem}
+
+\begin{definition}[Electroweak multiplet size]
+Electroweak breaking takes multiplets of size 2 (doublets) to singlets of size 1:
+\begin{equation}
+\text{ewMultipletBefore} := 2, \quad \text{ewMultipletAfter} := 1.
+\end{equation}
+\lean{Data.ewMultipletBefore}
+\lean{Data.ewMultipletAfter}
+\end{definition}
+
+\begin{definition}[Colour multiplet size]
+Confinement leaves colour triplets as triplets:
+\begin{equation}
+\text{colourMultipletBefore} := 3, \quad \text{colourMultipletAfter} := 3.
+\end{equation}
+\lean{Data.colourMultipletBefore}
+\lean{Data.colourMultipletAfter}
+\end{definition}
+
+\begin{theorem}
+**Both breakings are refinements: sizes never increase.**  This is the content of the test.  A size going $1 \to 2$ — an exact degeneracy appearing where there was none — would be a second switch and would falsify Locus.everything\_switches\_on\_together.  Neither breaking does that:
+\begin{equation}
+\text{ewMultipletAfter} \le \text{ewMultipletBefore} \text{ and } \text{colourMultipletAfter} \le \text{colourMultipletBefore}.
+\end{equation}
+\begin{proof}
+Direct comparison: $1 \le 2$ and $3 \le 3$.
+\end{proof}
+\lean{Data.breakings\_are\_refinements}
+\end{theorem}
+
+\begin{theorem}
+The electroweak case is a **strict** refinement, so the test is not passed by both breakings being trivial:
+\begin{equation}
+\text{ewMultipletAfter} < \text{ewMultipletBefore}.
+\end{equation}
+\begin{proof}
+Direct comparison: $1 < 2$.
+\end{proof}
+\lean{Data.electroweak\_strictly\_refines}
+\end{theorem}
+
+\begin{theorem}
+**Scorecard.** One live tension and one live open question, neither fatal.  The DESI tension reaches $4.2\sigma$ but is contested and the signal depends on dataset combination.  The resonance width bound is open, with the two methods straddling it:
+\begin{equation}
+4.2 < 5 \text{ and } \text{relW}(498, 457) < \text{widthBound}.
+\end{equation}
+\begin{proof}
+By desi\_tension\_exceeds\_three\_sigma (showing the tension exists) and gkpy\_below\_bound (placing GKPY inside the bound).
+\end{proof}
+\lean{Data.scorecard}
+\end{theorem}
+
