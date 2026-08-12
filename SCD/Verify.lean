@@ -501,14 +501,20 @@ namespace SCD.Verify
 #print axioms SCD.Deformation.Biderivation.poisson_self
 #print axioms SCD.Deformation.Biderivation.poisson_leibniz_left
 #print axioms SCD.Deformation.Biderivation.poisson_leibniz_right
+#print axioms SCD.Deformation.Biderivation.generator_conserves_self
+#print axioms SCD.Deformation.Biderivation.energy_cannot_generate_own_drift
 #print axioms SCD.Deformation.star_assoc
 #print axioms SCD.Deformation.star_classical
 #print axioms SCD.Deformation.star_comm_classical
 #print axioms SCD.Deformation.star_commutator
 #print axioms SCD.Deformation.star_comm_iff_poisson_zero
+#print axioms SCD.Deformation.star_commutator_embed
 #print axioms SCD.Deformation.canonical_poisson
 #print axioms SCD.Deformation.ccr_of_canonical
+#print axioms SCD.Deformation.ccr_of_canonical_star
 #print axioms SCD.Deformation.canonical_poisson_self
+#print axioms SCD.Deformation.energy_generates_conserved_drift
+#print axioms SCD.Deformation.energy_generates_conserved_drift_star
 
 -- Crossed.lean
 #print axioms SCD.Crossed.ScaleShift.map_zero

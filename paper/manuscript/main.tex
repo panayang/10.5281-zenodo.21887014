@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{bm}
 \usepackage{booktabs}
+\usepackage[section]{placeins}
 \usepackage[title]{appendix}
 
 \theoremstyle{thmstyleone}
@@ -20,7 +21,6 @@
 \newtheorem{remark}{Remark}
 
 \newcommand{\lean}[1]{\texttt{\small #1}}
-\newcommand{\SM}{Supplemental Material}
 
 \raggedbottom
 \setlength{\tabcolsep}{4pt}
@@ -132,13 +132,13 @@ Every derivation summarized here has an independent, complete proof; we
 have verified the entire argument mechanically in the Lean~4 proof
 assistant against no axioms beyond those of standard mathematics
 (\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}),
-and the \SM\ reproduces every statement and proof — 644 theorems in
-total, spanning definitions, lemmas, and closing numerical bounds — in
-full mathematical detail, organized to mirror this paper section by
-section. This paper does not depend on that verification to be read; it
-is a self-contained physics argument, written so that a reader who
-never opens the \SM\ still receives every derivation's actual content
-rather than a pointer to it. What the verification adds is a guarantee
+and Online Resource~1 reproduces every statement and proof — 650
+theorems in total, spanning definitions, lemmas, and closing numerical
+bounds — in full mathematical detail, organized to mirror this paper
+section by section. This paper does not depend on that verification to
+be read; it is a self-contained physics argument, written so that a
+reader who never opens Online Resource~1 still receives every
+derivation's actual content rather than a pointer to it. What the verification adds is a guarantee
 that cannot be obtained by proofreading alone: that every ``Theorem'' in
 what follows is exactly what it claims to be, with every hypothesis
 stated and no step skipped, because a proof assistant does not accept an
@@ -175,13 +175,17 @@ Section~\ref{sec:quantum} gives the quantum sector — $\hbar$ as an exact
 step along the scale axis — and the all-orders equivalence with general
 relativity in the gravitational-wave sector that follows from it.
 Section~\ref{sec:cosmology} gives dark matter, dark energy, and the
-scale-blindness of light. Section~\ref{sec:data} confronts the framework
+scale-blindness of light. Section~\ref{ss:native} collects seven
+questions that only this framework's own primitives can pose, as a test
+of whether it is more than a paraphrase of existing physics.
+Section~\ref{sec:data} confronts the framework
 with data, in one table. Section~\ref{sec:falsify} states, observation by
 observation, what would kill which part of the framework.
-Section~\ref{sec:register} is a register of what has been retracted,
-corrected, cited without proof, and assumed — the standing answer to
-whether any of the foregoing rests on more than the seven axioms plus one
-external physical input. Section~\ref{sec:concl} concludes.
+Section~\ref{sec:register} describes how the argument was verified and
+records what has been retracted, corrected, cited without proof, and
+assumed along the way — the standing answer to whether any of the
+foregoing rests on more than the seven axioms plus one external physical
+input. Section~\ref{sec:concl} concludes.
 
 %======================================================================
 \section{The physical picture}\label{sec:picture}
@@ -505,8 +509,9 @@ unit $u$: only ratios of scale are observable.
 \end{axiom}
 
 \begin{axiom}[A6 — openness / dissipation]
-The scale field is not conserved by a global potential: no functional's
-gradient equals the full drift.
+The universe is not a closed system: its total energy scale $\varepsilon$
+dissipates monotonically, $\dot\varepsilon = -\lambda\varepsilon$ for a
+constant rate $\lambda\ne0$.
 \end{axiom}
 
 \begin{axiom}[A7 — observability]
@@ -520,6 +525,19 @@ A7 is deliberately an axiom and not an informal judgment: it is a
 commitment about what an observation is rather than a claim about the
 world, and Section~\ref{sec:falsify} returns to the consequence that it
 cannot be falsified by any single experiment.
+
+A6 is stated narrowly on purpose, exactly as formalized: a statement about
+one scalar quantity, the total energy scale, not about the substrate's
+full multi-directional drift. Several places below — the signature
+argument of Section~\ref{sec:chain}, the local-covariance argument of
+Section~\ref{sec:gravity}, the no-global-field-equation argument of
+Section~\ref{ss:native} — read A6 as an instance of a broader informal
+principle, that no global potential accounts for the drift in
+\emph{any} direction, not only the energy-scale one. That broader
+reading is not itself derived from the axiom as stated; it is an
+extrapolation used consistently throughout, registered as such in
+Section~\ref{sec:register} rather than left to blend into the axiom's
+own wording.
 
 One further ingredient, the scale response law
 \begin{equation}
@@ -840,7 +858,7 @@ ordinary quantum mechanics, for instance, needs only the second, at any
 point, isotropic or not. Table~\ref{tab:sectors} lists what each answer,
 or combination of answers, currently delivers.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \small
 \begin{tabular}{p{0.30\linewidth}p{0.28\linewidth}p{0.34\linewidth}}
@@ -858,6 +876,7 @@ Anisotropic, non-commutative & --- & not reached: no scattering amplitudes, no q
 their combinations currently delivers.}
 \label{tab:sectors}
 \end{table}
+\FloatBarrier
 
 The blank last row is worth one further word rather than none: the
 combination it names — charge-carrying, quantized, genuinely dynamical —
@@ -1674,6 +1693,56 @@ predicts an effect within reach of current instruments — what is
 claimed is the structure of the leading correction and precisely which
 channel it can and cannot appear in, not a measurable number.
 
+\subsection{What this sector does not give, and a precise reason why}\label{ss:nodynamics}
+
+Everything above is kinematics: a commutation relation, an uncertainty
+bound, a correction to curvature. No dynamical equation of motion — no
+Schrödinger or Heisenberg picture, nothing playing the role of
+$da/dt=\tfrac{i}{\hbar}[H,a]$ — has been recovered, and the omission is
+not an oversight; it is forced, and provably so, by A6.
+
+Any bracket is alternating, so whatever generates a derivation $D$ through
+it — $Da = \{H,\cdot\}$ for some $H$ — is thereby forced to conserve
+itself under $D$, since $DH=\{H,H\}=0$ identically. This is the algebraic
+content of ``a Hamiltonian conserves its own energy,'' owed to nothing
+beyond the bracket's antisymmetry. A6 gives the energy unit $\varepsilon$
+a nonzero drift along its own distinguished direction —
+$\dot\varepsilon=-\lambda\varepsilon\ne0$, dissipation exactly as
+Section~\ref{sec:cosmology} uses it — so $\varepsilon$ fails that
+self-consistency condition and cannot be the generator of its own drift,
+by no more than the two facts just stated. Standard, closed-system
+quantum mechanics is not exempt from this argument; it sits on the other
+side of it. Set $\lambda=0$ and the obstruction is exactly what
+disappears: $\dot\varepsilon=0$ holds trivially, and given any direction
+along which $\varepsilon$ has been normalized to unit slope, the same
+bracket construction used above recovers $\varepsilon$ as a genuine
+generator of the drift, for every element, not merely for one conjugate
+pair. The obstruction and its resolution are one fact, read on the two
+sides of A6, not a gap on one side and a separate result on the other.
+
+That recovery, stated this way, is still only a fact about the
+\emph{classical} Poisson bracket built from A1's own commuting
+derivations — exactly what ordinary Hamiltonian mechanics already
+asserts, and by itself no more quantum than that. What earns the name is
+the same construction carried into the non-commutative deformed algebra
+itself: by the bridge already proved in Section~\ref{sec:quantum}
+(the star product's commutator has vanishing classical part and
+$\hbar$-coefficient exactly the Poisson bracket, at first order and
+exactly, not as a limit), the recovery above is identical to
+\[
+[\varepsilon,a]_\star = \hbar\cdot d_p(a),
+\]
+the exact, first-order form of the Heisenberg equation of motion
+$\dot a=\hbar^{-1}[H,a]$ with $H=\varepsilon$ — not its classical shadow,
+and not an approximation to it.
+
+The honest summary is a converse pair rather than an admission: this
+framework does not recover unitary time evolution \emph{because} it is
+open, and it recovers exactly the standard picture the instant it is not
+— which is a sharper claim than ``dynamics has not yet been attempted,''
+and one this framework did not have available before A6 was stated
+precisely enough to check against.
+
 %======================================================================
 \section{Dark matter, dark energy, and light}\label{sec:cosmology}
 %======================================================================
@@ -1688,7 +1757,10 @@ distinguishable.
 The first is a detection-threshold mechanism, requiring no branch-point
 argument at all. A detector is itself a physical system sitting at some
 energy scale $\varepsilon_D$; by A3 that scale is the reciprocal of its
-spatial resolution, so what it can register is not ``an interaction''
+spatial resolution, so a detector built to resolve small distances just
+\emph{is}, in this framework's vocabulary, a high-energy object — there
+is no separate fact about its resolving power beyond the scale it sits
+at. What it can register is not ``an interaction''
 but an interaction that moves its own state by at least its threshold
 $\theta$. An excitation whose own energy scale $\varepsilon$ sits far
 below $\varepsilon_D$ deposits a fraction $\varepsilon/\varepsilon_D$ of
@@ -1853,7 +1925,9 @@ physical, while local covariance concerns what a single observer measures
 at one point — cosmology observes exactly the quantity the axioms permit
 and no more.
 
-\subsection{Questions only this framework can ask}\label{ss:native}
+%======================================================================
+\section{Questions only this framework can ask}\label{ss:native}
+%======================================================================
 
 Everything so far has answered questions posed elsewhere: does the
 theory give Schwarzschild, does it give a graviton-like sector, does it
@@ -1961,9 +2035,29 @@ measurement attached. None of the seven is a prediction of a number.
 \section{Confrontation with data}\label{sec:data}
 %======================================================================
 
-Table~\ref{tab:scoreboard} is the single scoreboard of this paper.
+Table~\ref{tab:scoreboard} is the single scoreboard of this paper, and
+its rows are not all making the same kind of claim, so the horizontal
+rules inside it separate five genuinely different epistemic categories
+rather than merely grouping topics. The first block is where the
+argument closes completely: light bending and perihelion advance follow
+from the axiom chain with no free parameter beyond the one dimensionless
+unit any such theory must carry, so agreement to the quoted precision is
+a real success and not a fit. The second block is arithmetic, not
+discovery — muon dilation and gravitational redshift are the scale-ratio
+reading of A3 evaluated on a known configuration, included because the
+framework should get elementary cases right, not because getting them
+right is informative on its own. The third converts a measured number
+into this framework's own units, using the one free constant $\lambda$
+that every version of the theory carries; agreement there tests the
+conversion, not the theory's structure. The fourth block is where the
+framework is actually exposed: live measurements that have not yet
+settled, where a wrong answer would cost something. The fifth is the
+sharpest block of all — four cases the framework excludes using its own
+machinery, listed not as failures avoided but as evidence the theory is
+capable of being wrong internally, which a construction with enough free
+parameters to fit anything could never produce.
 
-\begin{table*}
+\begin{table*}[htbp]
 \centering
 \small
 \begin{tabular}{p{0.24\textwidth}p{0.24\textwidth}p{0.26\textwidth}p{0.18\textwidth}}
@@ -2007,8 +2101,13 @@ Color $=$ block charge & $\mathbb{Z}/2$ (two values) & needs three values & \tex
 \caption{The complete numerical scoreboard.}
 \label{tab:scoreboard}
 \end{table*}
+\FloatBarrier
 
-One live tension and one live open question are not fatal — both sectors
+Read against the five-fold structure above, the honest summary is that
+the first three blocks are not really under test — they close by
+construction or by simple substitution — and the entire empirical weight
+of this framework currently rests on the fourth block. One live tension
+and one live open question there are not fatal — both sectors
 are under active measurement — and the last four rows are options the
 framework itself rejects; these are more informative than the passing
 rows because they demonstrate the framework is capable of being wrong
@@ -2032,7 +2131,25 @@ observational bounds.
 \section{How to falsify this framework}\label{sec:falsify}
 %======================================================================
 
-\begin{table}[h]
+The three tables below are ordered by how much damage a positive
+observation would do, not by topic, and the ordering is the point:
+moving down the tables trades the severity of the wound for the
+precision of the diagnosis. Table~\ref{tab:falsify-whole} lists four
+observations that would kill the entire framework outright, because each
+is forbidden by one of the axioms directly rather than by a computed
+number that could in principle be retuned — there is no adjustable
+constant anywhere in this construction that absorbs a detection of any
+of them. Table~\ref{tab:falsify-sector} lists observations that would
+kill one sector while leaving the rest of the chain untouched, which is
+possible only because the sectors are logically separable consequences
+of the same axioms rather than independent add-ons patched together.
+Table~\ref{tab:falsify-admission} is different in kind from the first
+two: nothing in it would falsify anything by itself, but each row would
+force an explicit admission that a quantity this framework cannot
+currently compute has become the quantity an experiment is actually
+probing.
+
+\begin{table}[htbp]
 \centering
 \small
 \begin{tabular}{p{0.24\linewidth}p{0.24\linewidth}p{0.44\linewidth}}
@@ -2047,9 +2164,16 @@ GW breathing mode & A5 (a breathing mode is a fiducial shift) & tensor favored o
 \bottomrule
 \end{tabular}
 \caption{No adjustable parameter absorbs any of these four: a detection is fatal, not a call for retuning.}
+\label{tab:falsify-whole}
 \end{table}
+\FloatBarrier
 
-\begin{table}[h]
+Below this tier, a positive detection stops being a global catastrophe
+and starts being informative about exactly which piece of the chain
+failed, because the four axiom-level results above do not have to fail
+together.
+
+\begin{table}[htbp]
 \centering
 \small
 \begin{tabular}{p{0.24\linewidth}p{0.28\linewidth}p{0.40\linewidth}}
@@ -2064,9 +2188,18 @@ A label opens that is not a refinement & Section~\ref{ss:secondswitch}'s single 
 Total-parity-violating process & the $\mathbb{Z}/2$ arithmetic & none known \\
 \bottomrule
 \end{tabular}
+\caption{Each row is a local consequence of one construction rather than the axiom chain as a whole: a positive result here diagnoses which sector broke without impugning the others.}
+\label{tab:falsify-sector}
 \end{table}
+\FloatBarrier
 
-\begin{table}[h]
+The last tier is not falsification at all in the ordinary sense — every
+row in it is compatible with everything proved so far — but each names a
+place where the framework has already admitted, in
+Section~\ref{ss:eos-out}, that it cannot compute the number an
+improving measurement is closing in on.
+
+\begin{table}[htbp]
 \centering
 \small
 \begin{tabular}{p{0.28\linewidth}p{0.22\linewidth}p{0.42\linewidth}}
@@ -2079,7 +2212,10 @@ Ringdown echoes seen & same, reversed: predicted to exist, amplitude not predict
 BH entropy $\propto$ area, not $\ln R$ & the log-entropy result & entropy itself unmeasured \\
 \bottomrule
 \end{tabular}
+\caption{None of these rows falsifies the framework by itself; each marks where an improving measurement is closing in on a quantity Section~\ref{ss:eos-out} already registers as uncomputed.}
+\label{tab:falsify-admission}
 \end{table}
+\FloatBarrier
 
 \textbf{A7 cannot be falsified by this table.} It is a commitment about
 what counts as an observation; anyone may reject it and obtain a
@@ -2097,12 +2233,27 @@ symmetric sector agrees at every order, so no discrepancy is expected
 there in principle.
 
 %======================================================================
-\section{Register: retracted, corrected, cited, and assumed}\label{sec:register}
+\section{Methods and provenance}\label{sec:register}
 %======================================================================
 
-A theory should carry its own history of correction, not erase it. This
-section is a standing answer to the question ``does this rest on the
-axioms alone?''
+The argument was developed and checked entirely inside the Lean~4 proof
+assistant: every theorem stated informally above has a corresponding
+Lean statement and machine-checked proof, and \texttt{\#print axioms}
+run against the complete development (650 theorems) reduces every one of
+them to \texttt{propext}, \texttt{Classical.choice}, and
+\texttt{Quot.sound} — the standard logical axioms of Lean's own
+mathematical library, and nothing else; a companion script
+cross-checks that this audit, the paper's own citations, and the
+theorem counts quoted in it have not drifted apart. That guarantee is
+about validity, not truth: it says an argument follows from stated
+premises, not that the premises hold of nature, and it says nothing
+about whether a claim made in English next to a theorem is a faithful
+reading of what the theorem actually says. The check against the second
+failure mode was adversarial external audit, repeated across several
+rounds, each of which found genuine errors — some in the mathematics,
+most in the prose wrapped around it. What follows is the resulting
+record, kept rather than smoothed over, because a theory's history of
+correction is evidence about how it was checked.
 
 \textbf{Retracted (4).} A geometric mass-tower law, later shown to be an
 unproved assumption rather than a derived consequence, and refuted by
@@ -2113,18 +2264,42 @@ quantities that were not, on inspection, the same quantity; a
 codimension analysis that described a circle-valued rather than
 directional scale.
 
-\textbf{Corrected in scope (6).} In each case the underlying result
-survives and the physical interpretation attached to it does not — most
-notably, an earlier reading in which the rotational and scaling sectors
-were treated as independent channels is true only of the scalar version
-of the theory; the directional scale makes the rotation sector
-\emph{generated by} the scaling sector (Theorem~\ref{thm:coupling}).
+\textbf{Corrected in scope (6).} In each case a theorem survives and an
+earlier reading attached to it does not. Commuting derivations were read
+as a hidden flatness assumption; killing every derivation leaves
+curvature untouched, because flatness lives in whether the
+\emph{connection}'s transports commute, not whether the underlying
+derivations do (Section~\ref{sec:chain}). Directions were read as the
+algebra itself, with $n$ its dimension; $\dim\mathrm{so}(3,1)=6\neq4$,
+and directions are the \emph{defining representation} the algebra acts
+on, not its own coordinates (Section~\ref{sec:chain}). The interior of a
+multiplet was read as unconditionally flat; the result needs a
+per-direction scaling assignment as a hypothesis, since real rank one by
+itself supplies only one vector and one scaling overall
+(Section~\ref{sec:branch}). A uniaxial pattern was read as carrying no
+rotation, creating an apparent dilemma with the particle sector's own
+labels; the theorem is about a \emph{homogeneous} pattern, not the
+number of axes, and the dilemma dissolves once the misreading is removed
+(Section~\ref{sec:chain}). The scaling and rotation channels were read as
+independent; that holds only for the scalar version of the theory, and
+the directional scale makes the rotation sector \emph{generated by} the
+scaling sector instead (Theorem~\ref{thm:coupling}). The $f_0(500)$ pole
+was read as violating the resolvability bound; the previously cited
+value was not a settled determination, and the genuine range straddles
+the bound between two independent extractions — open, not violated
+(Section~\ref{sec:data}). Two further identifications are registered
+alongside the six rather than counted separately, since each softens a
+claim already listed rather than retracting a new one: real rank one's
+step from ``one drift functional'' to ``one independent scaling
+direction'' is a physical identification, not a formal deduction
+(Section~\ref{sec:chain}), and the measured mass-spectrum $\mathrm{CV}^2=0.875$
+excludes mixtures without confirming the exact rank-one value
+(Section~\ref{sec:particles}).
 
-\textbf{A recurring error (5 occurrences).} Five of the corrections above
-share one root cause: scalar reasoning applied where the structure is
-directional. The diagnostic that catches it: whenever a claim mentions a
-count — one axis, one scale, one direction — ask a count of \emph{what};
-value and direction are never the same count.
+Five of the six share one root cause: scalar reasoning applied where the
+structure is directional. The diagnostic that catches it: whenever a
+claim mentions a count — one axis, one scale, one direction — ask a
+count of \emph{what}; value and direction are never the same count.
 
 \textbf{Cited, not proved (2).} The classification of real-rank-one real
 simple Lie algebras invoked in Section~\ref{sec:chain}, and the relevant
@@ -2133,10 +2308,13 @@ construction of Section~\ref{sec:particles}. If either citation fails,
 the weaker statement proved before invoking it still stands; only the
 identification built on top does not.
 
-\textbf{Assumed, registered rather than smuggled (3).} A6$'$, the scale
+\textbf{Assumed, registered rather than smuggled (4).} A6$'$, the scale
 response law, external to the seven axioms; a uniform-density assumption
 needed for one dimension-counting step in Section~\ref{sec:chain}; A7
-itself, promoted to an axiom rather than left implicit.
+itself, promoted to an axiom rather than left implicit; and A6's
+generalization from a statement about the total energy scale alone to
+one about the substrate's full multi-directional drift, used throughout
+but not itself proved from the narrower axiom as formalized.
 
 \textbf{Structures now witnessed (6 of 6).} Six structures carrying
 load-bearing theorems — most importantly the scale-shift structure
@@ -2156,12 +2334,19 @@ compatible and forced is real and is not closed by exhibiting a witness.
 \textbf{What rests on the axioms alone.} The scale/rotation split, the
 codimension-one signature split, the bookkeeping form, the coupling
 (Theorem~\ref{thm:coupling}), real rank one (subject to the physical
-identification just above), conservation from Bianchi, the full gravity
+identification above), conservation from Bianchi, the full gravity
 chain through $1.7515''$ and $42.989''/$century, the label structure of
 the anisotropic sector, every statement in Section~\ref{ss:native}
 including the one-arrow-of-time identity (Theorem~\ref{thm:onearrow}).
 $\hbar$ as an exact scale step is deliberately absent from this list: it
 is witnessed, not forced, exactly as stated above.
+
+\subsection*{Use of AI tools}
+
+AI language-model tools assisted in writing the Lean~4 formalization
+and in editing this manuscript. Every theorem so produced was checked by
+the Lean~4 kernel independently of how it was written, and all resulting
+code and text were reviewed by the author before inclusion.
 
 %======================================================================
 \section{Conclusion}\label{sec:concl}
@@ -2190,7 +2375,7 @@ quantitatively at $1.7515''$ and $42.989''/$century with nothing assumed
 in between.
 
 These are not metaphors; every claim stated as a theorem in this paper
-has an independent, complete proof, verified end to end by machine — 644
+has an independent, complete proof, verified end to end by machine — 650
 checked theorems, no admitted gaps, and no hidden axioms beyond those of
 standard mathematics. But the statement that this framework reproduces
 known physics cannot currently be made without qualification: the
@@ -2202,44 +2387,225 @@ bound on which the true $f_0(500)$ pole lies. Nor does the framework
 explain the Standard Model — Section~\ref{sec:particles} argues that was
 never the goal — and Section~\ref{sec:register} records four retracted
 claims, six claims corrected in scope, two citations of results not
-reproved here, and three assumptions registered rather than hidden, along
+reproved here, and four assumptions registered rather than hidden, along
 with one recurring scalar-for-directional error caught five times.
 
-What a fully verified argument can establish is exactly one thing: that
+What a fully verified argument can establish is one thing above all: that
 these conclusions follow from these axioms, with no gap in between.
 Whether nature adopts the axioms is a separate question that this paper
 does not, and should not be read to, answer — which is exactly why the
-scoreboard and the register are given in full.
+scoreboard and the register are given in full rather than summarized
+away.
+
+\subsection{What this paper does and does not claim}
+
+Two questions were left open earlier for exactly this point. Section~\ref{sec:picture}
+asked what status to give a framework built this way — whether the
+axioms should be read as a claim about the world or as the tightest set
+of commitments found so far that reproduce it — and asked, more
+sharply, whether scale is what actually exists or only the leanest set
+of assumptions available. This paper does not choose between them, and
+the choice is not a detail deferred to a sequel: it is the oldest
+disagreement in the philosophy of physical theory, between a realist
+reading on which a successful theory's posits are what the world is
+made of, and a relationalist or instrumentalist reading on which a
+theory's success licenses belief in its structure without licensing
+belief that its posits are furniture of reality~\cite{Earman1989}.
+Nothing argued here adjudicates it, and nothing the machine verification
+does could: Lean checks that theorems follow from axioms, not that the
+axioms are true of anything. What can be said is only that the axioms
+were chosen for how little they assume, not for how well they match a
+prior intuition about what exists, and a reader is free to take the
+derivations that follow as evidence for scale's reality, as evidence
+only for an economical bookkeeping scheme, or as neither, without
+altering a single proof in this paper.
+
+The same restraint applies to this paper's relationship with programs it
+does not reach. As Section~\ref{sec:intro} states and this section now
+confirms without qualification: this is not offered as a competitor to
+loop quantum gravity, string theory, or causal set theory, and it does
+not reach the questions — a matter content, scattering amplitudes, a
+working route to quantized gravity in either the loop or the string
+sense — that make those programs what they are. What it offers instead
+is a single, narrow, machine-checked existence proof that geometry,
+gauge structure, and a testable gravitational sector can be derived
+together from a smaller set of commitments than is usually assumed
+necessary. An existence proof of that kind is compatible with every
+other program eventually turning out to be the more fruitful one.
+
+\subsection{Open questions this framework raises but does not settle}
+
+\emph{Spacetime has usually been treated as a thing.} General relativity
+curves it, loop quantum gravity and its relatives quantize it, causal
+set theory discretizes it — each treats spacetime as a substance
+requiring a verb. This paper does not argue that habit of thought is
+wrong; it shows only that a smaller move — reading spacetime off the
+pairwise differences of one scalar-valued field, with no independent
+metrical input (Section~\ref{sec:picture}) — reproduces enough of what a
+substantival spacetime is asked to do that the substance becomes
+optional rather than required. Whether physics is better served treating
+spacetime, or scale, or whatever eventually plays their role, as
+something to be discovered or as a derived bookkeeping device is the
+substantivalist–relationalist debate under a new name~\cite{Earman1989};
+this paper adds one data point without resolving it.
+
+\emph{A theory is always a description of a slice, not of everything at
+once.} Section~\ref{ss:labelrange} proved this for one construction — a
+description valid over a range of scales necessarily carries labels for
+content not resolvable at any single scale within that range, and no
+finite label set is ever adequate at every scale — but the result reads
+more naturally as an instance of something broader: that effective field
+theory may not be a staging post on the way to a final, all-scale theory
+but the only kind of description a scale-structured world can support at
+all. If that is right, a complete, finite inventory of nature's content
+is not merely hard to obtain; asking for one is asking a single slice
+for what only an unbounded sequence of slices could give. Whether that
+generalization holds beyond the one construction it was proved for is
+left open here.
+
+\emph{Precision is always precision at a resolution.} A5's fiducial
+covariance and the scale-sharpness/content-count complementarity of
+Section~\ref{ss:native} together say that asking what a quantity equals
+to infinite precision, independent of the scale at which the question is
+posed, is not a question this framework declines to answer — it is a
+question the framework has no vocabulary to pose, since infinite
+precision would be a point on the scale axis, and a point carries no
+content. Physical precision, on this reading, is approached and never
+reached, not because instruments are imperfect but because ``reached''
+is not a coherent target for a quantity defined only relative to a
+resolution. Whether that is a fact about this construction specifically
+or about physical measurement generally is, again, an open question.
+
+\emph{A theory earns the name only if it can lose.} Popper's demand that
+a scientific theory be falsifiable rather than merely confirmable~\cite{Popper1959}
+is not treated here as a slogan: Section~\ref{sec:falsify} names four
+observations that would kill this framework outright with no adjustable
+parameter available to absorb them, and Section~\ref{sec:data}'s
+scoreboard leaves the DESI tension and the $f_0(500)$ question standing
+rather than retuning anything to make them disappear, because nothing in
+this construction is left free to retune. A framework flexible enough to
+accommodate any observation has not survived contact with data; it has
+not yet made contact with it. Whether this framework's rigidity is a
+virtue, or merely a consequence of how little it currently claims — a
+theory with no adjustable parameters is easy to falsify in part because
+it is not yet trying to explain very much — is left for the reader to
+weigh against Section~\ref{sec:data}'s scorecard rather than settled by
+the author here.
+
+\emph{What, in the end, is theoretical physics for?} Elsewhere I have
+argued~\cite{Yang2026Mandate} that theoretical physics should be held to
+three mandate axioms: that its mandate is to describe, explain, and
+predict nature; that its subject matter is accessible, or at least could
+be approximated with arbitrary precision, with an objective that is
+eternal and invariant; and that it should exclude self-referential
+propositions or statements about its own constitution, on the grounds
+that such propositions do not increase productivity, creativity, or
+other benefit to humanity. Read against those axioms, this framework's
+own limits are directly relevant rather than incidental: the impossibility
+of a finite universal label set (Section~\ref{ss:labelrange}) and the
+never-reached character of precision noted above are close to the shape
+the second mandate axiom anticipates — an eternal, invariant objective
+approached asymptotically rather than attained in finite time is
+plausibly what ``approximated with arbitrary precision'' has to mean if
+it is to mean anything achievable at all. Whether an eternal, invariant
+objective exists to be approximated in the first place — whether a final
+description of nature, or a genuine unification, stands at the limit of
+that asymptotic approach, or whether no such limit exists — is not a
+question this paper can answer, and it is not obviously a question
+physics as a discipline can answer either, since the answer would itself
+have to be established by the very activity in question. Two literatures
+bear on this without settling it. G\"odel's incompleteness
+theorems~\cite{Godel1931} establish that any sufficiently expressive
+formal system contains true statements it cannot prove from within
+itself; whether that result has any bearing on physical theory, as
+opposed to the formal axiomatic systems it was proved for, is itself
+contested — Hawking read it as grounds for doubting that physics could
+ever be complete in the sense of a finite, closed set of laws deciding
+every question~\cite{Hawking2002}, Dyson has speculated in a similar
+direction~\cite{Dyson2009}, and Barrow's more careful treatment concludes
+the analogy is suggestive without amounting to a theorem about physics
+itself~\cite{Barrow2011}. This paper takes no side in that dispute; it
+only notes that this framework's own structural results — no finite
+label set, no maximum density, content that is never complete above any
+given scale (Sections~\ref{sec:particles}, \ref{ss:native}) — have
+exactly the flavor the incompleteness literature describes, without
+claiming the resemblance is more than that. And if no final description
+exists, the third mandate axiom's exclusion of self-reference suggests
+that asking what physics is \emph{for} is, in that case, a question for
+philosophy of science and for the scientific community collectively
+rather than one this paper's conclusion is positioned to settle. Whether
+this framework meets the mandate at all — whether deriving a consistent,
+checkable structure from seven axioms, without yet explaining the
+Standard Model, counts as describing, explaining, and predicting nature,
+or only as a preparatory exercise for a theory that might someday do so
+— is left, deliberately, open.
+
+\emph{What counts as an observation is itself a choice, not a
+discovery.} A7 is stated in Section~\ref{sec:axioms} as exactly this: a
+commitment about what a single observation is, not a claim about the
+world, and Section~\ref{sec:falsify} records that no experiment can
+adjudicate it. That this framework's most consequential structural fact
+— the number of spatial directions — traces back to an operational
+commitment rather than a discovered law echoes an older operationalist
+tradition, that a concept's meaning is exhausted by the operations used
+to measure it~\cite{Bridgman1927}; A5's insistence that only ratios of
+scale are observable is the same commitment applied to the scale field
+itself. Whether physics should be built this way — grounding its most
+basic structural facts in commitments about observation rather than
+discoveries about a mind-independent world, or whether that concedes too
+much to what can currently be measured — is a further instance of the
+realism question raised above, now sharpened to the single axiom doing
+the most structural work in this paper.
+
+None of these questions is answered by 650 machine-checked theorems, and
+none was meant to be; a proof assistant adjudicates validity, not the
+questions this section has raised. What it can do, and what this paper
+has tried to do throughout, is state plainly which parts of the argument
+are forced by the axioms, which are physical identifications layered on
+top, and which are open — so that the questions above are inherited by
+the reader in the same sharp form they were found in, rather than
+smoothed into an ending that sounds more settled than the argument is.
 
 \backmatter
 
-\bmhead{Acknowledgements}
-The complete formal development and its supporting tooling are available
-in the project repository, along with a companion technical report.
+\section*{Compliance with Ethical Standards}
+
+\textbf{Disclosure of potential conflicts of interest.} The author has
+no relevant financial or non-financial interests to disclose.
+
+\textbf{Research involving Human Participants and/or Animals.} Not
+applicable — this work is a formal mathematical development and involved
+no human participants or animals.
+
+\textbf{Informed consent.} Not applicable — no human participants were
+involved in this study.
 
 \section*{Declarations}
 
 \begin{itemize}
-\item Funding: Not applicable.
-\item Conflict of interest/Competing interests: The author declares no competing interests.
+\item Funding: The author did not receive support from any organization for the submitted work.
+\item Conflict of interest/Competing interests: The author has no relevant financial or non-financial interests to disclose.
 \item Ethics approval and consent to participate: Not applicable.
 \item Consent for publication: Not applicable.
 \item Data availability: Not applicable — this work is a formal mathematical development; no experimental data were generated.
 \item Materials availability: Not applicable.
-\item Code availability: The complete Lean~4 formalization (644 machine-checked theorems, zero admitted gaps) is available in the project repository.
+\item Code availability: The complete Lean~4 formalization (650 machine-checked theorems, zero admitted gaps) and its supporting tooling are available in the project repository, along with a companion technical report.
 \item Author contribution: X.Y. conceived the theory, wrote the formal Lean~4 development, and wrote the manuscript.
 \end{itemize}
 
 \begin{appendices}
 
-\section{Note on the Supplemental Material}
-The \SM\ gives, in the same order as the sections above, a complete
-mathematical restatement of every one of the 644 machine-verified
-theorems underlying this paper — full formal statements and full proofs,
-organized to mirror the structure of this paper section by section, with
-each item individually identifiable for cross-reference. This paper does
-not depend on the \SM\ to be read; the \SM\ exists so that every claim
-made informally above can be checked in complete formal detail.
+\section{Note on the online resources}
+One online resource accompanies this paper in every case: a complete
+mathematical restatement, in the same order as the sections above, of
+every one of the 650 machine-verified theorems underlying it — full
+formal statements and full proofs, organized to mirror this paper's
+structure section by section, with each item individually identifiable
+for cross-reference. Depending on the venue, the machine-checked Lean~4
+source itself may be deposited as a further online resource rather than
+only linked from the project repository; either way, this paper does not
+depend on any of them to be read. They exist so that every claim made
+informally above can be checked in complete formal detail.
 
 \end{appendices}
 

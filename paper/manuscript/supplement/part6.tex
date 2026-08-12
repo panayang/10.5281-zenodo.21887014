@@ -141,6 +141,17 @@ The first component is $f_0 g_0 - g_0 f_0 = 0$ since $A$ is commutative. The sec
 \lean{Deformation.star\_commutator}
 \end{theorem}
 
+\begin{theorem}[The Poisson bracket is the star commutator's $\hbar$-coefficient, for elements embedded at zeroth order]
+For any biderivation $P$ and elements $a, b \in A$, write $\underline{a} := (a,0)$, $\underline{b} := (b,0) \in A \times A$ for their embedding at zeroth order in $\hbar$. Then the $\hbar^1$-coefficient of the star commutator $[\underline{a},\underline{b}]_\star$ is exactly
+\[
+\{a,b\}_P .
+\]
+\begin{proof}
+Immediate from the previous theorem with $f = \underline{a}$, $g = \underline{b}$.
+\end{proof}
+\lean{Deformation.star\_commutator\_embed}
+\end{theorem}
+
 \begin{theorem}[Commutativity iff the Poisson bracket vanishes]
 Two elements $f, g \in A \times A$ commute in the star product if and only if their Poisson bracket vanishes:
 \[
@@ -180,9 +191,9 @@ d_p(X) = 1, \quad d_q(X) = 0, \quad d_p(\text{Mom}) = 0, \quad d_q(\text{Mom}) =
 \end{align}
 Then their Poisson bracket is
 \[
-\{\text{Mom}, X\}_{P_{pq}} = 1 ,
+\{\text{Mom}, X\}_{P_{pq}} = 1 .
 \]
-which means in the deformed algebra, $[\text{Mom}, X]_\star = \hbar \cdot 1$. Taking $\hbar = i\hbar$ recovers the canonical commutation relation $[\text{Mom}, X] = i\hbar$ of quantum mechanics. Combined with the power rule of calculus (recovered via inner derivations in the commutative sector), the circle is closed: the differential structure of the gravitational sector and the canonical commutation relation are two ends of one first-order deformation.
+This is a fact about the classical Poisson bracket alone; the next theorem upgrades it to the deformed algebra's own commutator.
 \begin{proof}
 Applying the definition:
 \begin{align}
@@ -191,6 +202,18 @@ Applying the definition:
 \end{align}
 \end{proof}
 \lean{Deformation.ccr\_of\_canonical}
+\end{theorem}
+
+\begin{theorem}[The canonical commutation relation, in the deformed algebra itself]
+Under the same hypotheses as the previous theorem, the star commutator of $\underline{\text{Mom}}$ and $\underline{X}$ (their zeroth-order embeddings) has $\hbar^1$-coefficient
+\[
+1 ,
+\]
+i.e.\ $[\text{Mom}, X]_\star = \hbar \cdot 1$ exactly — not an informally asserted correspondence but a proved one, by the star-commutator embedding theorem applied to the previous result. Taking $\hbar = i\hbar$ recovers the canonical commutation relation $[\text{Mom}, X] = i\hbar$ of quantum mechanics. Combined with the power rule of calculus (recovered via inner derivations in the commutative sector), the circle is closed: the differential structure of the gravitational sector and the canonical commutation relation are two ends of one first-order deformation.
+\begin{proof}
+By the star-commutator embedding theorem, the $\hbar^1$-coefficient of $[\underline{\text{Mom}},\underline{X}]_\star$ equals $\{\text{Mom},X\}_{P_{pq}}$, which the previous theorem gives as $1$.
+\end{proof}
+\lean{Deformation.ccr\_of\_canonical\_star}
 \end{theorem}
 
 \begin{theorem}[Poisson bracket of a coordinate with itself]
@@ -203,6 +226,56 @@ This is the diagonal case of the Poisson bracket antisymmetry.
 \end{proof}
 \lean{Deformation.canonical\_poisson\_self}
 \end{theorem}
+
+Three further results settle, in either direction, whether the scale-energy unit $\varepsilon$ of A3 can be realized as the generator of the drift direction along which A6 requires it to dissipate.
+
+\begin{theorem}[A generator conserves itself]
+Let $P$ be a biderivation and $D: A \to A$ a map. If $D$ is realized as $P$'s Poisson bracket with some element $H$ — that is, $Da = \{H, a\}_P$ for every $a$ — then
+\[
+DH = 0 .
+\]
+\begin{proof}
+$DH = \{H, H\}_P = 0$ by the diagonal case of Poisson bracket antisymmetry (\lean{Deformation.Biderivation.poisson\_self}), regardless of what $P$ or $H$ are.
+\end{proof}
+\lean{Deformation.Biderivation.generator\_conserves\_self}
+\end{theorem}
+
+\begin{theorem}[A6 forbids the energy unit from generating its own drift]
+Let $P$ be a biderivation, $D: A \to A$ a map, and $\varepsilon \in A$ the energy unit. If $D$ is realized as $P$'s Poisson bracket with $\varepsilon$ — $Da = \{\varepsilon, a\}_P$ for every $a$ — and $D\varepsilon \ne 0$, then this is a contradiction.
+\begin{proof}
+By the previous theorem, realization as a generator forces $D\varepsilon = 0$, contradicting $D\varepsilon \ne 0$.
+\end{proof}
+\lean{Deformation.Biderivation.energy\_cannot\_generate\_own\_drift}
+\end{theorem}
+
+The hypothesis $D\varepsilon \ne 0$ is exactly A6's content when $D$ is the drift derivation along its distinguished direction: the dissipation law $\dot\varepsilon = -\lambda\varepsilon$ of \texttt{Cosmology.dissipation\_solution} gives a nonzero drift for $\varepsilon$ whenever $\lambda \ne 0$. So whenever A6 is active, $\varepsilon$ cannot generate its own drift via any bracket — not a gap in the construction, but a forced consequence of alternating brackets together with A6's own dissipation law. The next theorem is the converse: switch the dissipation off, and the generator that was forbidden is recovered explicitly.
+
+\begin{theorem}[Closed systems recover the generator]
+Let $p, q \in \text{Fin } n$ be directions and $\varepsilon \in A$. If $d_p(\varepsilon) = 0$ (no drift of $\varepsilon$ along $p$) and $d_q(\varepsilon) = 1$ ($\varepsilon$ normalized to unit slope along $q$), then for every $a$,
+\[
+\{\varepsilon, a\}_{P_{pq}} = d_p(a) .
+\]
+\begin{proof}
+By the canonical Poisson bracket formula, $\{\varepsilon, a\}_{P_{pq}} = d_q(\varepsilon) \cdot d_p(a) - d_q(a) \cdot d_p(\varepsilon) = 1 \cdot d_p(a) - d_q(a) \cdot 0 = d_p(a)$.
+\end{proof}
+\lean{Deformation.energy\_generates\_conserved\_drift}
+\end{theorem}
+
+The two hypotheses are exactly the closed-system case: $d_p(\varepsilon)=0$ is $\lambda=0$ in the dissipation law, and $d_q(\varepsilon)=1$ is always achievable by reparametrizing $q$ wherever $\varepsilon$ genuinely varies there, since a nowhere-vanishing derivative can be straightened to unit slope by choice of coordinate. As stated, this theorem is still only a fact about the classical Poisson bracket — exactly what ordinary Hamiltonian mechanics already asserts, and no more quantum than that by itself. The next theorem is what earns the name: the same recovery carried into the non-commutative deformed algebra's own commutator.
+
+\begin{theorem}[Closed systems recover the generator, in the deformed algebra itself]
+Under the same hypotheses as the previous theorem, the star commutator of $\underline{\varepsilon}$ and $\underline{a}$ (their zeroth-order embeddings) has $\hbar^1$-coefficient
+\[
+d_p(a) ,
+\]
+i.e.\ $[\varepsilon, a]_\star = \hbar \cdot d_p(a)$ exactly — the exact, first-order form of the Heisenberg equation of motion $\dot a = \hbar^{-1}[H,a]$ with $H = \varepsilon$, not its classical shadow and not an approximation to it. Standard, dissipation-free quantum mechanics sits exactly at this point, and there $\varepsilon$ is a genuine generator of the drift, at the level of the deformed algebra's own multiplication, for every element, not merely for one conjugate pair.
+\begin{proof}
+By the star-commutator embedding theorem, the $\hbar^1$-coefficient of $[\underline{\varepsilon},\underline{a}]_\star$ equals $\{\varepsilon,a\}_{P_{pq}}$, which the previous theorem gives as $d_p(a)$.
+\end{proof}
+\lean{Deformation.energy\_generates\_conserved\_drift\_star}
+\end{theorem}
+
+The obstruction above and this recovery are the same fact read on the two sides of A6, not a gap on one side and an independent result on the other.
 
 \subsection{Crossed}
 

@@ -20,50 +20,64 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: refs.bib
+Reallocated buffer (elt_size=1) to 40000 items from 20000.
+Reallocated sv_buffer (elt_size=1) to 40000 items from 20000.
+Reallocated ex_buf (elt_size=1) to 40000 items from 20000.
+Reallocated out_buf (elt_size=1) to 40000 items from 20000.
+Reallocated name_tok (elt_size=4) to 40000 items from 20000.
+Reallocated name_sep_char (elt_size=1) to 40000 items from 20000.
+Warning--string name "sept" is undefined
+--line 12 of file refs.bib
+Reallocated str_pool (elt_size=1) to 130000 items from 65000.
+Warning--string name "sept" is undefined
+--line 116 of file refs.bib
+Warning--string name "sept" is undefined
+--line 162 of file refs.bib
 sn-mathphys-num.bst [2024/07/19 v1.1  bibliography style]
 Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 26 entries,
+You've used 34 entries,
             7485 wiz_defined-function locations,
-            1387 strings with 13703 characters,
-and the built_in function-call counts, 213921 in all, are:
-= -- 38161
-> -- 714
-< -- 378
-+ -- 22100
-- -- 214
-* -- 5642
-:= -- 37853
-add.period$ -- 27
-call.type$ -- 26
-change.case$ -- 156
-chr.to.int$ -- 973
-cite$ -- 26
-duplicate$ -- 1026
-empty$ -- 4006
-format.name$ -- 432
-if$ -- 55036
+            1485 strings with 93053 characters,
+and the built_in function-call counts, 2516527 in all, are:
+= -- 301192
+> -- 18620
+< -- 424
++ -- 54827
+- -- 9158
+* -- 232006
+:= -- 500912
+add.period$ -- 38
+call.type$ -- 34
+change.case$ -- 216
+chr.to.int$ -- 1110
+cite$ -- 34
+duplicate$ -- 19051
+empty$ -- 191204
+format.name$ -- 27171
+if$ -- 529867
 int.to.chr$ -- 2
-int.to.str$ -- 41
+int.to.str$ -- 45
 missing$ -- 0
-newline$ -- 392
-num.names$ -- 130
-pop$ -- 404
+newline$ -- 4933
+num.names$ -- 173
+pop$ -- 18271
 preamble$ -- 1
-purify$ -- 114
+purify$ -- 146
 quote$ -- 0
-skip$ -- 23294
+skip$ -- 104388
 stack$ -- 0
-substring$ -- 19603
-swap$ -- 545
-text.length$ -- 335
+substring$ -- 471951
+swap$ -- 9590
+text.length$ -- 440
 text.prefix$ -- 0
 top$ -- 1
-type$ -- 1086
+type$ -- 1417
 warning$ -- 0
-while$ -- 653
+while$ -- 14167
 width$ -- 0
-write$ -- 550
+write$ -- 5138
+(There were 3 warnings)

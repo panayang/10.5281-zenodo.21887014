@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}644 条定理、13197 行 Lean 代码、64 个文件；
-\textbf{全部 644 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}650 条定理、13140 行 Lean 代码、64 个文件；
+\textbf{全部 650 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -131,7 +131,7 @@
 
 \begin{mdframed}[linecolor=red!60!black,linewidth=1pt,backgroundcolor=red!3]
 \textbf{在采信任何结论之前，请先读第 \ref{sec:audit} 节。}
-那里列出被撤回的 4 条、被限缩适用域的 6 条、引用未证的 2 条、登记假设的 2 条，
+那里列出被撤回的 4 条、被限缩适用域的 6 条、引用未证的 2 条、登记假设的 4 条，
 以及\textbf{同一个“标量代替方向性”错误出现的 5 次}——其中一次挺过了一次形式化和一版报告。
 \textbf{没有撤回记录的开发是没有被审计的开发。}
 \end{mdframed}
@@ -437,6 +437,16 @@ $\Lambda^2\mathfrak p$ 与 A4 所标记的 $\mathfrak p$ 同维。
 它曾以“判断”之名被携带数版；第 \ref{sec:dimension} 节证明这种形状的条件\emph{不止一条}
 且答案不同，故它是一个关于\textbf{什么算可观测}的选择，不是算术。
 给定 A7，$k=3$ 是定理，$n=4$ 随之。\textbf{任何人可以拒绝 A7 并得到别的 $k$。}
+\end{mdframed}
+
+\begin{mdframed}[linecolor=red!60!black,linewidth=0.9pt,backgroundcolor=red!3]
+\textbf{A6 的陈述刻意窄，且与形式化内容精确对应：}
+它只是关于\emph{总能量标度}这一个标量的命题，不是关于基底全部方向漂移的命题。
+后文多处——第 \ref{sec:signature} 节的号差论证、第 \ref{sec:cov} 节的局域协变性论证、
+第 \ref{sec:native} 节的"没有全局场方程"论证——把 A6 读作一条更宽的非形式原则的一个实例：
+\emph{没有任何全局势能说明\textbf{任意}方向上的漂移，而不只是能量标度这一个方向}。
+这个更宽的读法本身并未从公理原文推出，是全篇一以贯之的外推，
+在此明确登记而不是让它悄悄融入公理措辞本身。
 \end{mdframed}
 
 A5 正是“完全无量纲化”的精确含义，我们将在定理 \ref{thm:fiducial} 中证明它
@@ -2956,6 +2966,73 @@ $\{\cdot,g\}$ 对交换环 $A$ 满足 Leibniz 律。
 引力扇区的交换微分结构与量子力学的正则对易关系，
 是同一个一阶形变的两端。
 
+\subsection{本节没有给出什么：一个可以证明的理由}\label{sec:nodynamics}
+
+以上全部内容是运动学：一条对易关系、一个不确定性界、一个曲率修正项。
+\textbf{没有任何动力学方程被复原}——没有薛定谔绘景，没有海森堡绘景，
+没有任何东西扮演 $\dot a=\hbar^{-1}[H,a]$ 里 $H$ 的角色。这不是疏漏，
+而是被 A6 逼出来的，且可以证明。
+
+\begin{theorem}[生成元必守恒自身]\label{thm:selfconserve}
+若某个导子 $D$ 由某个元素 $H$ 通过泊松括号实现——即对一切 $a$ 都有
+$Da=\{H,a\}$——则 $DH=0$。
+\begin{proof}
+$DH=\{H,H\}=0$，括号的反对称性直接给出，与 $H$、括号的具体构造无关。
+\end{proof}
+\leanline{Deformation.Biderivation.generator\_conserves\_self}
+\end{theorem}
+
+“哈密顿量守恒自身的能量”这句话因此不是额外物理假设，
+是括号反对称性本身的推论。而 A6 恰恰使能量单位 $\varepsilon$
+沿自己的漂移方向不守恒：
+
+\begin{theorem}[A6 排除 $\varepsilon$ 生成自身的漂移]\label{thm:noenergygen}
+若某个导子 $D$ 由 $\varepsilon$ 通过泊松括号实现，且 $D\varepsilon\ne0$，
+则矛盾。
+\begin{proof}
+由定理 \ref{thm:selfconserve}，实现即要求 $D\varepsilon=0$，
+与 $D\varepsilon\ne0$ 矛盾。
+\end{proof}
+\leanline{Deformation.Biderivation.energy\_cannot\_generate\_own\_drift}
+\end{theorem}
+
+$D\varepsilon\ne0$ 正是 A6 沿漂移方向的内容：耗散律
+$\dot\varepsilon=-\lambda\varepsilon$ 只要 $\lambda\ne0$ 就给出非零漂移。
+标准的、封闭系统的量子力学并不豁免于这个论证——它恰好站在这个论证的
+另一侧。取 $\lambda=0$，障碍随之精确消失：$\dot\varepsilon=0$
+平凡成立，而只要有一个方向上 $\varepsilon$ 被归一化为单位斜率，
+同一个括号构造就把 $\varepsilon$ 显式地复原为生成元：
+
+\begin{theorem}[封闭系统复原生成元]\label{thm:closedgen}
+若 $d_p\varepsilon=0$（沿 $p$ 无漂移）且 $d_q\varepsilon=1$
+（沿 $q$ 归一化为单位斜率），则对一切 $a$，
+\[
+\{\varepsilon,a\}_{P_{pq}} = d_p(a) .
+\]
+\leanline{Deformation.energy\_generates\_conserved\_drift}
+\end{theorem}
+
+到这里为止，定理 \ref{thm:closedgen} 说的仍只是\emph{经典}泊松括号——
+这和普通哈密顿力学断言的内容完全一样，本身并不比后者更“量子”。
+真正配得上这个名字的，是把同一构造搬到\emph{非交换}的形变代数自身：
+
+\begin{theorem}[星积对易子层面的复原]\label{thm:closedgenstar}
+在定理 \ref{thm:starcomm} 的桥接下（把 $a,b$ 嵌入到 $\hbar^0$ 阶：
+星积对易子的经典部分为零，$\hbar$ 系数恰为泊松括号），
+定理 \ref{thm:closedgen} 的结论精确等价于
+\[
+[\varepsilon,a]_\star = \hbar\cdot d_p(a) ,
+\]
+即海森堡运动方程 $\dot a=\hbar^{-1}[H,a]$（$H=\varepsilon$）的精确、一阶形式，
+不是它的经典影子，也不是一个近似。
+\leanline{Deformation.star\_commutator\_embed, Deformation.energy\_generates\_conserved\_drift\_star}
+\end{theorem}
+
+诚实的总结不是一句道歉，而是一对互逆的结论：这个框架\textbf{因为开放
+而没有}回归幺正时间演化，而\textbf{一旦不开放就精确回归}——
+这比“动力学还没有被尝试”严格得多，而且在 A6 被精确陈述、
+可供检验之前，这句话本身也无从说起。
+
 \subsection{把"一阶"这个限制取消掉}\label{sec:exact}
 
 上一小节的形变只做到一阶。那是诚实的，但一阶截断是个不该安放地基的位置。
@@ -3451,7 +3528,9 @@ more\_wedges\_than\_directions, fewer\_wedges\_than\_directions}
 \end{mdframed}
 
 探测器本身是坐落在某个能标 $\varepsilon_D$ 上的物理系统；由 A3，
-这也是它的空间分辨率的倒数。它能登记的不是“一次相互作用”，
+这也是它的空间分辨率的倒数——所以一台造得越能分辨小距离的探测器，
+在本框架的词汇里\textbf{就是}一个高能标的物体，二者不是两件相关的事实，
+是同一件事的两种说法。它能登记的不是“一次相互作用”，
 而是“一次把它自身状态推动了至少阈值 $\theta$ 的相互作用”。
 
 \begin{definition}
@@ -4611,7 +4690,7 @@ $k=3$ 依赖一个判断 & 已扶正为 A7 & 公开的第七条公理（\S\ref{s
       以及李群模离散子群的 $\pi_2$ 为零。
 \end{enumerate}
 
-\textbf{假设（3 条）。}
+\textbf{假设（4 条）。}
 \begin{enumerate}[leftmargin=1.8em,itemsep=2pt]
 \item \textbf{A6$'$，标度响应律} $e^{2\sigma}R=\kappa\rho$。
       \textbf{它不是七条公理之一}，是一条外部物理输入，
@@ -4623,6 +4702,9 @@ $k=3$ 依赖一个判断 & 已扶正为 A7 & 公开的第七条公理（\S\ref{s
 \item 缺陷在对称空间体积中\textbf{均匀分布}——第 \ref{sec:dimension} 节的
       $\rho\alpha=k-1$ 换算需要它，无定理提供。
 \item \textbf{A7 本身}——关于什么算一次观测的承诺，已扶正为公理而非留作判断。
+\item \textbf{A6 从"总能量标度耗散"到"基底全部方向的漂移均无全局势"的推广}——
+      第 \ref{sec:signature}、\ref{sec:cov}、\ref{sec:native} 节全篇沿用，
+      但这个推广本身并未从窄义的 A6 原文推出，是外推而非定理。
 \end{enumerate}
 
 \subsection{登记册（六）：前提无见证的结构}\label{ss:unwitnessed}
@@ -5021,7 +5103,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \textbf{完整的登记册在第 \ref{sec:audit} 节，分五张清单：}
 已撤回（\S\ref{ss:retracted}，4 条）、已限缩适用域（\S\ref{ss:corrected}，6 条）、
 \textbf{已解决}（\S\ref{ss:closed}，10 条，附由何关闭）、
-仍然开放（\S\ref{ss:open}，7 条）、引用与假设（\S\ref{ss:cited}，各 2 条）。
+仍然开放（\S\ref{ss:open}，7 条）、引用（\S\ref{ss:cited}，2 条）与假设（\S\ref{ss:cited}，4 条）。
 
 本栏此前混杂着已解决与未解决的条目并以删除线标注，那是修改痕迹而非登记册；
 \textbf{已解决的条目现已移入 \S\ref{ss:closed} 的表中}，本栏只留仍未完成者。
@@ -5137,7 +5219,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Emergence.lean} & 9 & 没有基本粒子 \\
 \midrule
 \multicolumn{3}{l}{\emph{第六部分\quad 量子扇区}}\\
-\texttt{Deformation.lean} & 12 & 一阶形变、对应原理、CCR \\
+\texttt{Deformation.lean} & 18 & 一阶形变、对应原理、CCR \\
 \texttt{Crossed.lean} & 11 & 精确非交换；$\hbar$ 是标度步长（见证见 Witness） \\
 \texttt{NCConformal.lean} & 18 & 非交换曲率；修正 $=[\sigma_i,\sigma_j]$，纯反对称 \\
 \midrule
@@ -5168,14 +5250,14 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
 \texttt{Audit.lean} & 5 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{644} & 63 个文件，12997 行 Lean 代码 \\
+\textbf{合计} & \textbf{650} & 63 个文件，13140 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 644 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 650 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5192,7 +5274,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \begin{verbatim}
     lake exe cache get
     lake build                       # 应为 0 error
-    lake env lean SCD/Verify.lean    # 公理审计：全部 644 条
+    lake env lean SCD/Verify.lean    # 公理审计：全部 650 条
     python3 tools/sync_report.py     # 一致性核查，漂移时退出码 1
 \end{verbatim}
 
@@ -5249,7 +5331,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 同样说不得的是"它解释了标准模型"：第 \ref{sec:emergence} 节论证那不是目标，
 第 \ref{sec:audit} 节记录了为得到现有结论而必须\textbf{收回}的 4 条主张、
 必须\textbf{限缩适用域}的 6 条、\textbf{引用而未证}的 2 条、
-以及\textbf{登记为假设}的 2 条——外加同一个"标量代替方向性"的错误出现了 5 次，
+以及\textbf{登记为假设}的 4 条——外加同一个"标量代替方向性"的错误出现了 5 次，
 其中一次挺过了一次形式化和一版报告。
 
 \medskip
@@ -5263,7 +5345,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 644 条}\label{sec:index}
+\section{定理索引：全部 650 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5324,7 +5406,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Emergence.lean}} (9)\quad \texttt{mem\_\allowbreak resolved}, \texttt{resolved\_\allowbreak mono}, \texttt{content\_\allowbreak never\_\allowbreak complete}, \texttt{always\_\allowbreak more\_\allowbreak above}, \texttt{no\_\allowbreak fundamental\_\allowbreak list}, \texttt{mass\_\allowbreak iff\_\allowbreak threshold}, \texttt{mass\_\allowbreak mono}, \texttt{content\_\allowbreak eq\_\allowbreak of\_\allowbreak no\_\allowbreak threshold}, \texttt{content\_\allowbreak changes\_\allowbreak only\_\allowbreak at\_\allowbreak threshold}\par\smallskip
 
 \subsection*{第六部分\quad 量子扇区}
-\noindent\textbf{\texttt{Deformation.lean}} (12)\quad \texttt{poisson\_\allowbreak antisymm}, \texttt{poisson\_\allowbreak self}, \texttt{poisson\_\allowbreak leibniz\_\allowbreak left}, \texttt{poisson\_\allowbreak leibniz\_\allowbreak right}, \texttt{star\_\allowbreak assoc}, \texttt{star\_\allowbreak classical}, \texttt{star\_\allowbreak comm\_\allowbreak classical}, \texttt{star\_\allowbreak commutator}, \texttt{star\_\allowbreak comm\_\allowbreak iff\_\allowbreak poisson\_\allowbreak zero}, \texttt{canonical\_\allowbreak poisson}, \texttt{ccr\_\allowbreak of\_\allowbreak canonical}, \texttt{canonical\_\allowbreak poisson\_\allowbreak self}\par\smallskip
+\noindent\textbf{\texttt{Deformation.lean}} (18)\quad \texttt{poisson\_\allowbreak antisymm}, \texttt{poisson\_\allowbreak self}, \texttt{poisson\_\allowbreak leibniz\_\allowbreak left}, \texttt{poisson\_\allowbreak leibniz\_\allowbreak right}, \texttt{generator\_\allowbreak conserves\_\allowbreak self}, \texttt{energy\_\allowbreak cannot\_\allowbreak generate\_\allowbreak own\_\allowbreak drift}, \texttt{star\_\allowbreak assoc}, \texttt{star\_\allowbreak classical}, \texttt{star\_\allowbreak comm\_\allowbreak classical}, \texttt{star\_\allowbreak commutator}, \texttt{star\_\allowbreak comm\_\allowbreak iff\_\allowbreak poisson\_\allowbreak zero}, \texttt{star\_\allowbreak commutator\_\allowbreak embed}, \texttt{canonical\_\allowbreak poisson}, \texttt{ccr\_\allowbreak of\_\allowbreak canonical}, \texttt{ccr\_\allowbreak of\_\allowbreak canonical\_\allowbreak star}, \texttt{canonical\_\allowbreak poisson\_\allowbreak self}, \texttt{energy\_\allowbreak generates\_\allowbreak conserved\_\allowbreak drift}, \texttt{energy\_\allowbreak generates\_\allowbreak conserved\_\allowbreak drift\_\allowbreak star}\par\smallskip
 \noindent\textbf{\texttt{Crossed.lean}} (11)\quad \texttt{map\_\allowbreak zero}, \texttt{shiftOp\_\allowbreak apply}, \texttt{mulOp\_\allowbreak apply}, \texttt{shift\_\allowbreak mul\_\allowbreak eq}, \texttt{commutator\_\allowbreak eq}, \texttt{comm\_\allowbreak iff\_\allowbreak shift\_\allowbreak trivial}, \texttt{delta\_\allowbreak twisted\_\allowbreak leibniz}, \texttt{delta\_\allowbreak leibniz\_\allowbreak of\_\allowbreak untwisted}, \texttt{delta\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff}, \texttt{ScaleShift}, \texttt{shift\_\allowbreak mul\_\allowbreak eq\_\allowbreak comp}\par\smallskip
 \noindent\textbf{\texttt{NCConformal.lean}} (18)\quad \texttt{kr\_\allowbreak symm}, \texttt{kr\_\allowbreak comm}, \texttt{kr\_\allowbreak self}, \texttt{sum\_\allowbreak kr\_\allowbreak left}, \texttt{sum\_\allowbreak kr\_\allowbreak right}, \texttt{kr\_\allowbreak swap}, \texttt{scalar\_\allowbreak mul\_\allowbreak scalar}, \texttt{hess\_\allowbreak symm}, \texttt{Chr\_\allowbreak symm}, \texttt{Defm\_\allowbreak antisymm\_\allowbreak part}, \texttt{Defm\_\allowbreak symm\_\allowbreak iff\_\allowbreak commutator}, \texttt{Defm\_\allowbreak symm\_\allowbreak iff\_\allowbreak commute}, \texttt{symmetric\_\allowbreak part\_\allowbreak uncorrected}, \texttt{correction\_\allowbreak is\_\allowbreak pure\_\allowbreak antisymmetric}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full\_\allowbreak nc}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full\_\allowbreak classical}, \texttt{quantum\_\allowbreak correction\_\allowbreak couples\_\allowbreak to\_\allowbreak rotation}, \texttt{correction\_\allowbreak vanishes\_\allowbreak on\_\allowbreak commuting}\par\smallskip
 
