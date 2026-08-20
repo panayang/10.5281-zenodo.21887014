@@ -13,3 +13,5 @@ arXiv-2510.26931v1.tar.gz
 paper/preprint/main.blg
 paper/preprint/main.bbl
 tools/__pycache__/sync_report.cpython-314.pyc
+paper/manuscript/cover_letter.pdf
+paper/manuscript/cover_letter.tex
