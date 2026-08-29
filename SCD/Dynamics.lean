@@ -98,22 +98,22 @@ import SCD.Emergence
 
 namespace SCD.Dynamics
 
-open SCD Quantum Connection DiffRing
+open SCD Quantum Connection ScaleAlgebra
 
 /-! ## I. Commuting directions do not make anything flat -/
 
-variable {n : ℕ} {M : Type*} [Ring M] [DiffRing n M]
+variable {n : ℕ} {M : Type*} [Ring M] [ScaleAlgebra n M]
 
 /-- **Killing the derivations does not flatten the curvature.**
 
 Take the directions to be as commuting as they can possibly be — every
 derivation zero.  The curvature is still `ad (A i) (A j)`, entirely free.
 
-This withdraws `Direction.lean`'s claim that A1's `D_comm` was a hidden
-flatness assumption.  `D_comm` says the chart is a chart.  Flatness is a
+This withdraws `Direction.lean`'s claim that A1's `d_comm` was a hidden
+flatness assumption.  `d_comm` says the chart is a chart.  Flatness is a
 statement about the *connection*. -/
 theorem no_flatness_from_commuting_derivations (A : Fin n → M)
-    (hD : ∀ (i : Fin n) (x : M), D i x = 0) (i j : Fin n) :
+    (hD : ∀ (i : Fin n) (x : M), d i x = 0) (i j : Fin n) :
     F A i j = ad (A i) (A j) := by
   simp only [F, hD, sub_self, zero_add]
 
@@ -125,8 +125,10 @@ curvature.  The claim being withdrawn is refuted by a witness, not weakened. -/
 theorem nonflat_witness :
     ad Coupling.K₁ Coupling.K₂ = Coupling.J ∧ (Coupling.J : Matrix (Fin 3) (Fin 3) ℝ) ≠ 0 := by
   constructor
-  · have : ad Coupling.K₁ Coupling.K₂ = Coupling.br Coupling.K₁ Coupling.K₂ := rfl
-    rw [this, Coupling.boost_bracket_eq_rotation]
+  · -- `Coupling.br` *is* `ad`: one construction, evaluated on scalings here and
+    -- on transports in `Connection.lean`.
+    rw [show ad Coupling.K₁ Coupling.K₂ = Coupling.br Coupling.K₁ Coupling.K₂ from rfl,
+      Coupling.boost_bracket_eq_rotation]
   · intro h
     have h12 : (Coupling.J : Matrix (Fin 3) (Fin 3) ℝ) 1 2 = 0 := by rw [h]; rfl
     simp [Coupling.J] at h12
@@ -145,7 +147,7 @@ This is exactly why `Conformal.lean` has to postulate `δ` and get its curvature
 from the conformal factor rather than from the connection.  The cost of the
 commutative sector is stated here in full, and it is confined to the classical
 isotropic geometry. -/
-theorem commutative_sector_transports_commute {C : Type*} [CommRing C] [DiffRing n C]
+theorem commutative_sector_transports_commute {C : Type*} [CommRing C] [ScaleAlgebra n C]
     (A : Fin n → C) (i j : Fin n) (m : C) :
     covD A i (covD A j m) - covD A j (covD A i m) = 0 := by
   rw [comm_covD]
@@ -153,7 +155,7 @@ theorem commutative_sector_transports_commute {C : Type*} [CommRing C] [DiffRing
 
 /-- Restated as the diagnosis: in the commutative sector the curvature acts
 trivially on everything, so no transport can detect it. -/
-theorem commutative_curvature_undetectable {C : Type*} [CommRing C] [DiffRing n C]
+theorem commutative_curvature_undetectable {C : Type*} [CommRing C] [ScaleAlgebra n C]
     (A : Fin n → C) (i j : Fin n) (m : C) : ad (F A i j) m = 0 := by
   simp only [ad, mul_comm, sub_self]
 

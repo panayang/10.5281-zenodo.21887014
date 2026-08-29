@@ -99,7 +99,7 @@ If every direction carries the same unit, every relabelling is a symmetry: the
 pattern is the same everywhere by construction, nothing varies, and there is
 nothing for a defect to wind around.  The isotropic sector — the old scalar
 axiom — supports no defects at all. -/
-theorem isotropic_no_order_parameter (s : Fin n → Aˣ) (hiso : ∀ a b, s a = s b) :
+theorem isotropic_no_order_parameter (s : Fin n → Aˣ) (hiso : IsIsotropic s) :
     stabilizer s = ⊤ := stabilizer_eq_top_of_isotropic s hiso
 
 /-- **A fully non-degenerate pattern has no internal symmetry**, so its order
@@ -144,7 +144,7 @@ the disagreement is exactly the `A4` versus directional-`A4` distinction that
 `Frame.lean` already settled once.  Recorded so the same substitution is not
 made a third time. -/
 theorem scalar_picture_is_the_isotropic_locus (s : Fin n → Aˣ)
-    (hiso : ∀ a b, s a = s b) : stabilizer s = ⊤ :=
+    (hiso : IsIsotropic s) : stabilizer s = ⊤ :=
   isotropic_no_order_parameter s hiso
 
 end SCD.Axis

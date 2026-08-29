@@ -14,12 +14,12 @@ unobservable, which is A5.
 ## The seven
 
 **A1 — Substrate.**  A bare counting structure carrying `n` derivations that
-commute as operators.  Formal carrier: `Connection.DiffRing`.
+commute as operators.  Formal carrier: `ScaleAlgebra`, stated over a ring.
 *Status:* postulated.  Commuting derivations are a **chart**, not a flatness
 assumption — an earlier reading claimed otherwise and is withdrawn
-(`Dynamics.no_flatness_from_commuting_derivations`).  The commutative
-specialisation `ScaleAlgebra` is the *same* axiom over a commutative ring, and
-`scaleAlgebra_is_diffRing` below proves it rather than leaving it to the reader.
+(`Dynamics.no_flatness_from_commuting_derivations`).  Commutativity of the ring
+is not part of the axiom: the commutative sector is the classical one and the
+general case is the quantum one, and they are the same axiom (§ below).
 
 **A2 — Scale.**  A dimensionless log-scale `σ`, with multiplicative
 representative `s = e^σ` postulated as a **unit** of the ring.  Formal carrier:
@@ -56,7 +56,8 @@ a dissipating source is not conserved, removes any *global* field equation
 (`Native.no_global_field_equation`).
 
 **A7 — Observability.**  Every structure the coupling generates carries a label
-the axioms provide.  Formal carrier: `Locus.Observability`.
+the axioms provide.  Formal carrier: `Observability`, stated once in
+`Pattern.lean` as `rotDim2 m = scaleDim2 m`.
 *Status:* postulated, **and promoted late**.  It was carried for several
 revisions as a "judgement"; `Dimension.two_matching_conditions_differ` shows a
 condition of that shape is a choice, so it is now stated as an axiom.  Given
@@ -88,56 +89,55 @@ import SCD.Frame
 
 namespace SCD.Postulates
 
-/-! ## A1 has one carrier, not three
+/-! ## A1 has one carrier
 
-An earlier state of this development declared the substrate three times — once
-over a commutative ring (`ScaleAlgebra`), once over a ring (`DiffRing`), and
-once again over a ring under another name.  The third was removed in the
-reorganisation; the first two differ only in whether the ring is commutative,
-and the bridge is proved here rather than asserted. -/
+An earlier state of this development declared the substrate three times — over a
+commutative ring as `ScaleAlgebra`, over a ring as `Connection.DiffRing`, and
+once more under a third name in `NCConformal.lean`.  Two were removed in earlier
+passes and the last is removed now: **A1 is one class**, `ScaleAlgebra`, stated
+over a ring in `Basic.lean`.
 
-variable {n : ℕ} {A : Type*} [CommRing A] [ScaleAlgebra n A]
+Nothing had to be given up to merge them, because commutativity was never used
+to *state* A1 — only to prove some of its consequences.  The two theorems below
+record what that costs and what it does not.  `Conformal.hess_symm` and
+`Conformal.Chr_symm` are the consequences that survive without it; the whole
+classical curvature computation is the part that does not, and
+`NCConformal.lean` computes the difference exactly. -/
 
-/-- **The commutative substrate is the substrate.**
+variable {n : ℕ} {M : Type*} [Ring M] [ScaleAlgebra n M]
 
-`ScaleAlgebra` is `DiffRing` with a commutative ring underneath: same
-derivations, same Leibniz rule, same commuting mixed partials.  Constructing the
-one from the other makes the identification formal, so "A1 has one carrier" is
-checked rather than claimed. -/
-def scaleAlgebra_is_diffRing : Connection.DiffRing n A where
-  D := ScaleAlgebra.d
-  D_add := ScaleAlgebra.d_add
-  D_mul := ScaleAlgebra.d_mul
-  D_comm := ScaleAlgebra.d_comm
+/-- **Equality of mixed partials is a chart, and survives non-commutativity.**
 
-/-- And the transfer is the identity on the derivations: nothing is lost or
-added in passing between the two presentations. -/
-theorem scaleAlgebra_is_diffRing_d (i : Fin n) (a : A) :
-    (scaleAlgebra_is_diffRing (n := n) (A := A)).D i a = ScaleAlgebra.d i a := rfl
+The symmetry of the scale Hessian is `d_comm` and nothing else, so it holds in
+the quantum sector verbatim.  This is why exactly *one* object in the curvature
+computation — the deformation tensor — notices the passage. -/
+theorem substrate_hessian_symm (σ : M) (i j : Fin n) : hess σ i j = hess σ j i :=
+  hess_symm σ i j
 
-/-! ## A7, restated where the other six are
+/-- **The commutative sector is a sector, not a second axiom.**
 
-`Locus.Observability` is the formal carrier; it is repeated here so that the
-seven postulates can be read in one place without following a chain of
-imports. -/
+Every `CommRing` satisfying A1 satisfies A1: no transport is required, and there
+is nothing to check.  Recorded as a `rfl` so that "A1 has one carrier" is a fact
+about the elaborator rather than a claim in a comment. -/
+theorem commutative_sector_is_the_substrate {A : Type*} [CommRing A] [ScaleAlgebra n A]
+    (i : Fin n) (a : A) : ScaleAlgebra.d i a = ScaleAlgebra.d i a := rfl
 
-/-- **A7 (Observability).**  The rotations the coupling generates are as
-numerous as the scale directions A4 labels.
+/-! ## A7, where the other six are
 
-Stated as `2·dim Λ²p = 2·dim p` in the doubled form that avoids natural-number
-division, with `k = m + 1`. -/
-def Observability (m : ℕ) : Prop := (m + 1) * m = 2 * (m + 1)
+`Observability` is stated once, in `Pattern.lean`, together with the two sector
+counts it compares.  It was previously written out three further times — here as
+raw arithmetic, in `Locus.lean` in terms of `Dimension`'s counts, and in
+`Slice.lean` as `wedgeDim = dirDim` — with `Iff.rfl` bridges standing in for the
+identification.  The theorems below are the same statements, now about the one
+definition. -/
 
 /-- Given A7, `k = 3`; and `n = k + 1 = 4` follows because naming the algebra
 already fixed `n` as its defining representation's dimension. -/
-theorem three_from_A7 {m : ℕ} (h : Observability m) : m = 2 := by
-  have h' : m * (m + 1) = 2 * (m + 1) := by rw [mul_comm]; exact h
-  exact Nat.eq_of_mul_eq_mul_right (Nat.succ_pos m) h'
+theorem three_from_A7 {m : ℕ} (h : Observability m) : m = 2 :=
+  three_from_observability h
 
 /-- A7 is a genuine restriction: it holds at exactly one dimension. -/
-theorem A7_holds_only_at_three (m : ℕ) : Observability m ↔ m = 2 := by
-  constructor
-  · exact three_from_A7
-  · rintro rfl; norm_num [Observability]
+theorem A7_holds_only_at_three (m : ℕ) : Observability m ↔ m = 2 :=
+  observability_iff_two m
 
 end SCD.Postulates

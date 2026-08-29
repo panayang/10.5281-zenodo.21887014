@@ -29,13 +29,24 @@ coefficient is forced:
 * `gamma_eq_one_of_reciprocal` — hence the reciprocal condition forces `γ = 1`;
 * `deflection_reciprocal_eq_observed` — hence `α = 4GM/bc²`, the measured value.
 
-**What this settles and what it does not.**  The missing half is no longer
-unexplained: it is the radial scale, and its size is forced by reciprocity
-rather than fitted.  The debt of `Deflection.lean` is discharged at the level of
-the *coefficient*.  What is still not done is the component-wise curvature
-computation that would show the field equation *produces* a reciprocal
-configuration in the first place; reciprocity is here a property of the
-solution being described, not yet a derived consequence of a source.
+**What this settles.**  The missing half is no longer unexplained: it is the
+radial scale, and its size is forced by reciprocity rather than fitted.  The debt
+of `Deflection.lean` is discharged at the level of the *coefficient*.
+
+**Caveat withdrawn.**  This file used to close by saying that reciprocity was a
+property of the solution being described rather than a derived consequence of a
+source, pending a component-wise curvature computation.  That computation is
+`Diagonal.lean`: `Diagonal.vacuum_scale_sum` derives `σ_t' + σ_r' = 0` from the
+vacuum equations, with the connection certified by `Diagonal.metric_compatible`,
+and `Reciprocity.lean` carries it to a constant product.  What the vacuum still
+does not supply is *which* constant — fixed by `Index.reciprocity_of_no_enclosed_winding`,
+a local condition in place of the old asymptotic flatness.  `Chain.lean` re-reads
+the whole chain.
+
+**And what `γ = 1` is, by weight.**  It is a weight-zero statement
+(`Weight.lean`), which is the sector a one-magnitude theory can predict; the
+arcsecond values are that statement evaluated on measured inputs, `G` among
+them.
 -/
 import SCD.Deflection
 import Mathlib.Tactic.FieldSimp

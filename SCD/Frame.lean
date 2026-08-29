@@ -52,8 +52,29 @@ variable (E : DirScale n A) (η : Fin n → A)
 /-- The measured metric component in direction `a`, with signature `η`. -/
 def metric (a : Fin n) : A := η a * ((E.s a : A)) ^ 2
 
-/-- **Isotropy is the old axiom A4.**  All directions carry the same scale. -/
-def Isotropic : Prop := ∀ a b : Fin n, E.s a = E.s b
+/-- **A3, per direction.**  The local energy scale in direction `a` is the
+reciprocal of the local length scale in that direction.
+
+This was the diagnosis that produced A4′ in the first place: energy-momentum is
+a *tensor*, so a tensor source cannot set a scalar scale.  With the scale
+directional, its A3 dual is directional too, and it costs nothing to say so —
+`(E.s a)⁻¹` needs no new hypothesis.  The scalar `ScaleField.en` is the
+isotropic case. -/
+def en (a : Fin n) : A := (((E.s a)⁻¹ : Aˣ) : A)
+
+@[simp] theorem en_mul_scale (a : Fin n) : E.en a * (E.s a : A) = 1 :=
+  Units.inv_mul (E.s a)
+
+theorem scale_mul_en (a : Fin n) : (E.s a : A) * E.en a = 1 :=
+  Units.mul_inv (E.s a)
+
+/-- **Isotropy is the old axiom A4.**  All directions carry the same scale.
+
+This is `SCD.IsIsotropic` — the same predicate `Gauge.lean`, `Axis.lean` and
+`Locus.lean` each wrote out separately for their own carriers. -/
+def Isotropic : Prop := IsIsotropic E.s
+
+theorem isotropic_iff (E : DirScale n A) : E.Isotropic ↔ ∀ a b, E.s a = E.s b := Iff.rfl
 
 /-- Under isotropy the metric is the bare one times a single conformal factor —
 exactly `g = e^{2σ}δ`.  Everything proved in the conformal sector therefore
@@ -63,6 +84,12 @@ theorem isotropic_metric (h : E.Isotropic) (a b : Fin n) :
   simp only [metric, h a b]
   ring
 
+/-- Under isotropy the *energies* agree too, so the tensor source degenerates to
+a scalar one — which is the precise sense in which the old axiom could not carry
+a flowing fluid. -/
+theorem isotropic_en (h : E.Isotropic) : IsIsotropic E.en :=
+  fun a b => by simp only [en, h a b]
+
 /-! ## The Schwarzschild relation -/
 
 /-- **The reciprocal-scale relation** `s_t · s_r = 1`.
@@ -71,6 +98,41 @@ Equivalent to `g_tt·g_rr = −1` for signature `(−,+)`, this is the defining
 feature of the Schwarzschild and Reissner–Nordström families.  In scale
 language: the temporal and radial units are exact reciprocals. -/
 def Reciprocal (t r : Fin n) : Prop := E.s t * E.s r = 1
+
+/-- **What the Schwarzschild relation says, once A3 is read directionally.**
+
+`s_t · s_r = 1` is exactly `s_r = ε_t`: **the radial length scale is the
+temporal energy scale.**  The relation that defines the Schwarzschild family is
+therefore not a coincidence of two metric functions — it is A3 applied across two
+directions, and it is unavailable to a scalar scale because a scalar scale has
+only one direction to apply it in.
+
+This is the sharpest available statement of what `Frame.lean` was written to
+establish, and it is a consequence of the axioms rather than a feature of a
+solution. -/
+theorem reciprocal_iff_radial_is_temporal_energy (t r : Fin n) :
+    E.Reciprocal t r ↔ (E.s r : A) = E.en t := by
+  constructor
+  · intro h
+    have hval : (E.s t : A) * (E.s r : A) = 1 := by
+      simpa using congrArg (Units.val (α := A)) h
+    calc (E.s r : A) = (E.en t * (E.s t : A)) * (E.s r : A) := by
+          rw [E.en_mul_scale, one_mul]
+      _ = E.en t * ((E.s t : A) * (E.s r : A)) := by ring
+      _ = E.en t := by rw [hval, mul_one]
+  · intro h
+    refine Units.ext ?_
+    show (E.s t : A) * (E.s r : A) = 1
+    rw [h]
+    exact E.scale_mul_en t
+
+/-- Symmetrically: the temporal scale is the radial energy.  Reciprocity is a
+statement about a *pair* of directions, and it has no scalar shadow. -/
+theorem reciprocal_symm (t r : Fin n) (h : E.Reciprocal t r) :
+    (E.s t : A) = E.en r := by
+  refine (E.reciprocal_iff_radial_is_temporal_energy r t).mp ?_
+  rw [DirScale.Reciprocal, mul_comm]
+  exact h
 
 /-- The relation written on the metric components, for signature `η_t = −1`,
 `η_r = 1`: `g_tt · g_rr = −1`. -/

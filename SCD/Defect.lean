@@ -39,6 +39,7 @@ degeneracy.  Those are the things to test.
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Positivity
+import SCD.Charges
 
 namespace SCD.Defect
 
@@ -153,6 +154,54 @@ theorem winding_eq_zero_of_trivial (hΔ : Δ ≠ 0) (D : ScaleDefect Δ)
     (h : IsTrivial D) : D.winding = 0 := by
   by_contra hw
   exact stable_of_winding_ne_zero hΔ D hw h
+
+/-! ## An additive `ℤ`-label — but **not** the hedgehog
+
+**Scope correction (see `Sources.lean`).**  An earlier version of this section
+sent the winding to `Charges.DefectCharge.hedgehog` and claimed the two files
+describe "one charge algebra, not two".  That is wrong and is withdrawn.
+
+`Charges.hedgehog` is, in its own docstring, "how the axis wraps the **enclosing
+sphere**" — a `π₂` class of the *projective directional* order parameter of
+`Axis.lean`.  The winding here is "the log-scale read **around a loop**" — a `π₁`
+class of a *circle-valued scalar* scale.  A sphere and a loop, of two different
+order parameters, and `Audit.lean` §I already scopes the scalar one out.
+
+What the maps below actually establish is the algebraic fact that both are
+additive `ℤ`-labels, which is true and is all they share.  They are retained on
+that footing and the physical identification is not claimed. -/
+
+variable {B : Type*} [Group B]
+
+/-- The winding, recorded in the shape of an additive `ℤ`-label with trivial
+finite part.  **Not** an identification with the hedgehog: see the section
+header. -/
+def toCharge (D : ScaleDefect Δ) : Charges.DefectCharge B where
+  block := 1
+  hedgehog := D.winding
+
+@[simp] theorem toCharge_block (D : ScaleDefect Δ) :
+    (D.toCharge (B := B)).block = 1 := rfl
+@[simp] theorem toCharge_hedgehog (D : ScaleDefect Δ) :
+    (D.toCharge (B := B)).hedgehog = D.winding := rfl
+
+@[simp] theorem toCharge_combine (D E : ScaleDefect Δ) :
+    (D.combine E).toCharge (B := B) = (D.toCharge).comp (E.toCharge) := by
+  simp only [toCharge, Charges.DefectCharge.comp, combine_winding, one_mul]
+
+@[simp] theorem toCharge_anti (D : ScaleDefect Δ) :
+    (D.anti).toCharge (B := B) = (D.toCharge (B := B)).anti := by
+  simp only [toCharge, Charges.DefectCharge.anti, anti_winding, inv_one]
+
+@[simp] theorem toCharge_vacuum :
+    (vacuum Δ).toCharge (B := B) = Charges.DefectCharge.triv B := rfl
+
+/-- With a trivial finite part there is nothing to fail to close up, so the
+label is unconstrained.  This is an algebraic remark about the shape of
+`DefectCharge`, not a claim that `Charges.hedgehog_free` is about these
+defects. -/
+theorem toCharge_observable (D : ScaleDefect Δ) :
+    Charges.DefectCharge.Observable (D.toCharge (B := B)) := rfl
 
 /-! ## The mass spectrum
 

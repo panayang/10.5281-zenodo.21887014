@@ -11,11 +11,11 @@ Formal proof of the Scale-Coupled Dynamics (SCD) Theory: An axiomatic framework 
 ```
 lake exe cache get
 lake build                       # 0 errors
-lake env lean SCD/Verify.lean    # #print axioms on all 650 theorems
+lake env lean SCD/Verify.lean    # #print axioms on all 1040 theorems
 python3 tools/sync_report.py     # consistency check; exit 1 on drift
 ```
 
-All 650 theorems are audited: every one reduces to `propext`,
+All 1040 theorems are audited: every one reduces to `propext`,
 `Classical.choice` and `Quot.sound`, and none to `sorryAx`. The audit list, the
 report's file table and its theorem index are **generated from the sources**, so
 nothing can quietly fall out of them.
@@ -23,9 +23,17 @@ nothing can quietly fall out of them.
 ## Status
 
 Read `SCD/Audit.lean` before relying on any result. It is the register of what
-has been **retracted** (4), **narrowed in scope** (6), **cited without proof**
-(2) and **assumed** (3, including A6′ and A7). The seven axioms are stated
-together in `SCD/Postulates.lean`; `SCD.lean` is the intended reading order.
+has been **retracted** (4), **narrowed in scope** (8), **cited without proof**
+(3) and **assumed** (9, including A6′ and A7 — the count rose because the
+register was audited, not because the framework got worse). The seven axioms are
+stated together in `SCD/Postulates.lean`; `SCD.lean` is the intended reading
+order.
+
+`SCD/Anchor.lean` is the second thing to read: it applies one falsifiability test
+to the framework's own list of predictions and finds four of the eight were
+arithmetic on imported definitions. What survives is one free magnitude against
+five falsifiable dimensionless statements, of which one discriminates against
+general relativity and the Standard Model.
 
 Two live empirical problems, both stated in `SCD/Data.lean`: DESI prefers an
 evolving dark-energy equation of state at 2.8–4.2σ, which A5 forbids with no

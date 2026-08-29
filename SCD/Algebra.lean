@@ -99,11 +99,12 @@ deduction; it is stated as such below and not hidden inside a proof.
 -/
 import SCD.Coupling
 import SCD.Signature
+import SCD.Pattern
 import Mathlib.LinearAlgebra.Matrix.Trace
 
 namespace SCD.Algebra
 
-open Matrix Coupling
+open SCD Matrix Coupling
 
 /-! ## I. The two sectors are orthogonal under the derived form
 
@@ -203,7 +204,7 @@ rotation in the plane they span.  This is `Coupling.bracket_scaling_scaling`
 made explicit for the Lorentz family, and it is the Thomas–Wigner rotation. -/
 theorem boost_bracket_spatial (v w : Fin k → ℝ) (i j : Fin k) :
     br (boost v) (boost w) i.succ j.succ = v i * w j - v j * w i := by
-  simp only [br, sub_apply, boost_mul_succ_succ]
+  simp only [br, Quantum.ad, Matrix.sub_apply, boost_mul_succ_succ]
   ring
 
 /-- **Two boosts commute exactly when their directions are parallel.**
@@ -212,12 +213,12 @@ Hence there is no two-dimensional family of mutually commuting scalings: the
 maximal abelian subalgebra of the scaling sector is a **line**.  That is real
 rank one, computed rather than asserted. -/
 theorem boosts_commute_iff_parallel (v w : Fin k → ℝ) :
-    boost v * boost w = boost w * boost v ↔ ∀ i j, v i * w j = v j * w i := by
+    boost v * boost w = boost w * boost v ↔ Parallel v w := by
   constructor
   · intro h i j
     have := boost_bracket_spatial v w i j
-    rw [br, h, sub_self] at this
-    simp only [zero_apply] at this
+    rw [br, Quantum.ad, h, sub_self] at this
+    simp only [Matrix.zero_apply] at this
     linarith [this]
   · intro h
     ext a b
@@ -265,6 +266,17 @@ theorem no_two_dimensional_commuting_family (v w : Fin k → ℝ) (i j : Fin k)
     (hij : v i * w j ≠ v j * w i) : boost v * boost w ≠ boost w * boost v := by
   intro h
   exact hij ((boosts_commute_iff_parallel v w).mp h i j)
+
+/-- **Commuting boosts and vanishing rotational label are the same condition.**
+
+`Coupling.lean` derives the rotation as the bracket of two scalings and
+`Pattern.wedge` names it; this says the bracket vanishes exactly when the label
+does.  So "no rotation is generated" and "the scale directions are parallel" are
+not two facts about the Lorentz family — they are one, and it is the same
+`Parallel` that `Axes.lean`, `Locus.lean` and `Dimension.lean` use. -/
+theorem boosts_commute_iff_no_wedge (v w : Fin k → ℝ) :
+    boost v * boost w = boost w * boost v ↔ ∀ i j, wedge v w i j = 0 := by
+  rw [boosts_commute_iff_parallel, ← wedge_eq_zero_iff_parallel]
 
 /-- **The drift a boost induces is its own direction.**
 

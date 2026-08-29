@@ -63,10 +63,11 @@ import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.NoncommRing
 import Mathlib.Tactic.FinCases
+import SCD.Quantum
 
 namespace SCD.Coupling
 
-open Matrix
+open Matrix SCD.Quantum
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
@@ -79,8 +80,25 @@ def IsScaling (S : Matrix n n ℝ) : Prop := Sᵀ = S
 /-- A **rotation generator**: it changes no length, so it is antisymmetric. -/
 def IsRotation (A : Matrix n n ℝ) : Prop := Aᵀ = -A
 
-/-- The bracket of two operators. -/
-def br (S T : Matrix n n ℝ) : Matrix n n ℝ := S * T - T * S
+/-- The bracket of two operators.
+
+This is `Quantum.ad` and not a second construction: `ad p a = p a − a p` in any
+ring, and matrices are a ring.  It was declared separately here, and
+`Dynamics.nonflat_witness` had to observe that the two agree by `rfl` — which is
+the signature of one notion carrying two names.  The abbreviation keeps the
+bracket notation where the Lie-theoretic reading wants it while making the
+identification definitional.
+
+The identification is not cosmetic.  `Connection.lean` builds curvature as
+`ad` of two transports and `Quantum.lean` builds `ħ` as `ad` of two phase-space
+translations; this file builds rotation as `ad` of two scalings.  **All three are
+the same construction on three families of operators**, which is a stronger
+statement than the analogy the files previously drew. -/
+abbrev br (S T : Matrix n n ℝ) : Matrix n n ℝ := ad S T
+
+/-- Recorded explicitly: the bracket of the scaling sector and the commutator
+that produces `ħ` are one operation. -/
+theorem br_eq_ad (S T : Matrix n n ℝ) : br S T = ad S T := rfl
 
 /-! ## The coupling -/
 
@@ -97,7 +115,7 @@ unavoidable. -/
 theorem bracket_scaling_scaling {S T : Matrix n n ℝ}
     (hS : IsScaling S) (hT : IsScaling T) : IsRotation (br S T) := by
   simp only [IsScaling] at hS hT
-  simp only [IsRotation, br, transpose_sub, transpose_mul, hS, hT]
+  simp only [IsRotation, br, ad, transpose_sub, transpose_mul, hS, hT]
   noncomm_ring
 
 /-- **A rotation and a scaling bracket to a scaling**: rotations move the
@@ -106,14 +124,14 @@ theorem bracket_rotation_scaling {A S : Matrix n n ℝ}
     (hA : IsRotation A) (hS : IsScaling S) : IsScaling (br A S) := by
   simp only [IsRotation] at hA
   simp only [IsScaling] at hS
-  simp only [IsScaling, br, transpose_sub, transpose_mul, hA, hS]
+  simp only [IsScaling, br, ad, transpose_sub, transpose_mul, hA, hS]
   noncomm_ring
 
 /-- **Rotations close among themselves.** -/
 theorem bracket_rotation_rotation {A B : Matrix n n ℝ}
     (hA : IsRotation A) (hB : IsRotation B) : IsRotation (br A B) := by
   simp only [IsRotation] at hA hB
-  simp only [IsRotation, br, transpose_sub, transpose_mul, hA, hB]
+  simp only [IsRotation, br, ad, transpose_sub, transpose_mul, hA, hB]
   noncomm_ring
 
 /-- Collected: the scale sector is **not** a subalgebra, and its failure to be
@@ -133,13 +151,13 @@ flat geometry (`Connection.curv_pure_scale_eq_zero`,
 `Frame.isotropic_reciprocal_forces_flat`).  Curvature needs at least two scale
 directions. -/
 @[simp] theorem bracket_self (S : Matrix n n ℝ) : br S S = 0 := by
-  simp only [br, sub_self]
+  simp only [br, ad, sub_self]
 
 /-- More generally, commuting scalings generate no rotation: the coupling
 switches on exactly when the scale is genuinely directional. -/
 theorem no_rotation_of_commuting {S T : Matrix n n ℝ} (h : S * T = T * S) :
     br S T = 0 := by
-  simp only [br, h, sub_self]
+  simp only [br, ad, h, sub_self]
 
 /-! ## Concretely, in three dimensions
 
@@ -164,7 +182,7 @@ def J : Matrix (Fin 3) (Fin 3) ℝ := !![0, 0, 0; 0, 0, 1; 0, -1, 0]
 orders to results differing by a rotation — computed here entry by entry with
 no appeal to any group theory. -/
 theorem boost_bracket_eq_rotation : br K₁ K₂ = J := by
-  simp only [br, K₁, K₂, J]
+  simp only [br, ad, K₁, K₂, J]
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_three]

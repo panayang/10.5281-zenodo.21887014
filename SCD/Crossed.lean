@@ -38,7 +38,7 @@ So the classical differential structure is not first-order-in-`ħ`; it is the
 
 **Scope, added after an external audit.**  `ScaleShift` below is **not
 constructed from A1–A7**.  It requires only a ring endomorphism `T` and a unit
-`U`; nothing in this development builds one from `ScaleAlgebra`, `DiffRing` or
+`U`; nothing in this development builds one from `ScaleAlgebra` or
 `ScaleField`.  So what is proved is exact **for any such pair** — the algebra is
 airtight — but the step from "the framework has a scale shift with these
 properties" to "`ħ` is that step" is an **identification**, not a construction.

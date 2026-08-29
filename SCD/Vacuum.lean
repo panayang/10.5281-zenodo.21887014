@@ -25,11 +25,21 @@ fiducial.
 
 **What is and is not established.**  Derived here: given the vacuum
 consequence that the scale sum is constant, reciprocity follows from
-asymptotic flatness alone, with no further choice.  *Not* derived here: that
-the vacuum field equation implies the sum is constant.  That is the standard
-Ricci combination `R_tt/A + R_rr/B = 0` and it is taken as input; formalizing
-it needs the diagonal-ansatz curvature computation, which remains the one
-outstanding piece of the gravity sector.
+asymptotic flatness alone, with no further choice.
+
+**Update: the other half is no longer an input.**  That the vacuum field
+equation makes the sum constant was taken as input here — the standard Ricci
+combination `R_tt/A + R_rr/B = 0`, pending the diagonal-ansatz curvature
+computation.  `Diagonal.vacuum_scale_sum` now derives it from A4′'s metric with
+the connection certified by `Diagonal.metric_compatible`.  That derivation is
+algebraic while this file is real-analytic, so the two have not been wired
+together; the statements correspond term for term and the algebraic one is the
+more general.
+
+**And the asymptotic-flatness half has a replacement too**, in
+`Index.reciprocity_of_no_enclosed_winding`: under the index form of the source
+law the constant is the enclosed holonomy, so it vanishes where no winding is
+enclosed — a local condition in place of a boundary condition at infinity.
 -/
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.SpecialFunctions.Exp

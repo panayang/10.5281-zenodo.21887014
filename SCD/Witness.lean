@@ -47,6 +47,8 @@ import SCD.Direction
 import SCD.RG
 import SCD.Covariance
 import SCD.Waves
+import SCD.Foundation
+import SCD.Axioms
 import Mathlib.Algebra.Polynomial.Derivative
 import Mathlib.LinearAlgebra.Matrix.Trace
 
@@ -160,6 +162,45 @@ noncomputable def constantDrift (base : Polynomial ℝ) :
   drift_spatially_constant := fun t i => by
     simp only [ScaleAlgebra.d]
     exact Polynomial.derivative_C
+
+/-! ## III.b `Foundation`'s group of comparisons, built rather than argued for
+
+`Foundation.lean` asks what a comparison of local units can possibly be and
+answers: a group, whose scale is its image in the abelianization.  That group
+was abstract — nothing in the development produced one from the axioms, so the
+whole of `Foundation.lean` was a statement about a hypothetical `Γ`.
+
+A2 and A3 produce one.  `ScaleField` carries a `CommGroup` structure in which
+multiplication is composition of scale changes and inversion is A3
+(`ScaleField.scale_energy_duality_is_inversion`), so `Foundation`'s `Γ` has a
+witness in the framework's own carrier. -/
+
+/-- **The scalar sector has no curvature, in the framework's own carrier.**
+
+`Foundation.commutator_eq_one_of_comm` says that where all comparisons commute
+the commutator subgroup is trivial, so nothing is scale-invisible and there is
+nothing for curvature to live in.  Applied to the group A2–A3 actually build,
+that gives the conclusion for scale fields directly.
+
+Read together with `Coupling.lean`: this is *why* the scalar picture is flat.
+Not because the calculation happens to give zero, but because the comparisons a
+scalar scale supplies form an abelian group, and an abelian group has no
+commutators to carry curvature.  Curvature requires the directional scale, whose
+scalings do not commute. -/
+theorem scaleField_comparisons_carry_no_curvature {n : ℕ} {A : Type*} [CommRing A]
+    [ScaleAlgebra n A] (F G : ScaleField n A) :
+    F * G * F⁻¹ * G⁻¹ = 1 :=
+  Foundation.commutator_eq_one_of_comm (fun a b => mul_comm a b) F G
+
+/-- And the scale of such a comparison sees everything: on an abelian group the
+map to the abelianization is injective, so `Foundation.scale` loses nothing.
+That is the precise sense in which the scalar sector is *all* scale — the
+statement `Foundation.comm_of_scale_injective` supplies in the other direction,
+now with a carrier. -/
+theorem scaleField_scale_is_faithful {n : ℕ} {A : Type*} [CommRing A]
+    [ScaleAlgebra n A] (F G : ScaleField n A)
+    (h : Foundation.scale F = Foundation.scale G) : F * G⁻¹ ∈ commutator (ScaleField n A) :=
+  (Foundation.scale_eq_iff_differ_by_rotation F G).mp h
 
 /-! ## IV. What is now settled, and what is not -/
 

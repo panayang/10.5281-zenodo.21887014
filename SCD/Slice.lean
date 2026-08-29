@@ -97,6 +97,7 @@ rotation group acquires its double cover — which is where `Particle.lean`'s
 -/
 import SCD.Particle
 import SCD.Emergence
+import SCD.Pattern
 import Mathlib.Data.Set.Finite.Basic
 
 namespace SCD.Slice
@@ -169,40 +170,34 @@ scalings is the wedge of their directions. -/
 
 variable {k : ℕ}
 
-/-- The rotational label carried by two scale directions: the wedge. -/
-def wedge (v w : Fin k → ℝ) (i j : Fin k) : ℝ := v i * w j - v j * w i
+/-! **The wedge is not defined here.**  It was, and then again — under other
+names and in other index types — in `Axes.lean`, `Algebra.lean`, `Locus.lean`
+and `Dimension.lean`, with equivalence theorems joining them up.  It is now
+defined once in `Pattern.lean`, over a ring rather than over `ℝ`, which is what
+lets `NCConformal.quantum_correction_is_a_wedge` state the identity between the
+rotational label and the quantum correction instead of a resemblance.
 
-/-- It is exactly what the coupling generates — this is
-`Algebra.boost_bracket_spatial` restated. -/
+What this file contributes is the *identification*: the wedge is exactly what
+the coupling generates. -/
+
+/-- **The rotational label is what the coupling generates.**
+
+`Algebra.boost_bracket_spatial` computed the bracket of two boosts on the
+spatial block and got `vᵢwⱼ − vⱼwᵢ`.  That is `Pattern.wedge`, so the framework's
+rotational quantity is not an extra label: it is a function of the scale
+structure, with no freedom. -/
 theorem wedge_eq_bracket (v w : Fin k → ℝ) (i j : Fin k) :
     wedge v w i j = Coupling.br (Algebra.boost v) (Algebra.boost w) i.succ j.succ :=
   (Algebra.boost_bracket_spatial v w i j).symm
 
-@[simp] theorem wedge_antisymm (v w : Fin k → ℝ) (i j : Fin k) :
-    wedge v w i j = -wedge v w j i := by
-  simp only [wedge]; ring
-
-
-theorem wedge_bilinear_left (u v w : Fin k → ℝ) (i j : Fin k) :
-    wedge (u + v) w i j = wedge u w i j + wedge v w i j := by
-  simp only [wedge, Pi.add_apply]; ring
-
-
-/-- The rotational label vanishes exactly for parallel directions — so it is a
-genuine measure of how much the two scale directions differ. -/
-theorem wedge_eq_zero_iff_parallel (v w : Fin k → ℝ) :
-    (∀ i j, wedge v w i j = 0) ↔ ∀ i j, v i * w j = v j * w i := by
-  constructor
-  · intro h i j; have := h i j; simp only [wedge] at this; linarith
-  · intro h i j; simp only [wedge]; linarith [h i j]
-
 /-- **A single scale direction carries no rotational label.**
 
-The wedge of a direction with itself vanishes.  So a *uniaxial* scale
-pattern — one axis — has zero rotational label, whatever else it carries. -/
+The wedge of a direction with itself vanishes.  So a **homogeneous** scale
+pattern has zero rotational label, whatever else it carries — and by
+`Pattern.wedge_self_eq_commutator` this is exactly the statement that the scale
+values commute, which is what fails in the quantum sector. -/
 theorem homogeneous_carries_no_rotation (v : Fin k → ℝ) (i j : Fin k) :
-    wedge v v i j = 0 := by
-  simp only [wedge]; ring
+    wedge v v i j = 0 := wedge_self v i j
 
 /-- **The dilemma this creates.**
 
@@ -238,24 +233,18 @@ label a pattern among directions.  `Coupling.lean` makes every rotation a wedge
 of two.  Those close on one another exactly when the wedges are as numerous as
 the directions. -/
 
-/-- The number of independent wedges of `k` directions is `k(k−1)/2`; written
-here without natural subtraction by taking `k = m + 1`. -/
-def wedgeDim (m : ℕ) : ℕ := (m + 1) * m
-
-/-- The number of directions, doubled to match `wedgeDim`'s scaling. -/
-def dirDim (m : ℕ) : ℕ := 2 * (m + 1)
+/-! The two counts are `Pattern.rotDim2` and `Pattern.scaleDim2`, and their
+equality is A7 — `Pattern.Observability`.  They were previously declared here as
+`wedgeDim`/`dirDim` and again in `Dimension.lean` as `rotDim2`/`scaleDim2`, with
+`Dimension.rot_matches_scale_iff` bridging the two.  One pair now. -/
 
 /-- **The wedges are as numerous as the directions exactly in three
 dimensions.**
 
-`k(k−1)/2 = k` has the unique positive solution `k = 3`. -/
-theorem wedge_dim_eq_iff (m : ℕ) : wedgeDim m = dirDim m ↔ m = 2 := by
-  simp only [wedgeDim, dirDim]
-  constructor
-  · intro h
-    have h' : m * (m + 1) = 2 * (m + 1) := by rw [mul_comm]; exact h
-    exact Nat.eq_of_mul_eq_mul_right (Nat.succ_pos m) h'
-  · rintro rfl; norm_num
+`k(k−1)/2 = k` has the unique positive solution `k = 3`.  This is
+`Pattern.observability_iff_two`, restated where the argument for it is made. -/
+theorem wedge_dim_eq_iff (m : ℕ) : rotDim2 m = scaleDim2 m ↔ m = 2 :=
+  observability_iff_two m
 
 /-- **So `k = 3`, and `n = k + 1 = 4`.**
 
@@ -268,20 +257,15 @@ The arithmetic is a theorem.  The step that carries the physics — that the
 framework *requires* its generated rotations to be direction-labelled rather
 than merely permitting some to go unlabelled — is a judgement of the same kind
 as the rank-one identification, and is registered as such. -/
-theorem three_is_unique : (∃! m : ℕ, wedgeDim m = dirDim m) := by
-  refine ⟨2, by norm_num [wedgeDim, dirDim], ?_⟩
-  intro m hm
-  exact (wedge_dim_eq_iff m).mp hm
+theorem three_is_unique : (∃! m : ℕ, rotDim2 m = scaleDim2 m) := observability_unique
 
 /-- Above three dimensions there are strictly more wedges than directions, so
 some generated rotation carries no direction label. -/
-theorem more_wedges_than_directions (m : ℕ) (hm : 2 < m) : dirDim m < wedgeDim m := by
-  simp only [wedgeDim, dirDim]
-  have : 3 ≤ m := hm
-  nlinarith
+theorem more_wedges_than_directions (m : ℕ) (hm : 2 < m) : scaleDim2 m < rotDim2 m :=
+  more_rotations_than_directions m hm
 
 /-- And below three there are strictly fewer: the rotation sector degenerates. -/
-theorem fewer_wedges_than_directions (m : ℕ) (hm : m < 2) : wedgeDim m < dirDim m := by
-  interval_cases m <;> simp [wedgeDim, dirDim]
+theorem fewer_wedges_than_directions (m : ℕ) (hm : m < 2) : rotDim2 m < scaleDim2 m :=
+  fewer_rotations_than_directions m hm
 
 end SCD.Slice

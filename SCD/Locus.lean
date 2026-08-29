@@ -101,36 +101,32 @@ namespace SCD.Locus
 
 open SCD Slice
 
-/-! ## I. A7 (Observability) -/
+/-! ## I. A7 (Observability)
 
-/-- **A7 (Observability)** — the axiom itself lives in `Postulates.lean` with
-the other six; this is the same proposition written in the vocabulary of
-`Dimension.lean`, so the consequences below can be stated where they are proved.
+**One statement, not four.**  A7 was previously written out here in terms of
+`Dimension`'s sector counts, again in `Postulates.lean` as raw arithmetic, and a
+third time inside `Slice.lean` as `wedgeDim = dirDim`, with `Iff.rfl` bridges
+standing in for the identification.  It is now stated once, in `Pattern.lean`,
+as `rotDim2 m = scaleDim2 m` — the counts it actually compares — and the
+consequences below are theorems about that one definition.
 
 `Dimension.two_matching_conditions_differ` is why it has to be an axiom: a
 condition of this shape is a *choice*, and the choice is about what counts as
 observable. -/
-def Observability (m : ℕ) : Prop := Dimension.rotDim2 m = Dimension.scaleDim2 m
-
-/-- The two statements of A7 are the same proposition, not two axioms. -/
-theorem observability_eq_postulate (m : ℕ) :
-    Observability m ↔ Postulates.Observability m := Iff.rfl
 
 /-- **Given A7, `k = 3` is a theorem** — and `n = 4` with it, since
 `Dimension.rep_dim_determined` already made `n` the defining representation's
-dimension rather than an independent input. -/
-theorem three_from_observability {m : ℕ} (h : Observability m) : m = 2 :=
-  (Dimension.rot_matches_scale_iff m).mp h
+dimension rather than an independent input.
 
-/-- And A7 is a genuine restriction: it fails at every other dimension, so it is
-not vacuously satisfied. -/
-theorem observability_fails_elsewhere {m : ℕ} (h : m ≠ 2) : ¬ Observability m := by
-  intro hobs
-  exact h (three_from_observability hobs)
+This is `SCD.three_from_observability`, repeated here only because this is the
+file that argues for A7. -/
+theorem A7_gives_three {m : ℕ} (h : Observability m) : m = 2 :=
+  three_from_observability h
 
-/-- The accounting, stated plainly: A7 holds exactly at `k = 3`. -/
+/-- The accounting, stated plainly: A7 holds exactly at `k = 3`, so it is a
+genuine restriction and not vacuously satisfied. -/
 theorem observability_iff_three (m : ℕ) : Observability m ↔ m = 2 :=
-  Dimension.rot_matches_scale_iff m
+  observability_iff_two m
 
 /-! ## II. There is no scale-invariant interaction to concede -/
 
@@ -167,20 +163,21 @@ theorem constant_coupling_iff_no_content (u₀ κ ρ t₀ t : ℝ) (h : κ * ρ 
 
 variable {k : ℕ}
 
-/-- A pattern is **isotropic** when it distinguishes no direction. -/
-def Isotropic (v : Fin k → ℝ) : Prop := ∀ i j, v i = v j
+/-! **One notion of isotropy, not four.**  `Frame.DirScale.Isotropic` wrote it for
+a directional scale, `Gauge.lean` and `Axis.lean` as a loose hypothesis on
+`Fin n → Aˣ`, and this file a third time for `Fin k → ℝ`.  All of them say the
+pattern is constant, which is `SCD.IsIsotropic`, and the theorems below are now
+about that.  The physical point is unchanged and the translation is gone. -/
 
 /-- **Two isotropic patterns are always parallel**, so no rotation is generated
-between them. -/
-theorem isotropic_pair_parallel {v w : Fin k → ℝ} (hv : Isotropic v) (hw : Isotropic w)
-    (i j : Fin k) : v i * w j = v j * w i := by
-  rw [hv i j, hw j i]
+between them.  `SCD.IsIsotropic.parallel`, restated in this file's vocabulary. -/
+theorem isotropic_pair_parallel {v w : Fin k → ℝ} (hv : IsIsotropic v) (hw : IsIsotropic w) :
+    Parallel v w := hv.parallel hw
 
 /-- **Hence the isotropic locus has no rotational label.** -/
-theorem isotropic_no_rotation {v w : Fin k → ℝ} (hv : Isotropic v) (hw : Isotropic w)
-    (i j : Fin k) : wedge v w i j = 0 := by
-  simp only [wedge, sub_eq_zero]
-  exact isotropic_pair_parallel hv hw i j
+theorem isotropic_no_rotation {v w : Fin k → ℝ} (hv : IsIsotropic v) (hw : IsIsotropic w)
+    (i j : Fin k) : wedge v w i j = 0 :=
+  wedge_eq_zero_of_isotropic hv hw i j
 
 /-- **A nonzero rotational label forces the pattern to be anisotropic.**
 
@@ -188,7 +185,7 @@ This is the sharp half of the resolution: the labels do not exist independently
 of the scale.  They exist where the pattern distinguishes directions, and
 whether it does is a scale-dependent fact. -/
 theorem labels_require_anisotropy {v w : Fin k → ℝ} {i j : Fin k}
-    (h : wedge v w i j ≠ 0) : ¬ Isotropic v ∨ ¬ Isotropic w := by
+    (h : wedge v w i j ≠ 0) : ¬ IsIsotropic v ∨ ¬ IsIsotropic w := by
   by_contra hcon
   push Not at hcon
   exact h (isotropic_no_rotation hcon.1 hcon.2 i j)
@@ -205,7 +202,7 @@ kind**.
 They appear together when isotropy breaks, because they have one source: the
 scale pattern.  That is the framework's version of "the interactions separate as
 the energy scale falls", and it is derived rather than assumed. -/
-theorem everything_switches_on_together {v : Fin k → ℝ} (hv : Isotropic v) :
+theorem everything_switches_on_together {v : Fin k → ℝ} (hv : IsIsotropic v) :
     (∀ i j, wedge v v i j = 0) ∧ (∀ i j, v i = v j) :=
   ⟨fun i j => isotropic_no_rotation hv hv i j, hv⟩
 
@@ -213,7 +210,7 @@ theorem everything_switches_on_together {v : Fin k → ℝ} (hv : Isotropic v) :
 pattern fails to be isotropic.  `Charges.lean` and `Particle.lean` describe that
 locus, and their theorems should be read with that domain. -/
 theorem particle_locus_is_anisotropic {v w : Fin k → ℝ} {i j : Fin k}
-    (h : wedge v w i j ≠ 0) : ¬ (Isotropic v ∧ Isotropic w) := by
+    (h : wedge v w i j ≠ 0) : ¬ (IsIsotropic v ∧ IsIsotropic w) := by
   intro hcon
   exact h (isotropic_no_rotation hcon.1 hcon.2 i j)
 

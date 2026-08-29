@@ -100,6 +100,7 @@ satisfying its hypothesis; the physical reading is withdrawn, and
 `multiplet_flatness_needs_per_direction_scalings` records why.
 -/
 import SCD.Slice
+import SCD.Algebra
 
 namespace SCD.Axes
 
@@ -122,11 +123,9 @@ theorem rotation_needs_variation {v w : Fin k → ℝ} {i j : Fin k}
 /-- **A pattern whose values are everywhere parallel generates no rotation.**
 
 "Combable" in the order-parameter sense: if every value is a multiple of one
-fixed direction, every wedge vanishes. -/
+fixed direction, every wedge vanishes.  `Pattern.wedge_smul_smul`. -/
 theorem combable_no_rotation (u : Fin k → ℝ) (f : ℕ → ℝ) (m l : ℕ) (i j : Fin k) :
-    wedge (f m • u) (f l • u) i j = 0 := by
-  simp only [wedge, Pi.smul_apply, smul_eq_mul]
-  ring
+    wedge (f m • u) (f l • u) i j = 0 := wedge_smul_smul (f m) (f l) u i j
 
 /-- **A pattern taking two non-parallel values carries a nonzero rotational
 label.**
@@ -134,9 +133,7 @@ label.**
 A defect is exactly such a configuration — that is what winding means — so
 **every topologically charged defect carries rotation**. -/
 theorem wound_carries_rotation {v w : Fin k → ℝ} {i j : Fin k}
-    (h : v i * w j ≠ v j * w i) : wedge v w i j ≠ 0 := by
-  simp only [wedge, ne_eq, sub_eq_zero]
-  exact h
+    (h : v i * w j ≠ v j * w i) : wedge v w i j ≠ 0 := wedge_ne_zero_of_ne h
 
 /-- **Contrapositive: a rotationless configuration is combable.**
 
@@ -144,13 +141,13 @@ If every wedge vanishes then all the pattern's values are parallel, so the
 configuration deforms to a constant and is topologically trivial.  The framework
 therefore forbids a charged defect with zero rotational label. -/
 theorem rotationless_is_trivial {v w : Fin k → ℝ} (h : ∀ i j, wedge v w i j = 0) :
-    ∀ i j, v i * w j = v j * w i :=
+    Parallel v w :=
   (wedge_eq_zero_iff_parallel v w).mp h
 
 /-- Collected: the rotational label is carried by the *variation* of the scale
 vector, and it vanishes exactly when there is none. -/
 theorem rotation_iff_variation (v w : Fin k → ℝ) :
-    (∀ i j, wedge v w i j = 0) ↔ ∀ i j, v i * w j = v j * w i :=
+    (∀ i j, wedge v w i j = 0) ↔ Parallel v w :=
   wedge_eq_zero_iff_parallel v w
 
 /-! ## II. There is no second axis to have
@@ -165,20 +162,32 @@ either a multiple of `v` — the same axis — or has a nonzero wedge with it, i
 which case it is a variation showing up as rotation.  There is no third
 possibility, so "how many axes" is answered: **one**, and not by choice. -/
 theorem no_second_axis (v w : Fin k → ℝ) (i₀ : Fin k) (hv : v i₀ ≠ 0)
-    (hpar : ∀ i j, v i * w j = v j * w i) : w = (w i₀ / v i₀) • v := by
+    (hpar : Parallel v w) : w = (w i₀ / v i₀) • v := by
   funext i
   have h := hpar i₀ i
   simp only [Pi.smul_apply, smul_eq_mul]
   field_simp
   linarith [h]
 
+/-- **It is the same theorem as `Algebra.commuting_boosts_lie_on_a_line`.**
+
+That file proved it of two *boosts* that commute; this one of two *patterns*
+that are parallel.  `Algebra.boosts_commute_iff_parallel` says those hypotheses
+are the same hypothesis, so the two results were one result stated twice.  The
+identification is recorded rather than left to the reader. -/
+theorem no_second_axis_eq_rank_one (v w : Fin k → ℝ) (i₀ : Fin k) (hv : v i₀ ≠ 0)
+    (h : Algebra.boost v * Algebra.boost w = Algebra.boost w * Algebra.boost v) :
+    w = (w i₀ / v i₀) • v :=
+  no_second_axis v w i₀ hv ((Algebra.boosts_commute_iff_parallel v w).mp h)
+
 /-- The dichotomy in the form used above: either `w` is a multiple of `v`, or
 some wedge is nonzero. -/
 theorem axis_or_variation (v w : Fin k → ℝ) (i₀ : Fin k) (hv : v i₀ ≠ 0) :
     (w = (w i₀ / v i₀) • v) ∨ ∃ i j, wedge v w i j ≠ 0 := by
-  by_cases h : ∀ i j, v i * w j = v j * w i
+  by_cases h : Parallel v w
   · exact Or.inl (no_second_axis v w i₀ hv h)
-  · push Not at h
+  · simp only [Parallel] at h
+    push Not at h
     obtain ⟨i, j, hij⟩ := h
     exact Or.inr ⟨i, j, wound_carries_rotation hij⟩
 
@@ -220,6 +229,6 @@ What survives, and is the correct statement, is this file's:
 rotation is carried by *variation* of the one pattern, not by any relation
 between directions within it. -/
 theorem multiplet_flatness_needs_per_direction_scalings (v : Fin k → ℝ) (i j : Fin k) :
-    wedge v v i j = 0 := homogeneous_carries_no_rotation v i j
+    wedge v v i j = 0 := wedge_self v i j
 
 end SCD.Axes

@@ -124,11 +124,12 @@ Sizes are written doubled so that no natural-number division appears.  The
 parameter is `m`, with `k = m + 1` spatial directions and `n = m + 2`
 spacetime directions. -/
 
-/-- Twice the dimension of the rotation sector `Λ²p`, with `k = m+1`. -/
-def rotDim2 (m : ℕ) : ℕ := (m + 1) * m
-
-/-- Twice the dimension of the scaling sector `p`. -/
-def scaleDim2 (m : ℕ) : ℕ := 2 * (m + 1)
+/-! `rotDim2` (the rotation sector `Λ²p`) and `scaleDim2` (the scaling sector
+`p`) are declared once, in `Pattern.lean`, together with A7 — the assertion that
+they are equal.  They were previously declared here *and* in `Slice.lean` as
+`wedgeDim`/`dirDim`, with an equivalence theorem joining the two pairs.  The two
+counts this file adds are the ones nothing else needs: the algebra's own
+dimension and its defining representation's. -/
 
 /-- Twice the dimension of the whole algebra `so(k,1)`, with `k = m+1`. -/
 def algDim2 (m : ℕ) : ℕ := (m + 1) * (m + 2)
@@ -157,7 +158,7 @@ theorem rep_dim_determined (m : ℕ) : repDim2 m = 2 * ((m + 1) + 1) := rfl
 /-- The condition `Slice.lean` used: the rotations generated are as numerous as
 the directions A4 labels.  Its solution is `k = 3`. -/
 theorem rot_matches_scale_iff (m : ℕ) : rotDim2 m = scaleDim2 m ↔ m = 2 :=
-  wedge_dim_eq_iff m
+  observability_iff_two m
 
 /-- The other condition that becomes visible once directions and algebra are
 distinguished: the algebra as large as what it acts on.  Its solution is
@@ -192,12 +193,6 @@ theorem two_matching_conditions_differ :
 /-! ## III. The magnitude is the unit, not a missing prediction -/
 
 variable {k : ℕ}
-
-/-- **Rescaling the pattern rescales the rotational label by `c²`.** -/
-theorem wedge_smul_both (c : ℝ) (v w : Fin k → ℝ) (i j : Fin k) :
-    wedge (c • v) (c • w) i j = c ^ 2 * wedge v w i j := by
-  simp only [wedge, Pi.smul_apply, smul_eq_mul]
-  ring
 
 /-- **So every ratio of rotational labels is invariant under rescaling the
 pattern.**
@@ -239,7 +234,16 @@ two differ by the normalization `α`.
 **This is a conversion, not a prediction** — one equation, one unknown, exactly
 the trap `CrossCheck.lean` records.  And it is conditional on defects being
 uniformly distributed in the symmetric space's volume, which no theorem here
-supplies.  Both caveats are stated rather than smuggled. -/
+supplies.
+
+**Third caveat, added in the assumption audit.**  The theorem below is a
+*tautology*: `alphaFromDensity` is *defined* as `(k−1)/ρ`, so
+`density_normalization_relation` is that definition unfolded and proves nothing.
+All of the physical content sits in two identifications that are **not
+formalised anywhere** — that `α` is the root normalisation of the rank-one
+symmetric space, and that `ρ` is the measured threshold density per unit
+log-energy.  So this entry in the register is not one assumption but two
+unformalised identifications plus an identity, which is weaker than it reads. -/
 noncomputable def alphaFromDensity (rho : ℝ) (k : ℕ) : ℝ := ((k : ℝ) - 1) / rho
 
 theorem density_normalization_relation (rho : ℝ) (hrho : rho ≠ 0) (k : ℕ) :

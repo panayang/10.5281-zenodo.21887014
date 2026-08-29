@@ -41,6 +41,7 @@ Read what follows as structure — a finite charge that is confined and an
 integral one that is not — and not as a derivation of QCD.
 -/
 import SCD.Gauge
+import SCD.Charges
 import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.Tactic.Ring
 import Mathlib.Algebra.BigOperators.Fin
@@ -200,6 +201,52 @@ by `n`; a single constituent need not, which is exactly what "fractional charge"
 means. -/
 theorem bound_charge_divisible (M : BlockMonodromy n) :
     (n : ℤ) ∣ (rep M n).charge := ⟨M.charge, constituent_charge_fraction M⟩
+
+/-! ## This is `Charges.DefectCharge`, not a second charge algebra
+
+A monodromy is a finite group element together with an integer, composing
+componentwise, with observability the triviality of the finite part.  That is
+exactly `Charges.DefectCharge (Equiv.Perm (Fin n))`, and the development had
+three such structures — this one, `Charges.DefectCharge`, and `Defect.ScaleDefect`
+— each with its own `comp`, `anti`, `triv` and (in two cases) `Observable`.
+
+They are not merely analogous.  The map below is a **group homomorphism** onto
+one of them, and it carries observability to observability, so every theorem
+above is a theorem about `DefectCharge` read through it.  What is genuinely
+particular to this file is not the algebra but the *interpretation* of the
+finite part as a block permutation, and the bound-state arithmetic that follows
+from its order. -/
+
+/-- **The monodromy, as the charge it is.**  The block permutation is the finite
+charge and the total winding is the integral one. -/
+def toCharge (M : BlockMonodromy n) : Charges.DefectCharge (Equiv.Perm (Fin n)) where
+  block := M.perm
+  hedgehog := M.charge
+
+@[simp] theorem toCharge_block (M : BlockMonodromy n) : M.toCharge.block = M.perm := rfl
+@[simp] theorem toCharge_hedgehog (M : BlockMonodromy n) :
+    M.toCharge.hedgehog = M.charge := rfl
+
+/-- Composition of monodromies is composition of charges. -/
+@[simp] theorem toCharge_comp (M N : BlockMonodromy n) :
+    (M.comp N).toCharge = M.toCharge.comp N.toCharge := by
+  simp only [toCharge, Charges.DefectCharge.comp, comp_perm, charge_comp]
+
+/-- Reversal of a monodromy is the antidefect. -/
+@[simp] theorem toCharge_anti (M : BlockMonodromy n) :
+    M.anti.toCharge = M.toCharge.anti := by
+  simp only [toCharge, Charges.DefectCharge.anti, anti_perm, charge_anti]
+
+/-- And the vacuum is the vacuum. -/
+@[simp] theorem toCharge_triv : (triv n).toCharge = Charges.DefectCharge.triv _ := by
+  simp only [toCharge, Charges.DefectCharge.triv, triv_perm, charge, triv,
+    Finset.sum_const_zero]
+
+/-- **Observability agrees.**  Confinement here and confinement there are one
+condition, so `confinement` above and `Charges.DefectCharge.block_confined` are
+one theorem. -/
+theorem observable_iff_toCharge_observable (M : BlockMonodromy n) :
+    Observable M ↔ Charges.DefectCharge.Observable M.toCharge := Iff.rfl
 
 end BlockMonodromy
 

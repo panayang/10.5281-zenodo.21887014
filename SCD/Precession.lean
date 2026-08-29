@@ -45,8 +45,14 @@ the spatial-scale weight `γ`. -/
 noncomputable def coeff (β γ : ℝ) : ℝ := (2 - β + 2 * γ) / 3
 
 /-- **The reciprocal condition gives the measured coefficient.**  `γ = 1` is
-forced by `s_t · s_r = 1` (`PPN.gamma_eq_one_first_order`); `β = 1` is the
-scale response of A6′. -/
+forced by `s_t · s_r = 1` (`PPN.gamma_eq_one_first_order`).
+
+**`β = 1` used to read "the scale response of A6′" here, and that was wrong.**
+A6′ is the *source* law and the perihelion is measured in vacuum, where the
+source vanishes.  `β` comes from the framework's own `tt` vacuum equation, and
+`Nonlinearity.beta_eq_one` derives it — via `2β = 1 + γ`, so `β` is not an
+independent parameter here at all.  `Anchor.lean` §III found this: a measured
+number, `42.99″/century`, was being quoted downstream of an unproved gloss. -/
 @[simp] theorem coeff_reciprocal : coeff 1 1 = 1 := by norm_num [coeff]
 
 /-- **The isotropic sector gives one third.**  With no spatial scale, `γ = 0`. -/

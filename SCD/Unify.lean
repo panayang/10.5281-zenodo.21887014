@@ -24,9 +24,14 @@ sharp domain of validity: it is a statement about the isotropic sector of A4′.
 Nothing is lost and the axiom list has one entry where it had two.
 
 What this file does **not** do is compute curvature in the anisotropic sector.
-That work is outstanding, and until it is done the geometric consequences of
-A4′ are known only where the scale happens to be isotropic.  The axiom system
-is now consistent; it is not yet complete.
+
+**Update: it has been done for the case the gravity chain runs through.**
+`Diagonal.lean` computes the Levi-Civita connection of A4′'s diagonal metric —
+certified by `Diagonal.metric_compatible` — and both Ricci components for a
+*static* configuration, which is anisotropic: one scale per direction, and they
+differ.  `Chain.lean` re-reads the consequences.  What remains outstanding is the
+general non-static computation, and this caveat should be read as scoped to
+that.
 -/
 import SCD.Frame
 import SCD.Conformal
@@ -84,14 +89,11 @@ some unit `u`.  So the old axiom is not merely implied by the new one — it is
 precisely the new one restricted to a sub-locus, with nothing left over. -/
 theorem isotropic_iff_ofScalar [NeZero n] (E : DirScale n A) :
     E.Isotropic ↔ ∃ u : Aˣ, E = ofScalar u := by
+  haveI : Nonempty (Fin n) := ⟨⟨0, Nat.pos_of_ne_zero (NeZero.ne n)⟩⟩
   constructor
   · intro h
-    refine ⟨E.s ⟨0, Nat.pos_of_ne_zero (NeZero.ne n)⟩, ?_⟩
-    cases E with
-    | mk s =>
-      simp only [ofScalar, DirScale.mk.injEq]
-      funext a
-      exact h a _
+    obtain ⟨u, hu⟩ := IsIsotropic.iff_exists_const.mp h
+    exact ⟨u, by cases E; simp only [ofScalar, DirScale.mk.injEq]; exact hu⟩
   · rintro ⟨u, rfl⟩
     exact ofScalar_isotropic u
 
@@ -139,6 +141,35 @@ theorem sector_coherence (F : ScaleField n A) (η : Fin n → A) :
     ∧ (∀ c : Fin n, F.toDirScale.toMetric η = conformalMetric (F.toDirScale.s c) η) :=
   ⟨toDirScale_isotropic F, toDirScale_toMetric F η,
     fun c => toMetric_of_isotropic _ η (toDirScale_isotropic F) c⟩
+
+/-! ### A3 across the two sectors
+
+`Frame.DirScale.en` gives one energy per direction and `ScaleField.en` one
+energy altogether.  They agree on the isotropic locus, and that is the whole
+content of the diagnosis that produced A4′: a tensor source cannot set a scalar
+scale, so the scalar sector is exactly the sector in which the *source* is
+scalar too. -/
+
+/-- **The embedded scalar field's directional energy is its scalar energy**, in
+every direction.  So A3 has one reading, applied once per direction where the
+scale is directional and once altogether where it is not. -/
+@[simp] theorem toDirScale_en (F : ScaleField n A) (a : Fin n) :
+    F.toDirScale.en a = F.en := rfl
+
+/-- Hence the energy pattern of the isotropic sector is itself isotropic: the
+source degenerates to a scalar exactly where the scale does.  This is the
+statement `Frame.lean` diagnosed informally — energy-momentum is a tensor, so a
+scalar scale cannot carry it — now on record as an equivalence between the two
+degeneracies rather than a remark. -/
+theorem isotropic_iff_energy_isotropic [NeZero n] (E : DirScale n A) :
+    E.Isotropic ↔ IsIsotropic E.en := by
+  constructor
+  · exact fun h => E.isotropic_en h
+  · intro h a b
+    have := h a b
+    simp only [Frame.DirScale.en] at this
+    have hu : ((E.s a)⁻¹ : Aˣ) = ((E.s b)⁻¹ : Aˣ) := Units.ext this
+    simpa using congrArg (fun u : Aˣ => u⁻¹) hu
 
 /-! ## Where anisotropy actually shows up
 

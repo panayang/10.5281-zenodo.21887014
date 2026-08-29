@@ -38,8 +38,11 @@ import Mathlib.GroupTheory.Perm.Basic
 import Mathlib.Algebra.Group.Subgroup.Basic
 import Mathlib.Algebra.Ring.Basic
 import Mathlib.Data.Fintype.Perm
+import SCD.Pattern
 
 namespace SCD.Gauge
+
+open SCD
 
 variable {n : ℕ} {A : Type*} [CommRing A]
 
@@ -79,8 +82,13 @@ theorem stabilizer_eq_bot_of_injective (s : Fin n → Aˣ) (hinj : Function.Inje
     rfl
 
 /-- **Total degeneracy, total symmetry.**  The isotropic sector — the old
-scalar axiom — has the full permutation group as its internal symmetry. -/
-theorem stabilizer_eq_top_of_isotropic (s : Fin n → Aˣ) (hiso : ∀ a b, s a = s b) :
+scalar axiom — has the full permutation group as its internal symmetry.
+
+The hypothesis is `SCD.IsIsotropic`, the same predicate `Frame.lean` uses for a
+directional scale and `Locus.lean` for a scaling vector.  It was written out
+here as a loose `∀ a b, s a = s b`, which is what made the connection to the
+isotropic *locus* look like a coincidence of phrasing. -/
+theorem stabilizer_eq_top_of_isotropic (s : Fin n → Aˣ) (hiso : IsIsotropic s) :
     stabilizer s = ⊤ := by
   ext π
   simp only [mem_stabilizer_iff, Subgroup.mem_top, iff_true]

@@ -36,10 +36,25 @@ Ricci components (input) → cancellation (proved here) → scale sum constant
 (proved) → asymptotic flatness (proved, `Vacuum`) → `s_t s_r = 1` → `γ = 1`
 (proved, `PPN`) → deflection `1.7515″` and precession `42.99″` (proved).
 
-One link remains an input: the two Ricci expressions themselves, which come
-from the Levi-Civita connection of the diagonal ansatz.  That step is
-mechanical; the step proved here is the one where something non-obvious
-happens.
+**Update: that link is no longer an input.**  The two Ricci expressions were
+taken as given here, from the Levi-Civita connection of the diagonal ansatz.
+`Diagonal.lean` derives them — `ric_tt`, `ric_rr` — from A4′'s own metric, with
+the connection certified by `metric_compatible`, and reaches the same conclusion
+by `Diagonal.vacuum_scale_sum`.
+
+It also *explains* the cancellation this file could only observe.  Written in
+scale variables the combination is
+
+    (w_r/w_t)·R_tt + R_rr = −Σ_{a ∉ {t,r}} [ σ_a'' + (σ_a')² − σ_a'(σ_t'+σ_r') ] ,
+
+so the terms in `σ_t` and `σ_r` cancel because **the whole combination is
+transverse**: the vacuum says something about `σ_t + σ_r` only because there are
+directions other than those two.  And the prefactor `1/(rB)` is not put in — it
+is the total transverse scale gradient, `(n−2)/r` for an areal coordinate, so
+the `n − 2` is a count of directions and the `1/r` is their common gradient.
+
+This file stands as the real-analytic transcription and as the place where the
+cancellation is easiest to see; it is no longer where the content enters.
 -/
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic.FieldSimp

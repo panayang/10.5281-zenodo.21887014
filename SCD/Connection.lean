@@ -42,72 +42,27 @@ import SCD.Basic
 
 namespace SCD.Connection
 
-open SCD Quantum
+open SCD Quantum ScaleAlgebra
 
-/-! ## Differential rings
+/-! ## Transport, and its failure to commute
 
-The substrate's differential structure, stated without assuming commutativity.
-`ScaleAlgebra` is its commutative specialisation, registered as an instance so
-that the two are literally one structure rather than two parallel ones. -/
+A1 is stated once, in `Basic.lean`, over a ring — it never needed the ring to be
+commutative, only the Leibniz rule and equality of mixed partials.  An earlier
+state of the development declared it a second time here as `DiffRing`, with an
+instance and a `def` in `Postulates.lean` transporting between the two; both are
+gone, and `ScaleAlgebra` is the one carrier. -/
 
-/-- A ring with `n` commuting derivations.  No commutativity of the ring itself
-is assumed. -/
-class DiffRing (n : ℕ) (M : Type*) [Ring M] where
-  /-- The `i`-th derivation. -/
-  D : Fin n → M → M
-  D_add : ∀ i a b, D i (a + b) = D i a + D i b
-  D_mul : ∀ i a b, D i (a * b) = D i a * b + a * D i b
-  D_comm : ∀ i j a, D i (D j a) = D j (D i a)
-
-namespace DiffRing
-
-variable {n : ℕ} {M : Type*} [Ring M] [DiffRing n M]
-
-/-- Each derivation is additive, packaged so that `map_sub` applies. -/
-def Dhom (i : Fin n) : M →+ M where
-  toFun := D i
-  map_zero' := by
-    have h : D (n := n) i ((0 : M) + (0 : M))
-        = D (n := n) i (0 : M) + D (n := n) i (0 : M) := D_add i (0 : M) (0 : M)
-    rw [add_zero] at h
-    have h' : D (n := n) i (0 : M) + 0
-        = D (n := n) i (0 : M) + D (n := n) i (0 : M) := by
-      rw [add_zero]; exact h
-    exact (add_left_cancel h').symm
-  map_add' := D_add i
-
-
-
-
-@[simp] theorem D_sub (i : Fin n) (a b : M) : D i (a - b) = D i a - D i b :=
-  map_sub (Dhom (n := n) i) a b
-
-end DiffRing
-
-/-- The commutative differential structure of A1 is the commutative case of
-`DiffRing`: the two are the same notion, not two competing ones. -/
-instance (priority := 100) scaleAlgebraToDiffRing {n : ℕ} {A : Type*} [CommRing A]
-    [ScaleAlgebra n A] : DiffRing n A where
-  D := ScaleAlgebra.d
-  D_add := ScaleAlgebra.d_add
-  D_mul := ScaleAlgebra.d_mul
-  D_comm := ScaleAlgebra.d_comm
-
-/-! ## Transport, and its failure to commute -/
-
-open DiffRing
-
-variable {n : ℕ} {M : Type*} [Ring M] [DiffRing n M]
+variable {n : ℕ} {M : Type*} [Ring M] [ScaleAlgebra n M]
 
 /-- **Covariant transport** in direction `i`: the bare derivation corrected by
 the connection, acting on the frame by commutator. -/
-def covD (A : Fin n → M) (i : Fin n) (m : M) : M := D i m + ad (A i) m
+def covD (A : Fin n → M) (i : Fin n) (m : M) : M := d i m + ad (A i) m
 
 /-- **Curvature**: the object that will turn out to measure the failure of two
 transports to commute.  It is written down here only so that it can be named;
 `comm_covD` is what justifies the definition. -/
 def F (A : Fin n → M) (i j : Fin n) : M :=
-  D i (A j) - D j (A i) + ad (A i) (A j)
+  d i (A j) - d j (A i) + ad (A i) (A j)
 
 theorem F_antisymm (A : Fin n → M) (i j : Fin n) : F A i j = -F A j i := by
   simp only [F, ad]
@@ -124,8 +79,8 @@ what the left-hand side evaluates to.  Second, the result acts on `m`
 statement that curvature is a tensor rather than a differential operator. -/
 theorem comm_covD (A : Fin n → M) (i j : Fin n) (m : M) :
     covD A i (covD A j m) - covD A j (covD A i m) = ad (F A i j) m := by
-  simp only [covD, F, ad, D_add, D_sub, D_mul]
-  rw [D_comm i j m]
+  simp only [covD, F, ad, d_add, d_sub, d_mul]
+  rw [d_comm i j m]
   noncomm_ring
 
 /-- **Bianchi identity.**
@@ -136,15 +91,15 @@ the conservation law of the gravitational field is the associativity of
 transport, and nothing else. -/
 theorem bianchi (A : Fin n → M) (i j k : Fin n) :
     covD A i (F A j k) + covD A j (F A k i) + covD A k (F A i j) = 0 := by
-  simp only [covD, F, ad, D_add, D_sub, D_mul]
-  rw [D_comm j i (A k), D_comm k i (A j), D_comm k j (A i)]
+  simp only [covD, F, ad, d_add, d_sub, d_mul]
+  rw [d_comm j i (A k), d_comm k i (A j), d_comm k j (A i)]
   noncomm_ring
 
 /-! ## Which part of transport actually curves -/
 
 /-- An abelian connection has the familiar curl for its curvature. -/
 theorem curv_of_central (A : Fin n → M) (hc : ∀ i (x : M), A i * x = x * A i)
-    (i j : Fin n) : F A i j = D i (A j) - D j (A i) := by
+    (i j : Fin n) : F A i j = d i (A j) - d j (A i) := by
   simp only [F, ad]
   rw [hc i (A j)]
   noncomm_ring
@@ -156,18 +111,18 @@ curvature vanishes identically — mixed partials commute.  This is
 `scaleCurv_eq_zero` again, now in the non-commutative setting: the *scale* part
 of transport is integrable, so there is no second clock effect no matter how
 curved the geometry is. -/
-theorem curv_gradient_eq_zero (σ : M) (hcomm : ∀ i j : Fin n, ad (D i σ) (D j σ) = 0)
-    (i j : Fin n) : F (fun k => D k σ) i j = 0 := by
+theorem curv_gradient_eq_zero (σ : M) (hcomm : ∀ i j : Fin n, ad (d i σ) (d j σ) = 0)
+    (i j : Fin n) : F (fun k => d k σ) i j = 0 := by
   simp only [F]
-  rw [D_comm i j σ, hcomm i j]
+  rw [d_comm i j σ, hcomm i j]
   simp
 
 /-- Splitting transport into a commuting part and a rotation part, the
 commuting part contributes only its curl. -/
 theorem curv_split (a ω : Fin n → M) (hcen : ∀ i (x : M), a i * x = x * a i)
     (i j : Fin n) :
-    F (fun k => a k + ω k) i j = (D i (a j) - D j (a i)) + F ω i j := by
-  simp only [F, ad, D_add, add_mul, mul_add]
+    F (fun k => a k + ω k) i j = (d i (a j) - d j (a i)) + F ω i j := by
+  simp only [F, ad, d_add, add_mul, mul_add]
   rw [hcen i (a j), hcen i (ω j), hcen j (ω i)]
   noncomm_ring
 
@@ -183,20 +138,20 @@ That is why an integrable Weyl geometry can carry gravity without producing the
 second clock effect that killed Weyl's original theory — and it is the
 anisotropic curvature that the scalar axiom A4 could not express. -/
 theorem curv_eq_rotation_part (σ : M) (ω : Fin n → M)
-    (hcen : ∀ (i : Fin n) (x : M), (D (n := n) i σ) * x = x * (D (n := n) i σ)) (i j : Fin n) :
-    F (fun k => D k σ + ω k) i j = F ω i j := by
-  rw [curv_split (fun k => D k σ) ω hcen i j, D_comm i j σ]
+    (hcen : ∀ (i : Fin n) (x : M), (d (n := n) i σ) * x = x * (d (n := n) i σ)) (i j : Fin n) :
+    F (fun k => d k σ + ω k) i j = F ω i j := by
+  rw [curv_split (fun k => d k σ) ω hcen i j, d_comm i j σ]
   simp
 
 /-- Consequently a purely scalar (isotropic) transport is flat: the scalar
 axiom could produce no curvature from the scale alone, which is the structural
 reason it forbade Schwarzschild. -/
 theorem curv_pure_scale_eq_zero (σ : M)
-    (hcen : ∀ (i : Fin n) (x : M), (D (n := n) i σ) * x = x * (D (n := n) i σ)) (i j : Fin n) :
-    F (fun k => D k σ) i j = 0 := by
+    (hcen : ∀ (i : Fin n) (x : M), (d (n := n) i σ) * x = x * (d (n := n) i σ)) (i j : Fin n) :
+    F (fun k => d k σ) i j = 0 := by
   refine curv_gradient_eq_zero σ (fun p q => ?_) i j
   simp only [ad]
-  rw [hcen p (D q σ)]
+  rw [hcen p (d q σ)]
   noncomm_ring
 
 end SCD.Connection

@@ -18,9 +18,19 @@ has been retracted, corrected, cited without proof, and assumed.
 PART 0 — THE POSTULATES
 ────────────────────────────────────────────────────────────────────────
 
+`SCD.Pattern` is the vocabulary the whole development is written in — isotropy,
+parallelism, the wedge, and the two sector counts A7 compares.  Each of those
+was previously written out three or four times in the vocabulary of whichever
+file needed it, and reconnected afterwards by equivalence theorems; they are
+stated once, so the reconnecting theorems are identities.
+
+`SCD.Basic` is A1 itself: a ring with `n` commuting derivations.  Commutativity
+of the ring is *not* part of the axiom, so `SCD.Conformal`'s objects and
+`SCD.NCConformal`'s are the same objects and the classical curvature computation
+is the commuting locus of the general one, not a separate development.
+
 `SCD.Postulates` states A1–A7 in one place with the formal carrier and honest
-status of each, and proves that the substrate has **one** carrier rather than
-the three an earlier draft declared.
+status of each.
 
 ────────────────────────────────────────────────────────────────────────
 PART I — WHAT THE AXIOMS FORCE  (a single chain, in order)
@@ -120,6 +130,7 @@ predictions are expressed in, and a dimensionless theory must carry exactly one.
 -/
 
 -- Part 0 — the postulates
+import SCD.Pattern
 import SCD.Basic
 import SCD.Axioms
 import SCD.Postulates
@@ -145,12 +156,16 @@ import SCD.Conformal
 import SCD.Frame
 import SCD.Unify
 import SCD.Newton
+import SCD.Diagonal
 import SCD.Schwarzschild
 import SCD.RicciDiag
 import SCD.Vacuum
+import SCD.Reciprocity
+import SCD.Chain
 import SCD.Deflection
 import SCD.PPN
 import SCD.Precession
+import SCD.Nonlinearity
 import SCD.Covariance
 import SCD.Singularity
 import SCD.Horizon
@@ -168,16 +183,36 @@ import SCD.Emergence
 -- Part III — the quantum sector
 import SCD.Deformation
 import SCD.Crossed
+import SCD.Dual
 import SCD.NCConformal
+import SCD.Anisotropic
 import SCD.Dynamics
+import SCD.Determination
+import SCD.Explanation
+import SCD.Anchor
+import SCD.Observer
+import SCD.Observed
+import SCD.Internal
+import SCD.Triple
+import SCD.Mutual
+import SCD.NCSize
 
 -- Part IV — scale flow and content
 import SCD.RG
 import SCD.Running
 import SCD.Spectrum
+import SCD.Period
+import SCD.Sources
+import SCD.Weight
 import SCD.Entropy
 import SCD.Light
 import SCD.Observation
+import SCD.Positivity
+import SCD.Well
+import SCD.Momentum
+import SCD.Openness
+import SCD.Index
+import SCD.Flux
 import SCD.Particles
 import SCD.DarkMatter
 import SCD.DarkEnergy
@@ -189,6 +224,9 @@ import SCD.Expressive
 -- Part V — predictions and data
 import SCD.Predictions
 import SCD.Cosmos
+import SCD.Scanning
+import SCD.Response
+import SCD.Attraction
 import SCD.Native
 import SCD.Data
 

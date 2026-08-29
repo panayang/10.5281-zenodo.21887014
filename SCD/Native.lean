@@ -94,7 +94,7 @@ question, and it is not a question general relativity can pose.
 
 ## V.  The quantum-gravity experiment is an ordering test
 
-`NCConformal.Defm_antisymm_part` makes the entire quantum correction the
+`Defm_antisymm_part` makes the entire quantum correction the
 commutator of scale gradients.  A commutator is an *order* discrepancy, so the
 native experiment is not "detect a graviton" but:
 
@@ -196,14 +196,14 @@ On the isotropic locus there is no rotational label, and hence no charge and no
 multiplet.  These are not four coincidences: they have one source, so one
 boundary.  Later structure is refinement of a degeneracy pattern, not a second
 switching-on. -/
-theorem single_anisotropy_boundary {v w : Fin k → ℝ} (hv : Locus.Isotropic v)
-    (hw : Locus.Isotropic w) (i j : Fin k) : wedge v w i j = 0 :=
+theorem single_anisotropy_boundary {v w : Fin k → ℝ} (hv : IsIsotropic v)
+    (hw : IsIsotropic w) (i j : Fin k) : wedge v w i j = 0 :=
   Locus.isotropic_no_rotation hv hw i j
 
 /-- The sharp form: any label at all forces anisotropy, so there is nothing
 below the boundary to switch on separately. -/
 theorem label_forces_anisotropy {v w : Fin k → ℝ} {i j : Fin k}
-    (h : wedge v w i j ≠ 0) : ¬ Locus.Isotropic v ∨ ¬ Locus.Isotropic w :=
+    (h : wedge v w i j ≠ 0) : ¬ IsIsotropic v ∨ ¬ IsIsotropic w :=
   Locus.labels_require_anisotropy h
 
 /-! ## III. Content belongs to intervals -/
@@ -227,7 +227,7 @@ theorem content_is_interval_valued (μ : ℕ → ℝ) (t t' : ℝ) :
 
 /-! ## IV. No global field equation -/
 
-variable {n : ℕ} {M : Type*} [Ring M] [Connection.DiffRing n M]
+variable {n : ℕ} {M : Type*} [Ring M] [ScaleAlgebra n M]
 
 /-- **A non-conserved source admits no field equation.**
 
@@ -258,9 +258,9 @@ particle need exist, and no amplitude need be computed.
 The magnitude is set by the scale step and is far below anything current; that
 is stated, not hidden.  What is native is the *kind* of observable. -/
 theorem ordering_discrepancy_is_the_observable {M' : Type*} [Ring M']
-    [Connection.DiffRing n M'] (σ : M') (i j : Fin n) :
-    NCConformal.Defm n σ i j - NCConformal.Defm n σ j i
-      = -2 * Quantum.ad (NCConformal.sig σ i) (NCConformal.sig σ j) :=
+    [ScaleAlgebra n M'] (σ : M') (i j : Fin n) :
+    Defm n σ i j - Defm n σ j i
+      = -2 * Quantum.ad (sig σ i) (sig σ j) :=
   NCConformal.Defm_antisymm_part σ i j
 
 /-! ## VI. Parity is conserved, as arithmetic -/

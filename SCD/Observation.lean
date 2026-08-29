@@ -37,12 +37,13 @@ scale at *emission* with the scale at *absorption*.  That is a scale
 quantity the axioms permit and no more.
 -/
 import SCD.Light
+import SCD.Frame
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Tactic.NormNum
 
 namespace SCD.Observation
 
-open SCD Light
+open SCD Light Finset
 
 variable {n : ℕ} {A : Type*} [CommRing A]
 
@@ -125,9 +126,71 @@ For completeness, the scale-blindness that created the puzzle is restated here
 next to its resolution, so the two cannot drift apart again. -/
 
 /-- The null condition remains entirely free of the scale, as `Light.lean`
-proved.  Nothing above weakens that; energy simply is not the null condition. -/
+proved.  Nothing above weakens that; energy simply is not the null condition.
+
+**Scope, added with the directional correction.**  This is a statement about a
+*scalar* scale, hence about the isotropic locus.  `Light.bare_null_not_phys_null`
+shows the cone moves once the scale is directional, so the resolution below is
+sharper than the one this file was originally written to give: even the causal
+structure is not scale-blind in general — only its *magnitude*-blindness
+survives. -/
 theorem causal_structure_still_blind [ScaleAlgebra n A] (s s' : Aˣ) (η v : Fin n → A) :
     IsNull s η v ↔ IsNull s' η v :=
   isNull_scale_invariant s s' η v
+
+/-! ## The observer is directional too
+
+`obsEnergy` above reads the pairing in a *scalar* unit `u`.  A4′ gives one unit
+per direction, and an observer is a direction — so the unit an observer reads
+with is `s` in **that** direction.  This is the same substitution `Light.lean`
+just had to make, and it is what turns "energy" into "energy and momentum":
+the temporal component of the directional pairing is the energy, and the spatial
+components are the momentum. -/
+
+section Directional
+
+open Frame
+
+/-- The **directional pairing**: each direction's contribution read in that
+direction's own unit.  Compare `obsEnergy`, which reads all of them in one. -/
+def obsEnergyDir (E : DirScale n A) (η w v : Fin n → A) : A :=
+  ∑ i, η i * (((E.s i : A)) ^ 2 * (w i * v i))
+
+/-- On the isotropic locus this is the scalar `obsEnergy` exactly, so nothing
+proved above is lost — it is scoped. -/
+theorem obsEnergyDir_of_isotropic (E : DirScale n A) (η w v : Fin n → A)
+    (h : E.Isotropic) (c : Fin n) :
+    obsEnergyDir E η w v = obsEnergy (E.s c) η w v := by
+  simp only [obsEnergyDir, obsEnergy, pairing, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun i _ => by rw [h i c]; ring
+
+/-- **The energy–momentum an observer reads is the directional energy pattern
+paired with the probe.**
+
+`Frame.DirScale.en a = 1/s_a` is A3 read in direction `a`.  The identity below
+says the directional pairing is exactly the bare pairing weighted by the inverse
+squared *energies* — so what an observer reads off is a contraction against the
+energy pattern, one component per direction.  The temporal component is what has
+always been called the energy; the spatial ones have had no name in this
+development, and they are the momentum. -/
+theorem obsEnergyDir_eq_en_weighted (E : DirScale n A) (η w v : Fin n → A) :
+    obsEnergyDir E η w v * ∏ i, (E.en i * (E.s i : A))
+      = ∑ i, η i * (((E.s i : A)) ^ 2 * (w i * v i)) := by
+  have h : (∏ i, (E.en i * (E.s i : A))) = 1 := by
+    rw [Finset.prod_congr rfl fun i _ => E.en_mul_scale i, Finset.prod_const_one]
+  rw [h, mul_one, obsEnergyDir]
+
+/-- **Redshift is still a ratio of scales, now direction by direction.**
+
+Two observers whose directional units differ assign energies whose ratio in
+direction `i` is `(s_i/s'_i)²`.  Stated cross-multiplied so that no division is
+needed, and summed over directions it is the whole energy–momentum. -/
+theorem redshift_dir_is_scale_ratio (E E' : DirScale n A) (η w v : Fin n → A)
+    (i : Fin n) :
+    (η i * (((E.s i : A)) ^ 2 * (w i * v i))) * ((E'.s i : A)) ^ 2
+      = (η i * (((E'.s i : A)) ^ 2 * (w i * v i))) * ((E.s i : A)) ^ 2 := by
+  ring
+
+end Directional
 
 end SCD.Observation
