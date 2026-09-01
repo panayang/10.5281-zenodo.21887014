@@ -87,6 +87,9 @@ PART III — THE QUANTUM SECTOR
     NCConformal  ★ curvature without commutativity; the whole quantum
                  correction is [σᵢ, σⱼ], and it is purely antisymmetric
     Dynamics     conservation is the condition for a field equation to exist
+    Ordering     ★ the lift of the gravity chain's cancellation to a
+                 non-commutative ring is *not* unique — and the static
+                 configuration the chain runs in does not notice
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -103,13 +106,15 @@ PART V — PREDICTIONS, AND THE DATA
 ────────────────────────────────────────────────────────────────────────
 
     Predictions  the conversion table
-    Cosmos       w does not evolve; there is no initial value; dark matter
+    Cosmos       w on its stated domain; there is no initial value; dark matter
     Horizon      no horizon; waves on the light cone; entropy ∝ ln R
     Waves        inspiral dynamics: conservation kills monopole and dipole,
                  so the quadrupole leads; Hulse–Taylor bounds the dipole
     Native       the seven questions only this framework can ask
-    Data         ★ the confrontation.  One live tension (DESI vs A5), one
-                 live open question (the f₀(500) pole), the rest passing.
+    Data         ★ the confrontation.  A5 does **not** forbid an evolving w —
+                 that reading was withdrawn in `Scanning` — and the framework's
+                 own w(z) has never been computed, so DESI compares against
+                 nothing yet.  One live open question (the f₀(500) pole).
 
 ────────────────────────────────────────────────────────────────────────
 PART VI — THE REGISTER
@@ -196,6 +201,7 @@ import SCD.Internal
 import SCD.Triple
 import SCD.Mutual
 import SCD.NCSize
+import SCD.Ordering
 
 -- Part IV — scale flow and content
 import SCD.RG

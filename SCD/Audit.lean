@@ -1432,6 +1432,70 @@ role breaks a symmetry the structure has.  That argument is **not** made here.
 **No assumption is added**; `assumedCount` is unchanged.  Two open items are
 registered: the operator ordering, and whether total antisymmetry is forced.
 
+## V.w  The operator ordering, settled — and one structural claim scoped
+
+§V.v registered the operator ordering as open and called it prior to everything
+else in that entry: `Diagonal.lean` computes the connection and the Ricci
+contraction over a **`CommRing`**, and carrying those formulas to a
+non-commutative ring requires an ordering the commutative computation does not
+determine.  `Ordering.lean` answers it, without any theory of the observer,
+which is what made the question worth asking first.  The answer has two halves
+and this register should carry both: one protects the development's best
+results, the other takes something back.
+
+**The lift is not unique, and the ambiguity is exactly the quantum correction.**
+`Ordering.offDiag_sub_rev`: the two available orders of the off-diagonal Ricci
+summand differ by three commutators of scale gradients per transverse direction,
+written in `Quantum.ad`.  The obstruction is not diffuse — it is built from the
+same objects `NCConformal.lean` calls the correction.
+
+**And it reaches the vacuum condition.**  `Ordering.vacuum_is_ordering_dependent`
+exhibits a configuration in `Triple.matrixScaleAlgebra` at three directions —
+`σ = (0, 0, τ)` with `∂₀τ = E₀₀` and `∂₁τ = E₀₁` — on which `R_ab = 0` **holds in
+one order and fails in the other**, because `E₀₁E₀₀ = 0` while `E₀₀E₀₁ = E₀₁`.
+That is not a discrepancy in a value both orders agree is nonzero; it is the
+solution set moving.  Three directions is the smallest case with anything in it:
+`Diagonal.offdiag_zero_in_two` had already shown the constraint is empty below
+three.
+
+**The gravity chain does not stand in it.**
+`Ordering.ordering_irrelevant_of_static`: under `Diagonal.lean`'s own staticity
+hypothesis every commutator in the difference carries a vanishing factor, for
+every pair — if neither member of the observed pair is the distinguished
+direction all of them vanish, and if one is, the surviving factors pair with a
+vanishing one.  So `γ = 1`, `2β = 1 + γ` and the two arcsecond values are
+statements about a configuration on which **every** ordering agrees.  They are
+not hostages to how the observer turns out, which is what the question was asked
+to find out.
+
+**What is scoped, and this is the correction.**  §V.j read `Diagonal.ric_offdiag`
+as the general structural fact that *no pair of directions carries its own
+curvature; every component is carried by the complement*, and called it a
+property of diagonal metrics rather than of the static case.  It is a property
+of diagonal metrics **over a commutative ring**: the cancellation that produces
+it is between terms whose order is not a choice there and is one here.  The
+theorem is untouched; the reading is narrowed to the commuting locus until an
+ordering is argued for.  `correctedCount` is raised.
+
+**A canonical lift exists and is not adopted.**  `Ordering.integrandSym` is the
+sum of the two orders — reversal-invariant by construction
+(`sym_is_order_free`), twice the classical summand on the commuting locus
+(`sym_doubles_the_classical`), and stated without dividing by two so it costs no
+hypothesis on the ring.  Adopting it *because it is symmetric* would be exactly
+the move §V.t declined for idempotents: importing the shape of the answer.  What
+would make it native is an argument that the contraction defining `Ric` has a
+preferred order for reasons internal to the framework.  There is none, and the
+choice stays open and registered.
+
+**What the file does not do.**  It does not lift `Diagonal.lean`.  It lifts the
+one expression the chain's cancellation runs through, which is enough to answer
+the question and small enough to check by eye.  The general non-commutative
+connection is a larger job and is not attempted.
+
+**Ledger effect.**  `correctedCount` `9 → 10`.  **No assumption is added** — the
+file introduces no hypothesis the development did not already carry — and no
+prediction is added or removed.  `auditedTheorems` `1040 → 1053`.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -1493,8 +1557,12 @@ determination relation.  And to **eight** by §V.n: "eight dimensionless
 predictions" survives as four, the rest being arithmetic on imported
 definitions.  And to **nine** by §V.p: the anisotropic non-commutative
 correction is second order in gradients, not zeroth, so it is the leading
-correction but not an unsuppressed one. -/
-def correctedCount : ℕ := 9
+correction but not an unsuppressed one.  And to **ten** by §V.w: §V.j's reading
+of `Diagonal.ric_offdiag` as a property of diagonal metrics is a property of
+diagonal metrics over a *commutative* ring, since the cancellation is between
+terms whose order is not a choice there — `Ordering.vacuum_is_ordering_dependent`
+shows the lift changes the solution set. -/
+def correctedCount : ℕ := 10
 
 /-- External results cited and not proved.
 
@@ -1596,7 +1664,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1040
+def auditedTheorems : ℕ := 1053
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

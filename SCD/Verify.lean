@@ -361,6 +361,21 @@ namespace SCD.Verify
 #print axioms SCD.Mutual.triWedge_not_identically_zero
 #print axioms SCD.Mutual.summary
 
+-- Ordering.lean
+#print axioms SCD.Ordering.offDiag_eq_classical
+#print axioms SCD.Ordering.integrand_sub_rev
+#print axioms SCD.Ordering.offDiag_sub_rev
+#print axioms SCD.Ordering.orderings_agree_of_comm
+#print axioms SCD.Ordering.crossed_two
+#print axioms SCD.Ordering.crossed_zero
+#print axioms SCD.Ordering.crossed_one
+#print axioms SCD.Ordering.transverse_zero_one
+#print axioms SCD.Ordering.vacuum_is_ordering_dependent
+#print axioms SCD.Ordering.ordering_irrelevant_of_static
+#print axioms SCD.Ordering.sym_is_order_free
+#print axioms SCD.Ordering.sym_doubles_the_classical
+#print axioms SCD.Ordering.summary
+
 /-! ## PART II.a — the isotropic sector -/
 
 
