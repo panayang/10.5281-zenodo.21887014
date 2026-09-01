@@ -376,6 +376,18 @@ namespace SCD.Verify
 #print axioms SCD.Ordering.sym_doubles_the_classical
 #print axioms SCD.Ordering.summary
 
+-- Screen.lean
+#print axioms SCD.Screen.observer_preserves_predictions
+#print axioms SCD.Screen.observer_preserves_predictions_vacuously
+#print axioms SCD.Screen.recorded_by_one
+#print axioms SCD.Screen.not_recorded_by_zero
+#print axioms SCD.Screen.recorded_set_is_observer_relative
+#print axioms SCD.Screen.observer_relative_is_modulus
+#print axioms SCD.Screen.observer_relative_can_be_modulus
+#print axioms SCD.Screen.sample_grows_as_observer_shrinks
+#print axioms SCD.Screen.screen_is_exhaustive
+#print axioms SCD.Screen.the_discriminating_entry_is_the_observer_relative_one
+
 /-! ## PART II.a — the isotropic sector -/
 
 

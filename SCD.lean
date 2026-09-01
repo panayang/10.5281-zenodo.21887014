@@ -90,6 +90,9 @@ PART III — THE QUANTUM SECTOR
     Ordering     ★ the lift of the gravity chain's cancellation to a
                  non-commutative ring is *not* unique — and the static
                  configuration the chain runs in does not notice
+    Screen       predictions of the world survive the observer joining the
+                 configuration; what is *recorded* does not — and that is where
+                 the one discriminating prediction lives
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -202,6 +205,7 @@ import SCD.Triple
 import SCD.Mutual
 import SCD.NCSize
 import SCD.Ordering
+import SCD.Screen
 
 -- Part IV — scale flow and content
 import SCD.RG

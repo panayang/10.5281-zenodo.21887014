@@ -1496,6 +1496,71 @@ connection is a larger job and is not attempted.
 file introduces no hypothesis the development did not already carry — and no
 prediction is added or removed.  `auditedTheorems` `1040 → 1053`.
 
+## V.x  The observer-invariance screen — and a sample the register never carried
+
+§V.w settled the ordering.  The other half of the same question was whether the
+ledger's predictions are predictions *of the world* or of something that includes
+the observer, since `Internal.observer_is_in_the_determiner` puts the observer
+inside the configuration.  `Screen.lean` runs `Explanation.lean`'s accounting on
+the pair.
+
+**The reassuring half is a theorem and not a reassurance.**
+`Screen.observer_preserves_predictions`: a quantity constant across the
+admissible worlds is constant across the admissible *(world, observer)* pairs,
+because the pairs project into the worlds.  So **no quantity of the world loses
+its status when the observer joins the configuration**, and the fear that the
+ledger would have to be redone is answered — for every entry that is about the
+scale pattern.
+
+**The other half is where the content is.**
+`Screen.observer_relative_is_modulus`: for **every** theory of the world that
+admits one particular resolution — no constraint on the world is assumed beyond
+that — what is recorded is a `Modulus`, an input.  Two observers in one world
+record different sets (`recorded_set_is_observer_relative`), so
+`Explanation.tightening_predicts_more` cannot reach the freedom: it is in the
+other slot, and only a theory of the observer touches it.  The direction is
+`Internal.record_antitone`'s — a larger observer records less, so the sample
+grows as the observer shrinks.
+
+**Sorting the five falsifiable entries.**  `γ = 1`, `2β = 1 + γ`, universal
+attraction and one cone for every sector are properties of the scale pattern and
+are covered verbatim.  `CV² = 1` is not: it is a statistic of *which thresholds
+are in the sample*, and being in the sample is what `record` is.
+
+**And it is the discriminating one.**  `Anchor.discriminatingFromGR` is `1`, and
+that one is `CV² = 1`.  So the single entry the framework's empirical case rests
+on is the single entry the screen classifies as observer-relative.  The counts
+agreeing is arithmetic and `Screen.lean` says so in place; what is not arithmetic
+is which entry falls where.
+
+**The register was missing the underlying item, which is the §V.a pattern again.**
+`Spectrum.lean` says in its own header that "eleven gaps is a small sample and the
+twelve mass scales were selected by hand (massless states excluded, neutrino
+masses unknown)".  That self-registration never reached this list, and it is the
+same failure mode as the three §V.a found and as A6′ before them — a file
+declaring its own weakness while the register a reader consults says nothing.
+`unregisteredFound` is raised.
+
+What the screen adds to it is why it is structural rather than a matter of
+sample size: **nothing in the development links `Spectrum.gaps` to
+`Internal.record`.**  Until something does, `CV² = 1` is a prediction about a
+sample rather than about a configuration, and the framework has no theory of
+which sample.  Building that link is the work; noting that it is missing is all
+this pass does.
+
+**No count moves except the two named.**  No assumption is added — `Screen.lean`
+introduces no hypothesis any theorem carries — and no prediction is added or
+removed: `falsifiableDimensionless` stays at `5` and `discriminatingFromGR` at
+`1`, because `CV² = 1` can still fail and still discriminates.  What changed is
+what it is a statement about.  `unregisteredFound` `3 → 4`;
+`auditedTheorems` `1053 → 1063`.
+
+**Step zero therefore closes with one item settled and one sharpened.**  The
+ordering question is answered and the gravity chain is out of it (§V.w).  The
+observer question is answered for every quantity of the world and open for the
+one that matters, which is a smaller and more specific hole than the one it
+replaces.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -1597,8 +1662,12 @@ def assumedCount : ℕ := 10
 
 /-- How many of those the register was **silently missing** — self-registered in
 their own files and absent from this list.  Kept because it measures how well
-the register works, not how well the framework does. -/
-def unregisteredFound : ℕ := 3
+the register works, not how well the framework does.
+
+Raised to **four** by §V.x: `Spectrum.lean` declares in its own header that the
+twelve mass scales behind `CV² = 1` were selected by hand, and this list never
+carried it — while `CV² = 1` is the framework's one discriminating prediction. -/
+def unregisteredFound : ℕ := 4
 
 theorem register_was_incomplete : 0 < unregisteredFound := by decide
 
@@ -1664,7 +1733,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1053
+def auditedTheorems : ℕ := 1063
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
