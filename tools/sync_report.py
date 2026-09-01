@@ -12,9 +12,23 @@ What it enforces:
   * every \\leanline{...} citation in the report names something that exists
   * the theorem counts quoted in the report match the sources
 """
-import re, os, sys
+import re, os, sys, io
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+def _read(path):
+    """UTF-8, newlines left alone: the sources are UTF-8 and LF, and Windows'
+    default cp1252 + CRLF translation would fail on the first and rewrite every
+    line of the second."""
+    with io.open(path, encoding='utf-8', newline='') as f:
+        return f.read()
+
+
+def _write(path, text):
+    with io.open(path, 'w', encoding='utf-8', newline='') as f:
+        f.write(text)
+
+
 SRC = os.path.join(ROOT, 'SCD')
 TEX = os.path.join(ROOT, 'paper', 'SCD.tex')
 
@@ -56,12 +70,12 @@ def strip_docs(s):
 
 def theorems(mod):
     """Theorem names in a module, in source order."""
-    return re.findall(THM, strip_docs(open(f'{SRC}/{mod}.lean').read()), re.M)
+    return re.findall(THM, strip_docs(_read(f'{SRC}/{mod}.lean')), re.M)
 
 
 def qualified(mod):
     """Fully-qualified theorem names, tracking the namespace stack."""
-    s = strip_docs(open(f'{SRC}/{mod}.lean').read())
+    s = strip_docs(_read(f'{SRC}/{mod}.lean'))
     stack, out = [], []
     for line in s.split('\n'):
         m = re.match(r'\s*namespace\s+([A-Za-z_][\w.]*)', line)
@@ -255,7 +269,7 @@ def gen_filetable(total):
                         % (mod, len(theorems(mod)), DESCRIPTIONS[mod]))
         rows.append(r"\midrule")
     nfiles = len([f for f in os.listdir(SRC) if f.endswith('.lean')])
-    loc = sum(1 for f in os.listdir(SRC) if f.endswith('.lean') for _ in open(f'{SRC}/{f}'))
+    loc = sum(1 for f in os.listdir(SRC) if f.endswith('.lean') for _ in _read(f'{SRC}/{f}').splitlines())
     rows.append(r"\textbf{合计} & \textbf{%d} & %d 个文件，%d 行 Lean 代码 \\"
                 % (total, nfiles, loc))
     rows += [r"\bottomrule", r"\end{longtable}", r"\end{center}"]
@@ -265,8 +279,8 @@ def check_citations():
     real = set()
     for f in os.listdir(SRC):
         if f.endswith('.lean'):
-            real |= set(re.findall(DECL, open(f'{SRC}/{f}').read(), re.M))
-    tex = open(TEX).read()
+            real |= set(re.findall(DECL, _read(f'{SRC}/{f}'), re.M))
+    tex = _read(TEX)
     bad = set()
     for m in re.findall(r'\\leanline\{([^}]*)\}', tex, re.S):
         for tok in re.split(r'[,\s]+', m.replace('\\_', '_')):
@@ -282,9 +296,9 @@ def main():
 
     verify, total = gen_verify()
     vpath = os.path.join(SRC, 'Verify.lean')
-    if open(vpath).read() != verify:
+    if _read(vpath) != verify:
         if write:
-            open(vpath, 'w').write(verify)
+            _write(vpath, verify)
             print(f"  wrote Verify.lean ({total} theorems)")
         else:
             print(f"  DRIFT: Verify.lean is stale (sources have {total} theorems)")
@@ -292,14 +306,14 @@ def main():
     else:
         print(f"  Verify.lean in step ({total} theorems)")
 
-    tex = open(TEX).read()
+    tex = _read(TEX)
     i = tex.find('\\clearpage\n\\appendix')
     j = tex.find('\\end{document}')
     if i > 0 and j > i:
         idx = gen_index(total)
         if tex[i:j].strip() != idx.strip():
             if write:
-                open(TEX, 'w').write(tex[:i] + idx + '\n' + tex[j:])
+                _write(TEX, tex[:i] + idx + '\n' + tex[j:])
                 print("  wrote the theorem index")
             else:
                 print("  DRIFT: the theorem index is stale")
@@ -307,7 +321,7 @@ def main():
         else:
             print("  theorem index in step")
 
-    tex = open(TEX).read()
+    tex = _read(TEX)
     lt = tex.find(r"\begin{longtable}{lrl}")
     if lt > 0:
         a = tex.rfind(r"\begin{center}", 0, lt)
@@ -315,7 +329,7 @@ def main():
         tbl = gen_filetable(total)
         if tex[a:b].strip() != tbl.strip():
             if write:
-                open(TEX, "w").write(tex[:a] + tbl + tex[b:])
+                _write(TEX, tex[:a] + tbl + tex[b:])
                 print("  wrote the file table")
             else:
                 print("  DRIFT: the file table is stale")
@@ -330,7 +344,7 @@ def main():
     else:
         print("  every \\leanline citation resolves")
 
-    tex = open(TEX).read()
+    tex = _read(TEX)
     quoted = set(re.findall(r'(\d{3,}) 条定理', tex))
     stale = {q for q in quoted if int(q) != total}
     if stale:
