@@ -4,26 +4,51 @@
 The predictions have been stated; this file takes them to the measurements.  One
 of them is in trouble, and it is the most load-bearing one, so it goes first.
 
-## I.  `w` does not evolve — **this is in tension with DESI**
+## I.  `w` — and a withdrawn position this file went on quoting
 
-`Cosmos.w_does_not_evolve` derives a constant dissipation rate from A5, hence
-`w = −1` exactly and at every epoch.  A5 is not an adjustable part of the
-framework: it is what makes the geometry dimensionless, so this prediction
-cannot be softened.
+**Correction, and it is the second one in this file.**  What stood here was
+written against `w = −1`, and that reading of A5 was withdrawn in `Scanning.lean`
+and registered in `Audit` §V.e.  This file kept quoting the withdrawn position —
+in its own §I, in its scorecard, and in the README, which is the document a
+reader meets first.  That is the drift the register exists to catch, and this
+time it was the top-level documents that drifted while the development moved
+under them.
 
-DESI DR2 (2025), combining BAO with CMB and supernovae, prefers an evolving
-equation of state at
+**What was withdrawn.**  `Cosmos.rate_constant_of_fiducial_invariance` derives a
+constant dissipation rate, hence `w = −1`, from `∀ σ c, λ(σ+c) = λ(σ)` — a rate
+that is a function of **one** variable.  A5 shifts every scale together, so that
+is the correct reading of A5 only if there is no second scale in the problem.
+`Index.lean` makes the thresholds gravitationally active, so `σ − μ_k` is a
+physical scale difference and there is one.  Written with two,
+`Scanning.two_scale_invariance_forces_difference` makes the rate a function of
+the **difference**, and `Scanning.rate_may_vary` exhibits an A5-respecting rate
+that genuinely varies.  `Cosmos.w_does_not_evolve` stands, with its domain
+stated (`Scanning.one_scale_recovers_constant`).
+
+**So A5 does not forbid an evolving `w`, and DESI does not falsify A5.**  What
+the framework is exposed on is the other statement:
+
+> `w` varies, on the log-scale set by the threshold spectrum — the same `ρ` that
+> `Spectrum.lean` reads off the particle masses.  The two must agree.
+
+That is a stronger claim than the one it replaces, because it is cross-sector
+and has nothing free.  **It is also not yet a curve.**  Nobody has computed
+`w(z)` from `ρ`, so the numbers below can neither confirm it nor kill it, and
+reporting them as a tension *against this framework* would be reporting them
+against a prediction that has not been made.
+
+**The measurement, recorded because the scanning picture has to reproduce its
+shape.**  DESI DR2 (2025), combining BAO with CMB and supernovae, prefers an
+evolving equation of state at
 
         2.6σ / 2.5σ / 3.5σ / 3.9σ  (DR1)   →   3.1σ / 2.8σ / 3.8σ / 4.2σ  (DR2)
 
 for CMB, Pantheon+, Union3 and DESY5 respectively, in the quadrant
 `w₀ > −1, wₐ < 0` with `w` crossing `−1` near `z ≈ 0.5`.
+`desi_tension_exceeds_three_sigma` records the number.  Three things about it
+are true at once and all three should be said:
 
-`desi_tension_exceeds_three_sigma` records the number.  **This is the framework's
-most serious empirical problem**, and I am not going to explain it away.  Three
-things are true at once and all three should be said:
-
-* **DESI BAO alone is fully consistent with `ΛCDM`.**  The tension exists only
+* **DESI BAO alone is fully consistent with `ΛCDM`.**  The preference exists only
   in combination, and the combinations disagree with *each other*: BAO+CMB
   gives `w₀ ≈ −0.42 ± 0.21`, while BAO+CMB+SN gives `w₀ ≈ −0.838` — two
   standard deviations apart on the same parameter
@@ -31,13 +56,16 @@ things are true at once and all three should be said:
 * the preference varies by exactly a factor of `1.5` between the weakest and
   strongest supernova compilation (`desi_significance_dataset_dependent`);
 * independent analyses argue the datasets are mutually inconsistent, so the
-  combination that produces the signal is exactly the step under question;
-* **if the preference survives at five sigma with consistent datasets, A5 is
-  falsified, and with it the dimensionlessness the whole development rests on.**
-  There is no version of this framework with an evolving `w`.
+  combination that produces the signal is exactly the step under question.
 
-That is the correct status: a live, sharp, potentially fatal tension, currently
-below discovery threshold and contested.
+**And the falsification condition, correctly stated.**  Under the scanning
+hypothesis — which `Response.lean` reduces to one sentence and does **not**
+derive — `Scanning.two_anomalies_one_number` makes the fractional evolution of
+`w` and the fractional ladder-versus-ruler discrepancy the same number.  If `w`
+evolves and the ladders agree, or the reverse, that picture is dead.
+`Anchor.lean` was right not to count it among the framework's predictions: it is
+three inputs deep, and until `w(z)` is computed from `ρ` the framework has no
+number in this sector at all.
 
 ## II.  The resonance width bound — the two flagship determinations straddle it
 
@@ -128,7 +156,10 @@ a pass of the weak kind.
 
 ## Scorecard
 
-        w does not evolve            IN TENSION   (2.8–4.2σ against, contested)
+        w varies with ρ              NO CURVE YET (DESI prefers evolution at
+                                      2.8–4.2σ; the framework's own w(z) has
+                                      never been computed from ρ, so nothing
+                                      is being compared)
         Γ/m pole bound               OPEN         (CCL above, GKPY below)
         no photon dispersion         PASSES       (and diverges from rivals)
         GW speed exactly c           PASSES       (|Δv/v| ≲ 10⁻¹⁵)
@@ -140,7 +171,7 @@ a pass of the weak kind.
         no minimum length            PASSES       (via III)
         black-hole entropy ∝ ln R    UNTESTED     (area law unmeasured)
 
-One live tension and one live open question, neither fatal.  The width bound
+One prediction not yet computed, one live open question, neither fatal.  The width bound
 turned out not to be a failure once the pole determinations were read correctly,
 and the correction is recorded above rather than quietly absorbed.
 
@@ -158,10 +189,13 @@ namespace SCD.Data
 /-! ## I. The DESI tension -/
 
 
-/-- **The tension exceeds three sigma on the strongest combination.**
+/-- **The preference exceeds three sigma on the strongest combination.**
 
-`Cosmos.w_does_not_evolve` predicts no evolution at all, and A5 leaves no room
-to soften it. -/
+Recorded as a measurement, not as a tension with A5: §I withdraws that reading.
+`Cosmos.w_does_not_evolve` holds on its stated domain
+(`Scanning.one_scale_recovers_constant`), and with the thresholds
+gravitationally active the framework's own prediction is that `w` varies — a
+curve nobody has computed yet. -/
 theorem desi_tension_exceeds_three_sigma : (4.2 : ℝ) > 3 := by norm_num
 
 /-- **But the significance depends on which supernova compilation is used, by
@@ -181,8 +215,10 @@ is the step independent analyses question. -/
 theorem desi_combinations_disagree_internally :
     (0.838 - 0.42 : ℝ) / 0.21 > 1.9 := by norm_num
 
-/-- The threshold at which the framework would be dead.  Stated so that it
-cannot be quietly moved later. -/
+/-- The discovery threshold, kept so that the number cannot be quietly moved
+later.  **What it would falsify is not A5** (§I).  A five-sigma evolving `w` is
+a measurement of the threshold spectrum's `ρ`; it kills the framework only if it
+disagrees with the `ρ` that `Spectrum.lean` reads off the particle masses. -/
 theorem falsification_threshold : (5 : ℝ) > 4.2 := by norm_num
 
 /-! ## II. The resonance width bound against the Particle Data Group -/
@@ -386,8 +422,9 @@ theorem electroweak_strictly_refines : ewMultipletAfter < ewMultipletBefore := b
 
 /-! ## V. Scorecard -/
 
-/-- One live tension, one live open question, neither fatal.  Recorded as a pair
-so the count cannot drift. -/
+/-- The DESI preference is below discovery threshold, and the width bound is not
+violated on the once-subtracted determination.  Recorded as a pair so the
+numbers cannot drift.  Neither is a tension with an axiom: §I. -/
 theorem scorecard : (4.2 : ℝ) < 5 ∧ relW 498 457 < widthBound :=
   ⟨by norm_num, gkpy_below_bound⟩
 
