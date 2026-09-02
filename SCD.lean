@@ -149,6 +149,10 @@ PART III — THE QUANTUM SECTOR
     OneParameter ★ and the size is not a second freedom: its slope *is* `ρ` and
                  its origin is A5's, so uniform density is the assumption that
                  makes the size and `Δρ` one parameter
+    Codimension2 ★ and one of the two ways out of the codimension mismatch is
+                 **closed**: the framework's own line defects carry `ℤ/2`, on
+                 which no additive real source exists.  All three topological
+                 integers are now eliminated as the source of the geometry
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -281,6 +285,7 @@ import SCD.Content
 import SCD.Size
 import SCD.Valuation
 import SCD.OneParameter
+import SCD.Codimension2
 
 -- Part IV — scale flow and content
 import SCD.RG

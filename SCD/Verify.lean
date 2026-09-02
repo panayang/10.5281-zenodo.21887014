@@ -477,6 +477,11 @@ namespace SCD.Verify
 #print axioms SCD.OneParameter.uniform_size_one_observable
 #print axioms SCD.OneParameter.size_adds_no_freedom
 
+-- Codimension2.lean
+#print axioms SCD.Codimension2.two_valued_source_is_trivial
+#print axioms SCD.Codimension2.block_cannot_source
+#print axioms SCD.Codimension2.odd_pairs_cancel
+
 /-! ## PART II.a — the isotropic sector -/
 
 

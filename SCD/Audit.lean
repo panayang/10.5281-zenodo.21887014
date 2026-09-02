@@ -2544,6 +2544,59 @@ the Standard Model about nineteen parameters.  That comparison flatters nothing 
 the framework predicts far less than either — but it is the right description of
 where its freedom sits, and no section of this register had it.
 
+## V.aq  The codimension mismatch: one way out closed, and what it costs
+
+§V.k left the mismatch — a codimension-two equation on a codimension-three
+source — with two ways out: *(a)* the source is codimension two after all, or
+*(b)* the law is rewritten with a degree density.  `Codimension2.lean` closes
+*(a)*, and the framework's own charge structure does the closing.
+
+`Axis.lean` says the projective order parameter carries both kinds of defect:
+line defects with `π₁ = ℤ/2` and point defects with `π₂ = ℤ`.  So codimension two
+*is* available — at a two-valued charge.  And `two_valued_source_is_trivial`: an
+additive map from a two-element group to the reals is identically zero, since
+`a·a = 1` forces `2f(a) = 0` and `ℝ` has no two-torsion.  `odd_pairs_cancel` is
+the group step, which is `Particle.two_odd_make_even` — the selection rule the
+framework wrote for its own reasons.  Additivity is not an extra demand:
+`Flux.flux_combine` is the framework insisting on it.
+
+**And that finishes the other item too.**  §V.g tabulated three integers used
+interchangeably as "the charge that sources the geometry".  All three are now out,
+by three unrelated arguments:
+
+* `Defect.ScaleDefect.winding` — `π₁` of the **scalar** circle, scoped out by §I
+  because A4 is directional.  `Flux.lean`'s Gauss law is proved for exactly this
+  object, so the Gauss law lives entirely inside the scoped-out picture;
+* `Charges.block` — closed here;
+* `Charges.hedgehog` — signed, and `Attraction.signed_source_would_antigravitate`
+  says a signed source makes antimatter fall up.
+
+What is left is `Particle.Species.threshold`, which is **not topological**, and
+which is what `Attraction.lean` concluded on empirical grounds.  "Which label `ν`
+counts" is therefore answered — by exhaustion over the labels the framework has.
+It is not answered against a label nobody has written, and this register does not
+claim otherwise.
+
+**The cost, which is the real content.**  `Index.A6'_from_index` derives
+`κ = −2(n−1)Δ` from `IndexResponse : lap σ = Δ·ν`, algebraically in `ν`; the
+factor is untouched by any of this.  What is touched is `IndexResponse`'s
+standing.  Its authority came from `ν` being a topological index — additive and
+integral for reasons outside the dynamics — and that is what made A6″ a law
+rather than a posit.  With a threshold count in place of a winding, `ν` is a
+cardinality of the framework's own making.
+
+> **A6″ keeps its consequences and loses its index reading.**
+
+It is a postulate about how counting sources scale, of the same standing as the
+rest of A1–A7.  Every downstream number survives; what does not survive is the
+register's habit of citing A6″ as derived.  That habit is the finding.
+
+**On the count.**  `separateItems` drops from eight to seven and `sort_totals`
+from seventeen to sixteen: the label question closes, the codimension mismatch
+stays open because *(b)* has not been written.  Closing one and keeping one is
+the whole result, and it is smaller than "the mismatch is resolved" — which is
+the sentence this section exists to avoid writing.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2732,16 +2785,20 @@ def converterItems : ℕ := 4
 
 /-- And the ones the sort leaves genuinely separate: the codimension mismatch,
 the non-static operator ordering, A7, the vacuum second order, the absent site,
-G3's postulated filtration, G4's weight, and which label `ν` counts. -/
-def separateItems : ℕ := 8
+G3's postulated filtration, and G4's weight.
+
+**Was eight.**  "Which label `ν` counts" closed in §V.aq, by exhaustion over the
+three labels §V.g tabulated.  The mismatch itself stays: only one of its two
+ways out is shut. -/
+def separateItems : ℕ := 7
 
 /-- **The sort is exhaustive over what it sorts**, which is bookkeeping and not a
 claim that the list of open items is complete. -/
-theorem sort_totals : freeByConstruction + converterItems + separateItems = 17 := by decide
+theorem sort_totals : freeByConstruction + converterItems + separateItems = 16 := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1194
+def auditedTheorems : ℕ := 1197
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
