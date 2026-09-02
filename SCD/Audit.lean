@@ -1561,6 +1561,64 @@ observer question is answered for every quantity of the world and open for the
 one that matters, which is a smaller and more specific hole than the one it
 replaces.
 
+## V.y  A2 had no model, and now has one
+
+§V.b asked whether the *auxiliary* structures — `Crossed.ScaleShift`,
+`Waves.Conserved`, `RG.ScaleFlow` and the rest — are ever built from the
+framework's own carrier, and `Witness.lean` answered it.  Nobody asked the same
+question of the carriers themselves.  The answer was worse.
+
+**`ScaleField` had never been constructed.**  Not "only in special cases": the
+structure that carries A2 and A3 had **no term anywhere in the development**, so
+every theorem about the scale field was true, clean and unwitnessed.  The reason
+is uniform.  Every model of A1 here is a polynomial ring or a matrix ring over
+one — `Positivity.oneAxis`, `Witness.polyScaleAlgebra`,
+`Explanation.mvScaleAlgebra`, `Triple.matrixScaleAlgebra` — and in a polynomial
+ring **the units are the non-zero constants**.  A2 asks that `s = e^σ` be a unit
+with `d s = s · dσ`; with `s` constant that forces `dσ = 0`.  *In every model the
+development had, the scale could not vary.*
+
+`Newton.Dual` is the one escape and it escapes only so far: `σ = εφ` over the
+dual numbers varies, and `gradsq_inr` is zero **by construction**, so that model
+is exactly first order.  The whole gravity chain is about a finite-amplitude
+configuration, `s_t·s_r = 1` with `s_t ≠ 1`.  The same held of A4′: the only
+`DirScale` in the development, `Light.twoScale`, is constant over `ℝ`.
+
+**`ExpPoly.lean` builds the ring.**  `ExpPoly n` is the additive monoid algebra
+of the polynomials over the polynomials — finite sums `Σ qⱼ e^{pⱼ}` with
+polynomial coefficients and polynomial exponents — with
+`∂ᵢ(q e^p) = (∂ᵢq + q ∂ᵢp) e^p`.  `der_mul` and `der_comm` verify A1 on it;
+`e^p` is a unit with inverse `e^{-p}`, and `der_expUnit` is A2's axiom.  Then
+
+* `scaleField p` — **the first term of type `ScaleField` in the development**,
+  with `scaleField_gradient_ne_zero` showing the log-scale genuinely varies;
+* `recipTwo` — **A4′ anisotropic with exact reciprocity**: `(e^{x₀}, e^{-x₀})`
+  gives `s_t·s_r = 1` on the nose (`recipTwo_reciprocal`) and is not isotropic
+  (`recipTwo_not_isotropic`).  The Schwarzschild relation at finite amplitude,
+  with no linearisation.
+
+**What it does not do, and the reason is worth more than the attempt.**  It
+exhibits **no vacuum solution**.  `Diagonal.vacuum_scale_sum` is a conditional
+whose antecedent contains `Ric = 0`, and nothing here meets it.  Not for want of
+trying: the Schwarzschild profile is `σ_r = −½ log(1 − 2M/r)`, and **a logarithm
+of a rational function is not an exponential polynomial**.  So the gravity
+chain's hypotheses are now instantiable — a directional scale with reciprocity
+exists — while its *equations* are not solved in this ring.
+
+That is a sharper statement of what is missing than "no model": the next ring
+must be closed under `∫ dp/p` as well as under `exp`.  Registered as open.
+
+**And the `Witness.lean` caveat applies verbatim.**  One model carrying A2 shows
+A2 is *compatible* with A1, not that every model of A1 carries it.  What changed
+is that the theorems about the scale field and about an anisotropic directional
+scale are known non-vacuous, which they were not.
+
+**Ledger effect.**  `auditedTheorems` `1063 → 1084`.  No assumption is added and
+no prediction moves.  `unwitnessedStructures` is **not** raised and not lowered:
+it counts the six auxiliary structures §V.b named, and the point here is that the
+axiom carriers were never on that list at all — a gap in what the register
+counted rather than a change in the count.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -1733,7 +1791,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1063
+def auditedTheorems : ℕ := 1084
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

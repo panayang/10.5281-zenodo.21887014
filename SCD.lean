@@ -93,6 +93,9 @@ PART III — THE QUANTUM SECTOR
     Screen       predictions of the world survive the observer joining the
                  configuration; what is *recorded* does not — and that is where
                  the one discriminating prediction lives
+    ExpPoly      ★ the first configuration: `e^p` is a unit, so the scale can
+                 vary — A2 and A4′ acquire terms, and reciprocity holds at
+                 finite amplitude
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -206,6 +209,7 @@ import SCD.Mutual
 import SCD.NCSize
 import SCD.Ordering
 import SCD.Screen
+import SCD.ExpPoly
 
 -- Part IV — scale flow and content
 import SCD.RG

@@ -669,6 +669,29 @@ namespace SCD.Verify
 #print axioms SCD.Witness.scaleField_scale_is_faithful
 #print axioms SCD.Witness.scaleShift_is_witnessed
 
+-- ExpPoly.lean
+#print axioms SCD.ExpPolyModel.der_single
+#print axioms SCD.ExpPolyModel.der_zero
+#print axioms SCD.ExpPolyModel.der_add
+#print axioms SCD.ExpPolyModel.der_single_mul_single
+#print axioms SCD.ExpPolyModel.induction_single
+#print axioms SCD.ExpPolyModel.der_mul
+#print axioms SCD.ExpPolyModel.der_comm
+#print axioms SCD.ExpPolyModel.emb_zero
+#print axioms SCD.ExpPolyModel.emb_add
+#print axioms SCD.ExpPolyModel.emb_one
+#print axioms SCD.ExpPolyModel.der_emb
+#print axioms SCD.ExpPolyModel.expUnit_val
+#print axioms SCD.ExpPolyModel.expUnit_add
+#print axioms SCD.ExpPolyModel.der_expUnit
+#print axioms SCD.ExpPolyModel.scaleField_sigma
+#print axioms SCD.ExpPolyModel.scaleField_gradient_ne_zero
+#print axioms SCD.ExpPolyModel.expUnit_zero
+#print axioms SCD.ExpPolyModel.dirScale_s
+#print axioms SCD.ExpPolyModel.reciprocal_of_neg
+#print axioms SCD.ExpPolyModel.recipTwo_reciprocal
+#print axioms SCD.ExpPolyModel.recipTwo_not_isotropic
+
 /-! ## PART II.b — the anisotropic sector -/
 
 
