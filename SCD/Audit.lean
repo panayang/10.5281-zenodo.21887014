@@ -1838,6 +1838,64 @@ pass that began at §V.z.
 assumption added or removed.  A5's description is sharpened rather than changed:
 its content is the choice of potential.
 
+## V.ac  Bridge three: resolution without an order, and G3 narrows
+
+§V.s registered G3 — the observer never touches the algebra — and §V.t named the
+reason (`Observer.Crossed` compares values, the ring has no order) and declined
+the obvious repair, since non-commuting idempotents are the standard quantum
+construction and adopting them would import the answer.
+
+**First, the diagnosis was too local.**  `Emergence.resolved μ t = {k | μ k ≤ t}`
+compares reals as well, so resolution lives in a real-valued shadow throughout the
+development, not only in `Observer.lean`.  What has to change is the word
+*resolved*, not the word *observer*.
+
+**`Resolution.lean` gives it a form with no order.**  A decreasing family of
+two-sided ideals, by membership: `mem k a` says `a` is invisible at resolution
+`k`, `Resolved k a` is its negation, and `resolved_mono` is
+`Emergence.resolved_mono` with the comparison removed.
+
+**And then incompatibility is the framework's own commutator.**
+`Compatible F k a b := F.mem k (ad a b)` — two things are jointly resolvable when
+their failure to commute is invisible at that resolution.  Nothing is imported:
+`Quantum.ad` was already the word for the failure to commute,
+`Triple.influence_asymmetry` already made the difference between two readings of
+one observation equal to it, and `Ordering.lean` found the same object
+obstructing a canonical lift.  What is added is the resolution at which it is
+read.  `commutative_all_compatible` then gives the classical limit without
+imposing it.
+
+**Non-vacuous at both ends, which is what makes the resolution index matter.**
+`sharp` is the finest resolution and `incompatible_witness` exhibits an
+incompatible pair there, from `Triple.asymmetry_witness`; `powerFiltration` has
+layers and `compatible_at_zero` says the coarsest probe sees no incompatibility.
+So incompatibility is a property of a pair **at a resolution** rather than of a
+pair.
+
+**What is not done, and it is registered rather than implied.**
+
+* **the filtration is postulated.**  Nothing in A1–A7 supplies one, so this is
+  §V.b's category exactly — a structure carrying theorems the framework does not
+  build.  `unwitnessedStructures` is raised;
+* **no link to `Emergence.resolved`.**  Real thresholds on one side, ideals on
+  the other, and nothing between them: the same shape of gap as `Spectrum.gaps`
+  against `Internal.record` in §V.x, and the same kind of work would close it.
+  Until then this stands *beside* the framework's real-valued resolution rather
+  than replacing it;
+* **the layers are not exercised.**  Incompatibility at the sharpest resolution
+  and its absence at the coarsest are both shown; that it *appears* at some
+  finite order in a concrete ring is not, and that is the statement with physical
+  content;
+* **G4 is untouched.**  `Compatible` says when two things can be jointly
+  resolved, not what is obtained.  No probability, no outcomes, no process.
+
+**So G3 narrows and does not close**, and the register should say which half
+moved: "resolved" now has a form the algebra can carry, and incompatibility
+arrives natively.  The observer is still a structure the axioms do not supply.
+
+**Ledger effect.**  `auditedTheorems` `1132 → 1139`; `unwitnessedStructures`
+`6 → 7`.  No prediction moves and no axiom is touched.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -1982,8 +2040,11 @@ theorem index_substitutions_still_occur :
   refine ⟨?_, ?_⟩ <;> decide
 
 /-- Structures carrying hypotheses the framework does not supply — true
-theorems whose physical reading is conditional (§V.b). -/
-def unwitnessedStructures : ℕ := 6
+theorems whose physical reading is conditional (§V.b).
+
+Raised to **seven** by §V.ac: `Resolution.Filtration` carries the algebraic
+notion of resolution and nothing in A1–A7 builds one. -/
+def unwitnessedStructures : ℕ := 7
 
 /-- Notions that were declared more than once and are now declared once: A1's
 substrate, the geometric objects, isotropy, parallelism, the wedge, the two
@@ -2010,7 +2071,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1132
+def auditedTheorems : ℕ := 1139
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

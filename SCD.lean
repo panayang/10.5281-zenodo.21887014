@@ -107,6 +107,9 @@ PART III — THE QUANTUM SECTOR
     Amendment    what A2 adds beyond the unit is that a potential *exists*; the
                  potential itself is invisible to the geometry and unique up to
                  a fiducial, so the refactor is not made
+    Resolution   ★ bridge three: resolution as a filtration, so "resolved"
+                 needs no order and incompatibility is `ad` read at a
+                 resolution — the observer reaches the algebra
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -225,6 +228,7 @@ import SCD.Circle
 import SCD.Gradient
 import SCD.Torus
 import SCD.Amendment
+import SCD.Resolution
 
 -- Part IV — scale flow and content
 import SCD.RG

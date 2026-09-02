@@ -388,6 +388,15 @@ namespace SCD.Verify
 #print axioms SCD.Screen.screen_is_exhaustive
 #print axioms SCD.Screen.the_discriminating_entry_is_the_observer_relative_one
 
+-- Resolution.lean
+#print axioms SCD.Resolution.Filtration.resolved_mono
+#print axioms SCD.Resolution.Filtration.not_resolved_zero
+#print axioms SCD.Resolution.Filtration.compatible_symm
+#print axioms SCD.Resolution.Filtration.compatible_of_le
+#print axioms SCD.Resolution.commutative_all_compatible
+#print axioms SCD.Resolution.incompatible_witness
+#print axioms SCD.Resolution.compatible_at_zero
+
 /-! ## PART II.a — the isotropic sector -/
 
 

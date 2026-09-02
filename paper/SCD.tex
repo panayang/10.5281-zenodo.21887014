@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}1132 条定理、21540 行 Lean 代码、84 个文件；
-\textbf{全部 1132 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}1139 条定理、21540 行 Lean 代码、84 个文件；
+\textbf{全部 1139 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -5200,6 +5200,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Mutual.lean} & 10 & 更正：被观察对的标度确在过程中但在读序之差里相消；三指标楔积作为对称候选 \\
 \texttt{Ordering.lean} & 13 & 算子序：非交换提升不唯一且真空条件随之改变；静态构型不受影响 \\
 \texttt{Screen.lean} & 10 & 观察者不变性筛：世界的预言不受影响，被记录的集合不是世界的函数 \\
+\texttt{Resolution.lean} & 7 & 桥三：分辨作为理想滤链，不需要序；不相容性是 ad 在某分辨率下被读出 \\
 \midrule
 \multicolumn{3}{l}{\emph{第四部分\quad 各向同性扇区}}\\
 \texttt{Conformal.lean} & 19 & 共形曲率恒等式、Ricci、标量曲率 \\
@@ -5285,14 +5286,14 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
 \texttt{Audit.lean} & 11 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{1132} & 98 个文件，26257 行 Lean 代码 \\
+\textbf{合计} & \textbf{1139} & 99 个文件，26545 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 1132 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 1139 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5380,7 +5381,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 1132 条}\label{sec:index}
+\section{定理索引：全部 1139 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5422,6 +5423,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Mutual.lean}} (10)\quad \texttt{influence\_\allowbreak sees\_\allowbreak the\_\allowbreak pair\_\allowbreak scales}, \texttt{asymmetry\_\allowbreak depends\_\allowbreak only\_\allowbreak on\_\allowbreak the\_\allowbreak observer}, \texttt{triWedge\_\allowbreak eq\_\allowbreak alternating}, \texttt{triWedge\_\allowbreak antisymm}, \texttt{triWedge\_\allowbreak from\_\allowbreak dirCommutator}, \texttt{triWedge\_\allowbreak comm\_\allowbreak zero}, \texttt{triWedge\_\allowbreak isotropic\_\allowbreak zero}, \texttt{triWedge\_\allowbreak witness}, \texttt{triWedge\_\allowbreak not\_\allowbreak identically\_\allowbreak zero}, \texttt{summary}\par\smallskip
 \noindent\textbf{\texttt{Ordering.lean}} (13)\quad \texttt{offDiag\_\allowbreak eq\_\allowbreak classical}, \texttt{integrand\_\allowbreak sub\_\allowbreak rev}, \texttt{offDiag\_\allowbreak sub\_\allowbreak rev}, \texttt{orderings\_\allowbreak agree\_\allowbreak of\_\allowbreak comm}, \texttt{crossed\_\allowbreak two}, \texttt{crossed\_\allowbreak zero}, \texttt{crossed\_\allowbreak one}, \texttt{transverse\_\allowbreak zero\_\allowbreak one}, \texttt{vacuum\_\allowbreak is\_\allowbreak ordering\_\allowbreak dependent}, \texttt{ordering\_\allowbreak irrelevant\_\allowbreak of\_\allowbreak static}, \texttt{sym\_\allowbreak is\_\allowbreak order\_\allowbreak free}, \texttt{sym\_\allowbreak doubles\_\allowbreak the\_\allowbreak classical}, \texttt{summary}\par\smallskip
 \noindent\textbf{\texttt{Screen.lean}} (10)\quad \texttt{observer\_\allowbreak preserves\_\allowbreak predictions}, \texttt{observer\_\allowbreak preserves\_\allowbreak predictions\_\allowbreak vacuously}, \texttt{recorded\_\allowbreak by\_\allowbreak one}, \texttt{not\_\allowbreak recorded\_\allowbreak by\_\allowbreak zero}, \texttt{recorded\_\allowbreak set\_\allowbreak is\_\allowbreak observer\_\allowbreak relative}, \texttt{observer\_\allowbreak relative\_\allowbreak is\_\allowbreak modulus}, \texttt{observer\_\allowbreak relative\_\allowbreak can\_\allowbreak be\_\allowbreak modulus}, \texttt{sample\_\allowbreak grows\_\allowbreak as\_\allowbreak observer\_\allowbreak shrinks}, \texttt{screen\_\allowbreak is\_\allowbreak exhaustive}, \texttt{the\_\allowbreak discriminating\_\allowbreak entry\_\allowbreak is\_\allowbreak the\_\allowbreak observer\_\allowbreak relative\_\allowbreak one}\par\smallskip
+\noindent\textbf{\texttt{Resolution.lean}} (7)\quad \texttt{resolved\_\allowbreak mono}, \texttt{not\_\allowbreak resolved\_\allowbreak zero}, \texttt{compatible\_\allowbreak symm}, \texttt{compatible\_\allowbreak of\_\allowbreak le}, \texttt{commutative\_\allowbreak all\_\allowbreak compatible}, \texttt{incompatible\_\allowbreak witness}, \texttt{compatible\_\allowbreak at\_\allowbreak zero}\par\smallskip
 
 \subsection*{第四部分\quad 各向同性扇区}
 \noindent\textbf{\texttt{Conformal.lean}} (19)\quad \texttt{hess\_\allowbreak symm}, \texttt{d\_\allowbreak sig\_\allowbreak comm}, \texttt{sum\_\allowbreak mul\_\allowbreak gradsq}, \texttt{scaleCurv\_\allowbreak eq\_\allowbreak zero}, \texttt{Chr\_\allowbreak symm}, \texttt{d\_\allowbreak Chr\_\allowbreak diff}, \texttt{sum\_\allowbreak d\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak diag}, \texttt{sum\_\allowbreak d\_\allowbreak Chr\_\allowbreak trace}, \texttt{sum\_\allowbreak ChrTrace\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr}, \texttt{Ric\_\allowbreak eq}, \texttt{RscBare\_\allowbreak eq}, \texttt{Defm\_\allowbreak symm}, \texttt{two\_\allowbreak Rm\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{Ric\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{two\_\allowbreak Ric\_\allowbreak eq}\par\smallskip
