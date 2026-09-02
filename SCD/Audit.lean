@@ -1613,6 +1613,35 @@ A2 is *compatible* with A1, not that every model of A1 carries it.  What changed
 is that the theorems about the scale field and about an anisotropic directional
 scale are known non-vacuous, which they were not.
 
+**The exponential is a choice, and the register should say so before the file is
+read as saying otherwise.**  A2 asks for a unit `s` and an element `σ` with
+`d s = s · dσ`, and adjoining a formal `e^p` is one way to have one.  Making `σ`
+**nilpotent** is another: then `e^σ` is a polynomial and nothing is adjoined.
+`ExpPolyModel.dualScaleField` presents `Newton.Dual`'s square-zero model as the
+`ScaleField` it always was, so **A2 now has models of two different kinds** and
+neither is derived from A1–A7.  What separates them is recorded rather than
+argued: `exp_not_first_order` against `Newton.Dual.gradsq_inr` — the nilpotent
+mechanism is exact but truncated at a finite order in the scale, the exponential
+one is untruncated but formal.
+
+**And a scope statement that matters more than either, caught by asking which
+branch this is.**  `Dual.lean` divides the scale group under A3′ into the `ℝ`
+branch (`Axioms.ScaleField`, a real-valued log-scale) and the `𝕋` branch
+(`Defect.ScaleDefect`, a log-scale modulo a period, which is what lets a defect
+wind), and its own summary is that **gravity selects the `𝕋` branch** — the `ℝ`
+branch being the `Δ → 0` degeneration, with `Dual.R_branch_is_trivial` showing a
+period-zero defect has no holonomy.
+
+**Everything in `ExpPoly.lean` is the `ℝ` branch.**  A formal exponential of a
+polynomial has no period, and `Axioms.ScaleField` is that branch's carrier.  So
+the model closes "A2 has no model" **on the branch the framework's own source law
+does not use**, and `Defect.ScaleDefect` still has none.
+
+That also replaces the explanation given above for the missing vacuum solution.
+The observation about logarithms is true and is not the deep reason; the deep
+reason is that defects live on the other branch.  Both are recorded, the second
+as the one to act on.
+
 **Ledger effect.**  `auditedTheorems` `1063 → 1084`.  No assumption is added and
 no prediction moves.  `unwitnessedStructures` is **not** raised and not lowered:
 it counts the six auxiliary structures §V.b named, and the point here is that the
@@ -1791,7 +1820,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1084
+def auditedTheorems : ℕ := 1085
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

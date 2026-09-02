@@ -63,9 +63,55 @@ verbatim: one model carrying a structure shows the structure is *compatible* wit
 A1, not that every model of A1 carries it.  What changes is that the theorems
 about `ScaleField` and about anisotropic `DirScale` are now known non-vacuous,
 which they were not.
+
+## The exponential is a choice, and here is the alternative
+
+The construction above adjoins a formal `e^p` for every polynomial `p`, and it
+would be easy to read that as forced.  It is not.  **A2 asks only for a unit `s`
+and an element `σ` with `d s = s · dσ`**, and there are at least two ways to have
+one:
+
+* *adjoin an exponential* — this file: unbounded in the scale, at the price of a
+  formal adjunction;
+* *make `σ` nilpotent* — then `e^σ` is a **polynomial** and no adjunction is
+  needed.  `Newton.Dual`'s square-zero `σ = εφ` is the smallest case, and
+  `dualScaleField` below presents it as the `ScaleField` it always was.
+
+So A2 has models of two different kinds, and §V records what separates them
+rather than which is "the" model: `exp_not_first_order` against
+`Newton.Dual.gradsq_inr`.  The nilpotent mechanism is exact but **truncated at a
+finite order in the scale**; the exponential one is not truncated but is formal.
+Neither is derived from A1–A7.  Calling the exponential the model of A2 would be
+the failure this register has caught before.
+
+## And a scope statement that matters more than either
+
+`Dual.lean` (A3′) divides the scale group into branches and says which one the
+framework needs:
+
+> the `ℝ` branch — `Axioms.ScaleField`, a real-valued log-scale;
+> the `𝕋` branch — `Defect.ScaleDefect`, a log-scale modulo a period `Δ`, which
+> is what lets a defect wind.
+
+and its own summary is that **gravity selects the `𝕋` branch**, the `ℝ` branch
+being its `Δ → 0` degeneration — `Dual.R_branch_is_trivial`: a scale defect of
+period zero has no holonomy, so nothing in the `ℝ` branch winds.
+
+**Everything in this file is the `ℝ` branch.**  `Axioms.ScaleField` is that
+branch's carrier, and a formal exponential of a polynomial has no period.  So
+what is supplied here is a model of A2 *as `Axioms.lean` states it* — which is
+the branch the framework's own source law does not use.  `Defect.ScaleDefect`,
+the `𝕋` branch carrier, still has no model.
+
+That is the honest reading of why no vacuum solution turned up, and it is a
+better one than the observation about logarithms: it is not only that the profile
+is transcendental, it is that the branch carrying defects is a different branch.
+Registered as open, and it is the first thing bridge one's successor should
+build.
 -/
 import SCD.Frame
 import SCD.Explanation
+import SCD.Newton
 import Mathlib.Algebra.MonoidAlgebra.Defs
 import Mathlib.Algebra.MvPolynomial.PDeriv
 
@@ -271,5 +317,70 @@ theorem recipTwo_not_isotropic : ¬ recipTwo.Isotropic := by
   exact one_ne_zero hc
 
 
+
+/-! ## V.  The other mechanism, and what separates them
+
+The point of this section is negative and it is the reason it exists: **nothing
+in A1–A7 selects the exponential.**  A nilpotent does the same job with no
+adjunction, and the development already had one — it was never presented as a
+model of A2. -/
+
+open TrivSqZeroExt in
+/-- `1 + εφ` is a unit of the dual numbers, with inverse `1 − εφ`. -/
+noncomputable def unipotent (φ : MvPolynomial (Fin n) ℝ) :
+    (DualNumber (MvPolynomial (Fin n) ℝ))ˣ where
+  val := 1 + inr φ
+  inv := 1 - inr φ
+  val_inv := by
+    have h : (inr φ : DualNumber (MvPolynomial (Fin n) ℝ)) * inr φ = 0 :=
+      TrivSqZeroExt.inr_mul_inr _ φ φ
+    have e : (1 + inr φ) * (1 - inr φ)
+        = 1 - (inr φ : DualNumber (MvPolynomial (Fin n) ℝ)) * inr φ := by ring
+    rw [e, h, sub_zero]
+  inv_val := by
+    have h : (inr φ : DualNumber (MvPolynomial (Fin n) ℝ)) * inr φ = 0 :=
+      TrivSqZeroExt.inr_mul_inr _ φ φ
+    have e : (1 - inr φ) * (1 + inr φ)
+        = 1 - (inr φ : DualNumber (MvPolynomial (Fin n) ℝ)) * inr φ := by ring
+    rw [e, h, sub_zero]
+
+open TrivSqZeroExt in
+/-- **A2, realised by a nilpotent instead of an exponential.**
+
+`σ = εφ` squares to zero, so `e^σ = 1 + σ` is a polynomial and the ring needs no
+formal exponential.  This is `Newton.Dual`'s model, which the development has
+carried since the Newtonian limit was written and never presented as the
+`ScaleField` it is. -/
+noncomputable def dualScaleField (φ : MvPolynomial (Fin n) ℝ) :
+    ScaleField n (DualNumber (MvPolynomial (Fin n) ℝ)) where
+  σ := inr φ
+  s := unipotent φ
+  d_s i := by
+    have hd : ScaleAlgebra.d i (inr φ : DualNumber (MvPolynomial (Fin n) ℝ))
+        = inr (ScaleAlgebra.d i φ) := Dual.sig_inr φ i
+    have h0 : (inr φ : DualNumber (MvPolynomial (Fin n) ℝ))
+        * inr (ScaleAlgebra.d i φ) = 0 := TrivSqZeroExt.inr_mul_inr _ φ _
+    show ScaleAlgebra.d i ((1 : DualNumber (MvPolynomial (Fin n) ℝ)) + inr φ)
+        = ((1 : DualNumber (MvPolynomial (Fin n) ℝ)) + inr φ)
+          * ScaleAlgebra.d i (inr φ)
+    rw [ScaleAlgebra.d_add, ScaleAlgebra.d_one, zero_add, hd, add_mul, one_mul,
+      h0, add_zero]
+
+/-- **What separates the two mechanisms.**
+
+`Newton.Dual.gradsq_inr` makes the quadratic invariant vanish *by construction*
+in the nilpotent model — that is what "exactly first order" means, and it is why
+`Newton.poisson_exact` is exact there.  In the exponential model it does not
+vanish, so the terms a linearisation discards are present.
+
+This is the whole of the difference that matters, and stating it is what keeps
+the choice of mechanism a choice. -/
+theorem exp_not_first_order :
+    gradsq 1 ((scaleField (X (0 : Fin 1)) : ScaleField 1 (ExpPoly 1)).σ) ≠ 0 := by
+  show gradsq 1 (emb (X (0 : Fin 1))) ≠ 0
+  rw [gradsq, Fin.sum_univ_one]
+  show der 0 (emb (X (0 : Fin 1))) * der 0 (emb (X (0 : Fin 1))) ≠ 0
+  rw [der_emb, pderiv_X_self, emb_one, one_mul]
+  exact one_ne_zero
 
 end SCD.ExpPolyModel

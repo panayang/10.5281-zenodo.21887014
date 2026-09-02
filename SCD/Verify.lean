@@ -691,6 +691,7 @@ namespace SCD.Verify
 #print axioms SCD.ExpPolyModel.reciprocal_of_neg
 #print axioms SCD.ExpPolyModel.recipTwo_reciprocal
 #print axioms SCD.ExpPolyModel.recipTwo_not_isotropic
+#print axioms SCD.ExpPolyModel.exp_not_first_order
 
 /-! ## PART II.b — the anisotropic sector -/
 
