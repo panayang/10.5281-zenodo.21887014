@@ -127,6 +127,9 @@ PART III — THE QUANTUM SECTOR
     RateWeight   the rate is weight zero, so the scanning conversion is not a
                  gauge coupling — the second relation exists, and what is left
                  is whether its proportionality is one
+    Bridge       ★ and it is one: reading the algebra along the drift makes the
+                 scanning hypothesis a **theorem** of the index law, so the
+                 w/H₀ link is two inputs deep instead of three
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -252,6 +255,7 @@ import SCD.Information
 import SCD.Conversion
 import SCD.Overdetermination
 import SCD.RateWeight
+import SCD.Bridge
 
 -- Part IV — scale flow and content
 import SCD.RG

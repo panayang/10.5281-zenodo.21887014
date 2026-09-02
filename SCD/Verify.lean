@@ -445,6 +445,9 @@ namespace SCD.Verify
 #print axioms SCD.RateWeight.residual_factor_is_determined_not_predicted
 #print axioms SCD.RateWeight.prediction_at_unit_factor
 
+-- Bridge.lean
+#print axioms SCD.Bridge.factorsThroughCount_of_indexResponse
+
 /-! ## PART II.a — the isotropic sector -/
 
 

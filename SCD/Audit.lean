@@ -2201,6 +2201,57 @@ What changes: one of the two readings of the scanning conversion is **excluded**
 and the residue is a single proportionality between two objects whose types now
 say what a bridge between them would have to do.
 
+## V.aj  The bridge, and the scanning hypothesis becomes a theorem
+
+§V.ai left one thing between the framework and a cross-domain prediction, at the
+level of the types: `Index.IndexResponse` is ring-valued, `Response.FactorsThroughCount`
+is real-valued, same shape and no way to carry an equation across.
+`Bridge.DriftEval` is that way, and it asks for **one** property — that the source
+coefficient reads as a constant along the drift.
+
+**And then the scanning hypothesis is a theorem.**
+`Bridge.factorsThroughCount_of_indexResponse`: given a drift evaluation,
+`lap σ = Δ·ν` becomes `ΔD = κ·ΔN` after reading, **with the proportionality one**,
+because both sides carry the image of the same `Δ`.
+
+That matters because §V.q established the opposite for the framework's *other*
+tools: `Response.weight_zero_does_not_force_constancy` exhibits a response
+satisfying every constraint A5 and the grading impose and not factoring through
+the count.  Those do not force it.  **The index law does.**  And the unit
+proportionality is exactly the residue §V.ai isolated, so
+`RateWeight.prediction_at_unit_factor` applies.
+
+**The structure is inhabited.**  `Bridge.polyDriftEval` — polynomials are
+functions, evaluation along a line is a ring homomorphism, a coupling is a
+constant polynomial.  Not an empty hypothesis.
+
+**Three things are still not established, and none is hidden.**
+
+* the witness is over `MvPolynomial`, where by §V.y's own argument the units are
+  constants and there is **no non-constant scale field**.  So `DriftEval` is shown
+  inhabited, not shown to coexist with A2's varying scale — `Witness.lean`'s
+  caveat, applying twice;
+* `coeff_const` is doing real work.  In the witness it holds because `Δ` is
+  literally a constant polynomial; whether a genuine scale **period** reads as a
+  constant along the drift is not established, and is what a serious model must
+  earn;
+* the far end is still an identification: the bridge produces a function of type
+  `ℝ → ℝ` that factorises, and that *that* function is what a `w₀wₐ` fit measures
+  is one of the two identifications `Anchor.lean` names, neither formalised.
+
+**The accounting.**  `Anchor.lean` records the `w`/`H₀` link as **three inputs
+deep** — the scanning hypothesis plus two unformalised identifications.  This
+removes the first.
+
+> **Two inputs deep, not three**, and the one removed is the one the framework
+> could remove: the other two are about what an astronomical fit measures, which
+> no amount of algebra decides.
+
+**Ledger effect.**  `auditedTheorems` `1175 → 1176`; `unwitnessedStructures`
+unchanged, since `DriftEval` is witnessed at birth.  No prediction is added — the
+`w`/`H₀` link stays out of the ledger, at two inputs instead of three, which is
+`Anchor.lean`'s own criterion applied honestly rather than relaxed.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2376,7 +2427,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1175
+def auditedTheorems : ℕ := 1176
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
