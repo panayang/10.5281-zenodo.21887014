@@ -100,14 +100,21 @@ period zero has no holonomy, so nothing in the `ℝ` branch winds.
 **Everything in this file is the `ℝ` branch.**  `Axioms.ScaleField` is that
 branch's carrier, and a formal exponential of a polynomial has no period.  So
 what is supplied here is a model of A2 *as `Axioms.lean` states it* — which is
-the branch the framework's own source law does not use.  `Defect.ScaleDefect`,
-the `𝕋` branch carrier, still has no model.
+the branch the framework's own source law does not use.
 
-That is the honest reading of why no vacuum solution turned up, and it is a
-better one than the observation about logarithms: it is not only that the profile
-is transcendental, it is that the branch carrying defects is a different branch.
-Registered as open, and it is the first thing bridge one's successor should
-build.
+**And the gap on the other branch is not the one it is tempting to state.**
+`Defect.ScaleDefect` is **inhabited** — `Defect.vacuum` is a model, and a linear
+lift gives one of any winding — so the gap is *not* that the `𝕋` branch has no
+model.  It is that **`ScaleDefect` is not a scale field**: it is a function
+`ℝ → ℝ` with a quasiperiodicity condition, carrying no ring, no derivations and
+no unit.  Nothing in the development builds an object that is at once a model of
+A1–A2 and periodic; the two branches are related by `Dual.lean`'s prose and by
+theorems about `ScaleDefect` alone.  **The join is what is missing**, and it is
+what bridge one's successor should build.
+
+That is the honest reading of why no vacuum solution turned up, and a better one
+than the observation about logarithms: it is not only that the profile is
+transcendental, it is that the objects that wind are not scale fields.
 -/
 import SCD.Frame
 import SCD.Explanation

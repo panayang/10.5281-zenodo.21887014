@@ -1635,7 +1635,23 @@ period-zero defect has no holonomy.
 **Everything in `ExpPoly.lean` is the `ℝ` branch.**  A formal exponential of a
 polynomial has no period, and `Axioms.ScaleField` is that branch's carrier.  So
 the model closes "A2 has no model" **on the branch the framework's own source law
-does not use**, and `Defect.ScaleDefect` still has none.
+does not use**.
+
+**And the statement of the remaining gap needed correcting one commit after it
+was made.**  I wrote that `Defect.ScaleDefect` "still has no model".  It has one:
+`Defect.vacuum`, in the file that declares the structure, and a linear lift gives
+one of any winding.  `Defect.ScaleDefect` is **inhabited** — `Defect.vacuum` is a model, and a linear
+lift gives one of any winding — so the gap is *not* that the `𝕋` branch has no
+model.  It is that **`ScaleDefect` is not a scale field**: it is a function
+`ℝ → ℝ` with a quasiperiodicity condition, carrying no ring, no derivations and
+no unit.  Nothing in the development builds an object that is at once a model of
+A1–A2 and periodic; the two branches are related by `Dual.lean`'s prose and by
+theorems about `ScaleDefect` alone.  **The join is what is missing**, and it is
+what bridge one's successor should build.
+
+Recorded rather than quietly fixed, because it is the register's own recurring
+failure — a claim in a docstring that the declarations do not support — committed
+here by me one commit after the pass that was written to catch it.
 
 That also replaces the explanation given above for the missing vacuum solution.
 The observation about logarithms is true and is not the deep reason; the deep
