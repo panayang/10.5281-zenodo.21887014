@@ -67,13 +67,18 @@ but wide edit — every consequence of `hess_symm` inherits a hypothesis — and
 should be made once, deliberately, not as a side effect of the file that measured
 it.
 
-**Three costs, so the decision is made with them in hand.**
+**The costs, so the decision is made with them in hand — and the first one turned
+out not to exist.**
 
-* `hess_symm` becomes a hypothesis downstream.  Wide, mechanical, and the edit
-  makes visible exactly which results needed exactness;
-* closedness is **vacuous at one direction**, so `Circle.lean`'s witness does not
-  test it.  A closed-and-inexact gradient in `n ≥ 2` has not been built, and
-  until one is, "closed is strictly weaker" is known only where it is cheapest;
+* *withdrawn.*  §III above says the passage costs the Hessian's symmetry, and §V
+  disproves it: `logDeriv_closed` shows the gradient of a unit is closed for
+  **every** unit, so `hess_symm` survives with no hypothesis and nothing
+  downstream of it inherits one.  The claim is left standing in §III with this
+  correction beside it rather than edited away, because the shape of the mistake
+  — assuming a condition must be assumed — is the one worth remembering;
+* the branch distinction is therefore **exactness alone**, and it is not tested
+  above one direction: `Circle.lean`'s witness is at `n = 1`.  Whether inexact
+  gradients persist in higher dimension is not settled here;
 * **the observer.**  `Observer.Crossed` compares *values* — `μ i ≤ σ i` — in a
   real-valued shadow.  With the axiom reduced to a unit there is no `σ` in the
   ring for that shadow to shadow.  Nothing breaks today, because
@@ -198,6 +203,40 @@ the log-scale is an optional potential for it. -/
 theorem grad_eq_logDeriv (G : Circle.ScaleGradient n A) : G.grad = logDeriv G.s := by
   funext i
   exact (Units.mul_right_inj G.s).mp ((G.d_s i).symm.trans (logDeriv_spec G.s i))
+
+
+/-! ## V.  And closedness is free
+
+Written after §III claimed the passage costs the Hessian's symmetry.  **It does
+not.**  The gradient of a unit is closed for every unit, so nothing downstream of
+`hess_symm` needs a hypothesis and the cost §III named is not a cost. -/
+
+
+/-- `∂(s⁻¹) = −(s⁻¹)² ∂s`. -/
+theorem d_inv (s : Aˣ) (i : Fin n) :
+    d i ((s⁻¹ : Aˣ) : A) = -(((s⁻¹ : Aˣ) : A) * ((s⁻¹ : Aˣ) : A) * d i (s : A)) := by
+  have h : (s : A) * ((s⁻¹ : Aˣ) : A) = 1 := s.mul_inv
+  have hd := congrArg (fun x => d i x) h
+  simp only [d_mul, d_one] at hd
+  -- hd : d i s * s⁻¹ + s * d i s⁻¹ = 0
+  have hs : ((s⁻¹ : Aˣ) : A) * (s : A) = 1 := s.inv_mul
+  calc d i ((s⁻¹ : Aˣ) : A)
+      = (((s⁻¹ : Aˣ) : A) * (s : A)) * d i ((s⁻¹ : Aˣ) : A) := by rw [hs, one_mul]
+    _ = ((s⁻¹ : Aˣ) : A) * ((s : A) * d i ((s⁻¹ : Aˣ) : A)) := by ring
+    _ = ((s⁻¹ : Aˣ) : A) * (-(d i (s : A) * ((s⁻¹ : Aˣ) : A))) := by
+          rw [show (s : A) * d i ((s⁻¹ : Aˣ) : A)
+                = -(d i (s : A) * ((s⁻¹ : Aˣ) : A)) by linear_combination hd]
+    _ = -(((s⁻¹ : Aˣ) : A) * ((s⁻¹ : Aˣ) : A) * d i (s : A)) := by ring
+
+/-- **The logarithmic derivative of a unit is always closed.**
+
+So symmetry of the Hessian is *not* lost when the potential is dropped: it is a
+theorem about any unit, not a hypothesis. -/
+theorem logDeriv_closed (s : Aˣ) : Closed (logDeriv (n := n) s) := by
+  intro i j
+  simp only [logDeriv]
+  rw [d_mul, d_mul, d_inv, d_inv, d_comm i j (s : A)]
+  ring
 
 
 end SCD.Gradient

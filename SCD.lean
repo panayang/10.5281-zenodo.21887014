@@ -103,6 +103,10 @@ PART III — THE QUANTUM SECTOR
     Gradient     what A2 assumes, measured: the geometry never sees the
                  log-scale, A2's real content is that the scale is a unit, and
                  what it silently adds is that the gradient is exact
+    Torus        and the exactness fails in every dimension, not just one
+    Amendment    what A2 adds beyond the unit is that a potential *exists*; the
+                 potential itself is invisible to the geometry and unique up to
+                 a fiducial, so the refactor is not made
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -219,6 +223,8 @@ import SCD.Screen
 import SCD.ExpPoly
 import SCD.Circle
 import SCD.Gradient
+import SCD.Torus
+import SCD.Amendment
 
 -- Part IV — scale flow and content
 import SCD.RG

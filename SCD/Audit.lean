@@ -1776,21 +1776,67 @@ measured it.
 
 **Three costs, recorded so the decision is made with them in hand.**
 
-* every consequence of `hess_symm` inherits a hypothesis;
-* closedness is **vacuous at one direction**, so `Circle.lean`'s witness does not
-  test it: a closed-and-inexact gradient in `n ≥ 2` has not been built, and until
-  one is, "closed is strictly weaker" is known only where it costs least;
+* *the first cost does not exist, and the file says so against itself.*
+  `Gradient.logDeriv_closed`: the gradient of a unit is closed for **every**
+  unit, so `hess_symm` survives with no hypothesis and nothing downstream of it
+  inherits one.  The amendment is therefore free in that respect, and the
+  distinction between the branches is **exactness alone**;
+* *and the second is discharged too.*  `Torus.lean` builds the group algebra of
+  `ℤⁿ` and shows `torGradient α` is inexact as soon as the winding is non-zero in
+  any direction, `twoTorus` being the smallest case that was missing.  So the
+  `ℝ`/`𝕋` split is not an artefact of one dimension, and the axiom question has
+  its final shape: **closedness is automatic in every dimension, exactness fails
+  in every dimension, and A2 assumes the second**;
 * **the observer.**  `Observer.Crossed` compares *values*, `μ i ≤ σ i`, in a
   real-valued shadow.  With A2 reduced to a unit there is no `σ` in the ring for
   that shadow to shadow.  Nothing breaks — `Observer.Resolution` was never the
   ring's `σ` — but G3 sharpens from "the observer does not reach the algebra" to
   **the observer compares values of a quantity the axioms need not have**.
 
-**Ledger effect.**  `auditedTheorems` `1100 → 1114`.  No assumption is added and
+**Ledger effect.**  `auditedTheorems` `1100 → 1127`.  No assumption is added and
 none is removed: what changed is the register's account of what A2 *was already*
 assuming, which is why this is recorded here rather than in the assumed-count.
 `unregisteredFound` is not raised either — nothing self-registered this; it had
 not been noticed at all.
+
+## V.ab  The amendment, measured and then declined
+
+§V.aa said A2's content is one unit and left the amendment for a pass that would
+weigh it.  This is that pass, and it declines — for a reason, and with the
+information the amendment was wanted for delivered anyway.
+
+**The refactor's purpose was information.**  Restating `Axioms.lean` and pushing
+the change through everything downstream would have made visible which results
+need the potential and which need only the unit.  `Amendment.lean` supplies that
+directly:
+
+* `sig_eq_logDeriv` — a scale field's gradient **is** `s⁻¹∂s`; nothing is chosen;
+* `same_unit_same_geometry` — two scale fields with the same unit have the same
+  Hessian, `gradsq`, Laplacian, deformation, Riemann and Ricci.  **No geometric
+  result needs the potential**;
+* `ofUnitOfPotential` — the axiom is rebuilt from a unit plus any potential, so
+  A2 is exactly *a unit together with a witness that its logarithmic derivative
+  is exact*;
+* `potential_unique_up_to_fiducial` — two potentials for one unit differ by
+  something every derivation kills.  **A5's freedom is exactly the choice of
+  potential**, which is a sharper statement of A5 than the register had.
+
+**So the refactor buys tidiness and costs a rewrite of the file every other file
+imports.**  It is not made.  What is made instead is one paragraph:
+`Postulates.lean`'s A2 now records that the potential is a choice, invisible to
+the geometry, unique up to a fiducial, and that its *existence* is the axiom's
+real content — at the place a reader meets the axiom.
+
+**And the choice A2 was making is now stated rather than hidden.**  Assume the
+potential exists and the framework is on the `ℝ` branch of A3′; drop it and both
+branches survive, at the cost that `ScaleField` is no longer the carrier.
+`Dual.lean` says gravity wants the second.  **The framework has not chosen — it
+had not previously known it was choosing**, and that is the whole gain of the
+pass that began at §V.z.
+
+**Ledger effect.**  `auditedTheorems` `1127 → 1132`.  No axiom is amended, no
+assumption added or removed.  A5's description is sharpened rather than changed:
+its content is the choice of potential.
 
 ## VI.  What rests on the axioms alone
 
@@ -1964,7 +2010,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1114
+def auditedTheorems : ℕ := 1132
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

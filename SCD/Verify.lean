@@ -725,6 +725,28 @@ namespace SCD.Verify
 #print axioms SCD.Gradient.logDeriv_spec
 #print axioms SCD.Gradient.grad_unique
 #print axioms SCD.Gradient.grad_eq_logDeriv
+#print axioms SCD.Gradient.d_inv
+#print axioms SCD.Gradient.logDeriv_closed
+
+-- Torus.lean
+#print axioms SCD.Torus.dtor_single
+#print axioms SCD.Torus.dtor_zero
+#print axioms SCD.Torus.dtor_add
+#print axioms SCD.Torus.induction_single
+#print axioms SCD.Torus.dtor_mul
+#print axioms SCD.Torus.dtor_comm
+#print axioms SCD.Torus.dtor_uTor
+#print axioms SCD.Torus.dtor_coeff_zero
+#print axioms SCD.Torus.no_potential_tor
+#print axioms SCD.Torus.torGradient_not_isExact
+#print axioms SCD.Torus.twoTorus_not_isExact
+
+-- Amendment.lean
+#print axioms SCD.Amendment.sig_eq_logDeriv
+#print axioms SCD.Amendment.same_unit_same_geometry
+#print axioms SCD.Amendment.ofUnitOfPotential_s
+#print axioms SCD.Amendment.potential_unique_up_to_fiducial
+#print axioms SCD.Amendment.what_A2_adds
 
 /-! ## PART II.b — the anisotropic sector -/
 

@@ -27,6 +27,18 @@ representative `s = e^σ` postulated as a **unit** of the ring.  Formal carrier:
 infinite — is what later removes the singularity, the horizon and the minimum
 length in one stroke.
 
+*Measured, and the statement carries more than it uses.*  `Gradient.lean` shows
+the geometry never reads `σ`, only its gradient, and that the gradient is forced:
+`Amendment.sig_eq_logDeriv` makes it the logarithmic derivative `s⁻¹∂s` of the
+unit, so `Amendment.same_unit_same_geometry` gives two scale fields with the same
+unit the same geometry — all of it.  The potential is a *choice*, unique up to a
+fiducial (`Amendment.potential_unique_up_to_fiducial`), which is exactly A5's
+freedom and nothing more.  **What A2 adds beyond "the scale is a unit" is the
+assertion that a potential exists at all**, and `Torus.torGradient_not_isExact`
+shows that is a real assumption in every dimension: it is the `ℝ` branch of A3′,
+which `Dual.lean` says is not the branch gravity selects.  The axiom is left as
+it stands; what is new is that it is now known what it is choosing.
+
 **A3 — Scale–energy duality.**  `ε · s = 1`: the local energy scale is the
 reciprocal of the local length scale.  Formal carrier: `ScaleField.en`.
 *Status:* postulated.  This is the axiom the whole programme turns on, and it
