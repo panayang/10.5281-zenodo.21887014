@@ -2105,6 +2105,57 @@ not a theorem.  The two exclusions are theorems.
 changes is the status of `Δρ`: §V.f called it the highest-value open target, and
 it is now to be read as an input the framework cannot compute.
 
+## V.ah  What the input buys, and the one identification it hangs on
+
+§V.ag settled that `Δρ` is an input.  That is not a defeat — every theory has
+inputs — but it puts the question immediately: **what can still be predicted?**
+`Overdetermination.lean` answers it structurally.
+
+**An input buys something exactly when it appears twice.**
+`one_number_two_relations`: a free number in one relation is absorbed by it and
+predicts nothing; in two, it is fixed by one measurement and predicts the other.
+So the question is a count of appearances.
+
+`Δρ` appears in the gravitational relation, `Index.A6'_from_index`.  The only
+other candidate is `Scanning.scanRate`, whose docstring says its `κ` is *"a
+conversion, not a new freedom"*.
+
+**Nothing in the development identifies it.**  `scanRate` occurs in `Scanning`,
+`Response`, `Verify` and `Audit` and nowhere else, and no theorem relates its
+`κ` to `Index`'s.  So "not a new freedom" is an **assertion**, and it is the most
+consequential unmade identification in the register:
+
+* **if the two are the same constant**,
+  `Overdetermination.coupling_from_rate_and_density` gives the gravitational
+  coupling from the cosmological dissipation rate and the mass spectrum's
+  threshold density, and `product_from_rate` reads `Δρ = −λ/6` straight off a
+  cosmological measurement.  **Two measurements, one prediction, crossing from
+  particle masses to gravity;**
+* **if they are not**, `no_prediction_without_identification`: two independent
+  inputs and cosmology tells gravity nothing.
+
+**So one question decides the framework's whole dimensionful content:** is the
+conversion that turns a count into a dissipation rate the same one that turns a
+count into a curvature?  `Weight.only_gravity_crosses_the_weight` says the
+development has exactly **one** law relating a weight-zero count to a weight-one
+scale, so if the scanning rate is such a law it is that one or a second — and a
+second contradicts a theorem already here.
+
+**That argument is not made and is not a proof.**  Whether the rate is a
+weight-crossing depends on the weight of `λ`, which `Weight.lean`'s table does
+not list.  Settling it is the next piece of work and it is small.
+
+**And no number is offered.**  Converting `λ` to a measured rate needs the unit
+bookkeeping between the framework's scale-axis time and cosmological time, which
+has not been done; a figure without it would be this register's oldest failure.
+
+**Ledger effect.**  `auditedTheorems` `1167 → 1171`.  No prediction is added: what
+is added is the statement of what *would* be predicted, and of the single
+identification that decides it.  `Anchor.unanchoredIdentifications` is **not**
+raised, because this one is not unanchored — swapping it changes everything
+falsifiable in the dimensionful sector, which by `Anchor.lean`'s own test makes
+it anchored and merely **unmade**.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2280,7 +2331,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1167
+def auditedTheorems : ℕ := 1171
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

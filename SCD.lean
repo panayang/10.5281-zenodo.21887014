@@ -121,6 +121,9 @@ PART III — THE QUANTUM SECTOR
                  class of routes and leaves derivation as the only kind
     Conversion   and counts cannot fix it either, so `Δρ` is a **permanent
                  input** — both of the framework's categories are closed
+    Overdetermination  ★ but an input buys a prediction when it appears twice,
+                 and everything dimensionful hangs on one unmade identification:
+                 is the scanning conversion the gravitational one?
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -244,6 +247,7 @@ import SCD.Layers
 import SCD.Spacing
 import SCD.Information
 import SCD.Conversion
+import SCD.Overdetermination
 
 -- Part IV — scale flow and content
 import SCD.RG

@@ -433,6 +433,12 @@ namespace SCD.Verify
 #print axioms SCD.Conversion.threshold_not_a_function_of_charge
 #print axioms SCD.Conversion.charge_not_a_function_of_threshold
 
+-- Overdetermination.lean
+#print axioms SCD.Overdetermination.one_number_two_relations
+#print axioms SCD.Overdetermination.coupling_from_rate_and_density
+#print axioms SCD.Overdetermination.product_from_rate
+#print axioms SCD.Overdetermination.no_prediction_without_identification
+
 /-! ## PART II.a — the isotropic sector -/
 
 
