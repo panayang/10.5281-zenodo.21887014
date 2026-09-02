@@ -419,6 +419,10 @@ namespace SCD.Verify
 #print axioms SCD.Spacing.observed_variance_ne_zero
 #print axioms SCD.Spacing.thresholds_not_power_spaced
 #print axioms SCD.Spacing.gapList_shift_invariant
+#print axioms SCD.Spacing.gapList_rescale
+#print axioms SCD.Spacing.ratio_invariant
+#print axioms SCD.Spacing.unique_pure_number
+#print axioms SCD.Spacing.meanGap_from_gaps
 
 /-! ## PART II.a — the isotropic sector -/
 

@@ -1982,17 +1982,31 @@ must be placed by a constant-rate process on the scale axis.  *A filtration whos
 layer set is Poisson rather than arithmetic* is a sharp target, and it is what
 `Spectrum.lean`'s own prediction demands.
 
-**A reading, recorded as one, that closes off a whole class of routes.**
-`Spacing.gapList_shift_invariant` proves every gap statistic is blind to a shift
-of the whole spectrum, which is A5.  The reading — that A5's *full* shift
-invariance leaves no gap statistic able to single out a **period** — is not
-proved.  If it holds then **no statistic of the spectrum can ever fix `Δ`**, and
-§V.f's open number `Δρ` cannot come from spectral data at all: the second
-relation must be **combinatorial**, a count of windings per threshold.  That
-would explain why §V.f, §V.g and §V.h each failed in the same place, and it is
-the direction to test next.  Registered as a reading.
+**And a reading that was going to be recorded, checked instead, and withdrawn.**
+The tempting statement is that A5 leaves the spectrum unable to see the scale
+period at all, so that §V.f's open number `Δρ` could never come from spectral
+data and the second relation would *have* to be combinatorial — a count of
+windings per threshold.  That would have explained why §V.f, §V.g and §V.h each
+failed in the same place.
 
-**Ledger effect.**  `auditedTheorems` `1152 → 1158`.  No assumption is added —
+**It is too strong.**  `Spacing.gapList_shift_invariant` and
+`Spacing.gapList_rescale` fix the gaps' behaviour — blind to a shift, scaling
+with the axis — so the period and the mean gap carry the *same* weight,
+`ratio_invariant` makes their ratio the invariant, and `unique_pure_number` says
+exactly one real number relates them.  So the spectrum determines the period **up
+to one pure factor**, and that factor is `Δρ`.
+
+`Δρ` has weight zero and the gap data *has* weight-zero content — `CV²` — so a
+relation `Δρ = f(CV², …)` is type-correct.  **Nothing excludes a spectral
+determination; nobody has proposed one.**  The route is empty, not closed.
+
+Recorded because the exclusion was the reason for turning to the winding count,
+and it does not hold: the combinatorial direction is one plausible route beside a
+spectral one, not the only survivor.  This is the register's own failure mode —
+an exclusion claimed from an absence — caught before it was written down as a
+finding.
+
+**Ledger effect.**  `auditedTheorems` `1152 → 1162`.  No assumption is added —
 the identification appears as a hypothesis, not as a postulate — and no
 prediction moves.  §V.x's gap is **narrowed, not closed**: the link is now
 testable, and its simplest instance is refuted.
@@ -2172,7 +2186,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1158
+def auditedTheorems : ℕ := 1162
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

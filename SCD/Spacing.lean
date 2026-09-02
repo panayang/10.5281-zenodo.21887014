@@ -48,13 +48,33 @@ than arithmetic*, and it is the shape `Spectrum.lean`'s prediction demands.
 * it excludes **power-spaced** thresholds, not every filtration.  §V.x's gap is
   narrowed, not closed: the link is now testable and its simplest instance is
   refuted;
-* it says nothing about `Δρ`, and cannot.  `gapList_shift_invariant` is half the
-  reason — every gap statistic is blind to a shift, which is A5 — and the other
-  half is the reading that A5's full shift-invariance leaves no gap statistic
-  able to single out a *period*.  If that reading holds, **no statistic of the
-  spectrum can ever fix the scale period**, and the second relation the framework
-  needs must be combinatorial: how many windings there are per threshold.  That
-  is stated as a reading and not proved here.
+* it says nothing about `Δρ`.  How *little* it says is measured in §II below,
+  and the measurement corrects a tempting overstatement.
+
+## II.  How wide the blindness is — exactly one pure number
+
+It is easy to say the spectrum "cannot see the scale period" and stop.  That is
+too strong, and §II is what happens when it is checked.
+
+`gapList_shift_invariant` and `gapList_rescale` fix the gaps' behaviour: they are
+blind to a shift of the whole spectrum, and they scale with it.  So the period
+and the mean gap have the **same weight**, `ratio_invariant` makes their ratio
+the invariant, and `unique_pure_number` says exactly one real number relates
+them.  Therefore
+
+> the spectrum determines the period **up to one pure factor**, and that factor
+> is `Δρ`.
+
+**Which means the blindness is not structural, and the claim that it is would be
+wrong.**  `Δρ` has weight zero; the gap data *has* weight-zero content — `CV²`;
+so a relation `Δρ = f(CV², …)` is type-correct.  Nothing excludes a spectral
+determination of `Δρ`.  **Nobody has proposed one.**  The route is empty, not
+closed, and saying "the second relation must be combinatorial" claims an
+exclusion that has not been proved.  It remains one plausible direction beside
+another.
+
+That correction matters because the whole reason for looking at the winding count
+was that the spectral route had been ruled out.  It has not.
 -/
 import SCD.Layers
 import SCD.Spectrum
@@ -130,6 +150,47 @@ theorem gapList_shift_invariant (thr : ℕ → ℝ) (c : ℝ) (m : ℕ) :
   congr 1
   funext j
   ring
+
+
+/-! ## II.  The width of the blindness -/
+
+
+/-- **Rescaling the scale axis scales every gap by the same factor.**
+
+`Weight.lean` gives the gaps weight one, and this is that, computed rather than
+assigned. -/
+theorem gapList_rescale (thr : ℕ → ℝ) (c : ℝ) (m : ℕ) :
+    gapList (fun j => c * thr j) m = (gapList thr m).map (fun g => c * g) := by
+  simp only [gapList, List.map_map]
+  congr 1
+  funext j
+  simp only [Function.comp_apply]
+  ring
+
+/-- **The period has the same weight as a gap, so their ratio is the invariant.**
+
+Under `σ ↦ cσ` both the period and the mean gap scale by `c`, so the pure number
+they form does not move.  This is `Weight.product_invariant` for the pair that
+matters. -/
+theorem ratio_invariant (Δ mg c : ℝ) (hc : c ≠ 0) (hmg : mg ≠ 0) :
+    (c * Δ) / (c * mg) = Δ / mg := by
+  field_simp
+
+/-- **And exactly one pure number relates them.**
+
+Given the gaps — hence the mean gap — the period is fixed by one real number and
+no more.  The blindness of the spectrum to the period is therefore *exactly one
+pure number wide*: it is not that the spectrum says nothing about `Δ`, it is that
+it says everything except this. -/
+theorem unique_pure_number (Δ mg : ℝ) (hmg : mg ≠ 0) : ∃! r : ℝ, Δ = r * mg := by
+  refine ⟨Δ / mg, by field_simp, ?_⟩
+  intro r hr
+  field_simp at hr ⊢
+  rw [hr]
+
+/-- **The gaps do determine the mean gap**, which is the weight-one datum they
+carry; nothing here is claiming the spectrum is uninformative. -/
+theorem meanGap_from_gaps : Spectrum.meanGap = Spectrum.gapSum / 11 := rfl
 
 
 end SCD.Spacing
