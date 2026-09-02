@@ -467,6 +467,10 @@ namespace SCD.Verify
 #print axioms SCD.Size.uniform_density_is_a_restriction
 #print axioms SCD.Size.emergence_is_ofThreshold
 
+-- Valuation.lean
+#print axioms SCD.Valuation.modularity_is_a_restriction
+#print axioms SCD.Valuation.observer_counting_law
+
 /-! ## PART II.a — the isotropic sector -/
 
 

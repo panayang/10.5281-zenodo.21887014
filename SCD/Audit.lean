@@ -2434,6 +2434,50 @@ places already.
 one is **made precise**: uniform density was listed in §V without a statement of
 what it restricts, and now has one.  No prediction moves.
 
+## V.ao  The structure accepts a weight; nothing picks one
+
+§V.an found that the cosmological escapes are a **size** and that G4's missing
+weight is the same missing object.  `Valuation.lean` asks whether the framework's
+structure constrains a size, and the answer is one law conditional on one
+property.
+
+**The property.**  Monotonicity is far too little to weight anything — "one if
+anything is there" is monotone.  The next condition is **modularity**,
+inclusion–exclusion, which is what makes a size a *count*.
+`Valuation.modularity_is_a_restriction`: it is not free, since a monotone size
+can count two disjoint things as one.
+
+**The law.**  `Internal.record_union` says joining observers **intersects** their
+records — the lattice turning over, which §V.t recorded as internality's
+surprise.  With a modular size, `Valuation.observer_counting_law` transfers
+inclusion–exclusion to the observer lattice.
+
+> This is the first thing in the development that **weighs** anything, and it is
+> one property away from free.
+
+**What that changes about G4.**  §V.ad left it as *nothing weights the outcomes*,
+and it was natural to read that as the structure resisting a weight.  It does
+not: the observer lattice **accepts** a weight the moment modularity is granted,
+and uses it immediately.  What is missing is not a place for the weight to live —
+it is anything that **picks** one.  Smaller and more specific than "no
+probability", and it names a condition rather than an absence.
+
+**But it is not G4, and the difference matters.**  What is weighed are
+**records**, sets of thresholds crossed; G4 asked for a weight on the
+*indistinguishability classes* of `Layers.lean`, which are classes of ring
+elements.  Different objects, and nothing here relates them.  This is adjacent to
+G4, not G4 — which is the difference between progress and the appearance of it.
+
+**And granting modularity is another input.**  Nothing in A1–A7 supplies it.  The
+framework's counts are counts and a count is modular, but *that the size is a
+count* is the assumption; `Attraction.lean` made the same one about the source
+and the register anchored it against antihydrogen, and there is no comparable
+anchor here.
+
+**Ledger effect.**  `auditedTheorems` `1187 → 1189`.  No assumption is added —
+modularity appears as an explicit hypothesis of the one theorem that uses it, in
+the manner of A6′ — and no prediction moves.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2609,7 +2653,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1187
+def auditedTheorems : ℕ := 1189
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

@@ -143,6 +143,9 @@ PART III — THE QUANTUM SECTOR
     Size         ★ and sorting the rest: the cosmological escapes are a **size**
                  and its derivative, not content — which is the same missing
                  object as G4's weight on outcomes
+    Valuation    and the structure *accepts* a weight: `record_union` plus
+                 modularity gives inclusion–exclusion on the observer lattice.
+                 Nothing picks the weight, but nothing resists it either
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -273,6 +276,7 @@ import SCD.Observations
 import SCD.Disconnect
 import SCD.Content
 import SCD.Size
+import SCD.Valuation
 
 -- Part IV — scale flow and content
 import SCD.RG
