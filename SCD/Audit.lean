@@ -2597,6 +2597,76 @@ stays open because *(b)* has not been written.  Closing one and keeping one is
 the whole result, and it is smaller than "the mismatch is resolved" — which is
 the sentence this section exists to avoid writing.
 
+## V.ar  Way out (b), written — and the question dissolves
+
+§V.aq closed *(a)* and left *(b)* — rewrite the source law with a degree density
+— with the question that motivated the whole line: **does the same `κ` come
+out?**  `DegreeSource.lean` answers it, and then the answer stops mattering.
+
+**Yes, and it is worth nothing.**  `degree_gives_the_same_kappa` is
+`Index.A6'_from_index` *applied*, not reproved.  A6″'s `Δ` was already an
+arbitrary ring element and the derivation of `κ = −2(n−1)Δ` used no property of
+it — not that it is a period, not that it is non-zero.  Any constant gives the
+same formula with itself in the slot.  The expected solid-angle factor, the
+`n`-dependent normalisation, the arithmetic to check: none of it arises.  So the
+question was malformed, and reproducing the formula is evidence of nothing.  That
+is the first finding and it cost one line of Lean.
+
+**And then *(b)* fails anyway, for a reason neither branch anticipated.**
+
+`ℤ` is torsion-free, so `degree_admits_an_additive_source` exhibits `k ↦ λ·k` and
+*(b)* is **not** disposed of by §V.aq's argument.  It had a real chance.  What
+kills it is `additive_nonneg_on_group_is_trivial`: on a **group**, an additive
+map to `ℝ` that is non-negative is identically zero — `f(1) = 0`, then
+`f(a) + f(a⁻¹) = 0` with both terms non-negative.  Non-negativity is not
+decoration: it is what `Attraction.attraction_from_counting` requires, and it is
+required because gravity attracts universally.
+
+**One theorem covers both branches.**  The block died at `a = a⁻¹`; the degree
+dies at `f(k) + f(−k) = 0`.  Torsion and sign are two ways for the same inverse
+to close the same argument, and it never needed to know which codimension
+anything was.
+
+> **No group-valued charge can be a universally attractive additive source.**
+
+Every topological charge here is group-valued — `π₁` and `π₂` are groups, which is
+what makes them topological.  So the source of the geometry **cannot be
+topological at all**, and §V.k's question — which codimension — was malformed on
+both branches.  It has an answer and the answer is *neither*.  The item does not
+get resolved; it **dissolves**.
+
+**Sharp, and not proving too much.**  `monoid_source_exists` gives `k ↦ k` on
+`Multiplicative ℕ`: additive, non-negative, non-zero.  So **inverses** do the
+killing, not additivity and not positivity, and `Particle.Species.threshold`
+survives because content is a cardinality with no anti-content.  Two checks
+against overreach: real gravity's source is not topological and mass is
+non-negative, so the conclusion agrees with the world; and electric charge is
+signed and does source an interaction — permitted, because that interaction is
+not universally attractive.  The theorem isolates *attraction* as the killer,
+which is the right joint.
+
+**What *(b)* would have cost.**  Recorded so the closure is not mistaken for a
+rescue.  The degree belongs to the **axis** field and `Δ` is the period of the
+**scalar** `σ`; nothing relates them, so *(b)* introduces `λ` and
+`ratio_is_weight_zero` makes `λ/Δ` a **second pure number** beside `Δρ`.  Gravity
+would carry `λρ` and the action step `Δρ`, and `link_survives_only_if_equal` says
+the `G`–`ℏ` common origin would hold only by separate postulate.  *(b)* was never
+the cheap option.
+
+**On the counts.**  `separateItems` 7 → 6 and `sort_totals` 16 → 15: the mismatch
+closes.  `assumedCount` **stays at 10**.  The tempting move is to discharge "`ν`
+is the threshold count" — it is now the unique survivor rather than one of three
+— but the elimination leans on an empirical fact (antihydrogen falls), so it
+remains an input.  What changed is its *character*, not its status, and the
+register has been wrong before by letting those two slide together.
+
+**And what it leaves.**  A6″ is a posit about how counting sources scale, with no
+remaining route by which it might have been an index.  That is a downgrade
+already recorded in §V.aq; this section removes the last hope of reversing it.
+The framework's ambition to derive gravity from topology is closed — not
+refuted from outside, but by its own charge structure and its own commitment to
+universal attraction.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2783,22 +2853,23 @@ def freeByConstruction : ℕ := 5
 the size's derivative. -/
 def converterItems : ℕ := 4
 
-/-- And the ones the sort leaves genuinely separate: the codimension mismatch,
-the non-static operator ordering, A7, the vacuum second order, the absent site,
-G3's postulated filtration, and G4's weight.
+/-- And the ones the sort leaves genuinely separate: the non-static operator
+ordering, A7, the vacuum second order, the absent site, G3's postulated
+filtration, and G4's weight.
 
-**Was eight.**  "Which label `ν` counts" closed in §V.aq, by exhaustion over the
-three labels §V.g tabulated.  The mismatch itself stays: only one of its two
-ways out is shut. -/
-def separateItems : ℕ := 7
+**Was eight, then seven.**  "Which label `ν` counts" closed in §V.aq by
+exhaustion over the three labels §V.g tabulated; the codimension mismatch closed
+in §V.ar, which shut the second way out and showed the question was malformed on
+both branches. -/
+def separateItems : ℕ := 6
 
 /-- **The sort is exhaustive over what it sorts**, which is bookkeeping and not a
 claim that the list of open items is complete. -/
-theorem sort_totals : freeByConstruction + converterItems + separateItems = 16 := by decide
+theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1197
+def auditedTheorems : ℕ := 1205
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

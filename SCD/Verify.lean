@@ -482,6 +482,16 @@ namespace SCD.Verify
 #print axioms SCD.Codimension2.block_cannot_source
 #print axioms SCD.Codimension2.odd_pairs_cancel
 
+-- DegreeSource.lean
+#print axioms SCD.DegreeSource.degree_gives_the_same_kappa
+#print axioms SCD.DegreeSource.degree_admits_an_additive_source
+#print axioms SCD.DegreeSource.additive_nonneg_on_group_is_trivial
+#print axioms SCD.DegreeSource.signed_degree_cannot_attract
+#print axioms SCD.DegreeSource.monoid_source_exists
+#print axioms SCD.DegreeSource.ratio_is_weight_zero
+#print axioms SCD.DegreeSource.two_pure_numbers_where_there_was_one
+#print axioms SCD.DegreeSource.link_survives_only_if_equal
+
 /-! ## PART II.a — the isotropic sector -/
 
 

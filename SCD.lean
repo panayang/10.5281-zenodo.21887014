@@ -153,6 +153,10 @@ PART III — THE QUANTUM SECTOR
                  **closed**: the framework's own line defects carry `ℤ/2`, on
                  which no additive real source exists.  All three topological
                  integers are now eliminated as the source of the geometry
+    DegreeSource ★ and the other way out is closed too, by one theorem covering
+                 both: on a **group**, an additive non-negative source vanishes.
+                 So the source of the geometry cannot be topological at all, and
+                 the codimension question was malformed on both branches
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -286,6 +290,7 @@ import SCD.Size
 import SCD.Valuation
 import SCD.OneParameter
 import SCD.Codimension2
+import SCD.DegreeSource
 
 -- Part IV — scale flow and content
 import SCD.RG
