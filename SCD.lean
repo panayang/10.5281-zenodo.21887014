@@ -119,6 +119,8 @@ PART III — THE QUANTUM SECTOR
     Information  ★ predictions and inputs are informationally disjoint, so no
                  prediction can ever fix a free number — which retires a whole
                  class of routes and leaves derivation as the only kind
+    Conversion   and counts cannot fix it either, so `Δρ` is a **permanent
+                 input** — both of the framework's categories are closed
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -241,6 +243,7 @@ import SCD.Resolution
 import SCD.Layers
 import SCD.Spacing
 import SCD.Information
+import SCD.Conversion
 
 -- Part IV — scale flow and content
 import SCD.RG

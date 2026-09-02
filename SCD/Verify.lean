@@ -428,6 +428,11 @@ namespace SCD.Verify
 #print axioms SCD.Information.predicted_cannot_determine_modulus
 #print axioms SCD.Information.modulus_may_determine_modulus
 
+-- Conversion.lean
+#print axioms SCD.Conversion.counts_cannot_fix_a_unit
+#print axioms SCD.Conversion.threshold_not_a_function_of_charge
+#print axioms SCD.Conversion.charge_not_a_function_of_threshold
+
 /-! ## PART II.a — the isotropic sector -/
 
 

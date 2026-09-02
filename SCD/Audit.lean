@@ -2055,6 +2055,56 @@ general fact is what retires the survey.
 from the prediction ledger; what changes is the register's account of what the
 ledger can be *used for*, which is: not this.
 
+## V.ag  Both categories are closed, and I proposed a refuted route
+
+§V.af closed the spectral route to `Δρ` and concluded that the combinatorial one
+— a count of windings per threshold — was **the only kind the accounting
+permits**.  That is wrong, and §III of `Sources.lean` had already refuted it.
+**I proposed it without re-reading the file that answers it**, which is this
+register's own recurring failure committed by me, and it is recorded before the
+result it produced.
+
+**What was already there.**  `Sources.source_coefficient_scales`: any law
+`Δσ = C·ν` with `ν` a dimensionless count has `C ↦ cC` under `σ ↦ cσ`, so **the
+coefficient carries the unit whatever the count counts**.  The previous author
+had proposed swapping `π₁` for `π₂` and refuted it in the same file.
+
+My proposal looked different — a *relation between two counts* rather than a
+change of which count sources the geometry — and dies of the same cause.
+`Conversion.counts_cannot_fix_a_unit` states it in that form: a weight-one
+quantity is not a function of weight-zero data, since the left side moves under
+rescaling and the right side does not.  "Two windings per threshold" relates a
+count to a count and leaves `Δ` where it was.
+
+**And the label structure denies the map the route needed.**
+`Conversion.threshold_not_a_function_of_charge` and
+`charge_not_a_function_of_threshold`: `Particle.Species` carries threshold and
+charge as independent fields.  The first is §II of `Sources.lean` as a theorem —
+`MassAudit.lean` retracted the geometric tower against lattice data, `Sources`
+observed it also contradicts the label structure, and nobody had made that a
+theorem.  It is the stronger objection: **a mass law is excluded by the
+structure, not merely unsupported by data.**
+
+**So, plainly.**  Predictions cannot fix `Δρ` (§V.af); counts cannot fix `Δρ`
+(§V.g's theorem, and `counts_cannot_fix_a_unit` for the relational form).
+
+> **`Δρ` is not an open problem.  It is a permanent input** — unless a quantity
+> that is neither a prediction nor a count is introduced, and the framework has no
+> third category.
+
+The framework therefore carries one free magnitude, which is the standard
+bargain, **plus one permanently free pure number**, which is not; and the second
+cannot be closed from inside.  That is a real result and it is not the one the
+last three passes were looking for.
+
+**Scope.**  "Both categories" is a **reading**: that predictions and counts
+exhaust the weight-zero quantities is an observation about `Weight.lean`'s table,
+not a theorem.  The two exclusions are theorems.
+
+**Ledger effect.**  `auditedTheorems` `1164 → 1167`.  No prediction moves.  What
+changes is the status of `Δρ`: §V.f called it the highest-value open target, and
+it is now to be read as an input the framework cannot compute.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2230,7 +2280,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1164
+def auditedTheorems : ℕ := 1167
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
