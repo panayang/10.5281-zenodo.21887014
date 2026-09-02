@@ -100,6 +100,9 @@ PART III — THE QUANTUM SECTOR
     Circle       and the other branch: a scale whose gradient has no potential.
                  A periodic scale field is a contradiction in terms, so the join
                  keeps the gradient and drops the potential
+    Gradient     what A2 assumes, measured: the geometry never sees the
+                 log-scale, A2's real content is that the scale is a unit, and
+                 what it silently adds is that the gradient is exact
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -215,6 +218,7 @@ import SCD.Ordering
 import SCD.Screen
 import SCD.ExpPoly
 import SCD.Circle
+import SCD.Gradient
 
 -- Part IV — scale flow and content
 import SCD.RG

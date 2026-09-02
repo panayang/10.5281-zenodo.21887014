@@ -1725,6 +1725,73 @@ that branch needs, not a solution on it.
 `ScaleGradient` is a structure offered, and no theorem in the development depends
 on it.  No prediction moves.
 
+## V.aa  What A2 assumes, measured — and it is one unit
+
+§V.z proposed a carrier and declined to adopt it, which left the axiom question
+open in the worst way: a proposal on the table and nothing to decide it with.
+`Gradient.lean` measures instead of arguing, and the measurement changes what the
+proposal should be.
+
+**The geometry never sees the log-scale.**  `hess`, `lap`, `gradsq`, `Chr`, `Rm`,
+`Ric` and `Defm` are built from `sig` and nothing else, and
+`Gradient.geometry_congr` makes that a theorem: two log-scales with the same
+gradient have the same everything.  `Axioms.geometry_fiducial_invariant` — A5's
+carrier — then follows from the congruence side, since a fiducial shift changes
+no gradient.
+
+**So `σ` does three things**: it lets `ScaleField` be stated, it carries the
+additive half of the group law, and it makes `hess_symm` free because
+`d i (d j σ) = d j (d i σ)` is `d_comm`.  The first two are bookkeeping.
+
+**The third is the finding.**  `Gradient.exact_isClosed`: an exact gradient is
+closed.  `Gradient.closed_not_exact`: the converse fails, on `Circle.lean`'s
+winding scale.  So
+
+> **A2 does not assume "there is a scale"; it assumes the scale's gradient is
+> exact** — which by `Dual.lean` is the `ℝ` branch of A3′, chosen silently, and
+> by `Dual.lean`'s own summary the branch gravity does not select.
+
+That reframes the question from a matter of style to one with an answer: the
+choice is between *closed* and *closed-and-exact*, not between `σ` and `grad`.
+
+**And then the proposed structure collapses.**  Given a unit `s`, the equation
+`d s = s · g` **determines** `g`, because `s` is invertible:
+`Gradient.logDeriv_spec` gives a solution and `Gradient.grad_unique` shows there
+is only one, so `Gradient.grad_eq_logDeriv` makes `Circle.ScaleGradient`
+equivalent to `s : Aˣ`.
+
+> **A2's content is one unit.**  The gradient is a definition, the log-scale is an
+> *optional potential* for it, and exactness is a property of the unit rather than
+> extra data.
+
+§V.z proposed keeping the gradient as primitive.  That was one step short: the
+gradient is not primitive either.
+
+**Nothing is amended.**  `Axioms.lean` is untouched and A2 still reads as it did.
+Restating it as "the scale is a unit", with `Closed` as an explicit hypothesis
+where exactness was being used, is a wide mechanical edit whose value is that it
+makes visible *which* results needed exactness — and it should be made once,
+deliberately, by a pass that does it, not as a side effect of the one that
+measured it.
+
+**Three costs, recorded so the decision is made with them in hand.**
+
+* every consequence of `hess_symm` inherits a hypothesis;
+* closedness is **vacuous at one direction**, so `Circle.lean`'s witness does not
+  test it: a closed-and-inexact gradient in `n ≥ 2` has not been built, and until
+  one is, "closed is strictly weaker" is known only where it costs least;
+* **the observer.**  `Observer.Crossed` compares *values*, `μ i ≤ σ i`, in a
+  real-valued shadow.  With A2 reduced to a unit there is no `σ` in the ring for
+  that shadow to shadow.  Nothing breaks — `Observer.Resolution` was never the
+  ring's `σ` — but G3 sharpens from "the observer does not reach the algebra" to
+  **the observer compares values of a quantity the axioms need not have**.
+
+**Ledger effect.**  `auditedTheorems` `1100 → 1114`.  No assumption is added and
+none is removed: what changed is the register's account of what A2 *was already*
+assuming, which is why this is recorded here rather than in the assumed-count.
+`unregisteredFound` is not raised either — nothing self-registered this; it had
+not been noticed at all.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -1897,7 +1964,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1100
+def auditedTheorems : ℕ := 1114
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

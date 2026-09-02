@@ -710,6 +710,22 @@ namespace SCD.Verify
 #print axioms SCD.Circle.toDefect_isTrivial_iff
 #print axioms SCD.Circle.exact_iff_trivial
 
+-- Gradient.lean
+#print axioms SCD.Gradient.hess_congr
+#print axioms SCD.Gradient.gradsq_congr
+#print axioms SCD.Gradient.lap_congr
+#print axioms SCD.Gradient.Chr_congr
+#print axioms SCD.Gradient.Defm_congr
+#print axioms SCD.Gradient.Rm_congr
+#print axioms SCD.Gradient.Ric_congr
+#print axioms SCD.Gradient.geometry_congr
+#print axioms SCD.Gradient.fiducial_changes_no_geometry
+#print axioms SCD.Gradient.exact_isClosed
+#print axioms SCD.Gradient.closed_not_exact
+#print axioms SCD.Gradient.logDeriv_spec
+#print axioms SCD.Gradient.grad_unique
+#print axioms SCD.Gradient.grad_eq_logDeriv
+
 /-! ## PART II.b — the anisotropic sector -/
 
 
