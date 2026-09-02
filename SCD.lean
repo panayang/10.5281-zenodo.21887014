@@ -130,6 +130,9 @@ PART III — THE QUANTUM SECTOR
     Bridge       ★ and it is one: reading the algebra along the drift makes the
                  scanning hypothesis a **theorem** of the index law, so the
                  w/H₀ link is two inputs deep instead of three
+    Observations the remaining two inputs get types, and the theory cancels: two
+                 measurements by different communities must report the same
+                 number, two-sidedly falsifiable
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -256,6 +259,7 @@ import SCD.Conversion
 import SCD.Overdetermination
 import SCD.RateWeight
 import SCD.Bridge
+import SCD.Observations
 
 -- Part IV — scale flow and content
 import SCD.RG

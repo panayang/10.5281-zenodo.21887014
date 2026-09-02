@@ -448,6 +448,12 @@ namespace SCD.Verify
 -- Bridge.lean
 #print axioms SCD.Bridge.factorsThroughCount_of_indexResponse
 
+-- Observations.lean
+#print axioms SCD.Observations.observations_agree
+#print axioms SCD.Observations.falsified_by_one_anomaly_alone
+#print axioms SCD.Observations.falsified_by_the_other_alone
+#print axioms SCD.Observations.fit_identification_is_a_constraint
+
 /-! ## PART II.a — the isotropic sector -/
 
 

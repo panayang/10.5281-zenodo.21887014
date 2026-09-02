@@ -2252,6 +2252,49 @@ unchanged, since `DriftEval` is witnessed at birth.  No prediction is added — 
 `w`/`H₀` link stays out of the ledger, at two inputs instead of three, which is
 `Anchor.lean`'s own criterion applied honestly rather than relaxed.
 
+## V.ak  The two identifications get types, and the theory cancels
+
+§V.aj removed the first of the three inputs behind the `w`/`H₀` link.
+`Observations.lean` gives the other two a type — not a proof, since no algebra
+decides what an astronomical pipeline reports, but the **A6′ treatment**: an
+explicit hypothesis carried visibly by everything downstream.
+
+**And a trap on the way, worth recording because the first draft fell in.**
+Written as a *structure* with the observed number as a field, an identification
+is trivially inhabited — one can always name a real equal to a formula — and
+constrains nothing.  Written with the observed number as a **parameter** it is a
+constraint on a number the world supplies, and
+`Observations.fit_identification_is_a_constraint` exhibits a report failing it.
+That is the difference between a claim and a definition, and it is the same
+question `Explanation.vacuous_predicts_everything` asks of a prediction.
+
+**What it buys.**  `Observations.observations_agree`: given both identifications,
+`Scanning.two_anomalies_one_number` makes the two **measured** numbers equal.
+The theoretical quantities cancel, and what is left is a relation between two
+measurements made by different communities with different instruments.
+
+> It predicts neither number.  It says they are the same number.
+
+Two-sided: `falsified_by_one_anomaly_alone` and `falsified_by_the_other_alone`.
+An evolving `w` with agreeing ladders kills it, and so does the reverse.
+
+**What it does not do.**  **Naming a debt does not pay it.**  The link is still
+two inputs deep and stays out of `Anchor.lean`'s ledger.  What changed is that
+the inputs are typed hypotheses rather than sentences in a docstring — exactly
+the change A6′ underwent, for exactly the reason the register gave then: nothing
+is hidden at the type level.
+
+**And the division of labour is now exact.**  The framework has produced a
+testable relation between two observations and named what someone else must
+supply to make it a test — that these two pipelines report these two fractions.
+That is a question for cosmologists, and locating it there is not a retreat.
+
+**Ledger effect.**  `auditedTheorems` `1176 → 1180`.  No prediction is added and
+`Anchor`'s counts do not move.  `assumedCount` is **not** raised: these two were
+already assumptions, listed in §V.a′ and §V.n as identifications appearing
+nowhere in Lean.  They now appear in Lean, which is a change of visibility and
+not of debt.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2427,7 +2470,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1176
+def auditedTheorems : ℕ := 1180
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
