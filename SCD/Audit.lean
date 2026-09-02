@@ -2494,8 +2494,8 @@ the axioms working.  A register that lists them as open is miscounting its own
 commitments.
 
 *The same request, in different clothes.*  `Δρ`; the size (§V.an); uniform
-density; G4's weight; which label `ν` counts; and the cosmological disconnection.
-Every one asks for a **conversion from counting to scale**, and
+density; and the cosmological disconnection.  Every one asks for a **conversion
+from counting to scale**, and
 `Weight.only_gravity_crosses_the_weight` says the development has exactly **one**
 law that performs one.  This session then closed both routes to deriving its
 coefficient: `Information.predicted_cannot_determine_modulus` (predictions cannot
@@ -2504,7 +2504,18 @@ fix an input) and `Sources.source_coefficient_scales` with
 
 *Genuinely separate.*  The `π₁`/`π₂` codimension mismatch (§V.k); the operator
 ordering in the non-static case (§V.w); A7; the second-order content of the
-static vacuum equation; and the absence of any site or covering (§V.am).
+static vacuum equation; the absence of any site or covering (§V.am); **G3's
+residue**, that the filtration of §V.ac is postulated and nothing in A1–A7 builds
+one; **G4's weight**; and **which label `ν` counts**.
+
+The last three are here after a correction.  A first draft of this section put
+G4's weight and `ν`'s label in the middle group and left G3 out of the sort
+altogether.  `OneParameter.lean` says in its own text why neither belongs:
+`Valuation.lean` weighs **records** and nothing relates that to a size on the
+scale axis, and which label `ν` counts is a question about charge structure and
+not about a magnitude.  Putting them in the middle group was the reading running
+ahead of the theorems — this register's most familiar failure, committed inside
+the section written to guard against it.
 
 **And the middle group is now partly a theorem.**  `OneParameter.lean` tests two
 of its members against each other: a uniform size is `ρ(t − t₀)`,
@@ -2518,13 +2529,14 @@ makes the origin A5's rather than an observable, and `size_adds_no_freedom` is
 The register has carried uniform density among the assumed items from the
 beginning without saying what it buys.  This is what it buys.
 
-**Three of six, not six.**  `Δρ`, the size and uniform density are one item, and
-the cosmological rate follows as the size's derivative.  **G4's weight is not
-shown to be the same number** — `Valuation.lean` weighs *records*, and nothing
-relates that to a size on the scale axis.  And which label `ν` counts is a
-question about charge structure, not about a magnitude.  So the reading is
-**supported and not established**, and forcing the last four in would be this
-register's most familiar failure.
+**And with the sort corrected, the middle group is established rather than
+partly so.**  Its four members are `Δρ`, the size, uniform density and the
+cosmological rate; the first three are one item by `OneParameter.lean` and the
+fourth follows as the size's derivative.  Nothing in it is a reading any more.
+
+That is a *smaller* claim than the first draft made and a *complete* one, which
+is the trade the register exists to make: the middle group shrank from six to
+four and became a theorem instead of a hope.
 
 **What the sort leaves.**  One protected unit, one free pure number, A7, and two
 or three technical gaps.  For comparison: general relativity carries `G` and `Λ`;
@@ -2714,18 +2726,18 @@ drift, and carrying no argument of its own. -/
 def freeByConstruction : ℕ := 5
 
 /-- Open items that are the same request — a conversion from counting to scale
-(§V.ap).  Three are now shown to be one item by `OneParameter.lean`; three are
-still a reading. -/
-def converterItems : ℕ := 6
+(§V.ap).  All four are one item: three by `OneParameter.lean` and the fourth as
+the size's derivative. -/
+def converterItems : ℕ := 4
 
 /-- And the ones the sort leaves genuinely separate: the codimension mismatch,
-the non-static operator ordering, A7, the vacuum second order, and the absent
-site. -/
-def separateItems : ℕ := 5
+the non-static operator ordering, A7, the vacuum second order, the absent site,
+G3's postulated filtration, G4's weight, and which label `ν` counts. -/
+def separateItems : ℕ := 8
 
 /-- **The sort is exhaustive over what it sorts**, which is bookkeeping and not a
 claim that the list of open items is complete. -/
-theorem sort_totals : freeByConstruction + converterItems + separateItems = 16 := by decide
+theorem sort_totals : freeByConstruction + converterItems + separateItems = 17 := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
