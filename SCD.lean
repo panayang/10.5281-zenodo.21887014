@@ -146,6 +146,9 @@ PART III — THE QUANTUM SECTOR
     Valuation    and the structure *accepts* a weight: `record_union` plus
                  modularity gives inclusion–exclusion on the observer lattice.
                  Nothing picks the weight, but nothing resists it either
+    OneParameter ★ and the size is not a second freedom: its slope *is* `ρ` and
+                 its origin is A5's, so uniform density is the assumption that
+                 makes the size and `Δρ` one parameter
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -277,6 +280,7 @@ import SCD.Disconnect
 import SCD.Content
 import SCD.Size
 import SCD.Valuation
+import SCD.OneParameter
 
 -- Part IV — scale flow and content
 import SCD.RG

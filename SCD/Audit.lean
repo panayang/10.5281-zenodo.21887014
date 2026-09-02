@@ -2478,6 +2478,60 @@ anchor here.
 modularity appears as an explicit hypothesis of the one theorem that uses it, in
 the manner of A6′ — and no prediction moves.
 
+## V.ap  The open items, read across instead of down
+
+This register has forty-one sections and every one of them is **vertical** — what
+a pass found, what it withdrew.  None says how the open items relate to each
+other, and reading them across turns out to change the count badly.
+
+**Three kinds.**
+
+*Free by construction.*  The origin of `σ`, the overall magnitude, the
+orientation bit, which branch of A3′, and which point of the solution space.
+A5 says only differences are observable and the grading says only ratios are
+fixed (`Dimension.only_ratios_are_fixed`), so these are **not gaps** — they are
+the axioms working.  A register that lists them as open is miscounting its own
+commitments.
+
+*The same request, in different clothes.*  `Δρ`; the size (§V.an); uniform
+density; G4's weight; which label `ν` counts; and the cosmological disconnection.
+Every one asks for a **conversion from counting to scale**, and
+`Weight.only_gravity_crosses_the_weight` says the development has exactly **one**
+law that performs one.  This session then closed both routes to deriving its
+coefficient: `Information.predicted_cannot_determine_modulus` (predictions cannot
+fix an input) and `Sources.source_coefficient_scales` with
+`Conversion.counts_cannot_fix_a_unit` (counts cannot either).
+
+*Genuinely separate.*  The `π₁`/`π₂` codimension mismatch (§V.k); the operator
+ordering in the non-static case (§V.w); A7; the second-order content of the
+static vacuum equation; and the absence of any site or covering (§V.am).
+
+**And the middle group is now partly a theorem.**  `OneParameter.lean` tests two
+of its members against each other: a uniform size is `ρ(t − t₀)`,
+`affine_size_determined` says that is all of it, `origin_is_a_fiducial_shift`
+makes the origin A5's rather than an observable, and `size_adds_no_freedom` is
+`Weight.product_invariant` — the slope is the `ρ` already counted.
+
+> **The size adds no freedom**, and *uniform density is not an assumption beside
+> `Δρ`: it is the assumption that makes them one parameter.*
+
+The register has carried uniform density among the assumed items from the
+beginning without saying what it buys.  This is what it buys.
+
+**Three of six, not six.**  `Δρ`, the size and uniform density are one item, and
+the cosmological rate follows as the size's derivative.  **G4's weight is not
+shown to be the same number** — `Valuation.lean` weighs *records*, and nothing
+relates that to a size on the scale axis.  And which label `ν` counts is a
+question about charge structure, not about a magnitude.  So the reading is
+**supported and not established**, and forcing the last four in would be this
+register's most familiar failure.
+
+**What the sort leaves.**  One protected unit, one free pure number, A7, and two
+or three technical gaps.  For comparison: general relativity carries `G` and `Λ`;
+the Standard Model about nineteen parameters.  That comparison flatters nothing —
+the framework predicts far less than either — but it is the right description of
+where its freedom sits, and no section of this register had it.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2651,9 +2705,31 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-! ## The standing verification claim -/
 
+/-- Open items that are free **by construction**: the origin, the magnitude, the
+orientation bit, the branch, and the point in the solution space.  A5 and the
+grading make these unobservable, so they are commitments and not gaps (§V.ap).
+
+Bookkeeping, in the manner of the other counts: recorded so the sort cannot
+drift, and carrying no argument of its own. -/
+def freeByConstruction : ℕ := 5
+
+/-- Open items that are the same request — a conversion from counting to scale
+(§V.ap).  Three are now shown to be one item by `OneParameter.lean`; three are
+still a reading. -/
+def converterItems : ℕ := 6
+
+/-- And the ones the sort leaves genuinely separate: the codimension mismatch,
+the non-static operator ordering, A7, the vacuum second order, and the absent
+site. -/
+def separateItems : ℕ := 5
+
+/-- **The sort is exhaustive over what it sorts**, which is bookkeeping and not a
+claim that the list of open items is complete. -/
+theorem sort_totals : freeByConstruction + converterItems + separateItems = 16 := by decide
+
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1189
+def auditedTheorems : ℕ := 1194
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

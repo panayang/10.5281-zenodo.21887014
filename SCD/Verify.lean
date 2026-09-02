@@ -471,6 +471,12 @@ namespace SCD.Verify
 #print axioms SCD.Valuation.modularity_is_a_restriction
 #print axioms SCD.Valuation.observer_counting_law
 
+-- OneParameter.lean
+#print axioms SCD.OneParameter.affine_size_determined
+#print axioms SCD.OneParameter.origin_is_a_fiducial_shift
+#print axioms SCD.OneParameter.uniform_size_one_observable
+#print axioms SCD.OneParameter.size_adds_no_freedom
+
 /-! ## PART II.a — the isotropic sector -/
 
 
@@ -1451,6 +1457,7 @@ namespace SCD.Verify
 #print axioms SCD.Audit.index_substitutions_still_occur
 #print axioms SCD.Audit.unification_added_nothing
 #print axioms SCD.Audit.register_grew_under_audit
+#print axioms SCD.Audit.sort_totals
 #print axioms SCD.Audit.clean_count
 
 end SCD.Verify

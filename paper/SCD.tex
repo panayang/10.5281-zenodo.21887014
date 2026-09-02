@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}1189 条定理、21540 行 Lean 代码、84 个文件；
-\textbf{全部 1189 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}1194 条定理、21540 行 Lean 代码、84 个文件；
+\textbf{全部 1194 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -5213,6 +5213,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Content.lean} & 3 & 框架一直在写预层只是没有词汇；代数与阈值是同一个系统的两种描述 \\
 \texttt{Size.lean} & 2 & 其余逃逸的分类：宇宙学那几个是内容的**大小**及其导数；与 G4 的权重是同一个缺口 \\
 \texttt{Valuation.lean} & 2 & 模性 + record_union 给出观察者格上的容斥；结构接受权重，只是没有东西挑选它 \\
+\texttt{OneParameter.lean} & 4 & size 不是第二个自由度：斜率就是 ρ、原点是 A5 的；均匀密度正是让二者合一的那步 \\
 \midrule
 \multicolumn{3}{l}{\emph{第四部分\quad 各向同性扇区}}\\
 \texttt{Conformal.lean} & 19 & 共形曲率恒等式、Ricci、标量曲率 \\
@@ -5296,16 +5297,16 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Expressive.lean} & 10 & 可表达性（独立性结论已推翻） \\
 \texttt{CrossCheck.lean} & 9 & 跨扇区检验并不存在 \\
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
-\texttt{Audit.lean} & 11 & 登记册：撤回／更正／引用／假设 \\
+\texttt{Audit.lean} & 12 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{1189} & 111 个文件，28857 行 Lean 代码 \\
+\textbf{合计} & \textbf{1194} & 112 个文件，29046 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 1189 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 1194 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5393,7 +5394,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 1189 条}\label{sec:index}
+\section{定理索引：全部 1194 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5448,6 +5449,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Content.lean}} (3)\quad \texttt{mono\_\allowbreak refl}, \texttt{mono\_\allowbreak trans}, \texttt{pullback\_\allowbreak eq\_\allowbreak emergence}\par\smallskip
 \noindent\textbf{\texttt{Size.lean}} (2)\quad \texttt{uniform\_\allowbreak density\_\allowbreak is\_\allowbreak a\_\allowbreak restriction}, \texttt{emergence\_\allowbreak is\_\allowbreak ofThreshold}\par\smallskip
 \noindent\textbf{\texttt{Valuation.lean}} (2)\quad \texttt{modularity\_\allowbreak is\_\allowbreak a\_\allowbreak restriction}, \texttt{observer\_\allowbreak counting\_\allowbreak law}\par\smallskip
+\noindent\textbf{\texttt{OneParameter.lean}} (4)\quad \texttt{affine\_\allowbreak size\_\allowbreak determined}, \texttt{origin\_\allowbreak is\_\allowbreak a\_\allowbreak fiducial\_\allowbreak shift}, \texttt{uniform\_\allowbreak size\_\allowbreak one\_\allowbreak observable}, \texttt{size\_\allowbreak adds\_\allowbreak no\_\allowbreak freedom}\par\smallskip
 
 \subsection*{第四部分\quad 各向同性扇区}
 \noindent\textbf{\texttt{Conformal.lean}} (19)\quad \texttt{hess\_\allowbreak symm}, \texttt{d\_\allowbreak sig\_\allowbreak comm}, \texttt{sum\_\allowbreak mul\_\allowbreak gradsq}, \texttt{scaleCurv\_\allowbreak eq\_\allowbreak zero}, \texttt{Chr\_\allowbreak symm}, \texttt{d\_\allowbreak Chr\_\allowbreak diff}, \texttt{sum\_\allowbreak d\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak diag}, \texttt{sum\_\allowbreak d\_\allowbreak Chr\_\allowbreak trace}, \texttt{sum\_\allowbreak ChrTrace\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr}, \texttt{Ric\_\allowbreak eq}, \texttt{RscBare\_\allowbreak eq}, \texttt{Defm\_\allowbreak symm}, \texttt{two\_\allowbreak Rm\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{Ric\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{two\_\allowbreak Ric\_\allowbreak eq}\par\smallskip
@@ -5531,7 +5533,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Expressive.lean}} (10)\quad \texttt{diffPattern\_\allowbreak shift}, \texttt{invariant\_\allowbreak factors}, \texttt{diffPattern\_\allowbreak invariant}, \texttt{invariant\_\allowbreak iff\_\allowbreak diffPattern}, \texttt{eval\_\allowbreak not\_\allowbreak invariant}, \texttt{scale\_\allowbreak says\_\allowbreak nothing\_\allowbreak about\_\allowbreak rotation}, \texttt{rotation\_\allowbreak says\_\allowbreak nothing\_\allowbreak about\_\allowbreak scale}, \texttt{channels\_\allowbreak independent}, \texttt{neither\_\allowbreak channel\_\allowbreak complete}, \texttt{no\_\allowbreak channel\_\allowbreak coupling}\par\smallskip
 \noindent\textbf{\texttt{CrossCheck.lean}} (9)\quad \texttt{rhoAll\_\allowbreak value}, \texttt{rhoQuark\_\allowbreak value}, \texttt{densities\_\allowbreak differ}, \texttt{density\_\allowbreak ratio\_\allowbreak near\_\allowbreak two}, \texttt{sector\_\allowbreak relation\_\allowbreak is\_\allowbreak identity}, \texttt{qcd\_\allowbreak extraction\_\allowbreak returns\_\allowbreak input}, \texttt{no\_\allowbreak second\_\allowbreak determination}, \texttt{quarkCvSq\_\allowbreak value}, \texttt{quark\_\allowbreak not\_\allowbreak geometric}\par\smallskip
 \noindent\textbf{\texttt{MassAudit.lean}} (9)\quad \texttt{massExp\_\allowbreak neg}, \texttt{massQuad\_\allowbreak neg}, \texttt{massExp\_\allowbreak pos}, \texttt{massQuad\_\allowbreak pos}, \texttt{massExp\_\allowbreak zero}, \texttt{massQuad\_\allowbreak zero}, \texttt{mass\_\allowbreak law\_\allowbreak underdetermined}, \texttt{both\_\allowbreak laws\_\allowbreak antiparticle\_\allowbreak degenerate}, \texttt{massQuad\_\allowbreak ratio\_\allowbreak not\_\allowbreak constant}\par\smallskip
-\noindent\textbf{\texttt{Audit.lean}} (11)\quad \texttt{scalar\_\allowbreak for\_\allowbreak directional\_\allowbreak count}, \texttt{direction\_\allowbreak for\_\allowbreak position\_\allowbreak count}, \texttt{homotopy\_\allowbreak class\_\allowbreak count}, \texttt{register\_\allowbreak was\_\allowbreak incomplete}, \texttt{register\_\allowbreak nonempty}, \texttt{audit\_\allowbreak found\_\allowbreak more\_\allowbreak than\_\allowbreak it\_\allowbreak closed}, \texttt{more\_\allowbreak corrected\_\allowbreak than\_\allowbreak retracted}, \texttt{index\_\allowbreak substitutions\_\allowbreak still\_\allowbreak occur}, \texttt{unification\_\allowbreak added\_\allowbreak nothing}, \texttt{register\_\allowbreak grew\_\allowbreak under\_\allowbreak audit}, \texttt{clean\_\allowbreak count}\par\smallskip
+\noindent\textbf{\texttt{Audit.lean}} (12)\quad \texttt{scalar\_\allowbreak for\_\allowbreak directional\_\allowbreak count}, \texttt{direction\_\allowbreak for\_\allowbreak position\_\allowbreak count}, \texttt{homotopy\_\allowbreak class\_\allowbreak count}, \texttt{register\_\allowbreak was\_\allowbreak incomplete}, \texttt{register\_\allowbreak nonempty}, \texttt{audit\_\allowbreak found\_\allowbreak more\_\allowbreak than\_\allowbreak it\_\allowbreak closed}, \texttt{more\_\allowbreak corrected\_\allowbreak than\_\allowbreak retracted}, \texttt{index\_\allowbreak substitutions\_\allowbreak still\_\allowbreak occur}, \texttt{unification\_\allowbreak added\_\allowbreak nothing}, \texttt{register\_\allowbreak grew\_\allowbreak under\_\allowbreak audit}, \texttt{sort\_\allowbreak totals}, \texttt{clean\_\allowbreak count}\par\smallskip
 
 \normalsize
 
