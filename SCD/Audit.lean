@@ -1949,6 +1949,54 @@ route is a direction and not an argument.
 `Layers.lean` introduces no structure beyond `Resolution.Filtration`, already
 counted in `unwitnessedStructures`.  No prediction moves.
 
+## V.ae  The missing link, taken — and equal spacing loses a third time
+
+§V.x named the gap precisely: nothing connects `Spectrum.gaps` to
+`Internal.record`.  §V.ad narrowed it — a filtration's thresholds are *computed
+from the ring* — and said the identification with measured thresholds was still
+not made.  `Spacing.lean` makes it, in the simplest case, and it **dies against
+the data**.
+
+`Layers.monomial_threshold` gives `Xʲ` the threshold `j`, so a filtration by
+powers of one element spaces its thresholds evenly; with a step this is
+`Spacing.PowerSpaced`.  Then `gapList_replicate` makes the gaps constant,
+`powerSpaced_variance_zero` makes their variance zero — which is
+`Spectrum.equal_gaps_variance_zero` arrived at from the filtration side rather
+than from the geometric tower — and `observed_variance_ne_zero` says the measured
+gaps have variance ≈ 1.17.  So `thresholds_not_power_spaced`.
+
+**The identification appears as a hypothesis in the statement**, where
+`Anchor.lean`'s discipline requires it: what is proved is that *if* the measured
+gaps are a filtration's, that filtration is not by powers of one element.
+
+**This is the third time the framework has met equal spacing and lost.**  §I
+retracted the geometric mass tower; §V.f recorded that the same retraction closed
+the only route from the spectrum to the gravitational coupling; and now the
+algebraic notion of resolution, in its simplest form, **reproduces the tower that
+was already excluded**.  Equal spacing is this development's recurring wrong
+answer, and it is now a theorem rather than a memory.
+
+**And it specifies the replacement.**  The gaps must have `CV = 1` — exponential,
+not constant — so the layers cannot be indexed by `ℕ` with a fixed step; they
+must be placed by a constant-rate process on the scale axis.  *A filtration whose
+layer set is Poisson rather than arithmetic* is a sharp target, and it is what
+`Spectrum.lean`'s own prediction demands.
+
+**A reading, recorded as one, that closes off a whole class of routes.**
+`Spacing.gapList_shift_invariant` proves every gap statistic is blind to a shift
+of the whole spectrum, which is A5.  The reading — that A5's *full* shift
+invariance leaves no gap statistic able to single out a **period** — is not
+proved.  If it holds then **no statistic of the spectrum can ever fix `Δ`**, and
+§V.f's open number `Δρ` cannot come from spectral data at all: the second
+relation must be **combinatorial**, a count of windings per threshold.  That
+would explain why §V.f, §V.g and §V.h each failed in the same place, and it is
+the direction to test next.  Registered as a reading.
+
+**Ledger effect.**  `auditedTheorems` `1152 → 1158`.  No assumption is added —
+the identification appears as a hypothesis, not as a postulate — and no
+prediction moves.  §V.x's gap is **narrowed, not closed**: the link is now
+testable, and its simplest instance is refuted.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2124,7 +2172,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1152
+def auditedTheorems : ℕ := 1158
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

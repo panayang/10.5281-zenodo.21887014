@@ -412,6 +412,14 @@ namespace SCD.Verify
 #print axioms SCD.Layers.indist_of_le
 #print axioms SCD.Layers.compatible_iff_orders_indistinguishable
 
+-- Spacing.lean
+#print axioms SCD.Spacing.monomial_powerSpaced
+#print axioms SCD.Spacing.gapList_replicate
+#print axioms SCD.Spacing.powerSpaced_variance_zero
+#print axioms SCD.Spacing.observed_variance_ne_zero
+#print axioms SCD.Spacing.thresholds_not_power_spaced
+#print axioms SCD.Spacing.gapList_shift_invariant
+
 /-! ## PART II.a — the isotropic sector -/
 
 

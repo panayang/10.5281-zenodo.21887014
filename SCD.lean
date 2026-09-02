@@ -113,6 +113,9 @@ PART III — THE QUANTUM SECTOR
     Layers       incompatibility appears at a finite resolution; the thresholds
                  are computed from the ring, not postulated; an outcome is an
                  indistinguishability class, and what is missing is its weight
+    Spacing      ★ and the link to the measured spectrum, taken and refuted:
+                 a filtration by powers of one element spaces its thresholds
+                 evenly, and the observed gaps do not
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -233,6 +236,7 @@ import SCD.Torus
 import SCD.Amendment
 import SCD.Resolution
 import SCD.Layers
+import SCD.Spacing
 
 -- Part IV — scale flow and content
 import SCD.RG
