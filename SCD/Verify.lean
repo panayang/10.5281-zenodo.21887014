@@ -458,6 +458,11 @@ namespace SCD.Verify
 #print axioms SCD.Disconnect.factorisation_is_generic
 #print axioms SCD.Disconnect.factorisation_has_failing_instances
 
+-- Content.lean
+#print axioms SCD.Content.ContentSystem.mono_refl
+#print axioms SCD.Content.ContentSystem.mono_trans
+#print axioms SCD.Content.pullback_eq_emergence
+
 /-! ## PART II.a — the isotropic sector -/
 
 

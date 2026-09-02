@@ -136,6 +136,10 @@ PART III — THE QUANTUM SECTOR
     Disconnect   ★ but the cosmological sector shares **no types** with the
                  algebra, so the unit bookkeeping is not yet a question — and
                  one claim of `Bridge` is withdrawn here
+    Content      ★ and the reason: the framework has been writing presheaves
+                 without the vocabulary.  Three of its own monotonicity results
+                 *are* the functor laws, and the algebra and the thresholds are
+                 one system described twice
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -264,6 +268,7 @@ import SCD.RateWeight
 import SCD.Bridge
 import SCD.Observations
 import SCD.Disconnect
+import SCD.Content
 
 -- Part IV — scale flow and content
 import SCD.RG

@@ -2344,6 +2344,52 @@ No prediction moves.  §V.aj's remaining content — the bridge, its witness, an
 the unit proportionality — is unaffected; what is withdrawn is what the bridge
 was said to reach.
 
+## V.am  The unstated primitive, and a foundational direction chosen by evidence
+
+§V.al found the cosmological sector shares no types with the algebra.  Counting
+the rest: **59 of the development's 107 files never mention `ScaleAlgebra`**, and
+the escape to real numbers has been re-invented **eight times** —
+`Defect.ScaleDefect`'s lift, `Emergence.resolved`'s thresholds,
+`Observer.Resolution`, `Particle.Species.threshold`, `Running.resolvedCount`,
+`Scanning.scanRate`, `Spectrum.gaps`, and `Bridge.DriftEval` — with **no theorem
+relating any two**.
+
+> The development has one stated primitive and **one unstated one**.
+
+**And the obvious repair is the symptom.**  Bolting a real-valued evaluation onto
+the ring — states on a `*`-algebra — is what eight files each did locally.  Eight
+incompatible versions is what *intuitive but not the right primitive* looks like,
+and §V.t's caution about importing the standard construction applies with extra
+force to the move the standard construction actually makes.
+
+**So the framework's own theorems were asked before anything was rebuilt.**
+`Content.ContentSystem` is a presheaf on a preorder, written plainly.  Three
+existing results **are** its functor laws, with both variances and no adaptation:
+`Emergence.resolved_mono`, `Resolution.Filtration.resolved_mono`, and
+`Internal.record_antitone` on the opposite order.
+
+**And one settles it.**  `Content.pullback_eq_emergence` typechecks with `:=` and
+no proof: `Layers.resolved_is_emergence_resolved` already *is* the statement that
+the algebraic system and the real-valued one are the same system, index by index.
+
+> The algebra and the thresholds were never two structures.  They are one
+> presheaf described twice, and the description was the only thing missing.
+
+**What is not established, and it is most of it.**
+
+* **no topos, no site, no sheaf.**  There is no covering family and no gluing, so
+  nothing here earns the word *sheaf*.  What is missing is a notion of when a
+  family of resolutions covers a scale, and the framework has none;
+* **five of the eight escapes are untouched** — the cosmological ones especially,
+  so §V.al's disconnection stands;
+* **nothing is refactored.**  `Content.lean` is additive, and deleting it would
+  change nothing else.  A foundational experiment should be reversible before it
+  is a foundational commitment, and this one is.
+
+**Ledger effect.**  `auditedTheorems` `1182 → 1185`.  No assumption is added:
+`ContentSystem` is a definition instantiated three times from existing theorems,
+not a hypothesis anything rests on.  No prediction moves.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2519,7 +2565,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1182
+def auditedTheorems : ℕ := 1185
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
