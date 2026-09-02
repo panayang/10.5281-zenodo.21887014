@@ -2390,6 +2390,50 @@ the algebraic system and the real-valued one are the same system, index by index
 `ContentSystem` is a definition instantiated three times from existing theorems,
 not a hypothesis anything rests on.  No prediction moves.
 
+## V.an  Sorting the rest, and two gaps turn out to be one
+
+§V.am pulled three of the eight escapes to `ℝ` into one presheaf.  `Size.lean`
+asks the other five, and the answer is more useful than "yes" would have been:
+**they are not all the same kind of object.**
+
+* `Particle.Species.threshold` is **the same content, described by thresholds**.
+  `Size.ofThreshold` generates a content system from a threshold function and
+  `Size.emergence_is_ofThreshold` shows `Emergence.resolved` *is* the one it
+  generates, definitionally.  Thresholds and content are two descriptions of one
+  datum, so the count of independent escapes was too high;
+* `Spectrum.thresholdOfMass` is a reparameterisation of the **base**, not an
+  escape at all;
+* `Running.resolvedCount` is a **size** of content, one step away;
+* `Scanning.scanRate` is a **rate** — the derivative of a size — two steps away;
+* `Defect.ScaleDefect` is a section of a covering with quasiperiodic monodromy,
+  which is a **local system**: a sheaf notion, not a presheaf-on-a-preorder one.
+  It fits nothing here, and it is the one carrying the winding.
+
+**So the cosmological sector was never content nobody had written as a presheaf.**
+It is a size and its derivative, and the framework has never defined the step
+between: *what it means to measure how much content there is.*
+`Size.SizeSystem` names it, `resolvedSize` shows `resolvedCount` is one, and
+`uniform_density_is_a_restriction` makes the register's long-standing
+uniform-density item a **theorem** — a size need not be affine in the index, and
+`t ↦ max t 0` is a monotone count that is no `resolvedCount`.
+
+**And two open items collapse into one.**  §V.ad left G4 open: outcomes are
+indistinguishability classes and nothing weights them.  This file's missing step
+is how much content there is.
+
+> **G4 and the cosmological disconnection are one gap**, approached from the
+> observer side and the cosmological side, and it is the **size** — not the
+> covering.
+
+That redirects the sheaf programme before it starts: before asking when a family
+of resolutions *covers* a scale, ask what it means to say how much is there.  A
+sheaf needs a site; a size needs less, and the framework needs the size in two
+places already.
+
+**Ledger effect.**  `auditedTheorems` `1185 → 1187`.  No assumption is added, and
+one is **made precise**: uniform density was listed in §V without a statement of
+what it restricts, and now has one.  No prediction moves.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2565,7 +2609,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1185
+def auditedTheorems : ℕ := 1187
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

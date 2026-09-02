@@ -463,6 +463,10 @@ namespace SCD.Verify
 #print axioms SCD.Content.ContentSystem.mono_trans
 #print axioms SCD.Content.pullback_eq_emergence
 
+-- Size.lean
+#print axioms SCD.Size.uniform_density_is_a_restriction
+#print axioms SCD.Size.emergence_is_ofThreshold
+
 /-! ## PART II.a — the isotropic sector -/
 
 

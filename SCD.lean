@@ -140,6 +140,9 @@ PART III — THE QUANTUM SECTOR
                  without the vocabulary.  Three of its own monotonicity results
                  *are* the functor laws, and the algebra and the thresholds are
                  one system described twice
+    Size         ★ and sorting the rest: the cosmological escapes are a **size**
+                 and its derivative, not content — which is the same missing
+                 object as G4's weight on outcomes
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -269,6 +272,7 @@ import SCD.Bridge
 import SCD.Observations
 import SCD.Disconnect
 import SCD.Content
+import SCD.Size
 
 -- Part IV — scale flow and content
 import SCD.RG
