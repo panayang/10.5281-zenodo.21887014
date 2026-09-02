@@ -124,6 +124,9 @@ PART III — THE QUANTUM SECTOR
     Overdetermination  ★ but an input buys a prediction when it appears twice,
                  and everything dimensionful hangs on one unmade identification:
                  is the scanning conversion the gravitational one?
+    RateWeight   the rate is weight zero, so the scanning conversion is not a
+                 gauge coupling — the second relation exists, and what is left
+                 is whether its proportionality is one
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -248,6 +251,7 @@ import SCD.Spacing
 import SCD.Information
 import SCD.Conversion
 import SCD.Overdetermination
+import SCD.RateWeight
 
 -- Part IV — scale flow and content
 import SCD.RG

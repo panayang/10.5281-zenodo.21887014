@@ -2156,6 +2156,51 @@ raised, because this one is not unanchored — swapping it changes everything
 falsifiable in the dimensionful sector, which by `Anchor.lean`'s own test makes
 it anchored and merely **unmade**.
 
+## V.ai  The rate's weight: one branch killed, the gap made exact
+
+§V.ah reduced the framework's dimensionful content to one question and named the
+missing input — `Weight.lean`'s table does not list `λ`.  `RateWeight.lean`
+supplies it.
+
+**`λ` is weight zero**, by two computations that agree.  As a fractional rate,
+`λ = −d(ln ε)/dt` with `ln ε = −σ` of weight one over a `t` of weight one.  And
+inside `Response.lean`'s own reading, `FactorsThroughCount D N κ` makes `D` carry
+`κ`'s weight against a weight-zero count, so `dD/dt` has that weight over weight
+one — and equals `κρ`.
+
+**Which kills one branch outright.**
+`RateWeight.unit_conversion_gives_invariant_rate`: a weight-one conversion
+against a weight-minus-one density gives an invariant rate.
+`gauge_conversion_moves`: a weight-zero one does not.  So **the scanning
+conversion is not a gauge coupling** — a live possibility, since `Response.lean`
+reduces the scanning hypothesis to factorisation through
+`Running.resolvedCount`, whose `κ` is the gauge one.  The weights forbid it, and
+`Weight.lean` lists exactly one weight-one coefficient.  **The second relation
+exists.**
+
+**And how far that gets, exactly.**
+`residual_factor_is_determined_not_predicted`: with the proportionality free,
+three measurements — `G`, `ρ`, `λ` — against two unknowns leave nothing over, so
+the factor is determined and nothing is foretold.  `prediction_at_unit_factor`:
+at factor one it lands — `Δρ = −λ/6` from a cosmological rate and the spectrum's
+density, and the gravitational coupling follows.
+
+> The question is no longer *is it the same conversion* but **is the
+> proportionality one** — smaller, and now about two definitions rather than two
+> constants.
+
+**Stated at the level of the types**, since that is where it now lives:
+`Index.IndexResponse` is ring-valued, `lap σ = Δ·ν`; `Response.FactorsThroughCount`
+is real-valued, `ΔD = κ·ΔN`.  Same shape, different types, and the factor is one
+exactly when `D` is `lap σ` read along the drift.  **Not made here** — the two
+objects do not live in the same type, so making it needs a bridge and not an
+assertion.
+
+**Ledger effect.**  `auditedTheorems` `1171 → 1175`.  No prediction is added.
+What changes: one of the two readings of the scanning conversion is **excluded**,
+and the residue is a single proportionality between two objects whose types now
+say what a bridge between them would have to do.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2331,7 +2376,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1171
+def auditedTheorems : ℕ := 1175
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

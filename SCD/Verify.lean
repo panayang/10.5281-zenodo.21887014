@@ -439,6 +439,12 @@ namespace SCD.Verify
 #print axioms SCD.Overdetermination.product_from_rate
 #print axioms SCD.Overdetermination.no_prediction_without_identification
 
+-- RateWeight.lean
+#print axioms SCD.RateWeight.unit_conversion_gives_invariant_rate
+#print axioms SCD.RateWeight.gauge_conversion_moves
+#print axioms SCD.RateWeight.residual_factor_is_determined_not_predicted
+#print axioms SCD.RateWeight.prediction_at_unit_factor
+
 /-! ## PART II.a — the isotropic sector -/
 
 

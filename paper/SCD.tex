@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}1171 条定理、21540 行 Lean 代码、84 个文件；
-\textbf{全部 1171 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}1175 条定理、21540 行 Lean 代码、84 个文件；
+\textbf{全部 1175 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -5206,6 +5206,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Information.lean} & 2 & 预言与输入在信息上不相交：任何预言都定不出自由数，只剩推导这一类路径 \\
 \texttt{Conversion.lean} & 3 & 计数也定不出转换系数：Δρ 是永久输入；并记录我提了一条登记册已驳回的路线 \\
 \texttt{Overdetermination.lean} & 4 & 输入出现两次才买得到预言；全部有量纲内容系于一个未做的识别 \\
+\texttt{RateWeight.lean} & 4 & 耗散率是权零，故扫描换算不是规范耦合；第二条关系存在，剩下比例是否为一 \\
 \midrule
 \multicolumn{3}{l}{\emph{第四部分\quad 各向同性扇区}}\\
 \texttt{Conformal.lean} & 19 & 共形曲率恒等式、Ricci、标量曲率 \\
@@ -5291,14 +5292,14 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
 \texttt{Audit.lean} & 11 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{1171} & 104 个文件，27624 行 Lean 代码 \\
+\textbf{合计} & \textbf{1175} & 105 个文件，27801 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 1171 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 1175 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5386,7 +5387,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 1171 条}\label{sec:index}
+\section{定理索引：全部 1175 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5434,6 +5435,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Information.lean}} (2)\quad \texttt{predicted\_\allowbreak cannot\_\allowbreak determine\_\allowbreak modulus}, \texttt{modulus\_\allowbreak may\_\allowbreak determine\_\allowbreak modulus}\par\smallskip
 \noindent\textbf{\texttt{Conversion.lean}} (3)\quad \texttt{counts\_\allowbreak cannot\_\allowbreak fix\_\allowbreak a\_\allowbreak unit}, \texttt{threshold\_\allowbreak not\_\allowbreak a\_\allowbreak function\_\allowbreak of\_\allowbreak charge}, \texttt{charge\_\allowbreak not\_\allowbreak a\_\allowbreak function\_\allowbreak of\_\allowbreak threshold}\par\smallskip
 \noindent\textbf{\texttt{Overdetermination.lean}} (4)\quad \texttt{one\_\allowbreak number\_\allowbreak two\_\allowbreak relations}, \texttt{coupling\_\allowbreak from\_\allowbreak rate\_\allowbreak and\_\allowbreak density}, \texttt{product\_\allowbreak from\_\allowbreak rate}, \texttt{no\_\allowbreak prediction\_\allowbreak without\_\allowbreak identification}\par\smallskip
+\noindent\textbf{\texttt{RateWeight.lean}} (4)\quad \texttt{unit\_\allowbreak conversion\_\allowbreak gives\_\allowbreak invariant\_\allowbreak rate}, \texttt{gauge\_\allowbreak conversion\_\allowbreak moves}, \texttt{residual\_\allowbreak factor\_\allowbreak is\_\allowbreak determined\_\allowbreak not\_\allowbreak predicted}, \texttt{prediction\_\allowbreak at\_\allowbreak unit\_\allowbreak factor}\par\smallskip
 
 \subsection*{第四部分\quad 各向同性扇区}
 \noindent\textbf{\texttt{Conformal.lean}} (19)\quad \texttt{hess\_\allowbreak symm}, \texttt{d\_\allowbreak sig\_\allowbreak comm}, \texttt{sum\_\allowbreak mul\_\allowbreak gradsq}, \texttt{scaleCurv\_\allowbreak eq\_\allowbreak zero}, \texttt{Chr\_\allowbreak symm}, \texttt{d\_\allowbreak Chr\_\allowbreak diff}, \texttt{sum\_\allowbreak d\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak diag}, \texttt{sum\_\allowbreak d\_\allowbreak Chr\_\allowbreak trace}, \texttt{sum\_\allowbreak ChrTrace\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr}, \texttt{Ric\_\allowbreak eq}, \texttt{RscBare\_\allowbreak eq}, \texttt{Defm\_\allowbreak symm}, \texttt{two\_\allowbreak Rm\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{Ric\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{two\_\allowbreak Ric\_\allowbreak eq}\par\smallskip
