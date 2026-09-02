@@ -693,6 +693,23 @@ namespace SCD.Verify
 #print axioms SCD.ExpPolyModel.recipTwo_not_isotropic
 #print axioms SCD.ExpPolyModel.exp_not_first_order
 
+-- Circle.lean
+#print axioms SCD.Circle.dloop_single
+#print axioms SCD.Circle.dloop_zero
+#print axioms SCD.Circle.dloop_add
+#print axioms SCD.Circle.induction_single
+#print axioms SCD.Circle.dloop_mul
+#print axioms SCD.Circle.dloop_uPow
+#print axioms SCD.Circle.dloop_coeff_zero
+#print axioms SCD.Circle.no_potential
+#print axioms SCD.Circle.no_scaleField_with_uPow
+#print axioms SCD.Circle.ScaleGradient.ofScaleField_isExact
+#print axioms SCD.Circle.circGradient_not_isExact
+#print axioms SCD.Circle.toDefect_winding
+#print axioms SCD.Circle.circGradient_isExact_iff
+#print axioms SCD.Circle.toDefect_isTrivial_iff
+#print axioms SCD.Circle.exact_iff_trivial
+
 /-! ## PART II.b — the anisotropic sector -/
 
 

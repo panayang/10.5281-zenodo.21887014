@@ -1664,6 +1664,67 @@ it counts the six auxiliary structures §V.b named, and the point here is that t
 axiom carriers were never on that list at all — a gap in what the register
 counted rather than a change in the count.
 
+## V.z  The join, and why it could not have the shape it was asked for
+
+§V.y's correction named what stayed open: nothing in the development was at once
+a model of A1–A2 and periodic, so the two branches of A3′ had no common carrier.
+`Circle.lean` builds one, and the first thing it finds is that the object being
+asked for does not exist.
+
+**There is no periodic scale field, and that is a theorem.**  If the log-scale is
+defined only modulo a period then `σ` is **not an element of the ring** — only its
+gradient is, because differentiating kills the ambiguity.  `Axioms.ScaleField`
+has a field `σ : A`.  `Circle.no_scaleField_with_uPow` proves the consequence on
+the smallest example: on `ℝ[u, u⁻¹]` with `d = u ∂/∂u`, the unit `u^k` has a
+perfectly good scale gradient — the constant `k` — and **no scale field can carry
+it** for `k ≠ 0`.
+
+So `Axioms.ScaleField` *is* the `ℝ` branch by construction.  That was not a
+modelling accident and no amount of model-building would have fixed it.
+
+**The obstruction is exactness.**  `Circle.dloop_coeff_zero`: every derivative on
+the circle has vanishing constant term, so `no_potential` — a non-zero constant
+is not a derivative.  The gradient of `u^k` is closed and **not exact**, which is
+what "defined only modulo a period" means algebraically, and the winding is the
+class it represents.
+
+**The join keeps the gradient and drops the potential.**  `Circle.ScaleGradient`
+carries `s : Aˣ`, `grad : Fin n → A` and `d s = s · grad`.  Then
+`ofScaleField_isExact` embeds every scale field as an **exact** scale gradient,
+and `circGradient_not_isExact` exhibits an inexact one.  One carrier, two
+branches, and `IsExact` is exactly what separates them: the `ℝ` branch is the
+exact locus, and `Dual.lean`'s `Δ → 0` degeneration is the statement that on that
+locus nothing winds.
+
+`Circle.exact_iff_trivial` then relates the two branches' *carriers* rather than
+arguing the relation in prose: the gradient of `u^k` is exact exactly when the
+defect it follows is trivial.  `Dual.lean` called `Defect.lift` the covering map
+`ℝ → ℝ/ΔZ`; this is that identification with a ring on one side of it.
+
+**It is a proposal and is not adopted.**  `Axioms.lean` is unchanged and A2 still
+reads as it did.  Restating A2 with the gradient primitive would touch everything
+downstream of `σ`, and there is a great deal — A5 is a statement about
+*differences of `σ`*, and `Openness.A5_A6_dichotomy` reads A5 and A6 off the
+group `σ` generates.  Adopting the new carrier here because it is convenient
+would be the move §V.t declined for idempotents.  It is registered as the shape
+of the answer, with the work of weighing it left to a pass that does the weighing.
+
+**What it does sharpen is the consolidation.**  Any merge of A2 with A4′ should
+take the **gradient** as primitive and recover the potential as the exact case,
+rather than the other way round — otherwise the merged axiom inherits
+`ScaleField`'s commitment to one branch of A3′ without saying so.
+
+**Still open, and listed rather than implied.**  `Circ` has one direction, so the
+closedness condition `∂ᵢgⱼ = ∂ⱼgᵢ` that a multi-direction `ScaleGradient` needs
+is vacuous here and untested; the consequences A2 has downstream of `σ` are not
+checked against the gradient reading; and nothing here runs `Diagonal.lean`'s
+chain, so there is **still no vacuum solution** — what is supplied is the object
+that branch needs, not a solution on it.
+
+**Ledger effect.**  `auditedTheorems` `1085 → 1100`.  No assumption is added:
+`ScaleGradient` is a structure offered, and no theorem in the development depends
+on it.  No prediction moves.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -1836,7 +1897,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1085
+def auditedTheorems : ℕ := 1100
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

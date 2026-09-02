@@ -97,6 +97,10 @@ PART III — THE QUANTUM SECTOR
                  vary — A2 and A4′ acquire terms, and reciprocity holds at
                  finite amplitude
 
+    Circle       and the other branch: a scale whose gradient has no potential.
+                 A periodic scale field is a contradiction in terms, so the join
+                 keeps the gradient and drops the potential
+
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
 ────────────────────────────────────────────────────────────────────────
@@ -210,6 +214,7 @@ import SCD.NCSize
 import SCD.Ordering
 import SCD.Screen
 import SCD.ExpPoly
+import SCD.Circle
 
 -- Part IV — scale flow and content
 import SCD.RG
