@@ -397,6 +397,21 @@ namespace SCD.Verify
 #print axioms SCD.Resolution.incompatible_witness
 #print axioms SCD.Resolution.compatible_at_zero
 
+-- Layers.lean
+#print axioms SCD.Layers.xs_central
+#print axioms SCD.Layers.ad_e00_e01
+#print axioms SCD.Layers.compat_zero
+#print axioms SCD.Layers.incompat_one
+#print axioms SCD.Layers.resolved_is_emergence_resolved
+#print axioms SCD.Layers.monomial_threshold
+#print axioms SCD.Layers.polyFilt_hasThreshold_on_monomials
+#print axioms SCD.Layers.indist_refl
+#print axioms SCD.Layers.indist_symm
+#print axioms SCD.Layers.indist_trans
+#print axioms SCD.Layers.indist_equivalence
+#print axioms SCD.Layers.indist_of_le
+#print axioms SCD.Layers.compatible_iff_orders_indistinguishable
+
 /-! ## PART II.a — the isotropic sector -/
 
 

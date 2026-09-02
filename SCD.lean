@@ -110,6 +110,9 @@ PART III — THE QUANTUM SECTOR
     Resolution   ★ bridge three: resolution as a filtration, so "resolved"
                  needs no order and incompatibility is `ad` read at a
                  resolution — the observer reaches the algebra
+    Layers       incompatibility appears at a finite resolution; the thresholds
+                 are computed from the ring, not postulated; an outcome is an
+                 indistinguishability class, and what is missing is its weight
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -229,6 +232,7 @@ import SCD.Gradient
 import SCD.Torus
 import SCD.Amendment
 import SCD.Resolution
+import SCD.Layers
 
 -- Part IV — scale flow and content
 import SCD.RG

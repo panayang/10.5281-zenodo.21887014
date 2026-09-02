@@ -1896,6 +1896,59 @@ arrives natively.  The observer is still a structure the axioms do not supply.
 **Ledger effect.**  `auditedTheorems` `1132 → 1139`; `unwitnessedStructures`
 `6 → 7`.  No prediction moves and no axiom is touched.
 
+## V.ad  Three of bridge three's four gaps
+
+§V.ac listed what `Resolution.lean` did not do.  `Layers.lean` does three of
+them; the fourth — the filtration is postulated and nothing in A1–A7 builds one —
+is untouched and stays.
+
+**The resolution index now does work.**  §V.ac showed an incompatible pair at the
+sharpest resolution and none at the coarsest, which is consistent with the index
+doing nothing in between.  `Layers.compat_zero` and `Layers.incompat_one` cut
+`Triple.Mat 2` by powers of the scalar matrix `X₀` and give a pair —
+`E₀₀`, `E₀₁` — **jointly resolvable at resolution 0 and not at resolution 1**:
+their commutator is `E₀₁`, and if that were `X₀·B` then evaluating at zero would
+give `1 = 0`.  A coarse probe sees a compatible pair and a finer one sees an
+incompatibility.  That is the statement with physical content, and without it the
+index was decoration.
+
+**And the two notions of resolution are one notion.**
+`Layers.resolved_is_emergence_resolved`: given a threshold function, what a probe
+of resolution `k` resolves in a family of ring elements is **exactly**
+`Emergence.resolved` of the induced thresholds.  So the real-valued account and
+the algebraic one are the same account, differing by the `+1` between *invisible
+up to `k`* and *visible from `k`*.
+
+**With the thresholds computed rather than postulated.**  `Emergence.lean` takes
+`μ` as free data.  `Layers.monomial_threshold`: filtering `Polynomial ℝ` by powers
+of `X`, the threshold of `Xʲ` is `j` — its degree, read off the ring.
+
+**What that does *not* close, and the register should be exact.**  The bridge is
+to `Emergence.resolved`'s **form**.  Nothing connects `thr` to a measured
+spectrum, so §V.x's gap — `Spectrum.gaps` against `Internal.record` — **stands**.
+Two notions of resolution have been identified with each other; neither has been
+identified with a measurement.
+
+**G4 acquires vocabulary and no theory, and the file says which is which.**
+`Layers.indist_equivalence`: agreeing at a resolution is an equivalence, so a
+resolution partitions the ring and a class is what an *outcome* would be;
+`indist_of_le` merges classes as the probe coarsens, which any account of
+outcomes must do.  `compatible_iff_orders_indistinguishable` is an unfolding and
+is labelled one — its worth is the reading, that joint resolvability is the
+invisibility of the operating order, which is `Ordering.lean`'s obstruction seen
+at a resolution.
+
+Then it stops.  **A probability is a weight on the classes and there is none.**
+The framework's only measure-like notion is counting — `Entropy.lean` derives the
+arrow from finite resolution and a bijective microdynamics, `Attraction.lean`
+makes the source a count — so that is where a weight would have to come from.
+Whether the classes are finite in any model is not established, so the counting
+route is a direction and not an argument.
+
+**Ledger effect.**  `auditedTheorems` `1139 → 1152`.  No assumption is added:
+`Layers.lean` introduces no structure beyond `Resolution.Filtration`, already
+counted in `unwitnessedStructures`.  No prediction moves.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2071,7 +2124,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1139
+def auditedTheorems : ℕ := 1152
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
