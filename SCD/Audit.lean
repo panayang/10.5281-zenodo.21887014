@@ -2295,6 +2295,55 @@ already assumptions, listed in §V.a′ and §V.n as identifications appearing
 nowhere in Lean.  They now appear in Lean, which is a change of visibility and
 not of debt.
 
+## V.al  The two sectors share names and no types, and a claim of mine is withdrawn
+
+The next step was the unit bookkeeping — convert `λ` from the scale axis to
+cosmological time and get a number.  Asking §III's question first, **a `t` of
+what?**, the bookkeeping turns out to be impossible for a reason that is not
+about units.
+
+**What the imports say.**  `DarkEnergy.lean` imports *only* Mathlib and `σ` does
+not occur in it; `Cosmos.lean` contains no algebra either, its two apparent
+matches being the word *overlap* in prose; `Scanning.lean` mentions
+`ScaleAlgebra` nowhere and takes `κ`, `ρ` and `t` as free real parameters; while
+`Index.lean`, where `κ = −2(n−1)Δ` lives, imports the algebra.
+
+> **The cosmological sector and the algebraic sector share names and no types.**
+
+So there is no conversion to compute.  `Scanning`'s `t` is not the scale axis in
+other units; it is an unconnected real variable.  The bookkeeping is not hard —
+it is **not yet a question**.
+
+**And §V.aj's claim is withdrawn.**  `Bridge.factorsThroughCount_of_indexResponse`
+stands: a drift evaluation carries the index law to factorisation **at the pair
+the bridge constructs**, `(val (lap σ), val ν)`.  What was written around it —
+that *the scanning hypothesis is a theorem* — does not stand.  The scanning
+hypothesis is factorisation at the pair nature supplies, the cosmological
+response against the resolved count, and those are not shown to be these.
+`Bridge.lean`'s header flagged one of the two remaining identifications and
+**missed the other**, that `val ν` is the resolved count; the summary given
+elsewhere was stronger than the file.  Corrected in place, in `Bridge.lean` and
+here.
+
+**Why this is not a quibble.**  `Disconnect.factorisation_is_generic`: the zero
+response factors through the zero count at every coefficient, so exhibiting *an*
+instance of `FactorsThroughCount` establishes nothing.
+`factorisation_has_failing_instances` shows the predicate is not vacuous once the
+pair is fixed.  **The content is entirely in which pair** — and which pair is
+what the disconnection means the framework cannot yet say.
+
+**What the next step actually is.**  Not bookkeeping: **connecting the
+cosmological sector to the algebra**, giving `Cosmos`'s `ε`, `Scanning`'s `ρ` and
+`DarkEnergy`'s `t` types that mention `ScaleAlgebra`.  That is a substantial
+piece of work and not a conversion factor.  Until it is done, `Anchor.lean`'s
+refusal to count the `w`/`H₀` link among the predictions is not conservative but
+exactly right, and "three inputs deep" was if anything generous.
+
+**Ledger effect.**  `auditedTheorems` `1180 → 1182`; `correctedCount` `10 → 11`.
+No prediction moves.  §V.aj's remaining content — the bridge, its witness, and
+the unit proportionality — is unaffected; what is withdrawn is what the bridge
+was said to reach.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2361,7 +2410,7 @@ of `Diagonal.ric_offdiag` as a property of diagonal metrics is a property of
 diagonal metrics over a *commutative* ring, since the cancellation is between
 terms whose order is not a choice there — `Ordering.vacuum_is_ordering_dependent`
 shows the lift changes the solution set. -/
-def correctedCount : ℕ := 10
+def correctedCount : ℕ := 11
 
 /-- External results cited and not proved.
 
@@ -2470,7 +2519,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1180
+def auditedTheorems : ℕ := 1182
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

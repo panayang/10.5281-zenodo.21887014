@@ -133,6 +133,9 @@ PART III — THE QUANTUM SECTOR
     Observations the remaining two inputs get types, and the theory cancels: two
                  measurements by different communities must report the same
                  number, two-sidedly falsifiable
+    Disconnect   ★ but the cosmological sector shares **no types** with the
+                 algebra, so the unit bookkeeping is not yet a question — and
+                 one claim of `Bridge` is withdrawn here
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -260,6 +263,7 @@ import SCD.Overdetermination
 import SCD.RateWeight
 import SCD.Bridge
 import SCD.Observations
+import SCD.Disconnect
 
 -- Part IV — scale flow and content
 import SCD.RG

@@ -454,6 +454,10 @@ namespace SCD.Verify
 #print axioms SCD.Observations.falsified_by_the_other_alone
 #print axioms SCD.Observations.fit_identification_is_a_constraint
 
+-- Disconnect.lean
+#print axioms SCD.Disconnect.factorisation_is_generic
+#print axioms SCD.Disconnect.factorisation_has_failing_instances
+
 /-! ## PART II.a — the isotropic sector -/
 
 

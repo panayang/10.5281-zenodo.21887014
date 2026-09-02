@@ -18,10 +18,15 @@ Nothing else — not linearity, not continuity.  Asking for less matters, becaus
 every property demanded of a bridge is a property some model has to supply, and
 the first draft of this file asked for two and needed one.
 
-## What it gives, and it is more than transport
+## What it gives
 
-`factorsThroughCount_of_indexResponse`: **given a drift evaluation, the scanning
-hypothesis is a theorem.**
+`factorsThroughCount_of_indexResponse`: given a drift evaluation, the index law
+factorises **at the pair the bridge constructs**, `(val (lap σ), val ν)`.
+
+**The header of this file first said "the scanning hypothesis is a theorem".
+That is withdrawn** — see `Disconnect.lean`.  The scanning hypothesis is
+factorisation at the pair *nature* supplies, the cosmological response against
+the resolved count, and those are not shown to be these.
 
 `Response.lean` calls factorisation through the count a *proposal*, and shows A5
 and the weight grading do not force it — `weight_zero_does_not_force_constancy`
@@ -60,12 +65,10 @@ an empty hypothesis.
 
 ## So the honest accounting
 
-`Anchor.lean` records the `w`/`H₀` link as **three inputs deep**: the scanning
-hypothesis, plus two unformalised identifications.  This removes the first.
-
-> **Two inputs deep, not three** — and the one removed was the one the framework
-> could remove, since the other two are about what an astronomical fit measures
-> and no amount of algebra decides that.
+`Anchor.lean` records the `w`/`H₀` link as **three inputs deep**.  This file
+first claimed to remove the first.  **It does not** (`Disconnect.lean`): what it
+removes is the gap between the two *laws*, and what remains between the bridge's
+pair and the cosmological one is that the two sectors share no types at all.
 
 No number is offered, for the reason `RateWeight.lean` gave: the unit bookkeeping
 between the framework's scale-axis time and cosmological time has not been done.
