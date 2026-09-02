@@ -2011,6 +2011,50 @@ the identification appears as a hypothesis, not as a postulate — and no
 prediction moves.  §V.x's gap is **narrowed, not closed**: the link is now
 testable, and its simplest instance is refuted.
 
+## V.af  Predictions carry no information about inputs
+
+§V.ae left the spectral route to `Δρ` **empty rather than closed** and the next
+move was to be a survey: list the weight-zero quantities and ask of each whether
+it could fix `Δρ`.  The survey was the wrong instrument and was never run.
+
+`Information.predicted_cannot_determine_modulus`: if `f` is constant across a
+theory's solutions and `g` is not, `g` is not a function of `f` — the two
+solutions that disagree about `g` agree about `f`.  Trivial as a proof and not as
+a statement: it says the two columns of `Explanation.predicted_or_modulus` are
+**informationally disjoint**, so a theory's predictions can never determine its
+inputs.  `modulus_may_determine_modulus` shows the restriction runs one way only,
+so it is a restriction and not a triviality.
+
+**Applied.**  `CV² = 1` is what the framework predicts; `Δρ` is what it does not
+(`Period.no_prediction_of_the_coupling`).  So `CV²` cannot fix `Δρ`, and neither
+can `γ = 1`, universal attraction, one cone for every sector or `2β = 1 + γ`.
+**Every entry in the prediction ledger is excluded at a stroke.**
+
+What is left on the spectral side is what the framework does *not* predict — `ρ`
+and the threshold positions.  A relation `Δρ = f(ρ)` is permitted, but it is
+**another input**: it trades one free number for one assumed relation.
+
+**And the half that matters.**  The theorem blocks *determining* a modulus from a
+prediction.  It does not block **deriving** one from the axioms.  A count of
+windings per threshold is a derivation, not a reading-off — so the combinatorial
+route is not one option among two but the only kind the accounting permits, and
+for a reason that has nothing to do with A5.
+
+**Which corrects §V.ae's correction.**  That entry withdrew "A5 blinds the
+spectrum" and left the route open; this closes it properly.  The difference is
+not cosmetic: the A5 argument would have made `ρ` unusable too, since `ρ` is read
+from the same gaps, and `ρ` is measured and used throughout.  The right argument
+removes the predictions and leaves `ρ` where it was.
+
+**Scope.**  The general theorem is proved; its application to `CV²` and `Δρ` is a
+reading, since the framework has no formal solution space over which to
+instantiate `Predicted` and `Modulus` for those two.  Labelled as one.  The
+general fact is what retires the survey.
+
+**Ledger effect.**  `auditedTheorems` `1162 → 1164`.  Nothing is added or removed
+from the prediction ledger; what changes is the register's account of what the
+ledger can be *used for*, which is: not this.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2186,7 +2230,7 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1162
+def auditedTheorems : ℕ := 1164
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

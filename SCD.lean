@@ -116,6 +116,9 @@ PART III — THE QUANTUM SECTOR
     Spacing      ★ and the link to the measured spectrum, taken and refuted:
                  a filtration by powers of one element spaces its thresholds
                  evenly, and the observed gaps do not
+    Information  ★ predictions and inputs are informationally disjoint, so no
+                 prediction can ever fix a free number — which retires a whole
+                 class of routes and leaves derivation as the only kind
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -237,6 +240,7 @@ import SCD.Amendment
 import SCD.Resolution
 import SCD.Layers
 import SCD.Spacing
+import SCD.Information
 
 -- Part IV — scale flow and content
 import SCD.RG

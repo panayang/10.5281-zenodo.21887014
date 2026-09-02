@@ -424,6 +424,10 @@ namespace SCD.Verify
 #print axioms SCD.Spacing.unique_pure_number
 #print axioms SCD.Spacing.meanGap_from_gaps
 
+-- Information.lean
+#print axioms SCD.Information.predicted_cannot_determine_modulus
+#print axioms SCD.Information.modulus_may_determine_modulus
+
 /-! ## PART II.a — the isotropic sector -/
 
 
