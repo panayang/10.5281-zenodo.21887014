@@ -87,6 +87,127 @@ PART III — THE QUANTUM SECTOR
     NCConformal  ★ curvature without commutativity; the whole quantum
                  correction is [σᵢ, σⱼ], and it is purely antisymmetric
     Dynamics     conservation is the condition for a field equation to exist
+    Ordering     ★ the lift of the gravity chain's cancellation to a
+                 non-commutative ring is *not* unique — and the static
+                 configuration the chain runs in does not notice
+    Screen       predictions of the world survive the observer joining the
+                 configuration; what is *recorded* does not — and that is where
+                 the one discriminating prediction lives
+    ExpPoly      ★ the first configuration: `e^p` is a unit, so the scale can
+                 vary — A2 and A4′ acquire terms, and reciprocity holds at
+                 finite amplitude
+
+    Circle       and the other branch: a scale whose gradient has no potential.
+                 A periodic scale field is a contradiction in terms, so the join
+                 keeps the gradient and drops the potential
+    Gradient     what A2 assumes, measured: the geometry never sees the
+                 log-scale, A2's real content is that the scale is a unit, and
+                 what it silently adds is that the gradient is exact
+    Torus        and the exactness fails in every dimension, not just one
+    Amendment    what A2 adds beyond the unit is that a potential *exists*; the
+                 potential itself is invisible to the geometry and unique up to
+                 a fiducial, so the refactor is not made
+    Resolution   ★ bridge three: resolution as a filtration, so "resolved"
+                 needs no order and incompatibility is `ad` read at a
+                 resolution — the observer reaches the algebra
+    Layers       incompatibility appears at a finite resolution; the thresholds
+                 are computed from the ring, not postulated; an outcome is an
+                 indistinguishability class, and what is missing is its weight
+    Spacing      ★ and the link to the measured spectrum, taken and refuted:
+                 a filtration by powers of one element spaces its thresholds
+                 evenly, and the observed gaps do not
+    Information  ★ predictions and inputs are informationally disjoint, so no
+                 prediction can ever fix a free number — which retires a whole
+                 class of routes and leaves derivation as the only kind
+    Conversion   and counts cannot fix it either, so `Δρ` is a **permanent
+                 input** — both of the framework's categories are closed
+    Overdetermination  ★ but an input buys a prediction when it appears twice,
+                 and everything dimensionful hangs on one unmade identification:
+                 is the scanning conversion the gravitational one?
+    RateWeight   the rate is weight zero, so the scanning conversion is not a
+                 gauge coupling — the second relation exists, and what is left
+                 is whether its proportionality is one
+    Bridge       ★ and it is one: reading the algebra along the drift makes the
+                 scanning hypothesis a **theorem** of the index law, so the
+                 w/H₀ link is two inputs deep instead of three
+    Observations the remaining two inputs get types, and the theory cancels: two
+                 measurements by different communities must report the same
+                 number, two-sidedly falsifiable
+    Disconnect   ★ but the cosmological sector shares **no types** with the
+                 algebra, so the unit bookkeeping is not yet a question — and
+                 one claim of `Bridge` is withdrawn here
+    Content      ★ and the reason: the framework has been writing presheaves
+                 without the vocabulary.  Three of its own monotonicity results
+                 *are* the functor laws, and the algebra and the thresholds are
+                 one system described twice
+    Size         ★ and sorting the rest: the cosmological escapes are a **size**
+                 and its derivative, not content — which is the same missing
+                 object as G4's weight on outcomes
+    Valuation    and the structure *accepts* a weight: `record_union` plus
+                 modularity gives inclusion–exclusion on the observer lattice.
+                 Nothing picks the weight, but nothing resists it either
+    OneParameter ★ and the size is not a second freedom: its slope *is* `ρ` and
+                 its origin is A5's, so uniform density is the assumption that
+                 makes the size and `Δρ` one parameter
+    Codimension2 ★ and one of the two ways out of the codimension mismatch is
+                 **closed**: the framework's own line defects carry `ℤ/2`, on
+                 which no additive real source exists.  All three topological
+                 integers are now eliminated as the source of the geometry
+    DegreeSource ★ and the other way out is closed too, by one theorem covering
+                 both: on a **group**, an additive non-negative source vanishes.
+                 So the source of the geometry cannot be topological at all, and
+                 the codimension question was malformed on both branches
+    Vantage      ★ and the observer question dissolves the same way: resolution
+                 and threshold are **one type**, so observer and observed are one
+                 kind of thing and `Crossed` is the order of a **vantage space**.
+                 There is no position space for them to relate across.  `place`
+                 puts the algebra into that space for the first time
+    Reduction    ★ and the founding statement needs a **group**, not a ring: the
+                 log-derivative is a homomorphism (new), A3 is its inversion law,
+                 and the ring's remaining job is the **bilinear pairing** that
+                 makes the geometry.  Two commitments, carried as one
+    TwoMetrics   ★ and the pairing was never chosen, so there are **two**: `κ` is
+                 a `δ`-trace result and the observables are `η`-weighted, and the
+                 one theorem joining the sectors needs a signature the physics
+                 cannot have
+    EtaTrace     ★ and the repair, done: the curvature identity redone from the
+                 connection up with `η`.  **`−2(n−1)` survives**, so `κ` is
+                 unharmed — but the operator is the **d'Alembertian**, so A6″ is
+                 hyperbolic and Poisson is its static limit
+    Hyperbolic   ★ one of the two obstructions removed — the sectors are one
+                 geometry at **any** signature, but still only where the scale is
+                 isotropic, which the physics is not.  And the hyperbolic law has
+                 **null characteristics**: disturbances ride the framework's own
+                 light cone
+    Directional  ★ and the last obstruction is an **absent object**, not a hard
+                 computation: off the isotropic locus there is no single
+                 conformal factor, so A6′'s form presupposes what A4′ denies.
+                 A scale wave is a **wave of emergence**, quantised by the
+                 threshold spectrum (its interferometer claim is corrected in
+                 `Breathing`)
+    Breathing    ★ the merge: A4′'s units supply the invertibility A6′ was
+                 contorted to avoid, so the law can be written on the **true**
+                 curvature.  And two claims lose their stated ground — one of
+                 them one commit old — while the breathing exclusion survives on
+                 the **monopole**, with a narrower scope
+    Consolidation ★ seven axioms to five: A3 names a definition and asserts a
+                 group law, A2 is A4′ plus a potential nothing geometric needs,
+                 and A6′ is replaced by the form A4′ makes writable.  With the
+                 prediction ledger, read honestly
+    Micro        ★ and the quantum correction does **not** inherit the pairing
+                 problem — the signature enters `Defm` only symmetrically.  But
+                 the whole gravity chain is over a `CommRing`, where the
+                 correction is zero by construction: it has never been carried
+                 into a single number
+    QuantumRicci ★ so carry it.  Off the commuting locus **Ricci is not
+                 symmetric** — `Ric_{[be]} = (n−2)[σ_b,σ_e]`, with a torsion-free
+                 connection — and the **scalar curvature does not move at all**,
+                 so nothing classical takes a quantum correction at any order
+    Constants    ★ `L,T,M` collapse to one grading and `c` stops being a
+                 constant; `ℏ` and `G` become two **weight-one** magnitudes on
+                 one axis — so there are **two** free pure numbers, not one,
+                 unless they are the same magnitude.  And `α` is pure
+                 *structurally*: only one law crosses the grading
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -103,13 +224,15 @@ PART V — PREDICTIONS, AND THE DATA
 ────────────────────────────────────────────────────────────────────────
 
     Predictions  the conversion table
-    Cosmos       w does not evolve; there is no initial value; dark matter
+    Cosmos       w on its stated domain; there is no initial value; dark matter
     Horizon      no horizon; waves on the light cone; entropy ∝ ln R
     Waves        inspiral dynamics: conservation kills monopole and dipole,
                  so the quadrupole leads; Hulse–Taylor bounds the dipole
     Native       the seven questions only this framework can ask
-    Data         ★ the confrontation.  One live tension (DESI vs A5), one
-                 live open question (the f₀(500) pole), the rest passing.
+    Data         ★ the confrontation.  A5 does **not** forbid an evolving w —
+                 that reading was withdrawn in `Scanning` — and the framework's
+                 own w(z) has never been computed, so DESI compares against
+                 nothing yet.  One live open question (the f₀(500) pole).
 
 ────────────────────────────────────────────────────────────────────────
 PART VI — THE REGISTER
@@ -196,6 +319,40 @@ import SCD.Internal
 import SCD.Triple
 import SCD.Mutual
 import SCD.NCSize
+import SCD.Ordering
+import SCD.Screen
+import SCD.ExpPoly
+import SCD.Circle
+import SCD.Gradient
+import SCD.Torus
+import SCD.Amendment
+import SCD.Resolution
+import SCD.Layers
+import SCD.Spacing
+import SCD.Information
+import SCD.Conversion
+import SCD.Overdetermination
+import SCD.RateWeight
+import SCD.Bridge
+import SCD.Observations
+import SCD.Disconnect
+import SCD.Content
+import SCD.Size
+import SCD.Valuation
+import SCD.OneParameter
+import SCD.Codimension2
+import SCD.DegreeSource
+import SCD.Vantage
+import SCD.Reduction
+import SCD.TwoMetrics
+import SCD.EtaTrace
+import SCD.Hyperbolic
+import SCD.Directional
+import SCD.Breathing
+import SCD.Consolidation
+import SCD.Micro
+import SCD.QuantumRicci
+import SCD.Constants
 
 -- Part IV — scale flow and content
 import SCD.RG

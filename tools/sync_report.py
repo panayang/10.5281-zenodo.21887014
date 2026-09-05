@@ -12,9 +12,23 @@ What it enforces:
   * every \\leanline{...} citation in the report names something that exists
   * the theorem counts quoted in the report match the sources
 """
-import re, os, sys
+import re, os, sys, io
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+def _read(path):
+    """UTF-8, newlines left alone: the sources are UTF-8 and LF, and Windows'
+    default cp1252 + CRLF translation would fail on the first and rewrite every
+    line of the second."""
+    with io.open(path, encoding='utf-8', newline='') as f:
+        return f.read()
+
+
+def _write(path, text):
+    with io.open(path, 'w', encoding='utf-8', newline='') as f:
+        f.write(text)
+
+
 SRC = os.path.join(ROOT, 'SCD')
 TEX = os.path.join(ROOT, 'paper', 'SCD.tex')
 
@@ -26,13 +40,13 @@ PARTS = [
      ["Foundation", "Signature", "Invariant", "Quantum", "Direction", "Connection",
       "Coupling", "Algebra", "Dimension", "Slice", "Axes"]),
     ("PART II — the branch point", "第三部分\\quad 分叉点",
-     ["Locus", "Dynamics", "Determination", "Explanation", "Anchor", "Observer", "Observed", "Internal", "Triple", "Mutual"]),
+     ["Locus", "Dynamics", "Determination", "Explanation", "Anchor", "Observer", "Observed", "Internal", "Triple", "Mutual", "Ordering", "Screen", "Resolution", "Layers", "Spacing", "Information", "Conversion", "Overdetermination", "RateWeight", "Bridge", "Observations", "Disconnect", "Content", "Size", "Valuation", "OneParameter", "Codimension2", "DegreeSource", "Vantage", "Reduction", "TwoMetrics", "EtaTrace", "Hyperbolic", "Directional", "Breathing", "Consolidation", "Micro", "QuantumRicci", "Constants"]),
     ("PART II.a — the isotropic sector", "第四部分\\quad 各向同性扇区",
      ["Conformal", "Frame", "Unify", "Newton", "Diagonal", "Schwarzschild", "RicciDiag", "Vacuum", "Reciprocity", "Chain",
       "Deflection", "PPN", "Precession", "Nonlinearity", "Covariance", "Singularity", "Horizon", "Waves",
       "Index", "Flux"]),
     ("PART II.c — witnesses", "第四部分附\\quad 结构的见证",
-     ["Witness"]),
+     ["Witness", "ExpPoly", "Circle", "Gradient", "Torus", "Amendment"]),
     ("PART II.b — the anisotropic sector", "第五部分\\quad 各向异性扇区",
      ["Gauge", "Transport", "Axis", "Defect", "Charges", "Particle", "Emergence"]),
     ("PART III — the quantum sector", "第六部分\\quad 量子扇区",
@@ -56,12 +70,12 @@ def strip_docs(s):
 
 def theorems(mod):
     """Theorem names in a module, in source order."""
-    return re.findall(THM, strip_docs(open(f'{SRC}/{mod}.lean').read()), re.M)
+    return re.findall(THM, strip_docs(_read(f'{SRC}/{mod}.lean')), re.M)
 
 
 def qualified(mod):
     """Fully-qualified theorem names, tracking the namespace stack."""
-    s = strip_docs(open(f'{SRC}/{mod}.lean').read())
+    s = strip_docs(_read(f'{SRC}/{mod}.lean'))
     stack, out = [], []
     for line in s.split('\n'):
         m = re.match(r'\s*namespace\s+([A-Za-z_][\w.]*)', line)
@@ -183,6 +197,35 @@ DESCRIPTIONS = {
     "Internal": r"观察者成为系统的一部分：更大的观察者记录更少；扰动即力；但盲区未动",
     "Triple": r"观察者／被观察／过程三分：读序之差恰为对易子；A1 的第一个非交换模型",
     "Mutual": r"更正：被观察对的标度确在过程中但在读序之差里相消；三指标楔积作为对称候选",
+    "Ordering": r"算子序：非交换提升不唯一且真空条件随之改变；静态构型不受影响",
+    "Screen": r"观察者不变性筛：世界的预言不受影响，被记录的集合不是世界的函数",
+    "Resolution": r"桥三：分辨作为理想滤链，不需要序；不相容性是 ad 在某分辨率下被读出",
+    "Layers": r"不相容在有限分辨率出现；阈值由环算出而非公设；结果即不可分辨类，缺的是权重",
+    "Spacing": r"取下与实测谱的那根线并证伪：单元素幂滤链给等间距，而实测间隔方差不为零",
+    "Information": r"预言与输入在信息上不相交：任何预言都定不出自由数，只剩推导这一类路径",
+    "Conversion": r"计数也定不出转换系数：Δρ 是永久输入；并记录我提了一条登记册已驳回的路线",
+    "Overdetermination": r"输入出现两次才买得到预言；全部有量纲内容系于一个未做的识别",
+    "RateWeight": r"耗散率是权零，故扫描换算不是规范耦合；第二条关系存在，剩下比例是否为一",
+    "Bridge": r"沿漂移读代数：索引律推出扫描假设，比例恰为一；w/H₀ 链从三层输入降到两层",
+    "Observations": r"两个识别获得类型；理论量相消，剩下两个测量必须给出同一个数",
+    "Disconnect": r"宇宙学扇区与代数只共享名字不共享类型；撤回 Bridge 的一句断言",
+    "Content": r"框架一直在写预层只是没有词汇；代数与阈值是同一个系统的两种描述",
+    "Size": r"其余逃逸的分类：宇宙学那几个是内容的**大小**及其导数；与 G4 的权重是同一个缺口",
+    "Valuation": r"模性 + record_union 给出观察者格上的容斥；结构接受权重，只是没有东西挑选它",
+    "OneParameter": r"size 不是第二个自由度：斜率就是 ρ、原点是 A5 的；均匀密度正是让二者合一的那步",
+    "Codimension2": r"余维错配的两条出路封死一条：线缺陷带 ℤ/2，其上无非零可加实源；三个拓扑整数全部出局",
+    "DegreeSource": r"另一条出路也封死：群上可加且非负的源恒为零，所以引力的源不可能是拓扑电荷",
+    "Vantage": r"分辨率与阈值是同一类型，所以观察者与被观察者同种；没有位置空间可关联；place 首次把代数送进视角空间",
+    "Reduction": r"奠基命题只需要群：对数导数是同态，A3 就是它的取逆律；环剩下的活是几何需要的双线性配对",
+    "TwoMetrics": r"配对从未被选择，于是有两个：κ 是 δ-迹的结果而可观测量带 η，两扇区唯一的桥要求物理不能有的号差",
+    "EtaTrace": r"用 η 重做曲率：−2(n−1) 存活所以 κ 安全，但算符是达朗贝尔算符，A6″ 是双曲的",
+    "Hyperbolic": r"号差障碍拆除（各向同性障碍仍在）；双曲源律的特征锥就是框架自己的零锥",
+    "Directional": r"各向异性下没有单一共形因子，所以 A6′ 的形式预设了各向同性；标度波不是应变而是涌现波，效应被阈值谱量子化",
+    "Breathing": r"A4′ 的单位恰好提供了 A6′ 绕开的可逆性，源律可写在真曲率上；呼吸模可表达，排除靠的是单极而非 A5",
+    "Consolidation": r"七条公理归并为五条：A3 是定义加群律、A2 是 A4′ 加一个几何不需要的势；并附预言清单",
+    "Micro": r"量子修正不继承配对问题（号差只对称地进入 Defm）；但引力链全在交换环上，修正在那里恒为零",
+    "QuantumRicci": r"离开可对易点：Ricci 不对称且联络无挞，而标量曲率一动不动——经典量在任何阶上都无量子修正",
+    "Constants": r"三个量纲塌缩为一个分次，c 不再是常数；ℏ 与 G 同为权重一，所以自由纯数是两个而非一个",
     "Anchor": r"概念是否锚定与预言的重新清点：八条中四条是定义上的恒等式",
     "Explanation": r"约束理论的解释力与预言力：预言＝解空间上的常量；约束非空亦非平凡",
     "Chain": r"引力链条重读：倒数关系已被导出；预言是 $\gamma=1$ 与因子 2",
@@ -196,6 +239,11 @@ DESCRIPTIONS = {
     "Index": r"A6$'$ 换成指标形式：$\kappa$ 被定死，倒数关系不再需要渐近平直",
     "Horizon": r"无视界；波在光锥；熵是对数；无最小长度",
     "Witness": r"六个结构的见证：$\mathbb R[X]$ 承载精确标度平移",
+    "ExpPoly": r"指数多项式：$e^p$ 是单位，故标度可变；A2 与 A4$'$ 第一次有了项",
+    "Circle": r"圆环上的标度：梯度闭而不恰当；周期标度场不存在",
+    "Gradient": r"度量 A2 假设了什么：几何只看梯度；A2 的内容是标度为单位，隐含的是梯度恰当",
+    "Torus": r"n 维环面：非恰当梯度在任意维数都存在，不是一维的假象",
+    "Amendment": r"A2 的修订：势对几何不可见且在基准平移下唯一；真正的内容是势的存在性",
     "Gauge": r"内禀对称性即标度花样稳定子",
     "Transport": r"输运由花样定出；规范自由即简并",
     "Axis": r"点粒子回来了",
@@ -255,7 +303,7 @@ def gen_filetable(total):
                         % (mod, len(theorems(mod)), DESCRIPTIONS[mod]))
         rows.append(r"\midrule")
     nfiles = len([f for f in os.listdir(SRC) if f.endswith('.lean')])
-    loc = sum(1 for f in os.listdir(SRC) if f.endswith('.lean') for _ in open(f'{SRC}/{f}'))
+    loc = sum(1 for f in os.listdir(SRC) if f.endswith('.lean') for _ in _read(f'{SRC}/{f}').splitlines())
     rows.append(r"\textbf{合计} & \textbf{%d} & %d 个文件，%d 行 Lean 代码 \\"
                 % (total, nfiles, loc))
     rows += [r"\bottomrule", r"\end{longtable}", r"\end{center}"]
@@ -265,8 +313,8 @@ def check_citations():
     real = set()
     for f in os.listdir(SRC):
         if f.endswith('.lean'):
-            real |= set(re.findall(DECL, open(f'{SRC}/{f}').read(), re.M))
-    tex = open(TEX).read()
+            real |= set(re.findall(DECL, _read(f'{SRC}/{f}'), re.M))
+    tex = _read(TEX)
     bad = set()
     for m in re.findall(r'\\leanline\{([^}]*)\}', tex, re.S):
         for tok in re.split(r'[,\s]+', m.replace('\\_', '_')):
@@ -282,9 +330,9 @@ def main():
 
     verify, total = gen_verify()
     vpath = os.path.join(SRC, 'Verify.lean')
-    if open(vpath).read() != verify:
+    if _read(vpath) != verify:
         if write:
-            open(vpath, 'w').write(verify)
+            _write(vpath, verify)
             print(f"  wrote Verify.lean ({total} theorems)")
         else:
             print(f"  DRIFT: Verify.lean is stale (sources have {total} theorems)")
@@ -292,14 +340,14 @@ def main():
     else:
         print(f"  Verify.lean in step ({total} theorems)")
 
-    tex = open(TEX).read()
+    tex = _read(TEX)
     i = tex.find('\\clearpage\n\\appendix')
     j = tex.find('\\end{document}')
     if i > 0 and j > i:
         idx = gen_index(total)
         if tex[i:j].strip() != idx.strip():
             if write:
-                open(TEX, 'w').write(tex[:i] + idx + '\n' + tex[j:])
+                _write(TEX, tex[:i] + idx + '\n' + tex[j:])
                 print("  wrote the theorem index")
             else:
                 print("  DRIFT: the theorem index is stale")
@@ -307,7 +355,7 @@ def main():
         else:
             print("  theorem index in step")
 
-    tex = open(TEX).read()
+    tex = _read(TEX)
     lt = tex.find(r"\begin{longtable}{lrl}")
     if lt > 0:
         a = tex.rfind(r"\begin{center}", 0, lt)
@@ -315,7 +363,7 @@ def main():
         tbl = gen_filetable(total)
         if tex[a:b].strip() != tbl.strip():
             if write:
-                open(TEX, "w").write(tex[:a] + tbl + tex[b:])
+                _write(TEX, tex[:a] + tbl + tex[b:])
                 print("  wrote the file table")
             else:
                 print("  DRIFT: the file table is stale")
@@ -330,7 +378,7 @@ def main():
     else:
         print("  every \\leanline citation resolves")
 
-    tex = open(TEX).read()
+    tex = _read(TEX)
     quoted = set(re.findall(r'(\d{3,}) 条定理', tex))
     stale = {q for q in quoted if int(q) != total}
     if stale:

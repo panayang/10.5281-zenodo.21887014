@@ -11,11 +11,11 @@ Formal proof of the Scale-Coupled Dynamics (SCD) Theory: An axiomatic framework 
 ```
 lake exe cache get
 lake build                       # 0 errors
-lake env lean SCD/Verify.lean    # #print axioms on all 1040 theorems
+lake env lean SCD/Verify.lean    # #print axioms on all 1275 theorems
 python3 tools/sync_report.py     # consistency check; exit 1 on drift
 ```
 
-All 1040 theorems are audited: every one reduces to `propext`,
+All 1275 theorems are audited: every one reduces to `propext`,
 `Classical.choice` and `Quot.sound`, and none to `sorryAx`. The audit list, the
 report's file table and its theorem index are **generated from the sources**, so
 nothing can quietly fall out of them.
@@ -36,9 +36,14 @@ five falsifiable dimensionless statements, of which one discriminates against
 general relativity and the Standard Model.
 
 Two live empirical problems, both stated in `SCD/Data.lean`: DESI prefers an
-evolving dark-energy equation of state at 2.8–4.2σ, which A5 forbids with no
-adjustable parameter; and the no-horizon result implies a nonzero ringdown
-reflectivity whose magnitude the framework cannot compute, while rapidly
-spinning remnants bound it from above.
+evolving dark-energy equation of state at 2.8–4.2σ, and the framework's own
+prediction in that sector — that `w` varies on the log-scale set by the
+threshold spectrum — has never been computed as a curve, so the data can
+neither confirm nor kill it. **A5 does not forbid an evolving `w`**; that
+reading was withdrawn in `SCD/Scanning.lean` and is registered in `Audit` §V.e,
+and this file quoted it for several revisions after it had been withdrawn. The
+second problem: the no-horizon result implies a nonzero ringdown reflectivity
+whose magnitude the framework cannot compute, while rapidly spinning remnants
+bound it from above.
 
 The report (Chinese, ~95pp) is `paper/SCD.pdf`.

@@ -1432,9 +1432,1937 @@ role breaks a symmetry the structure has.  That argument is **not** made here.
 **No assumption is added**; `assumedCount` is unchanged.  Two open items are
 registered: the operator ordering, and whether total antisymmetry is forced.
 
+## V.w  The operator ordering, settled — and one structural claim scoped
+
+§V.v registered the operator ordering as open and called it prior to everything
+else in that entry: `Diagonal.lean` computes the connection and the Ricci
+contraction over a **`CommRing`**, and carrying those formulas to a
+non-commutative ring requires an ordering the commutative computation does not
+determine.  `Ordering.lean` answers it, without any theory of the observer,
+which is what made the question worth asking first.  The answer has two halves
+and this register should carry both: one protects the development's best
+results, the other takes something back.
+
+**The lift is not unique, and the ambiguity is exactly the quantum correction.**
+`Ordering.offDiag_sub_rev`: the two available orders of the off-diagonal Ricci
+summand differ by three commutators of scale gradients per transverse direction,
+written in `Quantum.ad`.  The obstruction is not diffuse — it is built from the
+same objects `NCConformal.lean` calls the correction.
+
+**And it reaches the vacuum condition.**  `Ordering.vacuum_is_ordering_dependent`
+exhibits a configuration in `Triple.matrixScaleAlgebra` at three directions —
+`σ = (0, 0, τ)` with `∂₀τ = E₀₀` and `∂₁τ = E₀₁` — on which `R_ab = 0` **holds in
+one order and fails in the other**, because `E₀₁E₀₀ = 0` while `E₀₀E₀₁ = E₀₁`.
+That is not a discrepancy in a value both orders agree is nonzero; it is the
+solution set moving.  Three directions is the smallest case with anything in it:
+`Diagonal.offdiag_zero_in_two` had already shown the constraint is empty below
+three.
+
+**The gravity chain does not stand in it.**
+`Ordering.ordering_irrelevant_of_static`: under `Diagonal.lean`'s own staticity
+hypothesis every commutator in the difference carries a vanishing factor, for
+every pair — if neither member of the observed pair is the distinguished
+direction all of them vanish, and if one is, the surviving factors pair with a
+vanishing one.  So `γ = 1`, `2β = 1 + γ` and the two arcsecond values are
+statements about a configuration on which **every** ordering agrees.  They are
+not hostages to how the observer turns out, which is what the question was asked
+to find out.
+
+**What is scoped, and this is the correction.**  §V.j read `Diagonal.ric_offdiag`
+as the general structural fact that *no pair of directions carries its own
+curvature; every component is carried by the complement*, and called it a
+property of diagonal metrics rather than of the static case.  It is a property
+of diagonal metrics **over a commutative ring**: the cancellation that produces
+it is between terms whose order is not a choice there and is one here.  The
+theorem is untouched; the reading is narrowed to the commuting locus until an
+ordering is argued for.  `correctedCount` is raised.
+
+**A canonical lift exists and is not adopted.**  `Ordering.integrandSym` is the
+sum of the two orders — reversal-invariant by construction
+(`sym_is_order_free`), twice the classical summand on the commuting locus
+(`sym_doubles_the_classical`), and stated without dividing by two so it costs no
+hypothesis on the ring.  Adopting it *because it is symmetric* would be exactly
+the move §V.t declined for idempotents: importing the shape of the answer.  What
+would make it native is an argument that the contraction defining `Ric` has a
+preferred order for reasons internal to the framework.  There is none, and the
+choice stays open and registered.
+
+**What the file does not do.**  It does not lift `Diagonal.lean`.  It lifts the
+one expression the chain's cancellation runs through, which is enough to answer
+the question and small enough to check by eye.  The general non-commutative
+connection is a larger job and is not attempted.
+
+**Ledger effect.**  `correctedCount` `9 → 10`.  **No assumption is added** — the
+file introduces no hypothesis the development did not already carry — and no
+prediction is added or removed.  `auditedTheorems` `1040 → 1053`.
+
+## V.x  The observer-invariance screen — and a sample the register never carried
+
+§V.w settled the ordering.  The other half of the same question was whether the
+ledger's predictions are predictions *of the world* or of something that includes
+the observer, since `Internal.observer_is_in_the_determiner` puts the observer
+inside the configuration.  `Screen.lean` runs `Explanation.lean`'s accounting on
+the pair.
+
+**The reassuring half is a theorem and not a reassurance.**
+`Screen.observer_preserves_predictions`: a quantity constant across the
+admissible worlds is constant across the admissible *(world, observer)* pairs,
+because the pairs project into the worlds.  So **no quantity of the world loses
+its status when the observer joins the configuration**, and the fear that the
+ledger would have to be redone is answered — for every entry that is about the
+scale pattern.
+
+**The other half is where the content is.**
+`Screen.observer_relative_is_modulus`: for **every** theory of the world that
+admits one particular resolution — no constraint on the world is assumed beyond
+that — what is recorded is a `Modulus`, an input.  Two observers in one world
+record different sets (`recorded_set_is_observer_relative`), so
+`Explanation.tightening_predicts_more` cannot reach the freedom: it is in the
+other slot, and only a theory of the observer touches it.  The direction is
+`Internal.record_antitone`'s — a larger observer records less, so the sample
+grows as the observer shrinks.
+
+**Sorting the five falsifiable entries.**  `γ = 1`, `2β = 1 + γ`, universal
+attraction and one cone for every sector are properties of the scale pattern and
+are covered verbatim.  `CV² = 1` is not: it is a statistic of *which thresholds
+are in the sample*, and being in the sample is what `record` is.
+
+**And it is the discriminating one.**  `Anchor.discriminatingFromGR` is `1`, and
+that one is `CV² = 1`.  So the single entry the framework's empirical case rests
+on is the single entry the screen classifies as observer-relative.  The counts
+agreeing is arithmetic and `Screen.lean` says so in place; what is not arithmetic
+is which entry falls where.
+
+**The register was missing the underlying item, which is the §V.a pattern again.**
+`Spectrum.lean` says in its own header that "eleven gaps is a small sample and the
+twelve mass scales were selected by hand (massless states excluded, neutrino
+masses unknown)".  That self-registration never reached this list, and it is the
+same failure mode as the three §V.a found and as A6′ before them — a file
+declaring its own weakness while the register a reader consults says nothing.
+`unregisteredFound` is raised.
+
+What the screen adds to it is why it is structural rather than a matter of
+sample size: **nothing in the development links `Spectrum.gaps` to
+`Internal.record`.**  Until something does, `CV² = 1` is a prediction about a
+sample rather than about a configuration, and the framework has no theory of
+which sample.  Building that link is the work; noting that it is missing is all
+this pass does.
+
+**No count moves except the two named.**  No assumption is added — `Screen.lean`
+introduces no hypothesis any theorem carries — and no prediction is added or
+removed: `falsifiableDimensionless` stays at `5` and `discriminatingFromGR` at
+`1`, because `CV² = 1` can still fail and still discriminates.  What changed is
+what it is a statement about.  `unregisteredFound` `3 → 4`;
+`auditedTheorems` `1053 → 1063`.
+
+**Step zero therefore closes with one item settled and one sharpened.**  The
+ordering question is answered and the gravity chain is out of it (§V.w).  The
+observer question is answered for every quantity of the world and open for the
+one that matters, which is a smaller and more specific hole than the one it
+replaces.
+
+## V.y  A2 had no model, and now has one
+
+§V.b asked whether the *auxiliary* structures — `Crossed.ScaleShift`,
+`Waves.Conserved`, `RG.ScaleFlow` and the rest — are ever built from the
+framework's own carrier, and `Witness.lean` answered it.  Nobody asked the same
+question of the carriers themselves.  The answer was worse.
+
+**`ScaleField` had never been constructed.**  Not "only in special cases": the
+structure that carries A2 and A3 had **no term anywhere in the development**, so
+every theorem about the scale field was true, clean and unwitnessed.  The reason
+is uniform.  Every model of A1 here is a polynomial ring or a matrix ring over
+one — `Positivity.oneAxis`, `Witness.polyScaleAlgebra`,
+`Explanation.mvScaleAlgebra`, `Triple.matrixScaleAlgebra` — and in a polynomial
+ring **the units are the non-zero constants**.  A2 asks that `s = e^σ` be a unit
+with `d s = s · dσ`; with `s` constant that forces `dσ = 0`.  *In every model the
+development had, the scale could not vary.*
+
+`Newton.Dual` is the one escape and it escapes only so far: `σ = εφ` over the
+dual numbers varies, and `gradsq_inr` is zero **by construction**, so that model
+is exactly first order.  The whole gravity chain is about a finite-amplitude
+configuration, `s_t·s_r = 1` with `s_t ≠ 1`.  The same held of A4′: the only
+`DirScale` in the development, `Light.twoScale`, is constant over `ℝ`.
+
+**`ExpPoly.lean` builds the ring.**  `ExpPoly n` is the additive monoid algebra
+of the polynomials over the polynomials — finite sums `Σ qⱼ e^{pⱼ}` with
+polynomial coefficients and polynomial exponents — with
+`∂ᵢ(q e^p) = (∂ᵢq + q ∂ᵢp) e^p`.  `der_mul` and `der_comm` verify A1 on it;
+`e^p` is a unit with inverse `e^{-p}`, and `der_expUnit` is A2's axiom.  Then
+
+* `scaleField p` — **the first term of type `ScaleField` in the development**,
+  with `scaleField_gradient_ne_zero` showing the log-scale genuinely varies;
+* `recipTwo` — **A4′ anisotropic with exact reciprocity**: `(e^{x₀}, e^{-x₀})`
+  gives `s_t·s_r = 1` on the nose (`recipTwo_reciprocal`) and is not isotropic
+  (`recipTwo_not_isotropic`).  The Schwarzschild relation at finite amplitude,
+  with no linearisation.
+
+**What it does not do, and the reason is worth more than the attempt.**  It
+exhibits **no vacuum solution**.  `Diagonal.vacuum_scale_sum` is a conditional
+whose antecedent contains `Ric = 0`, and nothing here meets it.  Not for want of
+trying: the Schwarzschild profile is `σ_r = −½ log(1 − 2M/r)`, and **a logarithm
+of a rational function is not an exponential polynomial**.  So the gravity
+chain's hypotheses are now instantiable — a directional scale with reciprocity
+exists — while its *equations* are not solved in this ring.
+
+That is a sharper statement of what is missing than "no model": the next ring
+must be closed under `∫ dp/p` as well as under `exp`.  Registered as open.
+
+**And the `Witness.lean` caveat applies verbatim.**  One model carrying A2 shows
+A2 is *compatible* with A1, not that every model of A1 carries it.  What changed
+is that the theorems about the scale field and about an anisotropic directional
+scale are known non-vacuous, which they were not.
+
+**The exponential is a choice, and the register should say so before the file is
+read as saying otherwise.**  A2 asks for a unit `s` and an element `σ` with
+`d s = s · dσ`, and adjoining a formal `e^p` is one way to have one.  Making `σ`
+**nilpotent** is another: then `e^σ` is a polynomial and nothing is adjoined.
+`ExpPolyModel.dualScaleField` presents `Newton.Dual`'s square-zero model as the
+`ScaleField` it always was, so **A2 now has models of two different kinds** and
+neither is derived from A1–A7.  What separates them is recorded rather than
+argued: `exp_not_first_order` against `Newton.Dual.gradsq_inr` — the nilpotent
+mechanism is exact but truncated at a finite order in the scale, the exponential
+one is untruncated but formal.
+
+**And a scope statement that matters more than either, caught by asking which
+branch this is.**  `Dual.lean` divides the scale group under A3′ into the `ℝ`
+branch (`Axioms.ScaleField`, a real-valued log-scale) and the `𝕋` branch
+(`Defect.ScaleDefect`, a log-scale modulo a period, which is what lets a defect
+wind), and its own summary is that **gravity selects the `𝕋` branch** — the `ℝ`
+branch being the `Δ → 0` degeneration, with `Dual.R_branch_is_trivial` showing a
+period-zero defect has no holonomy.
+
+**Everything in `ExpPoly.lean` is the `ℝ` branch.**  A formal exponential of a
+polynomial has no period, and `Axioms.ScaleField` is that branch's carrier.  So
+the model closes "A2 has no model" **on the branch the framework's own source law
+does not use**.
+
+**And the statement of the remaining gap needed correcting one commit after it
+was made.**  I wrote that `Defect.ScaleDefect` "still has no model".  It has one:
+`Defect.vacuum`, in the file that declares the structure, and a linear lift gives
+one of any winding.  `Defect.ScaleDefect` is **inhabited** — `Defect.vacuum` is a model, and a linear
+lift gives one of any winding — so the gap is *not* that the `𝕋` branch has no
+model.  It is that **`ScaleDefect` is not a scale field**: it is a function
+`ℝ → ℝ` with a quasiperiodicity condition, carrying no ring, no derivations and
+no unit.  Nothing in the development builds an object that is at once a model of
+A1–A2 and periodic; the two branches are related by `Dual.lean`'s prose and by
+theorems about `ScaleDefect` alone.  **The join is what is missing**, and it is
+what bridge one's successor should build.
+
+Recorded rather than quietly fixed, because it is the register's own recurring
+failure — a claim in a docstring that the declarations do not support — committed
+here by me one commit after the pass that was written to catch it.
+
+That also replaces the explanation given above for the missing vacuum solution.
+The observation about logarithms is true and is not the deep reason; the deep
+reason is that defects live on the other branch.  Both are recorded, the second
+as the one to act on.
+
+**Ledger effect.**  `auditedTheorems` `1063 → 1084`.  No assumption is added and
+no prediction moves.  `unwitnessedStructures` is **not** raised and not lowered:
+it counts the six auxiliary structures §V.b named, and the point here is that the
+axiom carriers were never on that list at all — a gap in what the register
+counted rather than a change in the count.
+
+## V.z  The join, and why it could not have the shape it was asked for
+
+§V.y's correction named what stayed open: nothing in the development was at once
+a model of A1–A2 and periodic, so the two branches of A3′ had no common carrier.
+`Circle.lean` builds one, and the first thing it finds is that the object being
+asked for does not exist.
+
+**There is no periodic scale field, and that is a theorem.**  If the log-scale is
+defined only modulo a period then `σ` is **not an element of the ring** — only its
+gradient is, because differentiating kills the ambiguity.  `Axioms.ScaleField`
+has a field `σ : A`.  `Circle.no_scaleField_with_uPow` proves the consequence on
+the smallest example: on `ℝ[u, u⁻¹]` with `d = u ∂/∂u`, the unit `u^k` has a
+perfectly good scale gradient — the constant `k` — and **no scale field can carry
+it** for `k ≠ 0`.
+
+So `Axioms.ScaleField` *is* the `ℝ` branch by construction.  That was not a
+modelling accident and no amount of model-building would have fixed it.
+
+**The obstruction is exactness.**  `Circle.dloop_coeff_zero`: every derivative on
+the circle has vanishing constant term, so `no_potential` — a non-zero constant
+is not a derivative.  The gradient of `u^k` is closed and **not exact**, which is
+what "defined only modulo a period" means algebraically, and the winding is the
+class it represents.
+
+**The join keeps the gradient and drops the potential.**  `Circle.ScaleGradient`
+carries `s : Aˣ`, `grad : Fin n → A` and `d s = s · grad`.  Then
+`ofScaleField_isExact` embeds every scale field as an **exact** scale gradient,
+and `circGradient_not_isExact` exhibits an inexact one.  One carrier, two
+branches, and `IsExact` is exactly what separates them: the `ℝ` branch is the
+exact locus, and `Dual.lean`'s `Δ → 0` degeneration is the statement that on that
+locus nothing winds.
+
+`Circle.exact_iff_trivial` then relates the two branches' *carriers* rather than
+arguing the relation in prose: the gradient of `u^k` is exact exactly when the
+defect it follows is trivial.  `Dual.lean` called `Defect.lift` the covering map
+`ℝ → ℝ/ΔZ`; this is that identification with a ring on one side of it.
+
+**It is a proposal and is not adopted.**  `Axioms.lean` is unchanged and A2 still
+reads as it did.  Restating A2 with the gradient primitive would touch everything
+downstream of `σ`, and there is a great deal — A5 is a statement about
+*differences of `σ`*, and `Openness.A5_A6_dichotomy` reads A5 and A6 off the
+group `σ` generates.  Adopting the new carrier here because it is convenient
+would be the move §V.t declined for idempotents.  It is registered as the shape
+of the answer, with the work of weighing it left to a pass that does the weighing.
+
+**What it does sharpen is the consolidation.**  Any merge of A2 with A4′ should
+take the **gradient** as primitive and recover the potential as the exact case,
+rather than the other way round — otherwise the merged axiom inherits
+`ScaleField`'s commitment to one branch of A3′ without saying so.
+
+**Still open, and listed rather than implied.**  `Circ` has one direction, so the
+closedness condition `∂ᵢgⱼ = ∂ⱼgᵢ` that a multi-direction `ScaleGradient` needs
+is vacuous here and untested; the consequences A2 has downstream of `σ` are not
+checked against the gradient reading; and nothing here runs `Diagonal.lean`'s
+chain, so there is **still no vacuum solution** — what is supplied is the object
+that branch needs, not a solution on it.
+
+**Ledger effect.**  `auditedTheorems` `1085 → 1100`.  No assumption is added:
+`ScaleGradient` is a structure offered, and no theorem in the development depends
+on it.  No prediction moves.
+
+## V.aa  What A2 assumes, measured — and it is one unit
+
+§V.z proposed a carrier and declined to adopt it, which left the axiom question
+open in the worst way: a proposal on the table and nothing to decide it with.
+`Gradient.lean` measures instead of arguing, and the measurement changes what the
+proposal should be.
+
+**The geometry never sees the log-scale.**  `hess`, `lap`, `gradsq`, `Chr`, `Rm`,
+`Ric` and `Defm` are built from `sig` and nothing else, and
+`Gradient.geometry_congr` makes that a theorem: two log-scales with the same
+gradient have the same everything.  `Axioms.geometry_fiducial_invariant` — A5's
+carrier — then follows from the congruence side, since a fiducial shift changes
+no gradient.
+
+**So `σ` does three things**: it lets `ScaleField` be stated, it carries the
+additive half of the group law, and it makes `hess_symm` free because
+`d i (d j σ) = d j (d i σ)` is `d_comm`.  The first two are bookkeeping.
+
+**The third is the finding.**  `Gradient.exact_isClosed`: an exact gradient is
+closed.  `Gradient.closed_not_exact`: the converse fails, on `Circle.lean`'s
+winding scale.  So
+
+> **A2 does not assume "there is a scale"; it assumes the scale's gradient is
+> exact** — which by `Dual.lean` is the `ℝ` branch of A3′, chosen silently, and
+> by `Dual.lean`'s own summary the branch gravity does not select.
+
+That reframes the question from a matter of style to one with an answer: the
+choice is between *closed* and *closed-and-exact*, not between `σ` and `grad`.
+
+**And then the proposed structure collapses.**  Given a unit `s`, the equation
+`d s = s · g` **determines** `g`, because `s` is invertible:
+`Gradient.logDeriv_spec` gives a solution and `Gradient.grad_unique` shows there
+is only one, so `Gradient.grad_eq_logDeriv` makes `Circle.ScaleGradient`
+equivalent to `s : Aˣ`.
+
+> **A2's content is one unit.**  The gradient is a definition, the log-scale is an
+> *optional potential* for it, and exactness is a property of the unit rather than
+> extra data.
+
+§V.z proposed keeping the gradient as primitive.  That was one step short: the
+gradient is not primitive either.
+
+**Nothing is amended.**  `Axioms.lean` is untouched and A2 still reads as it did.
+Restating it as "the scale is a unit", with `Closed` as an explicit hypothesis
+where exactness was being used, is a wide mechanical edit whose value is that it
+makes visible *which* results needed exactness — and it should be made once,
+deliberately, by a pass that does it, not as a side effect of the one that
+measured it.
+
+**Three costs, recorded so the decision is made with them in hand.**
+
+* *the first cost does not exist, and the file says so against itself.*
+  `Gradient.logDeriv_closed`: the gradient of a unit is closed for **every**
+  unit, so `hess_symm` survives with no hypothesis and nothing downstream of it
+  inherits one.  The amendment is therefore free in that respect, and the
+  distinction between the branches is **exactness alone**;
+* *and the second is discharged too.*  `Torus.lean` builds the group algebra of
+  `ℤⁿ` and shows `torGradient α` is inexact as soon as the winding is non-zero in
+  any direction, `twoTorus` being the smallest case that was missing.  So the
+  `ℝ`/`𝕋` split is not an artefact of one dimension, and the axiom question has
+  its final shape: **closedness is automatic in every dimension, exactness fails
+  in every dimension, and A2 assumes the second**;
+* **the observer.**  `Observer.Crossed` compares *values*, `μ i ≤ σ i`, in a
+  real-valued shadow.  With A2 reduced to a unit there is no `σ` in the ring for
+  that shadow to shadow.  Nothing breaks — `Observer.Resolution` was never the
+  ring's `σ` — but G3 sharpens from "the observer does not reach the algebra" to
+  **the observer compares values of a quantity the axioms need not have**.
+
+**Ledger effect.**  `auditedTheorems` `1100 → 1127`.  No assumption is added and
+none is removed: what changed is the register's account of what A2 *was already*
+assuming, which is why this is recorded here rather than in the assumed-count.
+`unregisteredFound` is not raised either — nothing self-registered this; it had
+not been noticed at all.
+
+## V.ab  The amendment, measured and then declined
+
+§V.aa said A2's content is one unit and left the amendment for a pass that would
+weigh it.  This is that pass, and it declines — for a reason, and with the
+information the amendment was wanted for delivered anyway.
+
+**The refactor's purpose was information.**  Restating `Axioms.lean` and pushing
+the change through everything downstream would have made visible which results
+need the potential and which need only the unit.  `Amendment.lean` supplies that
+directly:
+
+* `sig_eq_logDeriv` — a scale field's gradient **is** `s⁻¹∂s`; nothing is chosen;
+* `same_unit_same_geometry` — two scale fields with the same unit have the same
+  Hessian, `gradsq`, Laplacian, deformation, Riemann and Ricci.  **No geometric
+  result needs the potential**;
+* `ofUnitOfPotential` — the axiom is rebuilt from a unit plus any potential, so
+  A2 is exactly *a unit together with a witness that its logarithmic derivative
+  is exact*;
+* `potential_unique_up_to_fiducial` — two potentials for one unit differ by
+  something every derivation kills.  **A5's freedom is exactly the choice of
+  potential**, which is a sharper statement of A5 than the register had.
+
+**So the refactor buys tidiness and costs a rewrite of the file every other file
+imports.**  It is not made.  What is made instead is one paragraph:
+`Postulates.lean`'s A2 now records that the potential is a choice, invisible to
+the geometry, unique up to a fiducial, and that its *existence* is the axiom's
+real content — at the place a reader meets the axiom.
+
+**And the choice A2 was making is now stated rather than hidden.**  Assume the
+potential exists and the framework is on the `ℝ` branch of A3′; drop it and both
+branches survive, at the cost that `ScaleField` is no longer the carrier.
+`Dual.lean` says gravity wants the second.  **The framework has not chosen — it
+had not previously known it was choosing**, and that is the whole gain of the
+pass that began at §V.z.
+
+**Ledger effect.**  `auditedTheorems` `1127 → 1132`.  No axiom is amended, no
+assumption added or removed.  A5's description is sharpened rather than changed:
+its content is the choice of potential.
+
+## V.ac  Bridge three: resolution without an order, and G3 narrows
+
+§V.s registered G3 — the observer never touches the algebra — and §V.t named the
+reason (`Observer.Crossed` compares values, the ring has no order) and declined
+the obvious repair, since non-commuting idempotents are the standard quantum
+construction and adopting them would import the answer.
+
+**First, the diagnosis was too local.**  `Emergence.resolved μ t = {k | μ k ≤ t}`
+compares reals as well, so resolution lives in a real-valued shadow throughout the
+development, not only in `Observer.lean`.  What has to change is the word
+*resolved*, not the word *observer*.
+
+**`Resolution.lean` gives it a form with no order.**  A decreasing family of
+two-sided ideals, by membership: `mem k a` says `a` is invisible at resolution
+`k`, `Resolved k a` is its negation, and `resolved_mono` is
+`Emergence.resolved_mono` with the comparison removed.
+
+**And then incompatibility is the framework's own commutator.**
+`Compatible F k a b := F.mem k (ad a b)` — two things are jointly resolvable when
+their failure to commute is invisible at that resolution.  Nothing is imported:
+`Quantum.ad` was already the word for the failure to commute,
+`Triple.influence_asymmetry` already made the difference between two readings of
+one observation equal to it, and `Ordering.lean` found the same object
+obstructing a canonical lift.  What is added is the resolution at which it is
+read.  `commutative_all_compatible` then gives the classical limit without
+imposing it.
+
+**Non-vacuous at both ends, which is what makes the resolution index matter.**
+`sharp` is the finest resolution and `incompatible_witness` exhibits an
+incompatible pair there, from `Triple.asymmetry_witness`; `powerFiltration` has
+layers and `compatible_at_zero` says the coarsest probe sees no incompatibility.
+So incompatibility is a property of a pair **at a resolution** rather than of a
+pair.
+
+**What is not done, and it is registered rather than implied.**
+
+* **the filtration is postulated.**  Nothing in A1–A7 supplies one, so this is
+  §V.b's category exactly — a structure carrying theorems the framework does not
+  build.  `unwitnessedStructures` is raised;
+* **no link to `Emergence.resolved`.**  Real thresholds on one side, ideals on
+  the other, and nothing between them: the same shape of gap as `Spectrum.gaps`
+  against `Internal.record` in §V.x, and the same kind of work would close it.
+  Until then this stands *beside* the framework's real-valued resolution rather
+  than replacing it;
+* **the layers are not exercised.**  Incompatibility at the sharpest resolution
+  and its absence at the coarsest are both shown; that it *appears* at some
+  finite order in a concrete ring is not, and that is the statement with physical
+  content;
+* **G4 is untouched.**  `Compatible` says when two things can be jointly
+  resolved, not what is obtained.  No probability, no outcomes, no process.
+
+**So G3 narrows and does not close**, and the register should say which half
+moved: "resolved" now has a form the algebra can carry, and incompatibility
+arrives natively.  The observer is still a structure the axioms do not supply.
+
+**Ledger effect.**  `auditedTheorems` `1132 → 1139`; `unwitnessedStructures`
+`6 → 7`.  No prediction moves and no axiom is touched.
+
+## V.ad  Three of bridge three's four gaps
+
+§V.ac listed what `Resolution.lean` did not do.  `Layers.lean` does three of
+them; the fourth — the filtration is postulated and nothing in A1–A7 builds one —
+is untouched and stays.
+
+**The resolution index now does work.**  §V.ac showed an incompatible pair at the
+sharpest resolution and none at the coarsest, which is consistent with the index
+doing nothing in between.  `Layers.compat_zero` and `Layers.incompat_one` cut
+`Triple.Mat 2` by powers of the scalar matrix `X₀` and give a pair —
+`E₀₀`, `E₀₁` — **jointly resolvable at resolution 0 and not at resolution 1**:
+their commutator is `E₀₁`, and if that were `X₀·B` then evaluating at zero would
+give `1 = 0`.  A coarse probe sees a compatible pair and a finer one sees an
+incompatibility.  That is the statement with physical content, and without it the
+index was decoration.
+
+**And the two notions of resolution are one notion.**
+`Layers.resolved_is_emergence_resolved`: given a threshold function, what a probe
+of resolution `k` resolves in a family of ring elements is **exactly**
+`Emergence.resolved` of the induced thresholds.  So the real-valued account and
+the algebraic one are the same account, differing by the `+1` between *invisible
+up to `k`* and *visible from `k`*.
+
+**With the thresholds computed rather than postulated.**  `Emergence.lean` takes
+`μ` as free data.  `Layers.monomial_threshold`: filtering `Polynomial ℝ` by powers
+of `X`, the threshold of `Xʲ` is `j` — its degree, read off the ring.
+
+**What that does *not* close, and the register should be exact.**  The bridge is
+to `Emergence.resolved`'s **form**.  Nothing connects `thr` to a measured
+spectrum, so §V.x's gap — `Spectrum.gaps` against `Internal.record` — **stands**.
+Two notions of resolution have been identified with each other; neither has been
+identified with a measurement.
+
+**G4 acquires vocabulary and no theory, and the file says which is which.**
+`Layers.indist_equivalence`: agreeing at a resolution is an equivalence, so a
+resolution partitions the ring and a class is what an *outcome* would be;
+`indist_of_le` merges classes as the probe coarsens, which any account of
+outcomes must do.  `compatible_iff_orders_indistinguishable` is an unfolding and
+is labelled one — its worth is the reading, that joint resolvability is the
+invisibility of the operating order, which is `Ordering.lean`'s obstruction seen
+at a resolution.
+
+Then it stops.  **A probability is a weight on the classes and there is none.**
+The framework's only measure-like notion is counting — `Entropy.lean` derives the
+arrow from finite resolution and a bijective microdynamics, `Attraction.lean`
+makes the source a count — so that is where a weight would have to come from.
+Whether the classes are finite in any model is not established, so the counting
+route is a direction and not an argument.
+
+**Ledger effect.**  `auditedTheorems` `1139 → 1152`.  No assumption is added:
+`Layers.lean` introduces no structure beyond `Resolution.Filtration`, already
+counted in `unwitnessedStructures`.  No prediction moves.
+
+## V.ae  The missing link, taken — and equal spacing loses a third time
+
+§V.x named the gap precisely: nothing connects `Spectrum.gaps` to
+`Internal.record`.  §V.ad narrowed it — a filtration's thresholds are *computed
+from the ring* — and said the identification with measured thresholds was still
+not made.  `Spacing.lean` makes it, in the simplest case, and it **dies against
+the data**.
+
+`Layers.monomial_threshold` gives `Xʲ` the threshold `j`, so a filtration by
+powers of one element spaces its thresholds evenly; with a step this is
+`Spacing.PowerSpaced`.  Then `gapList_replicate` makes the gaps constant,
+`powerSpaced_variance_zero` makes their variance zero — which is
+`Spectrum.equal_gaps_variance_zero` arrived at from the filtration side rather
+than from the geometric tower — and `observed_variance_ne_zero` says the measured
+gaps have variance ≈ 1.17.  So `thresholds_not_power_spaced`.
+
+**The identification appears as a hypothesis in the statement**, where
+`Anchor.lean`'s discipline requires it: what is proved is that *if* the measured
+gaps are a filtration's, that filtration is not by powers of one element.
+
+**This is the third time the framework has met equal spacing and lost.**  §I
+retracted the geometric mass tower; §V.f recorded that the same retraction closed
+the only route from the spectrum to the gravitational coupling; and now the
+algebraic notion of resolution, in its simplest form, **reproduces the tower that
+was already excluded**.  Equal spacing is this development's recurring wrong
+answer, and it is now a theorem rather than a memory.
+
+**And it specifies the replacement.**  The gaps must have `CV = 1` — exponential,
+not constant — so the layers cannot be indexed by `ℕ` with a fixed step; they
+must be placed by a constant-rate process on the scale axis.  *A filtration whose
+layer set is Poisson rather than arithmetic* is a sharp target, and it is what
+`Spectrum.lean`'s own prediction demands.
+
+**And a reading that was going to be recorded, checked instead, and withdrawn.**
+The tempting statement is that A5 leaves the spectrum unable to see the scale
+period at all, so that §V.f's open number `Δρ` could never come from spectral
+data and the second relation would *have* to be combinatorial — a count of
+windings per threshold.  That would have explained why §V.f, §V.g and §V.h each
+failed in the same place.
+
+**It is too strong.**  `Spacing.gapList_shift_invariant` and
+`Spacing.gapList_rescale` fix the gaps' behaviour — blind to a shift, scaling
+with the axis — so the period and the mean gap carry the *same* weight,
+`ratio_invariant` makes their ratio the invariant, and `unique_pure_number` says
+exactly one real number relates them.  So the spectrum determines the period **up
+to one pure factor**, and that factor is `Δρ`.
+
+`Δρ` has weight zero and the gap data *has* weight-zero content — `CV²` — so a
+relation `Δρ = f(CV², …)` is type-correct.  **Nothing excludes a spectral
+determination; nobody has proposed one.**  The route is empty, not closed.
+
+Recorded because the exclusion was the reason for turning to the winding count,
+and it does not hold: the combinatorial direction is one plausible route beside a
+spectral one, not the only survivor.  This is the register's own failure mode —
+an exclusion claimed from an absence — caught before it was written down as a
+finding.
+
+**Ledger effect.**  `auditedTheorems` `1152 → 1162`.  No assumption is added —
+the identification appears as a hypothesis, not as a postulate — and no
+prediction moves.  §V.x's gap is **narrowed, not closed**: the link is now
+testable, and its simplest instance is refuted.
+
+## V.af  Predictions carry no information about inputs
+
+§V.ae left the spectral route to `Δρ` **empty rather than closed** and the next
+move was to be a survey: list the weight-zero quantities and ask of each whether
+it could fix `Δρ`.  The survey was the wrong instrument and was never run.
+
+`Information.predicted_cannot_determine_modulus`: if `f` is constant across a
+theory's solutions and `g` is not, `g` is not a function of `f` — the two
+solutions that disagree about `g` agree about `f`.  Trivial as a proof and not as
+a statement: it says the two columns of `Explanation.predicted_or_modulus` are
+**informationally disjoint**, so a theory's predictions can never determine its
+inputs.  `modulus_may_determine_modulus` shows the restriction runs one way only,
+so it is a restriction and not a triviality.
+
+**Applied.**  `CV² = 1` is what the framework predicts; `Δρ` is what it does not
+(`Period.no_prediction_of_the_coupling`).  So `CV²` cannot fix `Δρ`, and neither
+can `γ = 1`, universal attraction, one cone for every sector or `2β = 1 + γ`.
+**Every entry in the prediction ledger is excluded at a stroke.**
+
+What is left on the spectral side is what the framework does *not* predict — `ρ`
+and the threshold positions.  A relation `Δρ = f(ρ)` is permitted, but it is
+**another input**: it trades one free number for one assumed relation.
+
+**And the half that matters.**  The theorem blocks *determining* a modulus from a
+prediction.  It does not block **deriving** one from the axioms.  A count of
+windings per threshold is a derivation, not a reading-off — so the combinatorial
+route is not one option among two but the only kind the accounting permits, and
+for a reason that has nothing to do with A5.
+
+**Which corrects §V.ae's correction.**  That entry withdrew "A5 blinds the
+spectrum" and left the route open; this closes it properly.  The difference is
+not cosmetic: the A5 argument would have made `ρ` unusable too, since `ρ` is read
+from the same gaps, and `ρ` is measured and used throughout.  The right argument
+removes the predictions and leaves `ρ` where it was.
+
+**Scope.**  The general theorem is proved; its application to `CV²` and `Δρ` is a
+reading, since the framework has no formal solution space over which to
+instantiate `Predicted` and `Modulus` for those two.  Labelled as one.  The
+general fact is what retires the survey.
+
+**Ledger effect.**  `auditedTheorems` `1162 → 1164`.  Nothing is added or removed
+from the prediction ledger; what changes is the register's account of what the
+ledger can be *used for*, which is: not this.
+
+## V.ag  Both categories are closed, and I proposed a refuted route
+
+§V.af closed the spectral route to `Δρ` and concluded that the combinatorial one
+— a count of windings per threshold — was **the only kind the accounting
+permits**.  That is wrong, and §III of `Sources.lean` had already refuted it.
+**I proposed it without re-reading the file that answers it**, which is this
+register's own recurring failure committed by me, and it is recorded before the
+result it produced.
+
+**What was already there.**  `Sources.source_coefficient_scales`: any law
+`Δσ = C·ν` with `ν` a dimensionless count has `C ↦ cC` under `σ ↦ cσ`, so **the
+coefficient carries the unit whatever the count counts**.  The previous author
+had proposed swapping `π₁` for `π₂` and refuted it in the same file.
+
+My proposal looked different — a *relation between two counts* rather than a
+change of which count sources the geometry — and dies of the same cause.
+`Conversion.counts_cannot_fix_a_unit` states it in that form: a weight-one
+quantity is not a function of weight-zero data, since the left side moves under
+rescaling and the right side does not.  "Two windings per threshold" relates a
+count to a count and leaves `Δ` where it was.
+
+**And the label structure denies the map the route needed.**
+`Conversion.threshold_not_a_function_of_charge` and
+`charge_not_a_function_of_threshold`: `Particle.Species` carries threshold and
+charge as independent fields.  The first is §II of `Sources.lean` as a theorem —
+`MassAudit.lean` retracted the geometric tower against lattice data, `Sources`
+observed it also contradicts the label structure, and nobody had made that a
+theorem.  It is the stronger objection: **a mass law is excluded by the
+structure, not merely unsupported by data.**
+
+**So, plainly.**  Predictions cannot fix `Δρ` (§V.af); counts cannot fix `Δρ`
+(§V.g's theorem, and `counts_cannot_fix_a_unit` for the relational form).
+
+> **`Δρ` is not an open problem.  It is a permanent input** — unless a quantity
+> that is neither a prediction nor a count is introduced, and the framework has no
+> third category.
+
+The framework therefore carries one free magnitude, which is the standard
+bargain, **plus one permanently free pure number**, which is not; and the second
+cannot be closed from inside.  That is a real result and it is not the one the
+last three passes were looking for.
+
+**Scope.**  "Both categories" is a **reading**: that predictions and counts
+exhaust the weight-zero quantities is an observation about `Weight.lean`'s table,
+not a theorem.  The two exclusions are theorems.
+
+**Ledger effect.**  `auditedTheorems` `1164 → 1167`.  No prediction moves.  What
+changes is the status of `Δρ`: §V.f called it the highest-value open target, and
+it is now to be read as an input the framework cannot compute.
+
+## V.ah  What the input buys, and the one identification it hangs on
+
+§V.ag settled that `Δρ` is an input.  That is not a defeat — every theory has
+inputs — but it puts the question immediately: **what can still be predicted?**
+`Overdetermination.lean` answers it structurally.
+
+**An input buys something exactly when it appears twice.**
+`one_number_two_relations`: a free number in one relation is absorbed by it and
+predicts nothing; in two, it is fixed by one measurement and predicts the other.
+So the question is a count of appearances.
+
+`Δρ` appears in the gravitational relation, `Index.A6'_from_index`.  The only
+other candidate is `Scanning.scanRate`, whose docstring says its `κ` is *"a
+conversion, not a new freedom"*.
+
+**Nothing in the development identifies it.**  `scanRate` occurs in `Scanning`,
+`Response`, `Verify` and `Audit` and nowhere else, and no theorem relates its
+`κ` to `Index`'s.  So "not a new freedom" is an **assertion**, and it is the most
+consequential unmade identification in the register:
+
+* **if the two are the same constant**,
+  `Overdetermination.coupling_from_rate_and_density` gives the gravitational
+  coupling from the cosmological dissipation rate and the mass spectrum's
+  threshold density, and `product_from_rate` reads `Δρ = −λ/6` straight off a
+  cosmological measurement.  **Two measurements, one prediction, crossing from
+  particle masses to gravity;**
+* **if they are not**, `no_prediction_without_identification`: two independent
+  inputs and cosmology tells gravity nothing.
+
+**So one question decides the framework's whole dimensionful content:** is the
+conversion that turns a count into a dissipation rate the same one that turns a
+count into a curvature?  `Weight.only_gravity_crosses_the_weight` says the
+development has exactly **one** law relating a weight-zero count to a weight-one
+scale, so if the scanning rate is such a law it is that one or a second — and a
+second contradicts a theorem already here.
+
+**That argument is not made and is not a proof.**  Whether the rate is a
+weight-crossing depends on the weight of `λ`, which `Weight.lean`'s table does
+not list.  Settling it is the next piece of work and it is small.
+
+**And no number is offered.**  Converting `λ` to a measured rate needs the unit
+bookkeeping between the framework's scale-axis time and cosmological time, which
+has not been done; a figure without it would be this register's oldest failure.
+
+**Ledger effect.**  `auditedTheorems` `1167 → 1171`.  No prediction is added: what
+is added is the statement of what *would* be predicted, and of the single
+identification that decides it.  `Anchor.unanchoredIdentifications` is **not**
+raised, because this one is not unanchored — swapping it changes everything
+falsifiable in the dimensionful sector, which by `Anchor.lean`'s own test makes
+it anchored and merely **unmade**.
+
+## V.ai  The rate's weight: one branch killed, the gap made exact
+
+§V.ah reduced the framework's dimensionful content to one question and named the
+missing input — `Weight.lean`'s table does not list `λ`.  `RateWeight.lean`
+supplies it.
+
+**`λ` is weight zero**, by two computations that agree.  As a fractional rate,
+`λ = −d(ln ε)/dt` with `ln ε = −σ` of weight one over a `t` of weight one.  And
+inside `Response.lean`'s own reading, `FactorsThroughCount D N κ` makes `D` carry
+`κ`'s weight against a weight-zero count, so `dD/dt` has that weight over weight
+one — and equals `κρ`.
+
+**Which kills one branch outright.**
+`RateWeight.unit_conversion_gives_invariant_rate`: a weight-one conversion
+against a weight-minus-one density gives an invariant rate.
+`gauge_conversion_moves`: a weight-zero one does not.  So **the scanning
+conversion is not a gauge coupling** — a live possibility, since `Response.lean`
+reduces the scanning hypothesis to factorisation through
+`Running.resolvedCount`, whose `κ` is the gauge one.  The weights forbid it, and
+`Weight.lean` lists exactly one weight-one coefficient.  **The second relation
+exists.**
+
+**And how far that gets, exactly.**
+`residual_factor_is_determined_not_predicted`: with the proportionality free,
+three measurements — `G`, `ρ`, `λ` — against two unknowns leave nothing over, so
+the factor is determined and nothing is foretold.  `prediction_at_unit_factor`:
+at factor one it lands — `Δρ = −λ/6` from a cosmological rate and the spectrum's
+density, and the gravitational coupling follows.
+
+> The question is no longer *is it the same conversion* but **is the
+> proportionality one** — smaller, and now about two definitions rather than two
+> constants.
+
+**Stated at the level of the types**, since that is where it now lives:
+`Index.IndexResponse` is ring-valued, `lap σ = Δ·ν`; `Response.FactorsThroughCount`
+is real-valued, `ΔD = κ·ΔN`.  Same shape, different types, and the factor is one
+exactly when `D` is `lap σ` read along the drift.  **Not made here** — the two
+objects do not live in the same type, so making it needs a bridge and not an
+assertion.
+
+**Ledger effect.**  `auditedTheorems` `1171 → 1175`.  No prediction is added.
+What changes: one of the two readings of the scanning conversion is **excluded**,
+and the residue is a single proportionality between two objects whose types now
+say what a bridge between them would have to do.
+
+## V.aj  The bridge, and the scanning hypothesis becomes a theorem
+
+§V.ai left one thing between the framework and a cross-domain prediction, at the
+level of the types: `Index.IndexResponse` is ring-valued, `Response.FactorsThroughCount`
+is real-valued, same shape and no way to carry an equation across.
+`Bridge.DriftEval` is that way, and it asks for **one** property — that the source
+coefficient reads as a constant along the drift.
+
+**And then the scanning hypothesis is a theorem.**
+`Bridge.factorsThroughCount_of_indexResponse`: given a drift evaluation,
+`lap σ = Δ·ν` becomes `ΔD = κ·ΔN` after reading, **with the proportionality one**,
+because both sides carry the image of the same `Δ`.
+
+That matters because §V.q established the opposite for the framework's *other*
+tools: `Response.weight_zero_does_not_force_constancy` exhibits a response
+satisfying every constraint A5 and the grading impose and not factoring through
+the count.  Those do not force it.  **The index law does.**  And the unit
+proportionality is exactly the residue §V.ai isolated, so
+`RateWeight.prediction_at_unit_factor` applies.
+
+**The structure is inhabited.**  `Bridge.polyDriftEval` — polynomials are
+functions, evaluation along a line is a ring homomorphism, a coupling is a
+constant polynomial.  Not an empty hypothesis.
+
+**Three things are still not established, and none is hidden.**
+
+* the witness is over `MvPolynomial`, where by §V.y's own argument the units are
+  constants and there is **no non-constant scale field**.  So `DriftEval` is shown
+  inhabited, not shown to coexist with A2's varying scale — `Witness.lean`'s
+  caveat, applying twice;
+* `coeff_const` is doing real work.  In the witness it holds because `Δ` is
+  literally a constant polynomial; whether a genuine scale **period** reads as a
+  constant along the drift is not established, and is what a serious model must
+  earn;
+* the far end is still an identification: the bridge produces a function of type
+  `ℝ → ℝ` that factorises, and that *that* function is what a `w₀wₐ` fit measures
+  is one of the two identifications `Anchor.lean` names, neither formalised.
+
+**The accounting.**  `Anchor.lean` records the `w`/`H₀` link as **three inputs
+deep** — the scanning hypothesis plus two unformalised identifications.  This
+removes the first.
+
+> **Two inputs deep, not three**, and the one removed is the one the framework
+> could remove: the other two are about what an astronomical fit measures, which
+> no amount of algebra decides.
+
+**Ledger effect.**  `auditedTheorems` `1175 → 1176`; `unwitnessedStructures`
+unchanged, since `DriftEval` is witnessed at birth.  No prediction is added — the
+`w`/`H₀` link stays out of the ledger, at two inputs instead of three, which is
+`Anchor.lean`'s own criterion applied honestly rather than relaxed.
+
+## V.ak  The two identifications get types, and the theory cancels
+
+§V.aj removed the first of the three inputs behind the `w`/`H₀` link.
+`Observations.lean` gives the other two a type — not a proof, since no algebra
+decides what an astronomical pipeline reports, but the **A6′ treatment**: an
+explicit hypothesis carried visibly by everything downstream.
+
+**And a trap on the way, worth recording because the first draft fell in.**
+Written as a *structure* with the observed number as a field, an identification
+is trivially inhabited — one can always name a real equal to a formula — and
+constrains nothing.  Written with the observed number as a **parameter** it is a
+constraint on a number the world supplies, and
+`Observations.fit_identification_is_a_constraint` exhibits a report failing it.
+That is the difference between a claim and a definition, and it is the same
+question `Explanation.vacuous_predicts_everything` asks of a prediction.
+
+**What it buys.**  `Observations.observations_agree`: given both identifications,
+`Scanning.two_anomalies_one_number` makes the two **measured** numbers equal.
+The theoretical quantities cancel, and what is left is a relation between two
+measurements made by different communities with different instruments.
+
+> It predicts neither number.  It says they are the same number.
+
+Two-sided: `falsified_by_one_anomaly_alone` and `falsified_by_the_other_alone`.
+An evolving `w` with agreeing ladders kills it, and so does the reverse.
+
+**What it does not do.**  **Naming a debt does not pay it.**  The link is still
+two inputs deep and stays out of `Anchor.lean`'s ledger.  What changed is that
+the inputs are typed hypotheses rather than sentences in a docstring — exactly
+the change A6′ underwent, for exactly the reason the register gave then: nothing
+is hidden at the type level.
+
+**And the division of labour is now exact.**  The framework has produced a
+testable relation between two observations and named what someone else must
+supply to make it a test — that these two pipelines report these two fractions.
+That is a question for cosmologists, and locating it there is not a retreat.
+
+**Ledger effect.**  `auditedTheorems` `1176 → 1180`.  No prediction is added and
+`Anchor`'s counts do not move.  `assumedCount` is **not** raised: these two were
+already assumptions, listed in §V.a′ and §V.n as identifications appearing
+nowhere in Lean.  They now appear in Lean, which is a change of visibility and
+not of debt.
+
+## V.al  The two sectors share names and no types, and a claim of mine is withdrawn
+
+The next step was the unit bookkeeping — convert `λ` from the scale axis to
+cosmological time and get a number.  Asking §III's question first, **a `t` of
+what?**, the bookkeeping turns out to be impossible for a reason that is not
+about units.
+
+**What the imports say.**  `DarkEnergy.lean` imports *only* Mathlib and `σ` does
+not occur in it; `Cosmos.lean` contains no algebra either, its two apparent
+matches being the word *overlap* in prose; `Scanning.lean` mentions
+`ScaleAlgebra` nowhere and takes `κ`, `ρ` and `t` as free real parameters; while
+`Index.lean`, where `κ = −2(n−1)Δ` lives, imports the algebra.
+
+> **The cosmological sector and the algebraic sector share names and no types.**
+
+So there is no conversion to compute.  `Scanning`'s `t` is not the scale axis in
+other units; it is an unconnected real variable.  The bookkeeping is not hard —
+it is **not yet a question**.
+
+**And §V.aj's claim is withdrawn.**  `Bridge.factorsThroughCount_of_indexResponse`
+stands: a drift evaluation carries the index law to factorisation **at the pair
+the bridge constructs**, `(val (lap σ), val ν)`.  What was written around it —
+that *the scanning hypothesis is a theorem* — does not stand.  The scanning
+hypothesis is factorisation at the pair nature supplies, the cosmological
+response against the resolved count, and those are not shown to be these.
+`Bridge.lean`'s header flagged one of the two remaining identifications and
+**missed the other**, that `val ν` is the resolved count; the summary given
+elsewhere was stronger than the file.  Corrected in place, in `Bridge.lean` and
+here.
+
+**Why this is not a quibble.**  `Disconnect.factorisation_is_generic`: the zero
+response factors through the zero count at every coefficient, so exhibiting *an*
+instance of `FactorsThroughCount` establishes nothing.
+`factorisation_has_failing_instances` shows the predicate is not vacuous once the
+pair is fixed.  **The content is entirely in which pair** — and which pair is
+what the disconnection means the framework cannot yet say.
+
+**What the next step actually is.**  Not bookkeeping: **connecting the
+cosmological sector to the algebra**, giving `Cosmos`'s `ε`, `Scanning`'s `ρ` and
+`DarkEnergy`'s `t` types that mention `ScaleAlgebra`.  That is a substantial
+piece of work and not a conversion factor.  Until it is done, `Anchor.lean`'s
+refusal to count the `w`/`H₀` link among the predictions is not conservative but
+exactly right, and "three inputs deep" was if anything generous.
+
+**Ledger effect.**  `auditedTheorems` `1180 → 1182`; `correctedCount` `10 → 11`.
+No prediction moves.  §V.aj's remaining content — the bridge, its witness, and
+the unit proportionality — is unaffected; what is withdrawn is what the bridge
+was said to reach.
+
+## V.am  The unstated primitive, and a foundational direction chosen by evidence
+
+§V.al found the cosmological sector shares no types with the algebra.  Counting
+the rest: **59 of the development's 107 files never mention `ScaleAlgebra`**, and
+the escape to real numbers has been re-invented **eight times** —
+`Defect.ScaleDefect`'s lift, `Emergence.resolved`'s thresholds,
+`Observer.Resolution`, `Particle.Species.threshold`, `Running.resolvedCount`,
+`Scanning.scanRate`, `Spectrum.gaps`, and `Bridge.DriftEval` — with **no theorem
+relating any two**.
+
+> The development has one stated primitive and **one unstated one**.
+
+**And the obvious repair is the symptom.**  Bolting a real-valued evaluation onto
+the ring — states on a `*`-algebra — is what eight files each did locally.  Eight
+incompatible versions is what *intuitive but not the right primitive* looks like,
+and §V.t's caution about importing the standard construction applies with extra
+force to the move the standard construction actually makes.
+
+**So the framework's own theorems were asked before anything was rebuilt.**
+`Content.ContentSystem` is a presheaf on a preorder, written plainly.  Three
+existing results **are** its functor laws, with both variances and no adaptation:
+`Emergence.resolved_mono`, `Resolution.Filtration.resolved_mono`, and
+`Internal.record_antitone` on the opposite order.
+
+**And one settles it.**  `Content.pullback_eq_emergence` typechecks with `:=` and
+no proof: `Layers.resolved_is_emergence_resolved` already *is* the statement that
+the algebraic system and the real-valued one are the same system, index by index.
+
+> The algebra and the thresholds were never two structures.  They are one
+> presheaf described twice, and the description was the only thing missing.
+
+**What is not established, and it is most of it.**
+
+* **no topos, no site, no sheaf.**  There is no covering family and no gluing, so
+  nothing here earns the word *sheaf*.  What is missing is a notion of when a
+  family of resolutions covers a scale, and the framework has none;
+* **five of the eight escapes are untouched** — the cosmological ones especially,
+  so §V.al's disconnection stands;
+* **nothing is refactored.**  `Content.lean` is additive, and deleting it would
+  change nothing else.  A foundational experiment should be reversible before it
+  is a foundational commitment, and this one is.
+
+**Ledger effect.**  `auditedTheorems` `1182 → 1185`.  No assumption is added:
+`ContentSystem` is a definition instantiated three times from existing theorems,
+not a hypothesis anything rests on.  No prediction moves.
+
+## V.an  Sorting the rest, and two gaps turn out to be one
+
+§V.am pulled three of the eight escapes to `ℝ` into one presheaf.  `Size.lean`
+asks the other five, and the answer is more useful than "yes" would have been:
+**they are not all the same kind of object.**
+
+* `Particle.Species.threshold` is **the same content, described by thresholds**.
+  `Size.ofThreshold` generates a content system from a threshold function and
+  `Size.emergence_is_ofThreshold` shows `Emergence.resolved` *is* the one it
+  generates, definitionally.  Thresholds and content are two descriptions of one
+  datum, so the count of independent escapes was too high;
+* `Spectrum.thresholdOfMass` is a reparameterisation of the **base**, not an
+  escape at all;
+* `Running.resolvedCount` is a **size** of content, one step away;
+* `Scanning.scanRate` is a **rate** — the derivative of a size — two steps away;
+* `Defect.ScaleDefect` is a section of a covering with quasiperiodic monodromy,
+  which is a **local system**: a sheaf notion, not a presheaf-on-a-preorder one.
+  It fits nothing here, and it is the one carrying the winding.
+
+**So the cosmological sector was never content nobody had written as a presheaf.**
+It is a size and its derivative, and the framework has never defined the step
+between: *what it means to measure how much content there is.*
+`Size.SizeSystem` names it, `resolvedSize` shows `resolvedCount` is one, and
+`uniform_density_is_a_restriction` makes the register's long-standing
+uniform-density item a **theorem** — a size need not be affine in the index, and
+`t ↦ max t 0` is a monotone count that is no `resolvedCount`.
+
+**And two open items collapse into one.**  §V.ad left G4 open: outcomes are
+indistinguishability classes and nothing weights them.  This file's missing step
+is how much content there is.
+
+> **G4 and the cosmological disconnection are one gap**, approached from the
+> observer side and the cosmological side, and it is the **size** — not the
+> covering.
+
+That redirects the sheaf programme before it starts: before asking when a family
+of resolutions *covers* a scale, ask what it means to say how much is there.  A
+sheaf needs a site; a size needs less, and the framework needs the size in two
+places already.
+
+**Ledger effect.**  `auditedTheorems` `1185 → 1187`.  No assumption is added, and
+one is **made precise**: uniform density was listed in §V without a statement of
+what it restricts, and now has one.  No prediction moves.
+
+## V.ao  The structure accepts a weight; nothing picks one
+
+§V.an found that the cosmological escapes are a **size** and that G4's missing
+weight is the same missing object.  `Valuation.lean` asks whether the framework's
+structure constrains a size, and the answer is one law conditional on one
+property.
+
+**The property.**  Monotonicity is far too little to weight anything — "one if
+anything is there" is monotone.  The next condition is **modularity**,
+inclusion–exclusion, which is what makes a size a *count*.
+`Valuation.modularity_is_a_restriction`: it is not free, since a monotone size
+can count two disjoint things as one.
+
+**The law.**  `Internal.record_union` says joining observers **intersects** their
+records — the lattice turning over, which §V.t recorded as internality's
+surprise.  With a modular size, `Valuation.observer_counting_law` transfers
+inclusion–exclusion to the observer lattice.
+
+> This is the first thing in the development that **weighs** anything, and it is
+> one property away from free.
+
+**What that changes about G4.**  §V.ad left it as *nothing weights the outcomes*,
+and it was natural to read that as the structure resisting a weight.  It does
+not: the observer lattice **accepts** a weight the moment modularity is granted,
+and uses it immediately.  What is missing is not a place for the weight to live —
+it is anything that **picks** one.  Smaller and more specific than "no
+probability", and it names a condition rather than an absence.
+
+**But it is not G4, and the difference matters.**  What is weighed are
+**records**, sets of thresholds crossed; G4 asked for a weight on the
+*indistinguishability classes* of `Layers.lean`, which are classes of ring
+elements.  Different objects, and nothing here relates them.  This is adjacent to
+G4, not G4 — which is the difference between progress and the appearance of it.
+
+**And granting modularity is another input.**  Nothing in A1–A7 supplies it.  The
+framework's counts are counts and a count is modular, but *that the size is a
+count* is the assumption; `Attraction.lean` made the same one about the source
+and the register anchored it against antihydrogen, and there is no comparable
+anchor here.
+
+**Ledger effect.**  `auditedTheorems` `1187 → 1189`.  No assumption is added —
+modularity appears as an explicit hypothesis of the one theorem that uses it, in
+the manner of A6′ — and no prediction moves.
+
+## V.ap  The open items, read across instead of down
+
+This register has forty-one sections and every one of them is **vertical** — what
+a pass found, what it withdrew.  None says how the open items relate to each
+other, and reading them across turns out to change the count badly.
+
+**Three kinds.**
+
+*Free by construction.*  The origin of `σ`, the overall magnitude, the
+orientation bit, which branch of A3′, and which point of the solution space.
+A5 says only differences are observable and the grading says only ratios are
+fixed (`Dimension.only_ratios_are_fixed`), so these are **not gaps** — they are
+the axioms working.  A register that lists them as open is miscounting its own
+commitments.
+
+*The same request, in different clothes.*  `Δρ`; the size (§V.an); uniform
+density; and the cosmological disconnection.  Every one asks for a **conversion
+from counting to scale**, and
+`Weight.only_gravity_crosses_the_weight` says the development has exactly **one**
+law that performs one.  This session then closed both routes to deriving its
+coefficient: `Information.predicted_cannot_determine_modulus` (predictions cannot
+fix an input) and `Sources.source_coefficient_scales` with
+`Conversion.counts_cannot_fix_a_unit` (counts cannot either).
+
+*Genuinely separate.*  The `π₁`/`π₂` codimension mismatch (§V.k); the operator
+ordering in the non-static case (§V.w); A7; the second-order content of the
+static vacuum equation; the absence of any site or covering (§V.am); **G3's
+residue**, that the filtration of §V.ac is postulated and nothing in A1–A7 builds
+one; **G4's weight**; and **which label `ν` counts**.
+
+The last three are here after a correction.  A first draft of this section put
+G4's weight and `ν`'s label in the middle group and left G3 out of the sort
+altogether.  `OneParameter.lean` says in its own text why neither belongs:
+`Valuation.lean` weighs **records** and nothing relates that to a size on the
+scale axis, and which label `ν` counts is a question about charge structure and
+not about a magnitude.  Putting them in the middle group was the reading running
+ahead of the theorems — this register's most familiar failure, committed inside
+the section written to guard against it.
+
+**And the middle group is now partly a theorem.**  `OneParameter.lean` tests two
+of its members against each other: a uniform size is `ρ(t − t₀)`,
+`affine_size_determined` says that is all of it, `origin_is_a_fiducial_shift`
+makes the origin A5's rather than an observable, and `size_adds_no_freedom` is
+`Weight.product_invariant` — the slope is the `ρ` already counted.
+
+> **The size adds no freedom**, and *uniform density is not an assumption beside
+> `Δρ`: it is the assumption that makes them one parameter.*
+
+The register has carried uniform density among the assumed items from the
+beginning without saying what it buys.  This is what it buys.
+
+**And with the sort corrected, the middle group is established rather than
+partly so.**  Its four members are `Δρ`, the size, uniform density and the
+cosmological rate; the first three are one item by `OneParameter.lean` and the
+fourth follows as the size's derivative.  Nothing in it is a reading any more.
+
+That is a *smaller* claim than the first draft made and a *complete* one, which
+is the trade the register exists to make: the middle group shrank from six to
+four and became a theorem instead of a hope.
+
+**What the sort leaves.**  One protected unit, one free pure number, A7, and two
+or three technical gaps.  For comparison: general relativity carries `G` and `Λ`;
+the Standard Model about nineteen parameters.  That comparison flatters nothing —
+the framework predicts far less than either — but it is the right description of
+where its freedom sits, and no section of this register had it.
+
+## V.aq  The codimension mismatch: one way out closed, and what it costs
+
+§V.k left the mismatch — a codimension-two equation on a codimension-three
+source — with two ways out: *(a)* the source is codimension two after all, or
+*(b)* the law is rewritten with a degree density.  `Codimension2.lean` closes
+*(a)*, and the framework's own charge structure does the closing.
+
+`Axis.lean` says the projective order parameter carries both kinds of defect:
+line defects with `π₁ = ℤ/2` and point defects with `π₂ = ℤ`.  So codimension two
+*is* available — at a two-valued charge.  And `two_valued_source_is_trivial`: an
+additive map from a two-element group to the reals is identically zero, since
+`a·a = 1` forces `2f(a) = 0` and `ℝ` has no two-torsion.  `odd_pairs_cancel` is
+the group step, which is `Particle.two_odd_make_even` — the selection rule the
+framework wrote for its own reasons.  Additivity is not an extra demand:
+`Flux.flux_combine` is the framework insisting on it.
+
+**And that finishes the other item too.**  §V.g tabulated three integers used
+interchangeably as "the charge that sources the geometry".  All three are now out,
+by three unrelated arguments:
+
+* `Defect.ScaleDefect.winding` — `π₁` of the **scalar** circle, scoped out by §I
+  because A4 is directional.  `Flux.lean`'s Gauss law is proved for exactly this
+  object, so the Gauss law lives entirely inside the scoped-out picture;
+* `Charges.block` — closed here;
+* `Charges.hedgehog` — signed, and `Attraction.signed_source_would_antigravitate`
+  says a signed source makes antimatter fall up.
+
+What is left is `Particle.Species.threshold`, which is **not topological**, and
+which is what `Attraction.lean` concluded on empirical grounds.  "Which label `ν`
+counts" is therefore answered — by exhaustion over the labels the framework has.
+It is not answered against a label nobody has written, and this register does not
+claim otherwise.
+
+**The cost, which is the real content.**  `Index.A6'_from_index` derives
+`κ = −2(n−1)Δ` from `IndexResponse : lap σ = Δ·ν`, algebraically in `ν`; the
+factor is untouched by any of this.  What is touched is `IndexResponse`'s
+standing.  Its authority came from `ν` being a topological index — additive and
+integral for reasons outside the dynamics — and that is what made A6″ a law
+rather than a posit.  With a threshold count in place of a winding, `ν` is a
+cardinality of the framework's own making.
+
+> **A6″ keeps its consequences and loses its index reading.**
+
+It is a postulate about how counting sources scale, of the same standing as the
+rest of A1–A7.  Every downstream number survives; what does not survive is the
+register's habit of citing A6″ as derived.  That habit is the finding.
+
+**On the count.**  `separateItems` drops from eight to seven and `sort_totals`
+from seventeen to sixteen: the label question closes, the codimension mismatch
+stays open because *(b)* has not been written.  Closing one and keeping one is
+the whole result, and it is smaller than "the mismatch is resolved" — which is
+the sentence this section exists to avoid writing.
+
+## V.ar  Way out (b), written — and the question dissolves
+
+§V.aq closed *(a)* and left *(b)* — rewrite the source law with a degree density
+— with the question that motivated the whole line: **does the same `κ` come
+out?**  `DegreeSource.lean` answers it, and then the answer stops mattering.
+
+**Yes, and it is worth nothing.**  `degree_gives_the_same_kappa` is
+`Index.A6'_from_index` *applied*, not reproved.  A6″'s `Δ` was already an
+arbitrary ring element and the derivation of `κ = −2(n−1)Δ` used no property of
+it — not that it is a period, not that it is non-zero.  Any constant gives the
+same formula with itself in the slot.  The expected solid-angle factor, the
+`n`-dependent normalisation, the arithmetic to check: none of it arises.  So the
+question was malformed, and reproducing the formula is evidence of nothing.  That
+is the first finding and it cost one line of Lean.
+
+**And then *(b)* fails anyway, for a reason neither branch anticipated.**
+
+`ℤ` is torsion-free, so `degree_admits_an_additive_source` exhibits `k ↦ λ·k` and
+*(b)* is **not** disposed of by §V.aq's argument.  It had a real chance.  What
+kills it is `additive_nonneg_on_group_is_trivial`: on a **group**, an additive
+map to `ℝ` that is non-negative is identically zero — `f(1) = 0`, then
+`f(a) + f(a⁻¹) = 0` with both terms non-negative.  Non-negativity is not
+decoration: it is what `Attraction.attraction_from_counting` requires, and it is
+required because gravity attracts universally.
+
+**One theorem covers both branches.**  The block died at `a = a⁻¹`; the degree
+dies at `f(k) + f(−k) = 0`.  Torsion and sign are two ways for the same inverse
+to close the same argument, and it never needed to know which codimension
+anything was.
+
+> **No group-valued charge can be a universally attractive additive source.**
+
+Every topological charge here is group-valued — `π₁` and `π₂` are groups, which is
+what makes them topological.  So the source of the geometry **cannot be
+topological at all**, and §V.k's question — which codimension — was malformed on
+both branches.  It has an answer and the answer is *neither*.  The item does not
+get resolved; it **dissolves**.
+
+**Sharp, and not proving too much.**  `monoid_source_exists` gives `k ↦ k` on
+`Multiplicative ℕ`: additive, non-negative, non-zero.  So **inverses** do the
+killing, not additivity and not positivity, and `Particle.Species.threshold`
+survives because content is a cardinality with no anti-content.  Two checks
+against overreach: real gravity's source is not topological and mass is
+non-negative, so the conclusion agrees with the world; and electric charge is
+signed and does source an interaction — permitted, because that interaction is
+not universally attractive.  The theorem isolates *attraction* as the killer,
+which is the right joint.
+
+**What *(b)* would have cost.**  Recorded so the closure is not mistaken for a
+rescue.  The degree belongs to the **axis** field and `Δ` is the period of the
+**scalar** `σ`; nothing relates them, so *(b)* introduces `λ` and
+`ratio_is_weight_zero` makes `λ/Δ` a **second pure number** beside `Δρ`.  Gravity
+would carry `λρ` and the action step `Δρ`, and `link_survives_only_if_equal` says
+the `G`–`ℏ` common origin would hold only by separate postulate.  *(b)* was never
+the cheap option.
+
+**On the counts.**  `separateItems` 7 → 6 and `sort_totals` 16 → 15: the mismatch
+closes.  `assumedCount` **stays at 10**.  The tempting move is to discharge "`ν`
+is the threshold count" — it is now the unique survivor rather than one of three
+— but the elimination leans on an empirical fact (antihydrogen falls), so it
+remains an input.  What changed is its *character*, not its status, and the
+register has been wrong before by letting those two slide together.
+
+**And what it leaves.**  A6″ is a posit about how counting sources scale, with no
+remaining route by which it might have been an index.  That is a downgrade
+already recorded in §V.aq; this section removes the last hope of reversing it.
+The framework's ambition to derive gravity from topology is closed — not
+refuted from outside, but by its own charge structure and its own commitment to
+universal attraction.
+
+## V.as  The observer question dissolves the way the source question did
+
+The task was "reflect on the relation between the observer and spacetime".  The
+finding is that **the second term does not refer**, and the register should have
+known: `Observer.lean`'s own §0 says *the framework has no space; directions are
+indices at a point, not positions*, and `directionForPositionCount` counts the
+one time that was forgotten.  So there is no position space for an observer to
+stand in, and the question as posed has no second term.
+
+`Vantage.lean` says what there is instead.
+
+**Observer and observed are one type.**  `Observer.Resolution n` and
+`Observer.Threshold n` are both `Fin n → ℝ`, and `Observer.lean` line 148 says
+why: both are "one scale per direction", which is A4′.
+`observer_and_observed_are_one_type` is `rfl` — an empty proof whose *statement*
+is the content.  There is no category of observer distinct from the category of
+thing observed.
+
+And `Crossed` is the order on that space:
+`every_vantage_observes_itself` is reflexivity, `self_observation_is_exact` is
+antisymmetry.  **The vantage space is a poset whose order is observation**, and
+nothing was imported to get that — it is `Crossed` read for what it says.
+
+**The observer is a point and a commitment**, and the two have opposite
+variances.  `record_mono_in_resolution` is new: the development had
+`Observer.crossedSet_mono` for the *detached* observer and never the internal
+one.  With `Internal.record_antitone` it gives
+`the_two_variances_commute` — content is a bifunctor on
+`(ℝⁿ, ≤) × (Finset (Fin n))ᵒᵖ`.  §V.ah found the second variance and held the
+vantage fixed; nobody varied both.
+
+**And the trade is strict.**  `empty_commitment_records_everything`: an observer
+committing no direction records everything.  `record_univ_is_the_detached_observer`:
+committing all of them is detachment.  `commitment_costs_content` exhibits the
+gap.
+
+> **Detachment is maximal commitment, and it sees the least.**
+
+An uncertainty-shaped statement obtained by unfolding an intersection.  It is not
+the uncertainty principle and this register does not claim it is one.
+
+**What is actually new: the algebra now lands somewhere.**  Until this file
+nothing mapped the algebra into the observer's space.  They shared the index type
+`Fin n` and nothing else — the algebra's directions carried ring elements, the
+observer's carried reals — and §V.x records the gap.  `place` is the map: a
+filtration **per direction** gives each element one real per direction, its
+threshold there.  `algebra_record_is_observer_record` then says the algebraic
+resolved set **is** the observer's record.
+
+So ring elements do not sit in a pre-existing space; they **acquire** places, and
+a place is a tuple of thresholds.
+
+**The cost, and it is not small.**  `place` needs `n` filtrations.  §V.ac records
+that a filtration is postulated and that nothing in A1–A7 builds one — G3's
+residue.  This does not discharge that; it **multiplies it by `n`**.
+`unwitnessedStructures` goes 7 → 8.  The gain is that the postulate now does
+visible work in a second place, so one structure pays for two things; the cost is
+that the unwitnessed structure got larger.
+
+And the bridge reaches `Internal.record`, **not** `Spectrum.gaps`.  §V.x's gap has
+two halves and only the first is closed.  The register has been burned before by
+letting "bridged the form" stand in for "bridged the measurement" (§V.ad says so
+about §V.ac), and this is the same shape.
+
+**On the pattern.**  Two sessions running, a question of the form *which X is it*
+has dissolved rather than resolved: which topological charge sources gravity
+(§V.ar — none can), and how the observer relates to spacetime (here — there is no
+spacetime).  Both times the framework's own types already said so and the
+register was reading past them.  That is worth recording as a **method** finding
+and not only as two results: **the types have been ahead of the prose.**
+
+## V.at  The founding statement, and what the ring was doing all along
+
+The question put to this pass was whether the commutative ring is the right
+mathematical form for a framework whose founding statement is **scale × energy =
+constant**.  `Reduction.lean` answers by separating two things that have been
+travelling as one since A1 was written.
+
+**The homomorphism had never been written.**  `Gradient.lean` proved
+`logDeriv_spec` and `logDeriv_closed` and stopped; `logDeriv_mul` is new.  It is
+the founding statement made functorial, and with it come `logDeriv_one` and
+
+> `logDeriv s⁻¹ = − logDeriv s` ,
+
+which **is A3**.  *Scale × energy = constant* says the energy's gradient is minus
+the scale's, and that is inversion in a group, not an independent axiom.  Read A2
+as "the scales form a group and the gradient is a homomorphism" and A3's content
+beyond naming `ε` is discharged.  The register should note that the axiom
+consolidation it has been contemplating had one step available for free and
+unnoticed.
+
+**And the axiom needs nothing else.**  `ScaleHom` is a group, an abelian group,
+and a homomorphism — `map_one` and `map_inv` follow, `ofScaleAlgebra` says every
+scale algebra is one.  **No ring, no commutativity, no multiplication in the
+signature at all.**
+
+**Where the ring enters is now exact.**  `sig_add`: the axiom is linear in the
+gradient.  `gradsq_add`:
+
+        gradsq(σ+τ) = gradsq σ + gradsq τ + 2 ∑ᵢ sig σ ᵢ · sig τ ᵢ .
+
+The geometry is quadratic, and its failure to be a homomorphism is exactly a
+**symmetric bilinear pairing**.  Everything geometric — `Chr`, `Rm`, `Ric` — is
+built from that pairing.
+
+> **The axiom is a homomorphism; the geometry is a bilinear form.  A commutative
+> ring supplies both at once, and this register never recorded that they are two
+> commitments and not one.**
+
+**So the framework needs three things, not one**, and they can be attacked
+separately: a group of scales with the gradient a homomorphism; an abelian group
+of gradients carrying `n` commuting derivations, because `hess` differentiates a
+gradient again and `ScaleHom` does not supply it; and the pairing.
+
+**What is not claimed.**  That the ring is wrong, or that a replacement exists.
+Nothing here exhibits a model meeting the three requirements that is not a ring,
+and this section does not pretend the suspicion has been vindicated — only that
+it has been made *precise enough to test*, which it was not before.
+
+**The sharp form.**  In a ring the multiplication defining `Aˣ` and the
+multiplication supplying the pairing are the **same operation**.  Nothing in
+*scale × energy = constant* says they should be.  That coincidence is a
+substantive commitment, it has never been stated anywhere in this register, and
+it is the place where "the mathematical form may be wrong" would have to bite if
+it bites at all.
+
+**Method, third time.**  §V.ar dissolved *which charge*, §V.as dissolved *how the
+observer relates to spacetime*, and this section finds an axiom discharged and a
+commitment unrecorded — each time by reading what the development's own
+definitions already say rather than by adding anything.  §V.as called this "the
+types have been ahead of the prose".  It is now the most reliable move the
+register has.
+
+## V.au  Which pairing?  There are two, and they were never compared
+
+§V.at left the ring doing a second, unregistered job — supplying a bilinear
+pairing for the geometry.  The next question is *which* pairing, and
+`TwoMetrics.lean` finds the development has been using **two**.
+
+**The `δ` sector.**  `Conformal.RscBare σ = ∑_b Ric σ b b`, whose own docstring
+calls it *the `δ`-trace of Ricci*, on the metric `e^{2σ}δ`.  All plus signs, the
+pairing inherited from the ring.  **This is where `Index.A6'_from_index` computes,
+so `κ = −2(n−1)Δ` is a Euclidean result.**
+
+**The `η` sector.**  `Diagonal.lean` has its own `Chr η w σ` and `Ric η w σ` on
+`met η w`, with the signature carried as a parameter satisfying `η² = 1`.
+`Chain.lean`'s own table runs **the entire gravity chain through it** —
+`Diagonal.Chr`, `ric_tt`, `ric_rr`, `combination_is_transverse`,
+`vacuum_scale_sum`, then `γ = 1` and the deflection — and
+`combination_is_transverse` requires `η_tη_r = −1`.
+
+**The join is in the wrong place.**  `Anisotropic.ChrDir_of_isotropic` is the one
+theorem carrying the anisotropic connection back to `Conformal.Chr`, and its own
+docstring scopes it: *on the isotropic locus **with Euclidean signature***, with
+hypothesis `∀ a, η a = 1`.  `euclidean_excludes_lorentzian` proves the two
+hypotheses cannot both hold — `η ≡ 1` gives `η_tη_r = 1`, and `1 = −1` forces
+`2 = 0`.
+
+> **The only bridge between the sectors holds exactly where the physics does
+> not.**
+
+And the difference does not cancel: `delta_trace_ne_eta_trace` gives a Lorentzian
+`η` and a Ricci diagonal on which the two traces read `2` and `0`.
+
+**So `κ` and the observables have never been shown to be about the same
+geometry.**  `γ = 1`, the deflection ratio and the vacuum solution are internally
+derived in the `η` sector and nothing here disturbs them; `κ` is derived in the
+`δ` sector.  "The framework fixes the coupling **and** predicts the deflection" is
+two results in two geometries, and this register has been quoting it as one
+chain — §VI included.
+
+**What is not claimed.**  That `κ` is wrong, that the observables are wrong, or
+that the repair fails.  The repair is visible — redo `RscBare_eq` with an
+`η`-weighted trace and see whether `−2(n−1)` survives — and it is not done here.
+What is claimed is that the step was never taken.
+
+**Why it was invisible, which is §V.at's point arriving.**  A commutative ring
+hands over the unit group and the pairing in one move, so **the pairing never had
+to be chosen** and a `δ` came in with the ring.  The signature then had to be
+reintroduced by hand, as a parameter, in a second sector.  And
+`Signature.lean` derives a codimension-one **splitting** from the drift and calls
+it "the Lorentzian shape": correct as stated, and **a splitting is not a
+signature** — one is a flag, the other a property of a form.  That file's own
+last paragraph already grants that the timelike sign is underived.  Three
+descriptions, none of them a chosen pairing.
+
+**§VI needs a correction and gets one here rather than a quiet edit.**  Its list
+of what rests on the axioms alone includes "the Lorentzian signature" and "the
+gravity chain through to `1.7515″`".  The first should read *a codimension-one
+splitting of the directions*; the second is intact within the `η` sector but does
+not connect to `κ`.
+
+**Where the suspicion now stands.**  The worry that the mathematical form went
+astray was raised as an intuition.  It now has a first concrete instance, and it
+is not "the ring is the wrong category" but something sharper and checkable:
+**the pairing was never chosen, and the framework has two.**
+
+## V.av  The repair, done: the coefficient survives and the operator does not
+
+§V.au named the repair — redo `RscBare_eq` with an `η`-weighted trace and see
+whether `−2(n−1)` survives.  `EtaTrace.lean` does it, from the connection up:
+`ChrE`, `RmE`, `RicE`, `RscE`, because inserting `η` into the final trace alone
+would not be the same geometry.  The connection used is `Anisotropic.ChrDir` at
+the isotropic locus with `η` left general — the case that already existed and had
+never been computed.
+
+**`RscE_eq`:**
+
+        Rsc_η = −2(n−1)·□σ − (n−1)(n−2)·|∇σ|²_η .
+
+**Identical coefficients**, and `A6'_from_index_eta` gives `κ = −2(n−1)Δ` again.
+
+> **The number is safe.  What is not safe is the operator it multiplies.**
+
+**And the reason is structural, not luck.**  In `sum_ChrE_ChrE` two `η`-carrying
+terms cancel identically — the one where a `η`-term meets a trace part against the
+one where both `η`-terms meet, carrying `ηₑηₑ = 1`.  Every surviving `η` is either
+squared or pinned by a `δ` that forces its indices equal.  The signature cannot
+reach the coefficient.
+
+**The consequence, which is the finding.**  A6″ reads `lap σ = Δ·ν`, and in the
+`δ` sector `lap` is elliptic — so the source law was Poisson's equation.  In the
+sector the physics uses, `lapE_lorentzian_split` says the operator is
+
+        □σ = ∑_{i≠t} σᵢᵢ − σₜₜ ,
+
+the **d'Alembertian**, and `lap_sub_lapE` measures the gap as `∑ᵢ(1−ηᵢ)σᵢᵢ`,
+zero only for a Euclidean signature.  So the corrected source law is
+
+        □σ = Δ·ν ,
+
+**hyperbolic, not elliptic** — a sourced wave equation.  Newton is recovered as
+its static limit, where `σₜₜ = 0` and the d'Alembertian *is* the Laplacian; and
+the framework's gravity results are all static, `Diagonal.lean` computing under
+staticity and §V.w having already found that static is where the operator
+ordering stops mattering.
+
+**A correction to older text, stated rather than edited away.**  `Index.lean`
+presents A6″ as an equation about `lap` and this register has read the Newtonian
+limit off it directly.  `Index.poisson_from_index` should be read as **scoped to
+static configurations**.  Nothing computed from it changes; what changes is what
+it is a limit of.  The pattern is §V.aq's again: a result kept, its standing
+described correctly for the first time.
+
+**What is still not done.**  This is the *isotropic* locus of `Diagonal.Ric η w σ`,
+which carries a scale per direction as well as `η`.  So §V.au's disconnect is
+**narrowed, not closed**: the coupling and the observables now live in the same
+*signature* and still not demonstrably in the same *geometry*.  The register has
+been wrong before by letting "same shape" stand for "same object" (§V.ad on
+§V.ac), and this is that shape again — named in advance this time.
+
+## V.aw  One obstruction of two, and the source law turns out to be hyperbolic
+
+§V.au found `κ` and the observables in different geometries with one bridge
+between them, `Anisotropic.ChrDir_of_isotropic`, carrying **two** hypotheses: the
+isotropic locus *and* Euclidean signature.  `Hyperbolic.lean` removes one.
+
+**What is closed.**  `diagonal_chr_isotropic`: at the isotropic locus,
+`Diagonal.Chr η w σ` **is** `EtaTrace.ChrE η σ`, at **any** signature.
+`diagonal_ric_isotropic` carries it to the Ricci tensors — the two files contract
+differently, `Diagonal` differentiating the connection's trace along one index and
+`EtaTrace` along the other, and `hess_symm` closes the gap.
+
+**What is not closed, and it is the half that matters.**  The physics is
+**anisotropic**: `Diagonal.vacuum_scale_sum` gives `σ_t' + σ_r' = 0`, so the
+Schwarzschild-like solution the gravity chain runs through has `σ_t ≠ σ_r`, and
+the bridge holds only where all directional scales agree.
+
+> **The signature obstruction is gone; the isotropy obstruction is not, and the
+> observables sit outside it.**
+
+So §V.au narrows from two obstructions to one.  The remaining task is now exactly
+stateable — `RscE_eq` for a **directional** scale — which is better than it was,
+and calling it a closure would be the "same shape for same object" error §V.av
+named one section earlier.  It is named again here because the temptation was
+present again.
+
+**And the corrected operator buys something.**  §V.av made A6″ hyperbolic;
+`Hyperbolic.lean` asks what a hyperbolic law has that an elliptic one does not,
+and the answer is **characteristics**.
+
+`WaveProfile k m σ` is the algebraic surrogate for a disturbance with wavefronts
+normal to `k`: the Hessian is rank one along `k`.  No analysis is used because
+none is available — the same limitation `Index.lean` records about Gauss's law.
+Then `lapE_of_waveProfile` says the d'Alembertian of such a profile is
+`Light.bareForm η k * m`, the framework's **own** quadratic form; and
+`vacuum_wave_is_null` says a vacuum disturbance with a non-degenerate profile has
+`Light.bareForm η k = 0`.  `characteristic_is_null` makes that `Light.IsNull` for
+any unit scale, and `null_is_unit_speed` reads it as `∑_{i≠t} kᵢ² = kₜ²`.
+
+> **Scale disturbances propagate on the framework's own null cone.**
+
+`Light.lean` defined that cone **kinematically** — where the measured form
+vanishes — and nothing in the development said anything travels along it.  This is
+the dynamical half and the two cones coincide.  It is also the first thing the
+hyperbolic reading has paid for, which is some evidence the reading is right.
+
+**What is not claimed.**  That these are gravitational waves: the disturbance is
+of the **scalar** scale, while a gravitational wave is a directional transverse
+mode, and `Waves.lean`'s multipole discussion is about something else.  Nor any
+existence — `WaveProfile` is an ansatz and no scale algebra is exhibited carrying
+a non-trivial one.  That is the debt `ExpPoly.lean` paid for `ScaleField`, unpaid
+here, and `unwitnessedStructures` would be the place to record it if the ansatz
+were load-bearing for a physical claim.  It is not yet: nothing downstream uses
+it.
+
+## V.ax  The last obstruction is an absent object, and what a scale wave is
+
+Two things, and the first changes what §V.aw's remaining task even is.
+
+**There is no directional `RscE_eq` to write.**  `Conformal.RscBare`'s docstring
+states the design in the singular: *the true scalar curvature of `g` is `e^{−2σ}`
+times this; we keep **the** conformal factor explicit.*  With a scale per
+direction the scalar curvature is `dirTrace η w Ric = ∑_b η_b w_b⁻¹ R_bb`, and
+`dirTrace_factors_iff` proves the factor comes out **only** when every `w_b`
+agrees: if `∑_b η_b w_b⁻¹ R_b = c⁻¹ ∑_b η_b R_b` for all `R`, then `w_b = c` for
+all `b`.
+
+> **Off the isotropic locus there is no bare scalar curvature, because there is
+> no single conformal factor to keep explicit.**
+
+And this is a property of **A6′**, not of `EtaTrace.lean`.  The law reads
+`e^{2σ}R = κρ`; `e^{2σ}` is one factor; so **A6′'s form presupposes an isotropic
+scale while A4′ supplies a directional one**.  Confirmed by inspection:
+`Index.IndexResponse` takes `σ : A` and nothing in the development states a source
+law for a `DirField`.  That absence is not an oversight.
+
+So §V.aw's obstruction changes character.  The bridge is not missing a **span** —
+a computation someone could do — it is missing a **pier**: the anisotropic sector
+has a curvature and no law to equate it to, and the law it needs cannot have
+A6′'s shape.  The remaining work is to **write a source law for a directional
+scale**, which is a different and larger thing than a tensor identity, and the
+register should stop describing it as the latter.
+
+**And what a scale wave is.**  §V.aw gave the source law null characteristics, so
+ask what propagates.  `σ` is the **unit of measure**, and
+`Light.michelson_morley_null` — already proved, and proved for every scale pattern
+at any precision — says an interferometer compares rod lengths against light
+times while the scale sets both, so it cancels.
+
+> **No interferometer can see a scale wave.  It is not a strain.**
+
+What moves is **content**.  Counts are weight zero (`Weight.lean`), so they do not
+rescale with the wave and genuinely differ; `emerges_between` names the
+structures that cross as `{k | t < μ k ≤ t'}`.  And
+`resolved_eq_iff_no_threshold_between` sharpens it:
+
+> **A scale wave has no continuous observable.  It acts only where it crosses a
+> threshold, so its effect is quantised by the threshold spectrum.**
+
+Half the amplitude does not give half the effect; it gives none, unless a
+threshold lies in the interval.  That is unlike any classical wave and it is
+forced by what `Emergence.resolved` is.  A scale wave is a **wave of emergence**:
+a null front across which structures come into and go out of resolution.
+
+**And it makes the autonomy question unavoidable.**  `Attraction.lean` leaves `ν`
+a threshold count and `Emergence.resolved` makes the count a function of `σ`, so
+`□σ = Δ·ν` reads `□σ = Δ·ν(σ)` — the field sourcing itself through what it
+resolves.  Nothing here proves `ν` must be evaluated at the local `σ`, and no such
+law is written; what changed is that a **propagating** `σ` carries its own source
+with it, which the static reading could leave alone.
+
+**Limits.**  `Emergence.resolved` takes `μ` as free data and §V.x records that
+nothing connects `μ` to a measurement.  So "observable" means *the resolved set
+changes*, not *an instrument registers it*, and the quantisation result inherits
+that scope: the effect is carried by the threshold spectrum and the framework
+still does not say what that spectrum is.
+
+## V.ay  The merge, a correction of my own, and the breathing mode's real ground
+
+**The merge.**  §V.ax asked for a source law that does not presuppose one
+conformal factor.  `Breathing.DirSource` is it:
+
+        ∑_b η_b w_b⁻¹ R_bb = κ·ρ ,
+
+the law written on the **true** scalar curvature.  `RscBare`'s design goal was
+*no invertibility hypothesis*, which is why the conformal factor was kept
+explicit — and **A4′ makes that goal free**, because it supplies
+`w : Fin n → Aˣ` and units are invertible by definition.
+
+> **A4′ supplies exactly the invertibility A6′ was contorted to avoid.**
+
+That is the consolidation §V.at was looking for, and it arrives in the
+directional sector rather than the isotropic one.  `dirSource_isotropic` reduces
+it to A6′ with the density differing by the conformal factor — coordinate against
+proper density, which A6′ could absorb and this cannot — and
+`kappa_from_dirSource` recovers `κ = −2(n−1)Δ` wherever the density cancels.
+
+**A correction, and it is mine.**  §V.ax wrote *no interferometer can see a scale
+wave; it is not a strain*, citing `Light.michelson_morley_null`.  That theorem's
+hypothesis is a single `E : DirScale n A` — **one** scale pattern — compared at one
+point.  It excludes finding a **static** anisotropy.  A wave differs between the
+arms and between emission and return, and the theorem says nothing about it.
+
+**The claim is withdrawn**, one section after it was made.  What survives is
+narrower and still worth having: a *static* scale pattern is invisible to an
+interferometer at any precision.
+
+**And `Horizon.no_breathing_mode` does not have the ground it states.**  The
+theorem is `(m−1)+1 = m` by `omega`; its content is the subtraction in
+`scaleModes m = m - 1`, justified in the docstring by *a uniform rescaling is a
+fiducial shift, and A5 declares fiducial shifts unobservable*.  But
+`Expressive.FiducialInvariant` quantifies over **one constant added at every
+point**, and `diffPattern` compares **points**.  A breathing wave is uniform
+across *directions* and varies across *points* —
+`uniform_across_directions_still_varies` exhibits that combination and
+`nonconstant_scale_is_expressible` separates any such field by a
+fiducial-invariant functional.
+
+> **A wave is not a fiducial shift, so A5 does not remove the breathing mode.**
+
+`Hyperbolic.vacuum_wave_is_null` had already exhibited it: a non-constant `σ`,
+uniform across directions, on the null cone.
+
+**But the conclusion survives on a ground the framework already had.**  A scalar
+disturbance is sourced by the **monopole**; `Waves.monopole_does_not_radiate`
+freezes the monopole of a conserved source; and
+`Dynamics.no_field_equation_of_nonconserved` says a non-conserved source admits
+**no field equation at all**.  So:
+
+> **The breathing mode is expressible but cannot be radiated by any source this
+> framework can write a field equation for.**
+
+Same prediction, different ground, narrower **scope**: it is about radiation from
+conserved sources.  A free breathing wave — primordial, or set by a boundary
+condition — is excluded by nothing here, so `Horizon.lean`'s *the amplitude is
+identically zero, not small* claims more than is proved.  `two_polarizations` is
+not disturbed: with the monopole argument its `1 + 1` stands for exactly the case
+polarization tests examine.
+
+**Third time for this pattern** — §V.aq, §V.av, and now here: a result kept and
+its standing described correctly for the first time.  Twice the correction was to
+inherited text and once, in §V.ax, to text written in this same session.  The
+register's own rate of overstatement is the thing to read off that, not the
+individual corrections.
+
+## V.az  Seven axioms to five, and the prediction ledger read honestly
+
+**The consolidation, at last.**  The first pass of this whole effort listed
+"merging the axioms" as a goal and nothing was ever merged.  Three results this
+session make it a theorem rather than a proposal.
+
+*A3 is not an axiom.*  `ScaleField.en` is a **definition**, `ε := s⁻¹`, and
+`en_mul_scale` is `Units.inv_mul`.  `Consolidation.A3_is_inversion` restates that
+with nothing added, and `redshift_is_inversion` shows the redshift relation
+`∂ᵢε = −ε ∂ᵢσ` is `Reduction.logDeriv_inv` — inversion negating a homomorphism,
+which is the whole content of *scale × energy = constant*.
+
+*A2 is A4′ plus a potential.*  `Frame.DirScale` is `s : Fin n → Aˣ` and nothing
+else.  `d_s_iff_exact` says A2's derivation condition holds **exactly when the
+unit's log-derivative is the gradient of `σ`** — when it is exact.  So A2 is a
+unit plus a potential; `ofScaleField` supplies the unit from A4′; and
+`Amendment.same_unit_same_geometry` had already shown **no geometric result needs
+the potential**.  §V.aa reached "A2's content is one unit" and stopped one step
+short of naming the axiom that already provides it.
+
+*A6′ is replaced.*  §V.ay's `Breathing.DirSource`, which A4′'s units make
+writable.
+
+    A1  ·  A2* one family of units  ·  A5  ·  A6  ·  A6″ as DirSource  ·  A7
+
+**Seven to five**, and `Consolidation.consolidation` records it as a number.  Not
+claimed: that the reduction is forced.  `Amendment.lean` weighed the rewrite and
+declined on tidiness grounds; what has changed is that the potential is now known
+to be the **only** surplus, and that A6′'s isotropy presupposition made the old
+list inconsistent with A4′ in a way the new one is not.
+
+**And the ledger.**  Three kinds, and the differences matter more than the list.
+
+*Parameter-free, and sharper than general relativity rather than different from
+it.*  `γ = 1` exactly; the deflection ratio `2`; no dipole radiation, from Bianchi
+rather than assumed, which binary-pulsar timing measures at `0.9983 ± 0.0016`;
+**exactly zero** energy-dependent photon speed where minimum-length approaches
+predict something small; **one cone for every sector**, so SME-style inter-sector
+Lorentz violation is inexpressible rather than bounded; entropy `∝ ln R`; no
+horizon.  Weight zero throughout — nothing to tune.
+
+*New this session, and mostly negative.*  The source law is hyperbolic, Poisson
+its static limit (§V.av).  Scale disturbances ride the null cone (§V.aw).  The
+breathing mode is expressible but not radiable by a conserved source (§V.ay).
+Its effect is quantised by the threshold spectrum (§V.ax).
+
+*One number it cannot compute.*  `Δρ`, proved a **permanent** input by §V.ae–af.
+So the framework predicts **ratios and structures, not magnitudes**, and
+`1.7515″` is an arithmetic check on measured inputs — which `Chain.lean` already
+said and this register should stop quoting otherwise.
+
+**The honest reading.**  Where the framework touches reality it mostly agrees
+with general relativity **while claiming more sharply**: exactly zero rather than
+small, inexpressible rather than bounded.  That is real contact and it is
+testable.  It is not yet a place where an experiment anyone has performed could
+tell the two apart.
+
+The one channel that could — the scale wave — has now been characterised, and
+characterised into near-invisibility: not radiable by conserved sources, discrete
+in effect, and with **no predicted amplitude**, because `Δρ` is free and the
+directional curvature identity is unwritten.
+
+**So the largest remaining gap is not conceptual.**  It is `EtaTrace.RscE_eq` for
+a **directional** scale.  §V.ay supplied the law; the identity that would let it
+produce a number does not exist, and until it does `κ` and the observables meet
+only where the scale is isotropic.  That is a bounded, stateable computation, and
+it is now the only thing between the framework and a number of its own.
+
+## V.ba  The micro sector: the correction is exact, and has never been carried
+
+§V.au found the classical coupling computed in the wrong pairing.  The natural
+next question is whether the **quantum** correction inherits it.  `Micro.lean`
+answers no, and the reason is informative.
+
+**The pairing enters `Defm` only symmetrically.**  `Conformal.Defm` is
+`2σᵢⱼ − 2σᵢσⱼ + δᵢⱼ|∇σ|²`, and `DefmE_symm_part` shows the last term is symmetric
+in `ij` for any `η`, since `δᵢⱼ` forces the indices equal before `η` is read.  So
+`DefmE_antisymm_part` reproduces `NCConformal.Defm_antisymm_part` exactly, and
+`quantum_correction_signature_independent` states the equality.
+
+> **The pairing was never chosen (§V.at), and the quantum correction never needed
+> it.**
+
+`DefmE_sub_Defm` isolates where it does matter — the symmetric part, which is
+what the classical tests read, and where §V.au and §V.av live.
+
+**And what the correction is, sharper than "a correction".**
+`NCConformal.quantum_correction_is_a_wedge` is `rfl`: the correction **is** the
+framework's rotational label applied to the scale gradient pattern.  Being
+antisymmetric it cannot enter anything computed from a symmetric part, so orbits,
+deflection, precession and redshift are untouched by construction.
+
+**But every quantitative result is computed where it vanishes.**  `NCConformal`
+closed the loop **for the Riemann tensor** — `Conformal.lean` is over a `Ring`.
+The chain is not: `Diagonal.lean`, `Newton.lean`, `Reciprocity.lean` and
+`Chain.lean`, which are the files `Chain.lean`'s own table runs the gravity chain
+through, all carry `[CommRing A]`, and over a commutative ring `ad` vanishes
+identically.
+
+> **The correction is identified exactly, and has never been carried into a
+> single computed number.**
+
+So "the quantum correction does not affect the classical tests" is at present a
+statement about **where the computation was done** as much as about the term's
+symmetry.  The register should say it that way.
+
+**A warning about the register's own quoting.**  The obvious thing to cite here
+is `Expressive.channels_independent` — that the scale and commutator channels
+cannot constrain each other — and it is **superseded**, as `Expressive.lean`'s own
+header says: the independence is that of the *scalar* channel, and `Coupling.lean`
+shows scalings along different directions bracket into a rotation, so under A4′
+the channels are coupled.  The correction being the wedge is that coupling seen
+again.  This pass was one sentence from quoting the superseded conclusion and the
+file's own warning is what stopped it — the second time this session that a
+header's self-correction did work no theorem could have done.
+
+**And the two open sectors turn out to be one place.**  The correction vanishes
+where the gradients commute; `Anisotropic`'s directional commutator vanishes on
+the isotropic locus; and §V.aw's bridge and §V.ax's missing source law live on,
+and only on, that same locus.
+
+> **Everything the framework has computed is on the isotropic, commuting locus,
+> and both of its unfinished sectors are off it.**
+
+Two open items that looked unrelated — the missing directional source law and the
+uncarried quantum correction — are open in the same place, and it is the place no
+computation has been done.  That is §V.ap's "read across" move applied once more,
+and it says where the next work has to happen more precisely than either item did
+alone.
+
+## V.bb  Off the commuting locus at last: Ricci is not symmetric, and the scalar
+## curvature does not move
+
+§V.ba ended by saying everything computed sits on the isotropic, commuting
+locus.  `QuantumRicci.lean` leaves it and takes the contraction `NCConformal`
+set up and never performed.
+
+**The Riemann correction dies in the contraction.**  `RmCorr a b c e` carries
+`δ_{ab}` and `δ_{bc}` with opposite signs; at `c = a` they cancel term by term, so
+`sum_RmCorr_contract` is zero.  Ricci inherits nothing through `RmCorr`.
+
+**But Ricci is still not symmetric**, because `Defm` is not:
+
+        `Ric_{be} − Ric_{eb} = (n−2)·[σ_b, σ_e]` .
+
+**And the scalar curvature does not move at all.**  `2 Rsc = (2−2n) tr D`, and
+`tr D` is built from `hess a a`, `σ_aσ_a` and `gradsq` — every term a square.
+
+> **The entire quantum correction to the geometry is the antisymmetric part of
+> Ricci.  The scalar is exactly classical.**
+
+**What that predicts, and it is unusually sharp for this development.**
+
+*An antisymmetric Ricci with a **torsion-free** connection.*  `Chr_symm` is
+proved in the `[Ring M]` block, so the connection is symmetric in its lower pair
+whether or not values commute.  In ordinary differential geometry
+`Ric_{[ab]} = 0` for a torsion-free connection, by the first Bianchi identity —
+and that proof uses commutativity of the **values**, not only torsion-freeness.
+So this is **not** Einstein–Cartan, which buys the same antisymmetry by giving
+the connection torsion.
+
+*Nothing classical moves, at any order.*  A6′/A6″, `κ`, the Newtonian limit and
+every cosmological statement are exactly their commutative selves.  In
+particular there is **no `ℏG/r³` correction to the Newtonian potential** of the
+kind effective-field-theory gravity produces, and **no running of `G`**.  A flat
+disagreement with the standard expectation, and exact rather than small.
+
+*It vanishes at `n = 2`*, by the same `(n−2)` that governs conformal geometry
+throughout.
+
+*And it does not inherit §V.au's problem.*  `Micro`'s
+`quantum_correction_signature_independent` shows the antisymmetric part is the
+same for every signature, and that is where the whole correction lives.  Unlike
+`κ`, this prediction never depended on the pairing that was never chosen.
+
+**What is not claimed.**  That the correction **couples to spin** as a theorem.
+An antisymmetric Ricci in a field equation needs an antisymmetric source and spin
+is the physical one, but no field equation for the antisymmetric half is written;
+`Dynamics.lean` derives conservation from Bianchi for the symmetric setting and
+the other half has never been addressed.  That reading is labelled as a reading
+in the file.  No magnitude either — calling `[σ_b,σ_e]` an `ℏ`-order effect runs
+through `Crossed.lean`'s identification of `ℏ` with a scale step, a separate
+registered input.  And no existence: no scale algebra is exhibited carrying
+non-commuting gradients and a non-trivial geometry at once, which is
+`ExpPoly.lean`'s debt for `ScaleField`, unpaid here.
+
+**On what kind of result this is.**  It is the first thing in this session that
+is a *prediction* rather than a correction to one.  The session's other findings
+narrowed claims; this one adds a statement the framework had not made, it is
+exact, and it disagrees with the standard expectation in a stateable way.  It is
+also, being about an antisymmetric Ricci with no field equation for it, a
+statement whose test the framework cannot yet describe — which is the honest
+place to leave it.
+
+## V.bc  Four constants, three dimensions — and the free-number count is wrong
+
+The usual bookkeeping has `L, T, M` and `c, ℏ, G, e`.  Asking what that becomes
+here turns up a count this register has been quoting for many sections.
+
+**There are no dimensions, there is one grading.**  `σ` is dimensionless and
+`Weight.lean`'s grading under `σ ↦ cσ` is what replaces dimension.  Three base
+dimensions become one `ℤ`-grading, and the collapse is structural rather than a
+choice of units: `Signature.lean` makes time a **direction**, told from space by
+a sign and not a dimension; `Well.light_measured_speed_one` makes `c = 1` a
+**theorem**, since the scale sets rods and light times alike; and A3, being
+`ε = s⁻¹` and hence a group law (§V.az), puts mass on the same axis with the
+opposite sign.
+
+**Then the count.**  The magnitudes are `Δ` (weight 1), the scale step
+`Crossed.lean` identifies with `ℏ` (weight 1, `Constants.step_weight_one` — a step
+is a difference of log-scales), and `ρ` (weight −1).  `two_pure_numbers`: both
+`Δρ` and `ℏρ` are weight zero.
+
+§V.ap says *one protected unit, one free pure number*.  That is true only if `Δ`
+and the step are the **same** magnitude.  `Index.lean` says in so many words that
+"`G` and `ℏ` share an origin" is *conditional on a step that is not taken here*,
+and `Crossed.lean`'s own scope note says going from "there is a scale shift" to
+"`ℏ` is that step" is an **identification, not a construction**.
+`collapse_iff` makes it exact: the two numbers coincide **iff** the magnitudes
+agree.
+
+> **There are two free pure numbers, not one, unless `G` and `ℏ` are the same
+> magnitude — and nothing in the development says they are.**
+
+Two claims the register has carried side by side without reading them against
+each other.  It is §V.ap's own "read across" failure, one level up: that section
+sorted the *open items* and never sorted the *magnitudes*.
+
+**And where `e` goes, which is the payoff.**  `α` is weight zero — a gauge
+coupling's value does not depend on how `σ` is labelled — so it is pure
+**structurally**, not by dimensional accident.  And
+`Weight.only_gravity_crosses_the_weight` supplies the asymmetry: the gauge law
+relates weight-zero to weight-zero, gravity's relates a weight-zero count to a
+weight-one scale, and exactly one law crosses the grading.
+
+> **"Why is `α` dimensionless and `G` not" stops being a fact about dimensions
+> and becomes a fact about which law crosses the grading.**
+
+**A question the usual picture cannot ask.**  `[G] = L³M⁻¹T⁻²` and
+`[ℏ] = ML²T⁻¹` have different dimensions, so *are they the same magnitude?* is
+not well-formed there.  Here they carry the **same weight**, the question is
+well-formed, and its answer is a single pure number.  The framework has not
+answered it; `collapse_iff` says what answering it would buy.
+
+**Not claimed:** that `Δ = ℏ`, nor that two is final — a magnitude nobody has
+written could add a third.  Only that "one free pure number" is conditional on an
+identification this register elsewhere marks as unmade.
+
+**And it is left open rather than pursued.**  Nothing in A1–A7 relates the source
+coefficient to a scale shift, and `Crossed.lean`'s `ScaleShift` is not built from
+the axioms at all — it needs a ring endomorphism and a unit that nothing supplies.
+So the identification would have to come from outside, and this register has spent
+enough sections learning what that costs.  **`Δ = ℏ` is registered as an open
+question**, the free-number count reads **two**, and §V.ap's "one free pure number"
+should be quoted as conditional wherever it appears.
+
 ## VI.  What rests on the axioms alone
 
-The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
+The scale/rotation split, a codimension-one splitting of the directions (**not**
+the Lorentzian signature — corrected in §V.au), the bookkeeping form, the
 coupling, real rank one, `n = k+1`, conservation from Bianchi, the gravity chain
 through to `1.7515″` and `42.99″/century`, `ħ` as an exact scale step, the
 label structure on the anisotropic locus, and every statement in `Native.lean`.
@@ -1480,8 +3408,12 @@ def homotopyClassCount : ℕ := 2
 
 theorem homotopy_class_count : homotopyClassCount = 2 := rfl
 
-/-- Claims retracted outright. -/
-def retractedCount : ℕ := 4
+/-- Claims retracted outright.
+
+**Five**, since §V.ay: *no interferometer can see a scale wave* was written in
+§V.ax and withdrawn one section later, `Light.michelson_morley_null` being a
+statement about a single static scale pattern compared at one point. -/
+def retractedCount : ℕ := 5
 
 /-- Claims corrected in scope, where the theorem survives and the gloss did
 not.
@@ -1493,8 +3425,12 @@ determination relation.  And to **eight** by §V.n: "eight dimensionless
 predictions" survives as four, the rest being arithmetic on imported
 definitions.  And to **nine** by §V.p: the anisotropic non-commutative
 correction is second order in gradients, not zeroth, so it is the leading
-correction but not an unsuppressed one. -/
-def correctedCount : ℕ := 9
+correction but not an unsuppressed one.  And to **ten** by §V.w: §V.j's reading
+of `Diagonal.ric_offdiag` as a property of diagonal metrics is a property of
+diagonal metrics over a *commutative* ring, since the cancellation is between
+terms whose order is not a choice there — `Ordering.vacuum_is_ordering_dependent`
+shows the lift changes the solution set. -/
+def correctedCount : ℕ := 11
 
 /-- External results cited and not proved.
 
@@ -1529,8 +3465,12 @@ def assumedCount : ℕ := 10
 
 /-- How many of those the register was **silently missing** — self-registered in
 their own files and absent from this list.  Kept because it measures how well
-the register works, not how well the framework does. -/
-def unregisteredFound : ℕ := 3
+the register works, not how well the framework does.
+
+Raised to **four** by §V.x: `Spectrum.lean` declares in its own header that the
+twelve mass scales behind `CV² = 1` were selected by hand, and this list never
+carried it — while `CV² = 1` is the framework's one discriminating prediction. -/
+def unregisteredFound : ℕ := 4
 
 theorem register_was_incomplete : 0 < unregisteredFound := by decide
 
@@ -1568,8 +3508,14 @@ theorem index_substitutions_still_occur :
   refine ⟨?_, ?_⟩ <;> decide
 
 /-- Structures carrying hypotheses the framework does not supply — true
-theorems whose physical reading is conditional (§V.b). -/
-def unwitnessedStructures : ℕ := 6
+theorems whose physical reading is conditional (§V.b).
+
+Raised to **seven** by §V.ac: `Resolution.Filtration` carries the algebraic
+notion of resolution and nothing in A1–A7 builds one.  Raised to **eight** by
+§V.as: `Vantage.place` needs one such filtration **per direction**, so the
+unwitnessed structure did not stay the same size when it was put to a second
+use. -/
+def unwitnessedStructures : ℕ := 8
 
 /-- Notions that were declared more than once and are now declared once: A1's
 substrate, the geometric objects, isotropy, parallelism, the wedge, the two
@@ -1594,9 +3540,41 @@ theorem register_grew_under_audit : 0 < unwitnessedStructures := by decide
 
 /-! ## The standing verification claim -/
 
+/-- Open items that are free **by construction**: the origin, the magnitude, the
+orientation bit, the branch, and the point in the solution space.  A5 and the
+grading make these unobservable, so they are commitments and not gaps (§V.ap).
+
+Bookkeeping, in the manner of the other counts: recorded so the sort cannot
+drift, and carrying no argument of its own. -/
+def freeByConstruction : ℕ := 5
+
+/-- Open items that are the same request — a conversion from counting to scale
+(§V.ap).  All four are one item: three by `OneParameter.lean` and the fourth as
+the size's derivative.
+
+**Was four.**  §V.bc adds a fifth: `ℏρ` is a second weight-zero combination, and it
+is the same request in the same clothes.  Whether it is the *same number* is the
+open question §V.bc leaves. -/
+def converterItems : ℕ := 5
+
+/-- And the ones the sort leaves genuinely separate: the non-static operator
+ordering, A7, the vacuum second order, the absent site, G3's postulated
+filtration, and G4's weight.
+
+**Was eight, then seven.**  "Which label `ν` counts" closed in §V.aq by
+exhaustion over the three labels §V.g tabulated; the codimension mismatch closed
+in §V.ar, which shut the second way out and showed the question was malformed on
+both branches. -/
+def separateItems : ℕ := 6
+
+/-- **The sort is exhaustive over what it sorts**, which is bookkeeping and not a
+claim that the list of open items is complete.  Fifteen until §V.bc found a fifth
+converter item. -/
+theorem sort_totals : freeByConstruction + converterItems + separateItems = 16 := by decide
+
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1040
+def auditedTheorems : ℕ := 1275
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

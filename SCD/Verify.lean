@@ -361,6 +361,229 @@ namespace SCD.Verify
 #print axioms SCD.Mutual.triWedge_not_identically_zero
 #print axioms SCD.Mutual.summary
 
+-- Ordering.lean
+#print axioms SCD.Ordering.offDiag_eq_classical
+#print axioms SCD.Ordering.integrand_sub_rev
+#print axioms SCD.Ordering.offDiag_sub_rev
+#print axioms SCD.Ordering.orderings_agree_of_comm
+#print axioms SCD.Ordering.crossed_two
+#print axioms SCD.Ordering.crossed_zero
+#print axioms SCD.Ordering.crossed_one
+#print axioms SCD.Ordering.transverse_zero_one
+#print axioms SCD.Ordering.vacuum_is_ordering_dependent
+#print axioms SCD.Ordering.ordering_irrelevant_of_static
+#print axioms SCD.Ordering.sym_is_order_free
+#print axioms SCD.Ordering.sym_doubles_the_classical
+#print axioms SCD.Ordering.summary
+
+-- Screen.lean
+#print axioms SCD.Screen.observer_preserves_predictions
+#print axioms SCD.Screen.observer_preserves_predictions_vacuously
+#print axioms SCD.Screen.recorded_by_one
+#print axioms SCD.Screen.not_recorded_by_zero
+#print axioms SCD.Screen.recorded_set_is_observer_relative
+#print axioms SCD.Screen.observer_relative_is_modulus
+#print axioms SCD.Screen.observer_relative_can_be_modulus
+#print axioms SCD.Screen.sample_grows_as_observer_shrinks
+#print axioms SCD.Screen.screen_is_exhaustive
+#print axioms SCD.Screen.the_discriminating_entry_is_the_observer_relative_one
+
+-- Resolution.lean
+#print axioms SCD.Resolution.Filtration.resolved_mono
+#print axioms SCD.Resolution.Filtration.not_resolved_zero
+#print axioms SCD.Resolution.Filtration.compatible_symm
+#print axioms SCD.Resolution.Filtration.compatible_of_le
+#print axioms SCD.Resolution.commutative_all_compatible
+#print axioms SCD.Resolution.incompatible_witness
+#print axioms SCD.Resolution.compatible_at_zero
+
+-- Layers.lean
+#print axioms SCD.Layers.xs_central
+#print axioms SCD.Layers.ad_e00_e01
+#print axioms SCD.Layers.compat_zero
+#print axioms SCD.Layers.incompat_one
+#print axioms SCD.Layers.resolved_is_emergence_resolved
+#print axioms SCD.Layers.monomial_threshold
+#print axioms SCD.Layers.polyFilt_hasThreshold_on_monomials
+#print axioms SCD.Layers.indist_refl
+#print axioms SCD.Layers.indist_symm
+#print axioms SCD.Layers.indist_trans
+#print axioms SCD.Layers.indist_equivalence
+#print axioms SCD.Layers.indist_of_le
+#print axioms SCD.Layers.compatible_iff_orders_indistinguishable
+
+-- Spacing.lean
+#print axioms SCD.Spacing.monomial_powerSpaced
+#print axioms SCD.Spacing.gapList_replicate
+#print axioms SCD.Spacing.powerSpaced_variance_zero
+#print axioms SCD.Spacing.observed_variance_ne_zero
+#print axioms SCD.Spacing.thresholds_not_power_spaced
+#print axioms SCD.Spacing.gapList_shift_invariant
+#print axioms SCD.Spacing.gapList_rescale
+#print axioms SCD.Spacing.ratio_invariant
+#print axioms SCD.Spacing.unique_pure_number
+#print axioms SCD.Spacing.meanGap_from_gaps
+
+-- Information.lean
+#print axioms SCD.Information.predicted_cannot_determine_modulus
+#print axioms SCD.Information.modulus_may_determine_modulus
+
+-- Conversion.lean
+#print axioms SCD.Conversion.counts_cannot_fix_a_unit
+#print axioms SCD.Conversion.threshold_not_a_function_of_charge
+#print axioms SCD.Conversion.charge_not_a_function_of_threshold
+
+-- Overdetermination.lean
+#print axioms SCD.Overdetermination.one_number_two_relations
+#print axioms SCD.Overdetermination.coupling_from_rate_and_density
+#print axioms SCD.Overdetermination.product_from_rate
+#print axioms SCD.Overdetermination.no_prediction_without_identification
+
+-- RateWeight.lean
+#print axioms SCD.RateWeight.unit_conversion_gives_invariant_rate
+#print axioms SCD.RateWeight.gauge_conversion_moves
+#print axioms SCD.RateWeight.residual_factor_is_determined_not_predicted
+#print axioms SCD.RateWeight.prediction_at_unit_factor
+
+-- Bridge.lean
+#print axioms SCD.Bridge.factorsThroughCount_of_indexResponse
+
+-- Observations.lean
+#print axioms SCD.Observations.observations_agree
+#print axioms SCD.Observations.falsified_by_one_anomaly_alone
+#print axioms SCD.Observations.falsified_by_the_other_alone
+#print axioms SCD.Observations.fit_identification_is_a_constraint
+
+-- Disconnect.lean
+#print axioms SCD.Disconnect.factorisation_is_generic
+#print axioms SCD.Disconnect.factorisation_has_failing_instances
+
+-- Content.lean
+#print axioms SCD.Content.ContentSystem.mono_refl
+#print axioms SCD.Content.ContentSystem.mono_trans
+#print axioms SCD.Content.pullback_eq_emergence
+
+-- Size.lean
+#print axioms SCD.Size.uniform_density_is_a_restriction
+#print axioms SCD.Size.emergence_is_ofThreshold
+
+-- Valuation.lean
+#print axioms SCD.Valuation.modularity_is_a_restriction
+#print axioms SCD.Valuation.observer_counting_law
+
+-- OneParameter.lean
+#print axioms SCD.OneParameter.affine_size_determined
+#print axioms SCD.OneParameter.origin_is_a_fiducial_shift
+#print axioms SCD.OneParameter.uniform_size_one_observable
+#print axioms SCD.OneParameter.size_adds_no_freedom
+
+-- Codimension2.lean
+#print axioms SCD.Codimension2.two_valued_source_is_trivial
+#print axioms SCD.Codimension2.block_cannot_source
+#print axioms SCD.Codimension2.odd_pairs_cancel
+
+-- DegreeSource.lean
+#print axioms SCD.DegreeSource.degree_gives_the_same_kappa
+#print axioms SCD.DegreeSource.degree_admits_an_additive_source
+#print axioms SCD.DegreeSource.additive_nonneg_on_group_is_trivial
+#print axioms SCD.DegreeSource.signed_degree_cannot_attract
+#print axioms SCD.DegreeSource.monoid_source_exists
+#print axioms SCD.DegreeSource.ratio_is_weight_zero
+#print axioms SCD.DegreeSource.two_pure_numbers_where_there_was_one
+#print axioms SCD.DegreeSource.link_survives_only_if_equal
+
+-- Vantage.lean
+#print axioms SCD.Vantage.observer_and_observed_are_one_type
+#print axioms SCD.Vantage.every_vantage_observes_itself
+#print axioms SCD.Vantage.self_observation_is_exact
+#print axioms SCD.Vantage.empty_commitment_records_everything
+#print axioms SCD.Vantage.commitment_costs_content
+#print axioms SCD.Vantage.record_mono_in_resolution
+#print axioms SCD.Vantage.the_two_variances_commute
+#print axioms SCD.Vantage.algebra_record_is_observer_record
+#print axioms SCD.Vantage.algebra_record_mono
+
+-- Reduction.lean
+#print axioms SCD.Reduction.logDeriv_mul
+#print axioms SCD.Reduction.logDeriv_one
+#print axioms SCD.Reduction.logDeriv_inv
+#print axioms SCD.Reduction.sig_add
+#print axioms SCD.Reduction.gradsq_add
+#print axioms SCD.Reduction.ScaleHom.map_one
+#print axioms SCD.Reduction.ScaleHom.map_inv
+
+-- TwoMetrics.lean
+#print axioms SCD.TwoMetrics.euclidean_excludes_lorentzian
+#print axioms SCD.TwoMetrics.delta_trace_ne_eta_trace
+#print axioms SCD.TwoMetrics.bridge_unavailable_at_lorentzian
+
+-- EtaTrace.lean
+#print axioms SCD.EtaTrace.kron_mul_eta
+#print axioms SCD.EtaTrace.sum_mul_lapE
+#print axioms SCD.EtaTrace.sum_mul_gradsqE
+#print axioms SCD.EtaTrace.ChrE_symm
+#print axioms SCD.EtaTrace.sum_ChrE_diag
+#print axioms SCD.EtaTrace.sum_ChrETrace_ChrE
+#print axioms SCD.EtaTrace.sum_ChrE_ChrE
+#print axioms SCD.EtaTrace.sum_d_ChrE
+#print axioms SCD.EtaTrace.sum_d_ChrE_trace
+#print axioms SCD.EtaTrace.RicE_eq
+#print axioms SCD.EtaTrace.RscE_eq
+#print axioms SCD.EtaTrace.A6'_from_index_eta
+#print axioms SCD.EtaTrace.lap_sub_lapE
+#print axioms SCD.EtaTrace.lapE_lorentzian_split
+
+-- Hyperbolic.lean
+#print axioms SCD.Hyperbolic.ratio_const
+#print axioms SCD.Hyperbolic.diagonal_chr_isotropic
+#print axioms SCD.Hyperbolic.diagonal_ric_isotropic
+#print axioms SCD.Hyperbolic.lapE_of_waveProfile
+#print axioms SCD.Hyperbolic.vacuum_wave_is_null
+#print axioms SCD.Hyperbolic.characteristic_is_null
+#print axioms SCD.Hyperbolic.null_is_unit_speed
+#print axioms SCD.Hyperbolic.sourced_wave
+
+-- Directional.lean
+#print axioms SCD.Directional.dirTrace_isotropic
+#print axioms SCD.Directional.dirTrace_factors_iff
+#print axioms SCD.Directional.emerges_between
+#print axioms SCD.Directional.round_trip_resolves_nothing
+#print axioms SCD.Directional.resolved_eq_iff_no_threshold_between
+#print axioms SCD.Directional.content_grows_along_the_wave
+
+-- Breathing.lean
+#print axioms SCD.Breathing.dirSource_isotropic
+#print axioms SCD.Breathing.kappa_from_dirSource
+#print axioms SCD.Breathing.nonconstant_scale_is_expressible
+#print axioms SCD.Breathing.uniform_across_directions_still_varies
+
+-- Consolidation.lean
+#print axioms SCD.Consolidation.A3_is_inversion
+#print axioms SCD.Consolidation.redshift_is_inversion
+#print axioms SCD.Consolidation.ofScaleField_energy
+#print axioms SCD.Consolidation.d_s_iff_exact
+#print axioms SCD.Consolidation.scaleField_is_a_unit_with_a_potential
+#print axioms SCD.Consolidation.consolidation
+
+-- Micro.lean
+#print axioms SCD.Micro.DefmE_symm_part
+#print axioms SCD.Micro.DefmE_antisymm_part
+#print axioms SCD.Micro.quantum_correction_signature_independent
+#print axioms SCD.Micro.DefmE_sub_Defm
+
+-- QuantumRicci.lean
+#print axioms SCD.QuantumRicci.ad_self
+#print axioms SCD.QuantumRicci.sum_RmCorr_contract
+#print axioms SCD.QuantumRicci.two_Ric_eq_nc
+#print axioms SCD.QuantumRicci.two_Ric_antisymm
+#print axioms SCD.QuantumRicci.two_RscBare_eq_nc
+
+-- Constants.lean
+#print axioms SCD.Constants.step_weight_one
+#print axioms SCD.Constants.two_pure_numbers
+#print axioms SCD.Constants.ratio_is_pure
+#print axioms SCD.Constants.collapse_iff
+
 /-! ## PART II.a — the isotropic sector -/
 
 
@@ -641,6 +864,85 @@ namespace SCD.Verify
 #print axioms SCD.Witness.scaleField_comparisons_carry_no_curvature
 #print axioms SCD.Witness.scaleField_scale_is_faithful
 #print axioms SCD.Witness.scaleShift_is_witnessed
+
+-- ExpPoly.lean
+#print axioms SCD.ExpPolyModel.der_single
+#print axioms SCD.ExpPolyModel.der_zero
+#print axioms SCD.ExpPolyModel.der_add
+#print axioms SCD.ExpPolyModel.der_single_mul_single
+#print axioms SCD.ExpPolyModel.induction_single
+#print axioms SCD.ExpPolyModel.der_mul
+#print axioms SCD.ExpPolyModel.der_comm
+#print axioms SCD.ExpPolyModel.emb_zero
+#print axioms SCD.ExpPolyModel.emb_add
+#print axioms SCD.ExpPolyModel.emb_one
+#print axioms SCD.ExpPolyModel.der_emb
+#print axioms SCD.ExpPolyModel.expUnit_val
+#print axioms SCD.ExpPolyModel.expUnit_add
+#print axioms SCD.ExpPolyModel.der_expUnit
+#print axioms SCD.ExpPolyModel.scaleField_sigma
+#print axioms SCD.ExpPolyModel.scaleField_gradient_ne_zero
+#print axioms SCD.ExpPolyModel.expUnit_zero
+#print axioms SCD.ExpPolyModel.dirScale_s
+#print axioms SCD.ExpPolyModel.reciprocal_of_neg
+#print axioms SCD.ExpPolyModel.recipTwo_reciprocal
+#print axioms SCD.ExpPolyModel.recipTwo_not_isotropic
+#print axioms SCD.ExpPolyModel.exp_not_first_order
+
+-- Circle.lean
+#print axioms SCD.Circle.dloop_single
+#print axioms SCD.Circle.dloop_zero
+#print axioms SCD.Circle.dloop_add
+#print axioms SCD.Circle.induction_single
+#print axioms SCD.Circle.dloop_mul
+#print axioms SCD.Circle.dloop_uPow
+#print axioms SCD.Circle.dloop_coeff_zero
+#print axioms SCD.Circle.no_potential
+#print axioms SCD.Circle.no_scaleField_with_uPow
+#print axioms SCD.Circle.ScaleGradient.ofScaleField_isExact
+#print axioms SCD.Circle.circGradient_not_isExact
+#print axioms SCD.Circle.toDefect_winding
+#print axioms SCD.Circle.circGradient_isExact_iff
+#print axioms SCD.Circle.toDefect_isTrivial_iff
+#print axioms SCD.Circle.exact_iff_trivial
+
+-- Gradient.lean
+#print axioms SCD.Gradient.hess_congr
+#print axioms SCD.Gradient.gradsq_congr
+#print axioms SCD.Gradient.lap_congr
+#print axioms SCD.Gradient.Chr_congr
+#print axioms SCD.Gradient.Defm_congr
+#print axioms SCD.Gradient.Rm_congr
+#print axioms SCD.Gradient.Ric_congr
+#print axioms SCD.Gradient.geometry_congr
+#print axioms SCD.Gradient.fiducial_changes_no_geometry
+#print axioms SCD.Gradient.exact_isClosed
+#print axioms SCD.Gradient.closed_not_exact
+#print axioms SCD.Gradient.logDeriv_spec
+#print axioms SCD.Gradient.grad_unique
+#print axioms SCD.Gradient.grad_eq_logDeriv
+#print axioms SCD.Gradient.d_inv
+#print axioms SCD.Gradient.logDeriv_closed
+
+-- Torus.lean
+#print axioms SCD.Torus.dtor_single
+#print axioms SCD.Torus.dtor_zero
+#print axioms SCD.Torus.dtor_add
+#print axioms SCD.Torus.induction_single
+#print axioms SCD.Torus.dtor_mul
+#print axioms SCD.Torus.dtor_comm
+#print axioms SCD.Torus.dtor_uTor
+#print axioms SCD.Torus.dtor_coeff_zero
+#print axioms SCD.Torus.no_potential_tor
+#print axioms SCD.Torus.torGradient_not_isExact
+#print axioms SCD.Torus.twoTorus_not_isExact
+
+-- Amendment.lean
+#print axioms SCD.Amendment.sig_eq_logDeriv
+#print axioms SCD.Amendment.same_unit_same_geometry
+#print axioms SCD.Amendment.ofUnitOfPotential_s
+#print axioms SCD.Amendment.potential_unique_up_to_fiducial
+#print axioms SCD.Amendment.what_A2_adds
 
 /-! ## PART II.b — the anisotropic sector -/
 
@@ -1262,6 +1564,7 @@ namespace SCD.Verify
 #print axioms SCD.Audit.index_substitutions_still_occur
 #print axioms SCD.Audit.unification_added_nothing
 #print axioms SCD.Audit.register_grew_under_audit
+#print axioms SCD.Audit.sort_totals
 #print axioms SCD.Audit.clean_count
 
 end SCD.Verify
