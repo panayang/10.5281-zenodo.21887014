@@ -166,6 +166,10 @@ PART III — THE QUANTUM SECTOR
                  log-derivative is a homomorphism (new), A3 is its inversion law,
                  and the ring's remaining job is the **bilinear pairing** that
                  makes the geometry.  Two commitments, carried as one
+    TwoMetrics   ★ and the pairing was never chosen, so there are **two**: `κ` is
+                 a `δ`-trace result and the observables are `η`-weighted, and the
+                 one theorem joining the sectors needs a signature the physics
+                 cannot have
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -302,6 +306,7 @@ import SCD.Codimension2
 import SCD.DegreeSource
 import SCD.Vantage
 import SCD.Reduction
+import SCD.TwoMetrics
 
 -- Part IV — scale flow and content
 import SCD.RG

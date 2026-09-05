@@ -2800,9 +2800,74 @@ definitions already say rather than by adding anything.  §V.as called this "the
 types have been ahead of the prose".  It is now the most reliable move the
 register has.
 
+## V.au  Which pairing?  There are two, and they were never compared
+
+§V.at left the ring doing a second, unregistered job — supplying a bilinear
+pairing for the geometry.  The next question is *which* pairing, and
+`TwoMetrics.lean` finds the development has been using **two**.
+
+**The `δ` sector.**  `Conformal.RscBare σ = ∑_b Ric σ b b`, whose own docstring
+calls it *the `δ`-trace of Ricci*, on the metric `e^{2σ}δ`.  All plus signs, the
+pairing inherited from the ring.  **This is where `Index.A6'_from_index` computes,
+so `κ = −2(n−1)Δ` is a Euclidean result.**
+
+**The `η` sector.**  `Diagonal.lean` has its own `Chr η w σ` and `Ric η w σ` on
+`met η w`, with the signature carried as a parameter satisfying `η² = 1`.
+`Chain.lean`'s own table runs **the entire gravity chain through it** —
+`Diagonal.Chr`, `ric_tt`, `ric_rr`, `combination_is_transverse`,
+`vacuum_scale_sum`, then `γ = 1` and the deflection — and
+`combination_is_transverse` requires `η_tη_r = −1`.
+
+**The join is in the wrong place.**  `Anisotropic.ChrDir_of_isotropic` is the one
+theorem carrying the anisotropic connection back to `Conformal.Chr`, and its own
+docstring scopes it: *on the isotropic locus **with Euclidean signature***, with
+hypothesis `∀ a, η a = 1`.  `euclidean_excludes_lorentzian` proves the two
+hypotheses cannot both hold — `η ≡ 1` gives `η_tη_r = 1`, and `1 = −1` forces
+`2 = 0`.
+
+> **The only bridge between the sectors holds exactly where the physics does
+> not.**
+
+And the difference does not cancel: `delta_trace_ne_eta_trace` gives a Lorentzian
+`η` and a Ricci diagonal on which the two traces read `2` and `0`.
+
+**So `κ` and the observables have never been shown to be about the same
+geometry.**  `γ = 1`, the deflection ratio and the vacuum solution are internally
+derived in the `η` sector and nothing here disturbs them; `κ` is derived in the
+`δ` sector.  "The framework fixes the coupling **and** predicts the deflection" is
+two results in two geometries, and this register has been quoting it as one
+chain — §VI included.
+
+**What is not claimed.**  That `κ` is wrong, that the observables are wrong, or
+that the repair fails.  The repair is visible — redo `RscBare_eq` with an
+`η`-weighted trace and see whether `−2(n−1)` survives — and it is not done here.
+What is claimed is that the step was never taken.
+
+**Why it was invisible, which is §V.at's point arriving.**  A commutative ring
+hands over the unit group and the pairing in one move, so **the pairing never had
+to be chosen** and a `δ` came in with the ring.  The signature then had to be
+reintroduced by hand, as a parameter, in a second sector.  And
+`Signature.lean` derives a codimension-one **splitting** from the drift and calls
+it "the Lorentzian shape": correct as stated, and **a splitting is not a
+signature** — one is a flag, the other a property of a form.  That file's own
+last paragraph already grants that the timelike sign is underived.  Three
+descriptions, none of them a chosen pairing.
+
+**§VI needs a correction and gets one here rather than a quiet edit.**  Its list
+of what rests on the axioms alone includes "the Lorentzian signature" and "the
+gravity chain through to `1.7515″`".  The first should read *a codimension-one
+splitting of the directions*; the second is intact within the `η` sector but does
+not connect to `κ`.
+
+**Where the suspicion now stands.**  The worry that the mathematical form went
+astray was raised as an intuition.  It now has a first concrete instance, and it
+is not "the ring is the wrong category" but something sharper and checkable:
+**the pairing was never chosen, and the framework has two.**
+
 ## VI.  What rests on the axioms alone
 
-The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
+The scale/rotation split, a codimension-one splitting of the directions (**not**
+the Lorentzian signature — corrected in §V.au), the bookkeeping form, the
 coupling, real rank one, `n = k+1`, conservation from Bianchi, the gravity chain
 through to `1.7515″` and `42.99″/century`, `ħ` as an exact scale step, the
 label structure on the anisotropic locus, and every statement in `Native.lean`.
@@ -3005,7 +3070,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1221
+def auditedTheorems : ℕ := 1224
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

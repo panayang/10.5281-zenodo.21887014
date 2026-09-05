@@ -512,6 +512,11 @@ namespace SCD.Verify
 #print axioms SCD.Reduction.ScaleHom.map_one
 #print axioms SCD.Reduction.ScaleHom.map_inv
 
+-- TwoMetrics.lean
+#print axioms SCD.TwoMetrics.euclidean_excludes_lorentzian
+#print axioms SCD.TwoMetrics.delta_trace_ne_eta_trace
+#print axioms SCD.TwoMetrics.bridge_unavailable_at_lorentzian
+
 /-! ## PART II.a — the isotropic sector -/
 
 
