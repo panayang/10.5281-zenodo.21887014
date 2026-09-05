@@ -182,8 +182,14 @@ PART III — THE QUANTUM SECTOR
     Directional  ★ and the last obstruction is an **absent object**, not a hard
                  computation: off the isotropic locus there is no single
                  conformal factor, so A6′'s form presupposes what A4′ denies.
-                 A scale wave is then no strain — no interferometer sees it — but
-                 a **wave of emergence**, quantised by the threshold spectrum
+                 A scale wave is a **wave of emergence**, quantised by the
+                 threshold spectrum (its interferometer claim is corrected in
+                 `Breathing`)
+    Breathing    ★ the merge: A4′'s units supply the invertibility A6′ was
+                 contorted to avoid, so the law can be written on the **true**
+                 curvature.  And two claims lose their stated ground — one of
+                 them one commit old — while the breathing exclusion survives on
+                 the **monopole**, with a narrower scope
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -324,6 +330,7 @@ import SCD.TwoMetrics
 import SCD.EtaTrace
 import SCD.Hyperbolic
 import SCD.Directional
+import SCD.Breathing
 
 -- Part IV — scale flow and content
 import SCD.RG

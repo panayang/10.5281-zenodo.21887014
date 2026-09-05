@@ -3035,6 +3035,74 @@ changes*, not *an instrument registers it*, and the quantisation result inherits
 that scope: the effect is carried by the threshold spectrum and the framework
 still does not say what that spectrum is.
 
+## V.ay  The merge, a correction of my own, and the breathing mode's real ground
+
+**The merge.**  §V.ax asked for a source law that does not presuppose one
+conformal factor.  `Breathing.DirSource` is it:
+
+        ∑_b η_b w_b⁻¹ R_bb = κ·ρ ,
+
+the law written on the **true** scalar curvature.  `RscBare`'s design goal was
+*no invertibility hypothesis*, which is why the conformal factor was kept
+explicit — and **A4′ makes that goal free**, because it supplies
+`w : Fin n → Aˣ` and units are invertible by definition.
+
+> **A4′ supplies exactly the invertibility A6′ was contorted to avoid.**
+
+That is the consolidation §V.at was looking for, and it arrives in the
+directional sector rather than the isotropic one.  `dirSource_isotropic` reduces
+it to A6′ with the density differing by the conformal factor — coordinate against
+proper density, which A6′ could absorb and this cannot — and
+`kappa_from_dirSource` recovers `κ = −2(n−1)Δ` wherever the density cancels.
+
+**A correction, and it is mine.**  §V.ax wrote *no interferometer can see a scale
+wave; it is not a strain*, citing `Light.michelson_morley_null`.  That theorem's
+hypothesis is a single `E : DirScale n A` — **one** scale pattern — compared at one
+point.  It excludes finding a **static** anisotropy.  A wave differs between the
+arms and between emission and return, and the theorem says nothing about it.
+
+**The claim is withdrawn**, one section after it was made.  What survives is
+narrower and still worth having: a *static* scale pattern is invisible to an
+interferometer at any precision.
+
+**And `Horizon.no_breathing_mode` does not have the ground it states.**  The
+theorem is `(m−1)+1 = m` by `omega`; its content is the subtraction in
+`scaleModes m = m - 1`, justified in the docstring by *a uniform rescaling is a
+fiducial shift, and A5 declares fiducial shifts unobservable*.  But
+`Expressive.FiducialInvariant` quantifies over **one constant added at every
+point**, and `diffPattern` compares **points**.  A breathing wave is uniform
+across *directions* and varies across *points* —
+`uniform_across_directions_still_varies` exhibits that combination and
+`nonconstant_scale_is_expressible` separates any such field by a
+fiducial-invariant functional.
+
+> **A wave is not a fiducial shift, so A5 does not remove the breathing mode.**
+
+`Hyperbolic.vacuum_wave_is_null` had already exhibited it: a non-constant `σ`,
+uniform across directions, on the null cone.
+
+**But the conclusion survives on a ground the framework already had.**  A scalar
+disturbance is sourced by the **monopole**; `Waves.monopole_does_not_radiate`
+freezes the monopole of a conserved source; and
+`Dynamics.no_field_equation_of_nonconserved` says a non-conserved source admits
+**no field equation at all**.  So:
+
+> **The breathing mode is expressible but cannot be radiated by any source this
+> framework can write a field equation for.**
+
+Same prediction, different ground, narrower **scope**: it is about radiation from
+conserved sources.  A free breathing wave — primordial, or set by a boundary
+condition — is excluded by nothing here, so `Horizon.lean`'s *the amplitude is
+identically zero, not small* claims more than is proved.  `two_polarizations` is
+not disturbed: with the monopole argument its `1 + 1` stands for exactly the case
+polarization tests examine.
+
+**Third time for this pattern** — §V.aq, §V.av, and now here: a result kept and
+its standing described correctly for the first time.  Twice the correction was to
+inherited text and once, in §V.ax, to text written in this same session.  The
+register's own rate of overstatement is the thing to read off that, not the
+individual corrections.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, a codimension-one splitting of the directions (**not**
@@ -3084,8 +3152,12 @@ def homotopyClassCount : ℕ := 2
 
 theorem homotopy_class_count : homotopyClassCount = 2 := rfl
 
-/-- Claims retracted outright. -/
-def retractedCount : ℕ := 4
+/-- Claims retracted outright.
+
+**Five**, since §V.ay: *no interferometer can see a scale wave* was written in
+§V.ax and withdrawn one section later, `Light.michelson_morley_null` being a
+statement about a single static scale pattern compared at one point. -/
+def retractedCount : ℕ := 5
 
 /-- Claims corrected in scope, where the theorem survives and the gloss did
 not.
@@ -3241,7 +3313,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1252
+def auditedTheorems : ℕ := 1256
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

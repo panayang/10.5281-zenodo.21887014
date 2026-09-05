@@ -551,6 +551,12 @@ namespace SCD.Verify
 #print axioms SCD.Directional.resolved_eq_iff_no_threshold_between
 #print axioms SCD.Directional.content_grows_along_the_wave
 
+-- Breathing.lean
+#print axioms SCD.Breathing.dirSource_isotropic
+#print axioms SCD.Breathing.kappa_from_dirSource
+#print axioms SCD.Breathing.nonconstant_scale_is_expressible
+#print axioms SCD.Breathing.uniform_across_directions_still_varies
+
 /-! ## PART II.a — the isotropic sector -/
 
 
