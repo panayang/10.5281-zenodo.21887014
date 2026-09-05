@@ -517,6 +517,22 @@ namespace SCD.Verify
 #print axioms SCD.TwoMetrics.delta_trace_ne_eta_trace
 #print axioms SCD.TwoMetrics.bridge_unavailable_at_lorentzian
 
+-- EtaTrace.lean
+#print axioms SCD.EtaTrace.kron_mul_eta
+#print axioms SCD.EtaTrace.sum_mul_lapE
+#print axioms SCD.EtaTrace.sum_mul_gradsqE
+#print axioms SCD.EtaTrace.ChrE_symm
+#print axioms SCD.EtaTrace.sum_ChrE_diag
+#print axioms SCD.EtaTrace.sum_ChrETrace_ChrE
+#print axioms SCD.EtaTrace.sum_ChrE_ChrE
+#print axioms SCD.EtaTrace.sum_d_ChrE
+#print axioms SCD.EtaTrace.sum_d_ChrE_trace
+#print axioms SCD.EtaTrace.RicE_eq
+#print axioms SCD.EtaTrace.RscE_eq
+#print axioms SCD.EtaTrace.A6'_from_index_eta
+#print axioms SCD.EtaTrace.lap_sub_lapE
+#print axioms SCD.EtaTrace.lapE_lorentzian_split
+
 /-! ## PART II.a — the isotropic sector -/
 
 

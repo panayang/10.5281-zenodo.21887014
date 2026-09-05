@@ -2864,6 +2864,60 @@ astray was raised as an intuition.  It now has a first concrete instance, and it
 is not "the ring is the wrong category" but something sharper and checkable:
 **the pairing was never chosen, and the framework has two.**
 
+## V.av  The repair, done: the coefficient survives and the operator does not
+
+§V.au named the repair — redo `RscBare_eq` with an `η`-weighted trace and see
+whether `−2(n−1)` survives.  `EtaTrace.lean` does it, from the connection up:
+`ChrE`, `RmE`, `RicE`, `RscE`, because inserting `η` into the final trace alone
+would not be the same geometry.  The connection used is `Anisotropic.ChrDir` at
+the isotropic locus with `η` left general — the case that already existed and had
+never been computed.
+
+**`RscE_eq`:**
+
+        Rsc_η = −2(n−1)·□σ − (n−1)(n−2)·|∇σ|²_η .
+
+**Identical coefficients**, and `A6'_from_index_eta` gives `κ = −2(n−1)Δ` again.
+
+> **The number is safe.  What is not safe is the operator it multiplies.**
+
+**And the reason is structural, not luck.**  In `sum_ChrE_ChrE` two `η`-carrying
+terms cancel identically — the one where a `η`-term meets a trace part against the
+one where both `η`-terms meet, carrying `ηₑηₑ = 1`.  Every surviving `η` is either
+squared or pinned by a `δ` that forces its indices equal.  The signature cannot
+reach the coefficient.
+
+**The consequence, which is the finding.**  A6″ reads `lap σ = Δ·ν`, and in the
+`δ` sector `lap` is elliptic — so the source law was Poisson's equation.  In the
+sector the physics uses, `lapE_lorentzian_split` says the operator is
+
+        □σ = ∑_{i≠t} σᵢᵢ − σₜₜ ,
+
+the **d'Alembertian**, and `lap_sub_lapE` measures the gap as `∑ᵢ(1−ηᵢ)σᵢᵢ`,
+zero only for a Euclidean signature.  So the corrected source law is
+
+        □σ = Δ·ν ,
+
+**hyperbolic, not elliptic** — a sourced wave equation.  Newton is recovered as
+its static limit, where `σₜₜ = 0` and the d'Alembertian *is* the Laplacian; and
+the framework's gravity results are all static, `Diagonal.lean` computing under
+staticity and §V.w having already found that static is where the operator
+ordering stops mattering.
+
+**A correction to older text, stated rather than edited away.**  `Index.lean`
+presents A6″ as an equation about `lap` and this register has read the Newtonian
+limit off it directly.  `Index.poisson_from_index` should be read as **scoped to
+static configurations**.  Nothing computed from it changes; what changes is what
+it is a limit of.  The pattern is §V.aq's again: a result kept, its standing
+described correctly for the first time.
+
+**What is still not done.**  This is the *isotropic* locus of `Diagonal.Ric η w σ`,
+which carries a scale per direction as well as `η`.  So §V.au's disconnect is
+**narrowed, not closed**: the coupling and the observables now live in the same
+*signature* and still not demonstrably in the same *geometry*.  The register has
+been wrong before by letting "same shape" stand for "same object" (§V.ad on
+§V.ac), and this is that shape again — named in advance this time.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, a codimension-one splitting of the directions (**not**
@@ -3070,7 +3124,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1224
+def auditedTheorems : ℕ := 1238
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

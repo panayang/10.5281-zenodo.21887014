@@ -170,6 +170,10 @@ PART III — THE QUANTUM SECTOR
                  a `δ`-trace result and the observables are `η`-weighted, and the
                  one theorem joining the sectors needs a signature the physics
                  cannot have
+    EtaTrace     ★ and the repair, done: the curvature identity redone from the
+                 connection up with `η`.  **`−2(n−1)` survives**, so `κ` is
+                 unharmed — but the operator is the **d'Alembertian**, so A6″ is
+                 hyperbolic and Poisson is its static limit
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -307,6 +311,7 @@ import SCD.DegreeSource
 import SCD.Vantage
 import SCD.Reduction
 import SCD.TwoMetrics
+import SCD.EtaTrace
 
 -- Part IV — scale flow and content
 import SCD.RG
