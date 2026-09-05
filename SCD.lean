@@ -179,6 +179,11 @@ PART III — THE QUANTUM SECTOR
                  isotropic, which the physics is not.  And the hyperbolic law has
                  **null characteristics**: disturbances ride the framework's own
                  light cone
+    Directional  ★ and the last obstruction is an **absent object**, not a hard
+                 computation: off the isotropic locus there is no single
+                 conformal factor, so A6′'s form presupposes what A4′ denies.
+                 A scale wave is then no strain — no interferometer sees it — but
+                 a **wave of emergence**, quantised by the threshold spectrum
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -318,6 +323,7 @@ import SCD.Reduction
 import SCD.TwoMetrics
 import SCD.EtaTrace
 import SCD.Hyperbolic
+import SCD.Directional
 
 -- Part IV — scale flow and content
 import SCD.RG

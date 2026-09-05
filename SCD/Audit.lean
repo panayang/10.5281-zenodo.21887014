@@ -2973,6 +2973,68 @@ here, and `unwitnessedStructures` would be the place to record it if the ansatz
 were load-bearing for a physical claim.  It is not yet: nothing downstream uses
 it.
 
+## V.ax  The last obstruction is an absent object, and what a scale wave is
+
+Two things, and the first changes what §V.aw's remaining task even is.
+
+**There is no directional `RscE_eq` to write.**  `Conformal.RscBare`'s docstring
+states the design in the singular: *the true scalar curvature of `g` is `e^{−2σ}`
+times this; we keep **the** conformal factor explicit.*  With a scale per
+direction the scalar curvature is `dirTrace η w Ric = ∑_b η_b w_b⁻¹ R_bb`, and
+`dirTrace_factors_iff` proves the factor comes out **only** when every `w_b`
+agrees: if `∑_b η_b w_b⁻¹ R_b = c⁻¹ ∑_b η_b R_b` for all `R`, then `w_b = c` for
+all `b`.
+
+> **Off the isotropic locus there is no bare scalar curvature, because there is
+> no single conformal factor to keep explicit.**
+
+And this is a property of **A6′**, not of `EtaTrace.lean`.  The law reads
+`e^{2σ}R = κρ`; `e^{2σ}` is one factor; so **A6′'s form presupposes an isotropic
+scale while A4′ supplies a directional one**.  Confirmed by inspection:
+`Index.IndexResponse` takes `σ : A` and nothing in the development states a source
+law for a `DirField`.  That absence is not an oversight.
+
+So §V.aw's obstruction changes character.  The bridge is not missing a **span** —
+a computation someone could do — it is missing a **pier**: the anisotropic sector
+has a curvature and no law to equate it to, and the law it needs cannot have
+A6′'s shape.  The remaining work is to **write a source law for a directional
+scale**, which is a different and larger thing than a tensor identity, and the
+register should stop describing it as the latter.
+
+**And what a scale wave is.**  §V.aw gave the source law null characteristics, so
+ask what propagates.  `σ` is the **unit of measure**, and
+`Light.michelson_morley_null` — already proved, and proved for every scale pattern
+at any precision — says an interferometer compares rod lengths against light
+times while the scale sets both, so it cancels.
+
+> **No interferometer can see a scale wave.  It is not a strain.**
+
+What moves is **content**.  Counts are weight zero (`Weight.lean`), so they do not
+rescale with the wave and genuinely differ; `emerges_between` names the
+structures that cross as `{k | t < μ k ≤ t'}`.  And
+`resolved_eq_iff_no_threshold_between` sharpens it:
+
+> **A scale wave has no continuous observable.  It acts only where it crosses a
+> threshold, so its effect is quantised by the threshold spectrum.**
+
+Half the amplitude does not give half the effect; it gives none, unless a
+threshold lies in the interval.  That is unlike any classical wave and it is
+forced by what `Emergence.resolved` is.  A scale wave is a **wave of emergence**:
+a null front across which structures come into and go out of resolution.
+
+**And it makes the autonomy question unavoidable.**  `Attraction.lean` leaves `ν`
+a threshold count and `Emergence.resolved` makes the count a function of `σ`, so
+`□σ = Δ·ν` reads `□σ = Δ·ν(σ)` — the field sourcing itself through what it
+resolves.  Nothing here proves `ν` must be evaluated at the local `σ`, and no such
+law is written; what changed is that a **propagating** `σ` carries its own source
+with it, which the static reading could leave alone.
+
+**Limits.**  `Emergence.resolved` takes `μ` as free data and §V.x records that
+nothing connects `μ` to a measurement.  So "observable" means *the resolved set
+changes*, not *an instrument registers it*, and the quantisation result inherits
+that scope: the effect is carried by the threshold spectrum and the framework
+still does not say what that spectrum is.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, a codimension-one splitting of the directions (**not**
@@ -3179,7 +3241,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1246
+def auditedTheorems : ℕ := 1252
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

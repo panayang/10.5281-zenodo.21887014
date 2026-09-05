@@ -543,6 +543,14 @@ namespace SCD.Verify
 #print axioms SCD.Hyperbolic.null_is_unit_speed
 #print axioms SCD.Hyperbolic.sourced_wave
 
+-- Directional.lean
+#print axioms SCD.Directional.dirTrace_isotropic
+#print axioms SCD.Directional.dirTrace_factors_iff
+#print axioms SCD.Directional.emerges_between
+#print axioms SCD.Directional.round_trip_resolves_nothing
+#print axioms SCD.Directional.resolved_eq_iff_no_threshold_between
+#print axioms SCD.Directional.content_grows_along_the_wave
+
 /-! ## PART II.a — the isotropic sector -/
 
 
