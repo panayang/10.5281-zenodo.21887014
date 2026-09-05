@@ -174,6 +174,11 @@ PART III — THE QUANTUM SECTOR
                  connection up with `η`.  **`−2(n−1)` survives**, so `κ` is
                  unharmed — but the operator is the **d'Alembertian**, so A6″ is
                  hyperbolic and Poisson is its static limit
+    Hyperbolic   ★ one of the two obstructions removed — the sectors are one
+                 geometry at **any** signature, but still only where the scale is
+                 isotropic, which the physics is not.  And the hyperbolic law has
+                 **null characteristics**: disturbances ride the framework's own
+                 light cone
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -312,6 +317,7 @@ import SCD.Vantage
 import SCD.Reduction
 import SCD.TwoMetrics
 import SCD.EtaTrace
+import SCD.Hyperbolic
 
 -- Part IV — scale flow and content
 import SCD.RG

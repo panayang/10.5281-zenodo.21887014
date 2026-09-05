@@ -2918,6 +2918,61 @@ which carries a scale per direction as well as `η`.  So §V.au's disconnect is
 been wrong before by letting "same shape" stand for "same object" (§V.ad on
 §V.ac), and this is that shape again — named in advance this time.
 
+## V.aw  One obstruction of two, and the source law turns out to be hyperbolic
+
+§V.au found `κ` and the observables in different geometries with one bridge
+between them, `Anisotropic.ChrDir_of_isotropic`, carrying **two** hypotheses: the
+isotropic locus *and* Euclidean signature.  `Hyperbolic.lean` removes one.
+
+**What is closed.**  `diagonal_chr_isotropic`: at the isotropic locus,
+`Diagonal.Chr η w σ` **is** `EtaTrace.ChrE η σ`, at **any** signature.
+`diagonal_ric_isotropic` carries it to the Ricci tensors — the two files contract
+differently, `Diagonal` differentiating the connection's trace along one index and
+`EtaTrace` along the other, and `hess_symm` closes the gap.
+
+**What is not closed, and it is the half that matters.**  The physics is
+**anisotropic**: `Diagonal.vacuum_scale_sum` gives `σ_t' + σ_r' = 0`, so the
+Schwarzschild-like solution the gravity chain runs through has `σ_t ≠ σ_r`, and
+the bridge holds only where all directional scales agree.
+
+> **The signature obstruction is gone; the isotropy obstruction is not, and the
+> observables sit outside it.**
+
+So §V.au narrows from two obstructions to one.  The remaining task is now exactly
+stateable — `RscE_eq` for a **directional** scale — which is better than it was,
+and calling it a closure would be the "same shape for same object" error §V.av
+named one section earlier.  It is named again here because the temptation was
+present again.
+
+**And the corrected operator buys something.**  §V.av made A6″ hyperbolic;
+`Hyperbolic.lean` asks what a hyperbolic law has that an elliptic one does not,
+and the answer is **characteristics**.
+
+`WaveProfile k m σ` is the algebraic surrogate for a disturbance with wavefronts
+normal to `k`: the Hessian is rank one along `k`.  No analysis is used because
+none is available — the same limitation `Index.lean` records about Gauss's law.
+Then `lapE_of_waveProfile` says the d'Alembertian of such a profile is
+`Light.bareForm η k * m`, the framework's **own** quadratic form; and
+`vacuum_wave_is_null` says a vacuum disturbance with a non-degenerate profile has
+`Light.bareForm η k = 0`.  `characteristic_is_null` makes that `Light.IsNull` for
+any unit scale, and `null_is_unit_speed` reads it as `∑_{i≠t} kᵢ² = kₜ²`.
+
+> **Scale disturbances propagate on the framework's own null cone.**
+
+`Light.lean` defined that cone **kinematically** — where the measured form
+vanishes — and nothing in the development said anything travels along it.  This is
+the dynamical half and the two cones coincide.  It is also the first thing the
+hyperbolic reading has paid for, which is some evidence the reading is right.
+
+**What is not claimed.**  That these are gravitational waves: the disturbance is
+of the **scalar** scale, while a gravitational wave is a directional transverse
+mode, and `Waves.lean`'s multipole discussion is about something else.  Nor any
+existence — `WaveProfile` is an ansatz and no scale algebra is exhibited carrying
+a non-trivial one.  That is the debt `ExpPoly.lean` paid for `ScaleField`, unpaid
+here, and `unwitnessedStructures` would be the place to record it if the ansatz
+were load-bearing for a physical claim.  It is not yet: nothing downstream uses
+it.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, a codimension-one splitting of the directions (**not**
@@ -3124,7 +3179,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1238
+def auditedTheorems : ℕ := 1246
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

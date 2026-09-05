@@ -533,6 +533,16 @@ namespace SCD.Verify
 #print axioms SCD.EtaTrace.lap_sub_lapE
 #print axioms SCD.EtaTrace.lapE_lorentzian_split
 
+-- Hyperbolic.lean
+#print axioms SCD.Hyperbolic.ratio_const
+#print axioms SCD.Hyperbolic.diagonal_chr_isotropic
+#print axioms SCD.Hyperbolic.diagonal_ric_isotropic
+#print axioms SCD.Hyperbolic.lapE_of_waveProfile
+#print axioms SCD.Hyperbolic.vacuum_wave_is_null
+#print axioms SCD.Hyperbolic.characteristic_is_null
+#print axioms SCD.Hyperbolic.null_is_unit_speed
+#print axioms SCD.Hyperbolic.sourced_wave
+
 /-! ## PART II.a — the isotropic sector -/
 
 
