@@ -3171,6 +3171,68 @@ produce a number does not exist, and until it does `κ` and the observables meet
 only where the scale is isotropic.  That is a bounded, stateable computation, and
 it is now the only thing between the framework and a number of its own.
 
+## V.ba  The micro sector: the correction is exact, and has never been carried
+
+§V.au found the classical coupling computed in the wrong pairing.  The natural
+next question is whether the **quantum** correction inherits it.  `Micro.lean`
+answers no, and the reason is informative.
+
+**The pairing enters `Defm` only symmetrically.**  `Conformal.Defm` is
+`2σᵢⱼ − 2σᵢσⱼ + δᵢⱼ|∇σ|²`, and `DefmE_symm_part` shows the last term is symmetric
+in `ij` for any `η`, since `δᵢⱼ` forces the indices equal before `η` is read.  So
+`DefmE_antisymm_part` reproduces `NCConformal.Defm_antisymm_part` exactly, and
+`quantum_correction_signature_independent` states the equality.
+
+> **The pairing was never chosen (§V.at), and the quantum correction never needed
+> it.**
+
+`DefmE_sub_Defm` isolates where it does matter — the symmetric part, which is
+what the classical tests read, and where §V.au and §V.av live.
+
+**And what the correction is, sharper than "a correction".**
+`NCConformal.quantum_correction_is_a_wedge` is `rfl`: the correction **is** the
+framework's rotational label applied to the scale gradient pattern.  Being
+antisymmetric it cannot enter anything computed from a symmetric part, so orbits,
+deflection, precession and redshift are untouched by construction.
+
+**But every quantitative result is computed where it vanishes.**  `NCConformal`
+closed the loop **for the Riemann tensor** — `Conformal.lean` is over a `Ring`.
+The chain is not: `Diagonal.lean`, `Newton.lean`, `Reciprocity.lean` and
+`Chain.lean`, which are the files `Chain.lean`'s own table runs the gravity chain
+through, all carry `[CommRing A]`, and over a commutative ring `ad` vanishes
+identically.
+
+> **The correction is identified exactly, and has never been carried into a
+> single computed number.**
+
+So "the quantum correction does not affect the classical tests" is at present a
+statement about **where the computation was done** as much as about the term's
+symmetry.  The register should say it that way.
+
+**A warning about the register's own quoting.**  The obvious thing to cite here
+is `Expressive.channels_independent` — that the scale and commutator channels
+cannot constrain each other — and it is **superseded**, as `Expressive.lean`'s own
+header says: the independence is that of the *scalar* channel, and `Coupling.lean`
+shows scalings along different directions bracket into a rotation, so under A4′
+the channels are coupled.  The correction being the wedge is that coupling seen
+again.  This pass was one sentence from quoting the superseded conclusion and the
+file's own warning is what stopped it — the second time this session that a
+header's self-correction did work no theorem could have done.
+
+**And the two open sectors turn out to be one place.**  The correction vanishes
+where the gradients commute; `Anisotropic`'s directional commutator vanishes on
+the isotropic locus; and §V.aw's bridge and §V.ax's missing source law live on,
+and only on, that same locus.
+
+> **Everything the framework has computed is on the isotropic, commuting locus,
+> and both of its unfinished sectors are off it.**
+
+Two open items that looked unrelated — the missing directional source law and the
+uncarried quantum correction — are open in the same place, and it is the place no
+computation has been done.  That is §V.ap's "read across" move applied once more,
+and it says where the next work has to happen more precisely than either item did
+alone.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, a codimension-one splitting of the directions (**not**
@@ -3381,7 +3443,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1262
+def auditedTheorems : ℕ := 1266
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

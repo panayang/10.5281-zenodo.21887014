@@ -565,6 +565,12 @@ namespace SCD.Verify
 #print axioms SCD.Consolidation.scaleField_is_a_unit_with_a_potential
 #print axioms SCD.Consolidation.consolidation
 
+-- Micro.lean
+#print axioms SCD.Micro.DefmE_symm_part
+#print axioms SCD.Micro.DefmE_antisymm_part
+#print axioms SCD.Micro.quantum_correction_signature_independent
+#print axioms SCD.Micro.DefmE_sub_Defm
+
 /-! ## PART II.a — the isotropic sector -/
 
 

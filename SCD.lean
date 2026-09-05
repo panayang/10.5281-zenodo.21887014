@@ -194,6 +194,11 @@ PART III — THE QUANTUM SECTOR
                  group law, A2 is A4′ plus a potential nothing geometric needs,
                  and A6′ is replaced by the form A4′ makes writable.  With the
                  prediction ledger, read honestly
+    Micro        ★ and the quantum correction does **not** inherit the pairing
+                 problem — the signature enters `Defm` only symmetrically.  But
+                 the whole gravity chain is over a `CommRing`, where the
+                 correction is zero by construction: it has never been carried
+                 into a single number
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -336,6 +341,7 @@ import SCD.Hyperbolic
 import SCD.Directional
 import SCD.Breathing
 import SCD.Consolidation
+import SCD.Micro
 
 -- Part IV — scale flow and content
 import SCD.RG
