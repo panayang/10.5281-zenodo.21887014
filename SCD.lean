@@ -190,6 +190,10 @@ PART III — THE QUANTUM SECTOR
                  curvature.  And two claims lose their stated ground — one of
                  them one commit old — while the breathing exclusion survives on
                  the **monopole**, with a narrower scope
+    Consolidation ★ seven axioms to five: A3 names a definition and asserts a
+                 group law, A2 is A4′ plus a potential nothing geometric needs,
+                 and A6′ is replaced by the form A4′ makes writable.  With the
+                 prediction ledger, read honestly
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -331,6 +335,7 @@ import SCD.EtaTrace
 import SCD.Hyperbolic
 import SCD.Directional
 import SCD.Breathing
+import SCD.Consolidation
 
 -- Part IV — scale flow and content
 import SCD.RG

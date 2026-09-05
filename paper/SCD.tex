@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}1256 条定理、31747 行 Lean 代码、121 个文件；
-\textbf{全部 1256 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}1262 条定理、31992 行 Lean 代码、122 个文件；
+\textbf{全部 1262 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -5223,6 +5223,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Hyperbolic.lean} & 8 & 号差障碍拆除（各向同性障碍仍在）；双曲源律的特征锥就是框架自己的零锥 \\
 \texttt{Directional.lean} & 6 & 各向异性下没有单一共形因子，所以 A6′ 的形式预设了各向同性；标度波不是应变而是涌现波，效应被阈值谱量子化 \\
 \texttt{Breathing.lean} & 4 & A4′ 的单位恰好提供了 A6′ 绕开的可逆性，源律可写在真曲率上；呼吸模可表达，排除靠的是单极而非 A5 \\
+\texttt{Consolidation.lean} & 6 & 七条公理归并为五条：A3 是定义加群律、A2 是 A4′ 加一个几何不需要的势；并附预言清单 \\
 \midrule
 \multicolumn{3}{l}{\emph{第四部分\quad 各向同性扇区}}\\
 \texttt{Conformal.lean} & 19 & 共形曲率恒等式、Ricci、标量曲率 \\
@@ -5308,14 +5309,14 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
 \texttt{Audit.lean} & 12 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{1256} & 121 个文件，31374 行 Lean 代码 \\
+\textbf{合计} & \textbf{1262} & 122 个文件，31614 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 1256 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 1262 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5403,7 +5404,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 1256 条}\label{sec:index}
+\section{定理索引：全部 1262 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5468,6 +5469,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Hyperbolic.lean}} (8)\quad \texttt{ratio\_\allowbreak const}, \texttt{diagonal\_\allowbreak chr\_\allowbreak isotropic}, \texttt{diagonal\_\allowbreak ric\_\allowbreak isotropic}, \texttt{lapE\_\allowbreak of\_\allowbreak waveProfile}, \texttt{vacuum\_\allowbreak wave\_\allowbreak is\_\allowbreak null}, \texttt{characteristic\_\allowbreak is\_\allowbreak null}, \texttt{null\_\allowbreak is\_\allowbreak unit\_\allowbreak speed}, \texttt{sourced\_\allowbreak wave}\par\smallskip
 \noindent\textbf{\texttt{Directional.lean}} (6)\quad \texttt{dirTrace\_\allowbreak isotropic}, \texttt{dirTrace\_\allowbreak factors\_\allowbreak iff}, \texttt{emerges\_\allowbreak between}, \texttt{round\_\allowbreak trip\_\allowbreak resolves\_\allowbreak nothing}, \texttt{resolved\_\allowbreak eq\_\allowbreak iff\_\allowbreak no\_\allowbreak threshold\_\allowbreak between}, \texttt{content\_\allowbreak grows\_\allowbreak along\_\allowbreak the\_\allowbreak wave}\par\smallskip
 \noindent\textbf{\texttt{Breathing.lean}} (4)\quad \texttt{dirSource\_\allowbreak isotropic}, \texttt{kappa\_\allowbreak from\_\allowbreak dirSource}, \texttt{nonconstant\_\allowbreak scale\_\allowbreak is\_\allowbreak expressible}, \texttt{uniform\_\allowbreak across\_\allowbreak directions\_\allowbreak still\_\allowbreak varies}\par\smallskip
+\noindent\textbf{\texttt{Consolidation.lean}} (6)\quad \texttt{A3\_\allowbreak is\_\allowbreak inversion}, \texttt{redshift\_\allowbreak is\_\allowbreak inversion}, \texttt{ofScaleField\_\allowbreak energy}, \texttt{d\_\allowbreak s\_\allowbreak iff\_\allowbreak exact}, \texttt{scaleField\_\allowbreak is\_\allowbreak a\_\allowbreak unit\_\allowbreak with\_\allowbreak a\_\allowbreak potential}, \texttt{consolidation}\par\smallskip
 
 \subsection*{第四部分\quad 各向同性扇区}
 \noindent\textbf{\texttt{Conformal.lean}} (19)\quad \texttt{hess\_\allowbreak symm}, \texttt{d\_\allowbreak sig\_\allowbreak comm}, \texttt{sum\_\allowbreak mul\_\allowbreak gradsq}, \texttt{scaleCurv\_\allowbreak eq\_\allowbreak zero}, \texttt{Chr\_\allowbreak symm}, \texttt{d\_\allowbreak Chr\_\allowbreak diff}, \texttt{sum\_\allowbreak d\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak diag}, \texttt{sum\_\allowbreak d\_\allowbreak Chr\_\allowbreak trace}, \texttt{sum\_\allowbreak ChrTrace\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr}, \texttt{Ric\_\allowbreak eq}, \texttt{RscBare\_\allowbreak eq}, \texttt{Defm\_\allowbreak symm}, \texttt{two\_\allowbreak Rm\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{Ric\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{two\_\allowbreak Ric\_\allowbreak eq}\par\smallskip

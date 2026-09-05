@@ -11,11 +11,11 @@ Formal proof of the Scale-Coupled Dynamics (SCD) Theory: An axiomatic framework 
 ```
 lake exe cache get
 lake build                       # 0 errors
-lake env lean SCD/Verify.lean    # #print axioms on all 1256 theorems
+lake env lean SCD/Verify.lean    # #print axioms on all 1262 theorems
 python3 tools/sync_report.py     # consistency check; exit 1 on drift
 ```
 
-All 1256 theorems are audited: every one reduces to `propext`,
+All 1262 theorems are audited: every one reduces to `propext`,
 `Classical.choice` and `Quot.sound`, and none to `sorryAx`. The audit list, the
 report's file table and its theorem index are **generated from the sources**, so
 nothing can quietly fall out of them.

@@ -557,6 +557,14 @@ namespace SCD.Verify
 #print axioms SCD.Breathing.nonconstant_scale_is_expressible
 #print axioms SCD.Breathing.uniform_across_directions_still_varies
 
+-- Consolidation.lean
+#print axioms SCD.Consolidation.A3_is_inversion
+#print axioms SCD.Consolidation.redshift_is_inversion
+#print axioms SCD.Consolidation.ofScaleField_energy
+#print axioms SCD.Consolidation.d_s_iff_exact
+#print axioms SCD.Consolidation.scaleField_is_a_unit_with_a_potential
+#print axioms SCD.Consolidation.consolidation
+
 /-! ## PART II.a — the isotropic sector -/
 
 

@@ -3103,6 +3103,74 @@ inherited text and once, in §V.ax, to text written in this same session.  The
 register's own rate of overstatement is the thing to read off that, not the
 individual corrections.
 
+## V.az  Seven axioms to five, and the prediction ledger read honestly
+
+**The consolidation, at last.**  The first pass of this whole effort listed
+"merging the axioms" as a goal and nothing was ever merged.  Three results this
+session make it a theorem rather than a proposal.
+
+*A3 is not an axiom.*  `ScaleField.en` is a **definition**, `ε := s⁻¹`, and
+`en_mul_scale` is `Units.inv_mul`.  `Consolidation.A3_is_inversion` restates that
+with nothing added, and `redshift_is_inversion` shows the redshift relation
+`∂ᵢε = −ε ∂ᵢσ` is `Reduction.logDeriv_inv` — inversion negating a homomorphism,
+which is the whole content of *scale × energy = constant*.
+
+*A2 is A4′ plus a potential.*  `Frame.DirScale` is `s : Fin n → Aˣ` and nothing
+else.  `d_s_iff_exact` says A2's derivation condition holds **exactly when the
+unit's log-derivative is the gradient of `σ`** — when it is exact.  So A2 is a
+unit plus a potential; `ofScaleField` supplies the unit from A4′; and
+`Amendment.same_unit_same_geometry` had already shown **no geometric result needs
+the potential**.  §V.aa reached "A2's content is one unit" and stopped one step
+short of naming the axiom that already provides it.
+
+*A6′ is replaced.*  §V.ay's `Breathing.DirSource`, which A4′'s units make
+writable.
+
+    A1  ·  A2* one family of units  ·  A5  ·  A6  ·  A6″ as DirSource  ·  A7
+
+**Seven to five**, and `Consolidation.consolidation` records it as a number.  Not
+claimed: that the reduction is forced.  `Amendment.lean` weighed the rewrite and
+declined on tidiness grounds; what has changed is that the potential is now known
+to be the **only** surplus, and that A6′'s isotropy presupposition made the old
+list inconsistent with A4′ in a way the new one is not.
+
+**And the ledger.**  Three kinds, and the differences matter more than the list.
+
+*Parameter-free, and sharper than general relativity rather than different from
+it.*  `γ = 1` exactly; the deflection ratio `2`; no dipole radiation, from Bianchi
+rather than assumed, which binary-pulsar timing measures at `0.9983 ± 0.0016`;
+**exactly zero** energy-dependent photon speed where minimum-length approaches
+predict something small; **one cone for every sector**, so SME-style inter-sector
+Lorentz violation is inexpressible rather than bounded; entropy `∝ ln R`; no
+horizon.  Weight zero throughout — nothing to tune.
+
+*New this session, and mostly negative.*  The source law is hyperbolic, Poisson
+its static limit (§V.av).  Scale disturbances ride the null cone (§V.aw).  The
+breathing mode is expressible but not radiable by a conserved source (§V.ay).
+Its effect is quantised by the threshold spectrum (§V.ax).
+
+*One number it cannot compute.*  `Δρ`, proved a **permanent** input by §V.ae–af.
+So the framework predicts **ratios and structures, not magnitudes**, and
+`1.7515″` is an arithmetic check on measured inputs — which `Chain.lean` already
+said and this register should stop quoting otherwise.
+
+**The honest reading.**  Where the framework touches reality it mostly agrees
+with general relativity **while claiming more sharply**: exactly zero rather than
+small, inexpressible rather than bounded.  That is real contact and it is
+testable.  It is not yet a place where an experiment anyone has performed could
+tell the two apart.
+
+The one channel that could — the scale wave — has now been characterised, and
+characterised into near-invisibility: not radiable by conserved sources, discrete
+in effect, and with **no predicted amplitude**, because `Δρ` is free and the
+directional curvature identity is unwritten.
+
+**So the largest remaining gap is not conceptual.**  It is `EtaTrace.RscE_eq` for
+a **directional** scale.  §V.ay supplied the law; the identity that would let it
+produce a number does not exist, and until it does `κ` and the observables meet
+only where the scale is isotropic.  That is a bounded, stateable computation, and
+it is now the only thing between the framework and a number of its own.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, a codimension-one splitting of the directions (**not**
@@ -3313,7 +3381,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1256
+def auditedTheorems : ℕ := 1262
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
