@@ -199,6 +199,15 @@ PART III — THE QUANTUM SECTOR
                  the whole gravity chain is over a `CommRing`, where the
                  correction is zero by construction: it has never been carried
                  into a single number
+    QuantumRicci ★ so carry it.  Off the commuting locus **Ricci is not
+                 symmetric** — `Ric_{[be]} = (n−2)[σ_b,σ_e]`, with a torsion-free
+                 connection — and the **scalar curvature does not move at all**,
+                 so nothing classical takes a quantum correction at any order
+    Constants    ★ `L,T,M` collapse to one grading and `c` stops being a
+                 constant; `ℏ` and `G` become two **weight-one** magnitudes on
+                 one axis — so there are **two** free pure numbers, not one,
+                 unless they are the same magnitude.  And `α` is pure
+                 *structurally*: only one law crosses the grading
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -342,6 +351,8 @@ import SCD.Directional
 import SCD.Breathing
 import SCD.Consolidation
 import SCD.Micro
+import SCD.QuantumRicci
+import SCD.Constants
 
 -- Part IV — scale flow and content
 import SCD.RG

@@ -3233,6 +3233,124 @@ computation has been done.  That is §V.ap's "read across" move applied once mor
 and it says where the next work has to happen more precisely than either item did
 alone.
 
+## V.bb  Off the commuting locus at last: Ricci is not symmetric, and the scalar
+## curvature does not move
+
+§V.ba ended by saying everything computed sits on the isotropic, commuting
+locus.  `QuantumRicci.lean` leaves it and takes the contraction `NCConformal`
+set up and never performed.
+
+**The Riemann correction dies in the contraction.**  `RmCorr a b c e` carries
+`δ_{ab}` and `δ_{bc}` with opposite signs; at `c = a` they cancel term by term, so
+`sum_RmCorr_contract` is zero.  Ricci inherits nothing through `RmCorr`.
+
+**But Ricci is still not symmetric**, because `Defm` is not:
+
+        `Ric_{be} − Ric_{eb} = (n−2)·[σ_b, σ_e]` .
+
+**And the scalar curvature does not move at all.**  `2 Rsc = (2−2n) tr D`, and
+`tr D` is built from `hess a a`, `σ_aσ_a` and `gradsq` — every term a square.
+
+> **The entire quantum correction to the geometry is the antisymmetric part of
+> Ricci.  The scalar is exactly classical.**
+
+**What that predicts, and it is unusually sharp for this development.**
+
+*An antisymmetric Ricci with a **torsion-free** connection.*  `Chr_symm` is
+proved in the `[Ring M]` block, so the connection is symmetric in its lower pair
+whether or not values commute.  In ordinary differential geometry
+`Ric_{[ab]} = 0` for a torsion-free connection, by the first Bianchi identity —
+and that proof uses commutativity of the **values**, not only torsion-freeness.
+So this is **not** Einstein–Cartan, which buys the same antisymmetry by giving
+the connection torsion.
+
+*Nothing classical moves, at any order.*  A6′/A6″, `κ`, the Newtonian limit and
+every cosmological statement are exactly their commutative selves.  In
+particular there is **no `ℏG/r³` correction to the Newtonian potential** of the
+kind effective-field-theory gravity produces, and **no running of `G`**.  A flat
+disagreement with the standard expectation, and exact rather than small.
+
+*It vanishes at `n = 2`*, by the same `(n−2)` that governs conformal geometry
+throughout.
+
+*And it does not inherit §V.au's problem.*  `Micro`'s
+`quantum_correction_signature_independent` shows the antisymmetric part is the
+same for every signature, and that is where the whole correction lives.  Unlike
+`κ`, this prediction never depended on the pairing that was never chosen.
+
+**What is not claimed.**  That the correction **couples to spin** as a theorem.
+An antisymmetric Ricci in a field equation needs an antisymmetric source and spin
+is the physical one, but no field equation for the antisymmetric half is written;
+`Dynamics.lean` derives conservation from Bianchi for the symmetric setting and
+the other half has never been addressed.  That reading is labelled as a reading
+in the file.  No magnitude either — calling `[σ_b,σ_e]` an `ℏ`-order effect runs
+through `Crossed.lean`'s identification of `ℏ` with a scale step, a separate
+registered input.  And no existence: no scale algebra is exhibited carrying
+non-commuting gradients and a non-trivial geometry at once, which is
+`ExpPoly.lean`'s debt for `ScaleField`, unpaid here.
+
+**On what kind of result this is.**  It is the first thing in this session that
+is a *prediction* rather than a correction to one.  The session's other findings
+narrowed claims; this one adds a statement the framework had not made, it is
+exact, and it disagrees with the standard expectation in a stateable way.  It is
+also, being about an antisymmetric Ricci with no field equation for it, a
+statement whose test the framework cannot yet describe — which is the honest
+place to leave it.
+
+## V.bc  Four constants, three dimensions — and the free-number count is wrong
+
+The usual bookkeeping has `L, T, M` and `c, ℏ, G, e`.  Asking what that becomes
+here turns up a count this register has been quoting for many sections.
+
+**There are no dimensions, there is one grading.**  `σ` is dimensionless and
+`Weight.lean`'s grading under `σ ↦ cσ` is what replaces dimension.  Three base
+dimensions become one `ℤ`-grading, and the collapse is structural rather than a
+choice of units: `Signature.lean` makes time a **direction**, told from space by
+a sign and not a dimension; `Well.light_measured_speed_one` makes `c = 1` a
+**theorem**, since the scale sets rods and light times alike; and A3, being
+`ε = s⁻¹` and hence a group law (§V.az), puts mass on the same axis with the
+opposite sign.
+
+**Then the count.**  The magnitudes are `Δ` (weight 1), the scale step
+`Crossed.lean` identifies with `ℏ` (weight 1, `Constants.step_weight_one` — a step
+is a difference of log-scales), and `ρ` (weight −1).  `two_pure_numbers`: both
+`Δρ` and `ℏρ` are weight zero.
+
+§V.ap says *one protected unit, one free pure number*.  That is true only if `Δ`
+and the step are the **same** magnitude.  `Index.lean` says in so many words that
+"`G` and `ℏ` share an origin" is *conditional on a step that is not taken here*,
+and `Crossed.lean`'s own scope note says going from "there is a scale shift" to
+"`ℏ` is that step" is an **identification, not a construction**.
+`collapse_iff` makes it exact: the two numbers coincide **iff** the magnitudes
+agree.
+
+> **There are two free pure numbers, not one, unless `G` and `ℏ` are the same
+> magnitude — and nothing in the development says they are.**
+
+Two claims the register has carried side by side without reading them against
+each other.  It is §V.ap's own "read across" failure, one level up: that section
+sorted the *open items* and never sorted the *magnitudes*.
+
+**And where `e` goes, which is the payoff.**  `α` is weight zero — a gauge
+coupling's value does not depend on how `σ` is labelled — so it is pure
+**structurally**, not by dimensional accident.  And
+`Weight.only_gravity_crosses_the_weight` supplies the asymmetry: the gauge law
+relates weight-zero to weight-zero, gravity's relates a weight-zero count to a
+weight-one scale, and exactly one law crosses the grading.
+
+> **"Why is `α` dimensionless and `G` not" stops being a fact about dimensions
+> and becomes a fact about which law crosses the grading.**
+
+**A question the usual picture cannot ask.**  `[G] = L³M⁻¹T⁻²` and
+`[ℏ] = ML²T⁻¹` have different dimensions, so *are they the same magnitude?* is
+not well-formed there.  Here they carry the **same weight**, the question is
+well-formed, and its answer is a single pure number.  The framework has not
+answered it; `collapse_iff` says what answering it would buy.
+
+**Not claimed:** that `Δ = ℏ`, nor that two is final — a magnitude nobody has
+written could add a third.  Only that "one free pure number" is conditional on an
+identification this register elsewhere marks as unmade.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, a codimension-one splitting of the directions (**not**
@@ -3443,7 +3561,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1266
+def auditedTheorems : ℕ := 1275
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0

@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}1266 条定理、32195 行 Lean 代码、123 个文件；
-\textbf{全部 1266 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}1275 条定理、32627 行 Lean 代码、125 个文件；
+\textbf{全部 1275 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -5225,6 +5225,8 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{Breathing.lean} & 4 & A4′ 的单位恰好提供了 A6′ 绕开的可逆性，源律可写在真曲率上；呼吸模可表达，排除靠的是单极而非 A5 \\
 \texttt{Consolidation.lean} & 6 & 七条公理归并为五条：A3 是定义加群律、A2 是 A4′ 加一个几何不需要的势；并附预言清单 \\
 \texttt{Micro.lean} & 4 & 量子修正不继承配对问题（号差只对称地进入 Defm）；但引力链全在交换环上，修正在那里恒为零 \\
+\texttt{QuantumRicci.lean} & 5 & 离开可对易点：Ricci 不对称且联络无挞，而标量曲率一动不动——经典量在任何阶上都无量子修正 \\
+\texttt{Constants.lean} & 4 & 三个量纲塌缩为一个分次，c 不再是常数；ℏ 与 G 同为权重一，所以自由纯数是两个而非一个 \\
 \midrule
 \multicolumn{3}{l}{\emph{第四部分\quad 各向同性扇区}}\\
 \texttt{Conformal.lean} & 19 & 共形曲率恒等式、Ricci、标量曲率 \\
@@ -5310,14 +5312,14 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
 \texttt{Audit.lean} & 12 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{1266} & 123 个文件，31811 行 Lean 代码 \\
+\textbf{合计} & \textbf{1275} & 125 个文件，32232 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 1266 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 1275 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5405,7 +5407,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 1266 条}\label{sec:index}
+\section{定理索引：全部 1275 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5472,6 +5474,8 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{Breathing.lean}} (4)\quad \texttt{dirSource\_\allowbreak isotropic}, \texttt{kappa\_\allowbreak from\_\allowbreak dirSource}, \texttt{nonconstant\_\allowbreak scale\_\allowbreak is\_\allowbreak expressible}, \texttt{uniform\_\allowbreak across\_\allowbreak directions\_\allowbreak still\_\allowbreak varies}\par\smallskip
 \noindent\textbf{\texttt{Consolidation.lean}} (6)\quad \texttt{A3\_\allowbreak is\_\allowbreak inversion}, \texttt{redshift\_\allowbreak is\_\allowbreak inversion}, \texttt{ofScaleField\_\allowbreak energy}, \texttt{d\_\allowbreak s\_\allowbreak iff\_\allowbreak exact}, \texttt{scaleField\_\allowbreak is\_\allowbreak a\_\allowbreak unit\_\allowbreak with\_\allowbreak a\_\allowbreak potential}, \texttt{consolidation}\par\smallskip
 \noindent\textbf{\texttt{Micro.lean}} (4)\quad \texttt{DefmE\_\allowbreak symm\_\allowbreak part}, \texttt{DefmE\_\allowbreak antisymm\_\allowbreak part}, \texttt{quantum\_\allowbreak correction\_\allowbreak signature\_\allowbreak independent}, \texttt{DefmE\_\allowbreak sub\_\allowbreak Defm}\par\smallskip
+\noindent\textbf{\texttt{QuantumRicci.lean}} (5)\quad \texttt{ad\_\allowbreak self}, \texttt{sum\_\allowbreak RmCorr\_\allowbreak contract}, \texttt{two\_\allowbreak Ric\_\allowbreak eq\_\allowbreak nc}, \texttt{two\_\allowbreak Ric\_\allowbreak antisymm}, \texttt{two\_\allowbreak RscBare\_\allowbreak eq\_\allowbreak nc}\par\smallskip
+\noindent\textbf{\texttt{Constants.lean}} (4)\quad \texttt{step\_\allowbreak weight\_\allowbreak one}, \texttt{two\_\allowbreak pure\_\allowbreak numbers}, \texttt{ratio\_\allowbreak is\_\allowbreak pure}, \texttt{collapse\_\allowbreak iff}\par\smallskip
 
 \subsection*{第四部分\quad 各向同性扇区}
 \noindent\textbf{\texttt{Conformal.lean}} (19)\quad \texttt{hess\_\allowbreak symm}, \texttt{d\_\allowbreak sig\_\allowbreak comm}, \texttt{sum\_\allowbreak mul\_\allowbreak gradsq}, \texttt{scaleCurv\_\allowbreak eq\_\allowbreak zero}, \texttt{Chr\_\allowbreak symm}, \texttt{d\_\allowbreak Chr\_\allowbreak diff}, \texttt{sum\_\allowbreak d\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak diag}, \texttt{sum\_\allowbreak d\_\allowbreak Chr\_\allowbreak trace}, \texttt{sum\_\allowbreak ChrTrace\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr}, \texttt{Ric\_\allowbreak eq}, \texttt{RscBare\_\allowbreak eq}, \texttt{Defm\_\allowbreak symm}, \texttt{two\_\allowbreak Rm\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{Ric\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{two\_\allowbreak Ric\_\allowbreak eq}\par\smallskip

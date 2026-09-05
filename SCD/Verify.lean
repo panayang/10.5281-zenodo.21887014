@@ -571,6 +571,19 @@ namespace SCD.Verify
 #print axioms SCD.Micro.quantum_correction_signature_independent
 #print axioms SCD.Micro.DefmE_sub_Defm
 
+-- QuantumRicci.lean
+#print axioms SCD.QuantumRicci.ad_self
+#print axioms SCD.QuantumRicci.sum_RmCorr_contract
+#print axioms SCD.QuantumRicci.two_Ric_eq_nc
+#print axioms SCD.QuantumRicci.two_Ric_antisymm
+#print axioms SCD.QuantumRicci.two_RscBare_eq_nc
+
+-- Constants.lean
+#print axioms SCD.Constants.step_weight_one
+#print axioms SCD.Constants.two_pure_numbers
+#print axioms SCD.Constants.ratio_is_pure
+#print axioms SCD.Constants.collapse_iff
+
 /-! ## PART II.a — the isotropic sector -/
 
 
