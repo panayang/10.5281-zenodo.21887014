@@ -3351,6 +3351,14 @@ answered it; `collapse_iff` says what answering it would buy.
 written could add a third.  Only that "one free pure number" is conditional on an
 identification this register elsewhere marks as unmade.
 
+**And it is left open rather than pursued.**  Nothing in A1–A7 relates the source
+coefficient to a scale shift, and `Crossed.lean`'s `ScaleShift` is not built from
+the axioms at all — it needs a ring endomorphism and a unit that nothing supplies.
+So the identification would have to come from outside, and this register has spent
+enough sections learning what that costs.  **`Δ = ℏ` is registered as an open
+question**, the free-number count reads **two**, and §V.ap's "one free pure number"
+should be quoted as conditional wherever it appears.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, a codimension-one splitting of the directions (**not**
@@ -3542,8 +3550,12 @@ def freeByConstruction : ℕ := 5
 
 /-- Open items that are the same request — a conversion from counting to scale
 (§V.ap).  All four are one item: three by `OneParameter.lean` and the fourth as
-the size's derivative. -/
-def converterItems : ℕ := 4
+the size's derivative.
+
+**Was four.**  §V.bc adds a fifth: `ℏρ` is a second weight-zero combination, and it
+is the same request in the same clothes.  Whether it is the *same number* is the
+open question §V.bc leaves. -/
+def converterItems : ℕ := 5
 
 /-- And the ones the sort leaves genuinely separate: the non-static operator
 ordering, A7, the vacuum second order, the absent site, G3's postulated
@@ -3556,8 +3568,9 @@ both branches. -/
 def separateItems : ℕ := 6
 
 /-- **The sort is exhaustive over what it sorts**, which is bookkeeping and not a
-claim that the list of open items is complete. -/
-theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 := by decide
+claim that the list of open items is complete.  Fifteen until §V.bc found a fifth
+converter item. -/
+theorem sort_totals : freeByConstruction + converterItems + separateItems = 16 := by decide
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/

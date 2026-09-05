@@ -1,0 +1,600 @@
+% !TEX program = pdflatex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=2.6cm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,
+            urlcolor=blue!55!black]{hyperref}
+\usepackage{enumitem}
+\usepackage{mdframed}
+
+\linespread{1.10}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\lean}[1]{\texttt{\small #1}}
+\newcommand{\Ric}{\mathrm{Ric}}
+\newcommand{\Rsc}{\mathrm{R}}
+\newcommand{\Defm}{D}
+\newcommand{\sg}{\sigma}
+\newcommand{\Ap}{\ensuremath{\mathrm{A6}'}}
+\newcommand{\App}{\ensuremath{\mathrm{A6}''}}
+\newcommand{\Afour}{\ensuremath{\mathrm{A4}'}}
+
+\newmdenv[linewidth=0.6pt,linecolor=black!45,backgroundcolor=black!3,
+          skipabove=8pt,skipbelow=8pt,innertopmargin=6pt,innerbottommargin=6pt]{claimbox}
+
+\title{\bf Scale-Coupled Dynamics II:\\
+the pairing, the source law, and a torsion-free antisymmetric Ricci}
+
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Scale-Coupled Dynamics (SCD) is a formalised framework in which the only
+primitive is a local scale and the geometry is its deformation. This note
+reports a revision pass carried out entirely inside the Lean~4 formalisation.
+Its results are of three kinds.
+
+\emph{Structural.} The founding statement \emph{scale $\times$ energy $=$
+constant} needs only a group homomorphism; the commutative ring the development
+was built on was silently supplying a second, independent thing --- a bilinear
+pairing for the geometry. Separating them consolidates the axioms from seven to
+five, and shows that the pairing was \emph{never chosen}: the gravitational
+coupling was computed with a Euclidean trace while the observables live in a
+Lorentzian sector, joined by a single theorem whose hypotheses are mutually
+exclusive.
+
+\emph{Corrective.} Redoing the curvature identity with a signature shows the
+coefficient $\kappa=-2(n-1)\Delta$ survives unchanged, for a structural reason,
+but the operator it multiplies is the d'Alembertian rather than the Laplacian:
+the source law is hyperbolic, and Poisson's equation is its static limit. Two
+further claims lose their stated grounds while keeping their conclusions, and one
+claim is withdrawn.
+
+\emph{Predictive.} Off the commuting locus the Ricci tensor is \emph{not
+symmetric}, with $\Ric_{be}-\Ric_{eb}=(n-2)[\sg_b,\sg_e]$, while the connection
+remains torsion-free and the scalar curvature does not move at all. Nothing
+classical --- Newton's law, the coupling, cosmology --- takes a quantum
+correction at any order; in particular there is no $\hbar G/r^{3}$ correction to
+the Newtonian potential. Finally, the usual four-constants--three-dimensions
+bookkeeping collapses to a single grading in which $\hbar$ and $G$ carry the
+\emph{same} weight, so that ``are they the same magnitude?'' becomes a
+well-formed question whose answer is one pure number --- and the framework's
+long-quoted ``one free pure number'' is conditional on answering it.
+
+All statements below are theorems in a Lean~4 development of 1275 theorems, every
+one of which passes \lean{\#print axioms} with no axiom beyond \lean{propext},
+\lean{Classical.choice} and \lean{Quot.sound}, and with no \lean{sorry}.
+\end{abstract}
+
+\tableofcontents
+
+\section{Scope, and how to read this}
+
+SCD posits a dimensionless local log-scale $\sg$ over a ring with $n$ commuting
+derivations, and derives geometry as the deformation of that scale rather than as
+an independent metric structure. This note does not re-derive the framework. It
+reports what a deliberate examination of its \emph{mathematical form} produced,
+and it is written so that each claim can be checked against a named Lean
+declaration.
+
+Three conventions are used throughout, and they are not decoration.
+
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Claimed} means proved in the formalisation, with the declaration
+      named.
+\item \textbf{Identified} means an interpretive step that the formalisation
+      records as an input rather than a consequence.
+\item \textbf{Withdrawn} means a claim previously made in this development and
+      now retracted, with the reason given.
+\end{itemize}
+
+Section~\ref{sec:open} collects what remains open, including one item this pass
+deliberately declined to pursue.
+
+\section{The founding statement needs a group, not a ring}
+\label{sec:reduction}
+
+The framework's founding statement is \emph{scale $\times$ energy $=$ constant},
+encoded by two axioms: A2 supplies a log-scale $\sg$ with $s=e^{\sg}$ a unit, and
+A3 sets $\varepsilon = s^{-1}$.
+
+The theorem saying what this means had never been written.
+
+\begin{theorem}[\lean{Reduction.logDeriv\_mul}]
+For units $s,t$ of the ring and each direction $i$,
+\[
+  \operatorname{logDeriv}(st)_i \;=\; \operatorname{logDeriv}(s)_i +
+  \operatorname{logDeriv}(t)_i .
+\]
+\end{theorem}
+
+The log-derivative $s^{-1}\partial_i s$ is a \emph{group homomorphism} from the
+units into the additive group of gradients. Two consequences follow at once.
+
+\begin{corollary}[\lean{Reduction.logDeriv\_inv}]
+$\operatorname{logDeriv}(s^{-1}) = -\operatorname{logDeriv}(s)$.
+\end{corollary}
+
+This \emph{is} A3. That the energy's gradient is minus the scale's is inversion in
+a group, not an independent postulate.
+
+\begin{definition}[\lean{Reduction.ScaleHom}]
+A group $G$, an abelian group $M$, and a map $D\colon G\to M^{n}$ with
+$D(st)=Ds+Dt$.
+\end{definition}
+
+Every scale algebra furnishes one (\lean{Reduction.ofScaleAlgebra}). The signature
+contains \emph{no ring, no commutativity, and no multiplication}. That is the
+whole of what the founding statement requires.
+
+\subsection{So what was the ring doing?}
+
+\begin{theorem}[\lean{Reduction.sig\_add}, \lean{Reduction.gradsq\_add}]
+The gradient is additive in the log-scale, while
+\[
+  \operatorname{gradsq}(\sg+\tau)
+   = \operatorname{gradsq}\sg + \operatorname{gradsq}\tau
+     + 2\sum_i \operatorname{sig}\sg_i\cdot\operatorname{sig}\tau_i .
+\]
+\end{theorem}
+
+The axiom is linear in the gradient; the geometry is quadratic; and the failure of
+additivity is exactly a \emph{symmetric bilinear pairing}. Every geometric object
+in the development is built from that pairing.
+
+\begin{claimbox}
+A commutative ring supplies the homomorphism and the pairing in one move. That is
+why it was chosen, and it was never recorded that these are two commitments rather
+than one.
+\end{claimbox}
+
+The sharp form of the concern: in a ring, the multiplication defining the unit
+group and the multiplication supplying the pairing are the \emph{same operation},
+and nothing in \emph{scale $\times$ energy $=$ constant} requires that.
+
+\section{Axiom consolidation: seven to five}
+\label{sec:consolidation}
+
+Three results turn a long-standing goal into a theorem.
+
+\begin{proposition}[\lean{Consolidation.A3\_is\_inversion}]
+The duality relation is \lean{Units.inv\_mul} and $\varepsilon:=s^{-1}$ is a
+definition. A3 names a definition and asserts a group law.
+\end{proposition}
+
+\begin{theorem}[\lean{Consolidation.d\_s\_iff\_exact}]
+For a unit $s$ and an element $\sg$,
+\[
+  \bigl(\forall i,\ \partial_i s = s\cdot \operatorname{sig}\sg_i\bigr)
+  \iff
+  \bigl(\forall i,\ \operatorname{logDeriv}(s)_i = \operatorname{sig}\sg_i\bigr).
+\]
+\end{theorem}
+
+A2's derivation condition holds exactly when the unit's log-derivative is
+\emph{exact}. So A2 is a unit plus a potential; \Afour{} (one unit per direction)
+already supplies the unit; and no geometric result needs the potential
+(\lean{Amendment.same\_unit\_same\_geometry}).
+
+The consolidated list is
+\[
+  \mathrm{A1}\ \cdot\ \mathrm{A2}^{*}\ (\text{one family of units})\ \cdot\
+  \mathrm{A5}\ \cdot\ \mathrm{A6}\ \cdot\ \App\ \cdot\ \mathrm{A7},
+\]
+recorded as \lean{Consolidation.consolidation}. The reduction is not claimed to be
+\emph{forced}: a framework may keep a potential primitive. What has changed is
+that the potential is now known to be the only surplus.
+
+\section{The source of the geometry cannot be a topological charge}
+\label{sec:topology}
+
+\App{} reads $\Delta\sg = \Delta\cdot\nu$ and was presented as an \emph{index}
+law, with $\nu$ a topological charge. The development tabulated three candidate
+integers. All three are eliminated by one theorem.
+
+\begin{theorem}[\lean{DegreeSource.additive\_nonneg\_on\_group\_is\_trivial}]
+Let $G$ be a group and let $f\colon G\to\mathbb{R}$ satisfy $f(ab)=f(a)+f(b)$ and
+$f\geq 0$. Then $f\equiv 0$.
+\end{theorem}
+
+\noindent The proof is three lines: $f(1)=0$, then $f(a)+f(a^{-1})=0$ with both
+terms non-negative.
+
+Additivity is what makes a source an index (\lean{Flux.flux\_combine});
+non-negativity is what universal attraction requires
+(\lean{Attraction.attraction\_from\_counting}). Hence:
+
+\begin{claimbox}
+No group-valued charge can be a universally attractive additive source. Every
+topological charge here is group-valued --- $\pi_1$ and $\pi_2$ are groups --- so
+the source of the geometry cannot be topological at all.
+\end{claimbox}
+
+The argument is sharp rather than over-strong.
+\lean{DegreeSource.monoid\_source\_exists} exhibits an additive, non-negative,
+non-zero map on $\mathbb{N}$: it is \emph{inverses} that do the killing. What
+survives is a threshold count, a cardinality with no anti-content. Two external
+checks: real gravity's source is not topological and mass is non-negative; and
+electric charge \emph{is} signed and \emph{does} source an interaction, which the
+theorem permits because that interaction is not universally attractive.
+
+\begin{remark}[Consequence for \App{}]
+The coefficient in $\kappa=-2(n-1)\Delta$ is algebraic in $\nu$ and is untouched.
+What is touched is \App{}'s standing: its authority came from $\nu$ being a
+topological index. \App{} keeps its consequences and loses its index reading; it
+is a postulate of the same standing as the rest of the axioms.
+\end{remark}
+
+\section{The pairing was never chosen: two metrics}
+\label{sec:twometrics}
+
+The framework computes curvature in two places.
+
+\begin{itemize}[leftmargin=1.4em]
+\item \lean{Conformal.RscBare} $=\sum_b \Ric_{bb}$, described in its own
+      documentation as the \emph{$\delta$-trace} of Ricci, on the metric
+      $e^{2\sg}\delta$. This is where $\kappa=-2(n-1)\Delta$ is derived, so
+      \textbf{$\kappa$ is a Euclidean result}.
+\item \lean{Diagonal.Ric} on the metric $\mathrm{met}\,\eta\,w$, with the
+      signature carried as a parameter satisfying $\eta^{2}=1$. The development's
+      own chain table runs the \emph{entire} gravity chain through this sector,
+      and the key cancellation requires $\eta_t\eta_r=-1$.
+\end{itemize}
+
+The single theorem joining the two, \lean{Anisotropic.ChrDir\_of\_isotropic},
+scopes itself in its own documentation to \emph{Euclidean signature}, with
+hypothesis $\eta\equiv 1$.
+
+\begin{proposition}[\lean{TwoMetrics.euclidean\_excludes\_lorentzian}]
+If $2\neq 0$ in the ring, then $\eta\equiv 1$ and $\eta_t\eta_r=-1$ cannot both
+hold.
+\end{proposition}
+
+\begin{claimbox}
+The only bridge between the sectors holds exactly where the physics does not.
+$\kappa$ and the observables have never been shown to be about the same geometry.
+\end{claimbox}
+
+\lean{TwoMetrics.delta\_trace\_ne\_eta\_trace} shows the difference does not
+cancel: on a Lorentzian pair the two traces read $2$ and $0$.
+
+\begin{remark}[A correction to the record]
+The framework's summary of what rests on the axioms alone listed ``the Lorentzian
+signature''. What is derived is a \emph{codimension-one splitting} of the
+directions from the drift. A splitting is a flag; a signature is a property of a
+form. That file's own closing paragraph already granted that the timelike sign is
+not derived.
+\end{remark}
+
+\section{The repair: the coefficient survives, the operator does not}
+\label{sec:etatrace}
+
+The curvature identity was redone from the connection upward with a signature,
+since inserting $\eta$ into the final trace alone would not be the same geometry.
+The connection used is the one the development already had for the anisotropic
+sector, at the isotropic locus with $\eta$ left general: a case that existed and
+had never been computed.
+
+\begin{theorem}[\lean{EtaTrace.RscE\_eq}]
+\[
+  \Rsc^{\eta} \;=\; -2(n-1)\,\Box\sg \;-\; (n-1)(n-2)\,|\nabla\sg|^{2}_{\eta},
+\]
+where $\Box\sg=\sum_i \eta_i\sg_{ii}$ and
+$|\nabla\sg|^{2}_{\eta}=\sum_i \eta_i\sg_i\sg_i$.
+\end{theorem}
+
+\emph{Identical coefficients.} \lean{EtaTrace.A6'\_from\_index\_eta} then returns
+$\kappa=-2(n-1)\Delta$.
+
+The reason is structural rather than fortunate. In the two-connection contraction
+two $\eta$-carrying terms cancel identically, the second carrying $\eta_e^2=1$;
+every surviving $\eta$ is either squared or pinned by a $\delta$ that forces its
+indices equal. The signature cannot reach the coefficient.
+
+\subsection{But the operator changes}
+
+\begin{theorem}[\lean{Hyperbolic.lapE\_lorentzian\_split}]
+With $\eta_t=-1$ and $\eta_i=1$ for $i\neq t$,
+$\ \Box\sg=\sum_{i\neq t}\sg_{ii}-\sg_{tt}$.
+\end{theorem}
+
+\begin{claimbox}
+$\kappa$ is safe; the operator it multiplies is the d'Alembertian. The source law
+$\Box\sg = \Delta\cdot\nu$ is \textbf{hyperbolic}, not elliptic --- a sourced wave
+equation. Newton is recovered as its static limit, where $\sg_{tt}=0$ and the
+d'Alembertian is the Laplacian, and the framework's gravity results are all
+computed under staticity.
+\end{claimbox}
+
+\lean{Hyperbolic.lap\_sub\_lapE} measures the gap as $\sum_i(1-\eta_i)\sg_{ii}$,
+zero only for a Euclidean signature. Consequently the framework's Poisson-limit
+theorem should be read as \emph{scoped to static configurations}. Nothing computed
+from it changes; what changes is what it is a limit of.
+
+\section{Null characteristics, and what a scale wave is}
+\label{sec:waves}
+
+A hyperbolic law has characteristics. Since no integration theory is available,
+the wave is treated algebraically: a \emph{wave profile} is a scale whose Hessian
+is rank one along a covector $k$, that is $\sg_{ij}=k_ik_j m$.
+
+\begin{theorem}[\lean{Hyperbolic.lapE\_of\_waveProfile},
+\lean{Hyperbolic.vacuum\_wave\_is\_null}]
+$\Box\sg=\operatorname{bareForm}(\eta,k)\cdot m$, and in vacuum with $m$ a unit,
+$\operatorname{bareForm}(\eta,k)=0$.
+\end{theorem}
+
+That bare form is the framework's \emph{own} quadratic form, defined kinematically
+as the locus where the measured form vanishes. Nothing in the development had said
+that anything \emph{travels} along it.
+
+\begin{claimbox}
+Scale disturbances propagate on the framework's own null cone: the dynamical
+characteristic cone and the kinematic null cone coincide.
+\end{claimbox}
+
+\subsection{The effect is quantised by the threshold spectrum}
+
+Content in SCD is what a probe at a given scale resolves, namely
+$\mathrm{resolved}(\mu,t)=\{k\mid \mu_k\leq t\}$.
+
+\begin{theorem}[\lean{Directional.resolved\_eq\_iff\_no\_threshold\_between}]
+For $t\leq t'$, $\ \mathrm{resolved}(\mu,t)=\mathrm{resolved}(\mu,t')$ if and only
+if no $\mu_k$ lies in $(t,t']$.
+\end{theorem}
+
+\begin{claimbox}
+A scale wave has no continuous observable. It acts only where it crosses a
+threshold, so half the amplitude gives \emph{none} of the effect unless a
+threshold lies in the interval. A scale wave is a wave of emergence.
+\end{claimbox}
+
+\subsection{The breathing mode: expressible, but not radiable}
+
+The development contained a theorem excluding a breathing (scalar) polarization,
+justified by the claim that a uniform rescaling is a fiducial shift and so
+unobservable by A5.
+
+\begin{proposition}[\lean{Breathing.nonconstant\_scale\_is\_expressible},
+\lean{Breathing.uniform\_across\_directions\_still\_varies}]
+Fiducial invariance quantifies over one constant added at \emph{every point}, and
+the difference pattern compares \emph{points}. A breathing wave is uniform across
+\emph{directions} and varies across \emph{points}, and is separated by a
+fiducial-invariant functional.
+\end{proposition}
+
+So A5 does not remove the breathing mode, and the null-cone result exhibits it.
+The conclusion nevertheless survives, on a ground the framework already had: a
+scalar disturbance is sourced by the monopole; a conserved source's monopole is
+frozen (\lean{Waves.monopole\_does\_not\_radiate}); and a non-conserved source
+admits \emph{no field equation at all}
+(\lean{Dynamics.no\_field\_equation\_of\_nonconserved}).
+
+\begin{claimbox}
+The breathing mode is expressible but cannot be radiated by any source for which a
+field equation can be written. Same prediction, different ground, and a narrower
+scope: a free or primordial breathing wave is excluded by nothing here.
+\end{claimbox}
+
+\begin{remark}[Withdrawn]
+An earlier statement of this pass --- \emph{no interferometer can see a scale
+wave} --- is withdrawn. The cited theorem takes a \emph{single} scale pattern and
+compares two null directions at one point; it excludes finding a \emph{static}
+anisotropy. A wave differs between the arms, and between emission and return. What
+survives is that a static scale pattern is invisible to an interferometer at any
+precision.
+\end{remark}
+
+\section{Off the commuting locus: an antisymmetric Ricci without torsion}
+\label{sec:quantum}
+
+Every quantitative result in the development is computed over a commutative ring,
+where the adjoint action vanishes identically and the quantum correction is zero
+by construction. This section leaves that locus.
+
+The non-commutative Riemann tensor is known: curvature is still the
+Kulkarni--Nomizu product of the bare bookkeeping with the scale deformation, plus
+one correction built from commutators of scale gradients. Contracting it:
+
+\begin{proposition}[\lean{QuantumRicci.sum\_RmCorr\_contract}]
+The Riemann correction vanishes in the Ricci contraction: its two Kronecker terms
+cancel term by term at $c=a$.
+\end{proposition}
+
+\begin{theorem}[\lean{QuantumRicci.two\_Ric\_eq\_nc}]
+$2\,\Ric_{be} = (2-n)\,\Defm_{be} - \delta_{be}\operatorname{tr}\Defm$, with no
+extra term.
+\end{theorem}
+
+Yet the deformation tensor is itself not symmetric off the locus, and therefore:
+
+\begin{theorem}[\lean{QuantumRicci.two\_Ric\_antisymm}]
+\[
+  \boxed{\ \Ric_{be}-\Ric_{eb} \;=\; (n-2)\,[\sg_b,\sg_e]\ }
+\]
+\end{theorem}
+
+\begin{theorem}[\lean{QuantumRicci.two\_RscBare\_eq\_nc}]
+$2\,\Rsc = (2-2n)\operatorname{tr}\Defm$, and $\operatorname{tr}\Defm$ is built
+from $\sg_{aa}$, $\sg_a\sg_a$ and $|\nabla\sg|^{2}$ --- every term a square.
+\end{theorem}
+
+\begin{claimbox}
+The entire quantum correction to the geometry is the antisymmetric part of Ricci.
+The scalar curvature does not move at all.
+\end{claimbox}
+
+\subsection{What this predicts}
+
+\paragraph{An antisymmetric Ricci with a torsion-free connection.}
+The connection is symmetric in its lower pair whether or not the values commute
+(\lean{Conformal.Chr\_symm}, proved over a general ring), so there is \emph{no
+torsion}. In ordinary differential geometry $\Ric_{[ab]}=0$ for a torsion-free
+connection, by the first Bianchi identity --- and that proof uses commutativity of
+the \emph{values}, not only torsion-freeness. This is therefore not
+Einstein--Cartan, which buys the same antisymmetry by giving the connection
+torsion.
+
+\paragraph{Nothing classical moves, at any order.}
+The source law, $\kappa$, the Newtonian limit and every cosmological statement are
+exactly their commutative selves. In particular there is \textbf{no $\hbar G/r^{3}$
+correction to the Newtonian potential}, of the kind effective-field-theory
+treatments of gravity produce, and \textbf{no running of $G$}. This is a flat
+disagreement with the standard expectation, and it is exact rather than small.
+
+\paragraph{It vanishes in two dimensions,}
+by the same factor $(n-2)$ that governs conformal geometry throughout.
+
+\paragraph{Where it can appear.}
+An antisymmetric Ricci in a field equation requires an antisymmetric source, and
+the physical antisymmetric source is spin. Independently,
+\lean{NCConformal.quantum\_correction\_is\_a\_wedge} holds by \lean{rfl}: the
+correction \emph{is} the framework's rotational label applied to the scale
+gradient pattern. \emph{This is an identification, not a theorem}: no field
+equation for the antisymmetric half is written, and no magnitude is claimed.
+
+\paragraph{And it does not inherit the pairing problem.}
+By \lean{Micro.quantum\_correction\_signature\_independent} the signature enters
+the deformation tensor only symmetrically, so the antisymmetric part --- where the
+whole correction lives --- is the same for every $\eta$. Unlike $\kappa$, this
+prediction never depended on the pairing that was never chosen.
+
+\section{Constants and dimensions}
+\label{sec:constants}
+
+The usual bookkeeping has three base dimensions $L,T,M$ and four constants
+$c,\hbar,G,e$. Here there are no dimensions at all: what replaces dimension is a
+single $\mathbb{Z}$-grading, the weight under $\sg\mapsto c\sg$.
+
+The collapse is structural rather than a choice of units. Time is a
+\emph{direction}, told from space by a sign and not by a dimension. Light crosses
+at measured speed one in every direction, because the scale sets rods and light
+times alike, so $c=1$ is a theorem. And A3, being a group law
+(\S\ref{sec:consolidation}), places mass on the same axis with the opposite sign.
+
+The magnitudes on that axis are $\Delta$ (weight $1$), the scale step identified
+with $\hbar$ (weight $1$, since a step is a difference of log-scales), and the
+threshold density $\rho$ (weight $-1$).
+
+\begin{theorem}[\lean{Constants.two\_pure\_numbers},
+\lean{Constants.collapse\_iff}]
+Both $\Delta\rho$ and $\hbar\rho$ are weight zero, and they coincide if and only
+if $\Delta=\hbar$.
+\end{theorem}
+
+\begin{claimbox}
+There are \emph{two} free pure numbers, not one, unless $G$ and $\hbar$ are the
+same magnitude --- and nothing in the development says they are.
+\end{claimbox}
+
+The framework's own files already record that ``$G$ and $\hbar$ share an origin''
+is conditional on a step not taken, and that ``$\hbar$ is that step'' is an
+identification rather than a construction. The two statements had never been read
+against each other.
+
+\subsection{\texorpdfstring{Where $e$ goes}{Where e goes}}
+
+The fine-structure constant is weight zero: a gauge coupling's value does not
+depend on how $\sg$ is labelled. So it is a pure number \emph{structurally}. And
+the asymmetry has a reason: the gauge law relates weight-zero quantities to
+weight-zero quantities, while gravity's relates a weight-zero \emph{count} to a
+weight-one \emph{scale}.
+
+\begin{claimbox}
+Exactly one law crosses the grading. ``Why is $\alpha$ dimensionless and $G$ not''
+stops being a fact about dimensions and becomes a fact about which law crosses the
+grading.
+\end{claimbox}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Usual} & \textbf{Here} \\
+\midrule
+$L,T,M$ & one grading: weight under $\sg\mapsto c\sg$ \\
+$c$ & not a constant --- one cone; measured speed one is a theorem \\
+$\hbar$ & a weight-one scale step; an identification, not a construction \\
+$G$ & a weight-one coefficient $\Delta$ \\
+$e$, i.e.\ $\alpha$ & weight zero --- already pure, and structurally so \\
+Planck units & one axis, so one magnitude fixes everything \\
+pure numbers & $\Delta\rho$ and $\hbar\rho$: \emph{two}, collapsing iff
+$\Delta=\hbar$ \\
+\bottomrule
+\end{tabular}
+\caption{The dimensional bookkeeping, translated.}
+\end{table}
+
+\begin{remark}[A question the usual picture cannot ask]
+$[G]=L^{3}M^{-1}T^{-2}$ and $[\hbar]=ML^{2}T^{-1}$ have different dimensions, so
+\emph{are $G$ and $\hbar$ the same magnitude?} is not a well-formed question there.
+Here they carry the same weight, the question is well-formed, and its answer is a
+single pure number.
+\end{remark}
+
+\section{What remains open}
+\label{sec:open}
+
+\paragraph{The directional source law.}
+\Ap{} reads $e^{2\sg}\Rsc=\kappa\rho$, and $e^{2\sg}$ is \emph{one} conformal
+factor. With a scale per direction there is no single factor:
+\lean{Directional.dirTrace\_factors\_iff} shows the factor comes out only when
+every directional unit agrees. So \Ap{}'s \emph{form} presupposes an isotropic
+scale while \Afour{} supplies a directional one. A replacement is written
+(\lean{Breathing.DirSource}) on the true scalar curvature --- \Afour{} supplies
+exactly the invertibility the bare form was contorted to avoid --- but the
+curvature identity that would let it produce a number does not exist off the
+isotropic locus. Until it does, $\kappa$ and the observables meet only where the
+scale is isotropic.
+
+\paragraph{The quantum correction has never been carried.}
+Section~\ref{sec:quantum} is the first computation off the commuting locus. Every
+number in the development is computed on the isotropic, commuting locus, and both
+unfinished sectors are off it.
+
+\paragraph{\texorpdfstring{$\Delta=\hbar$}{Delta = hbar}: deliberately left open.}
+Nothing in the axioms relates the source coefficient to a scale shift, and the
+scale shift itself is not built from the axioms --- it requires a ring
+endomorphism and a unit that nothing supplies. The identification would have to
+come from outside. It is recorded as an open question, and the free-number count
+reads \emph{two}.
+
+\paragraph{And one number that cannot be computed.}
+Predictions are informationally disjoint from inputs, and counts cannot fix a
+unit; $\Delta\rho$ is a \emph{permanent} input. The framework therefore predicts
+ratios and structures, not magnitudes, and the familiar arcsecond figures are
+weight-zero statements evaluated on measured inputs.
+
+\section{Method}
+
+Three times in this pass a result was kept while its stated ground was replaced:
+\App{} keeps its consequences and loses its index reading; the Poisson limit keeps
+its numbers and becomes a static limit; the breathing exclusion keeps its
+conclusion and changes its argument. Twice a file's own self-correction caught an
+error that no theorem would have. Once a claim made in this pass was withdrawn one
+section later.
+
+The rate is the thing to read, not the instances. A formalisation makes the
+theorems reliable; it does not make the \emph{prose around them} reliable, and
+most of what was corrected here lived in the prose --- in what a true theorem was
+being quoted as showing.
+
+\end{document}
