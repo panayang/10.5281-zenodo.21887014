@@ -492,6 +492,26 @@ namespace SCD.Verify
 #print axioms SCD.DegreeSource.two_pure_numbers_where_there_was_one
 #print axioms SCD.DegreeSource.link_survives_only_if_equal
 
+-- Vantage.lean
+#print axioms SCD.Vantage.observer_and_observed_are_one_type
+#print axioms SCD.Vantage.every_vantage_observes_itself
+#print axioms SCD.Vantage.self_observation_is_exact
+#print axioms SCD.Vantage.empty_commitment_records_everything
+#print axioms SCD.Vantage.commitment_costs_content
+#print axioms SCD.Vantage.record_mono_in_resolution
+#print axioms SCD.Vantage.the_two_variances_commute
+#print axioms SCD.Vantage.algebra_record_is_observer_record
+#print axioms SCD.Vantage.algebra_record_mono
+
+-- Reduction.lean
+#print axioms SCD.Reduction.logDeriv_mul
+#print axioms SCD.Reduction.logDeriv_one
+#print axioms SCD.Reduction.logDeriv_inv
+#print axioms SCD.Reduction.sig_add
+#print axioms SCD.Reduction.gradsq_add
+#print axioms SCD.Reduction.ScaleHom.map_one
+#print axioms SCD.Reduction.ScaleHom.map_inv
+
 /-! ## PART II.a — the isotropic sector -/
 
 

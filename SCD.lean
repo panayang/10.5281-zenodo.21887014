@@ -157,6 +157,15 @@ PART III — THE QUANTUM SECTOR
                  both: on a **group**, an additive non-negative source vanishes.
                  So the source of the geometry cannot be topological at all, and
                  the codimension question was malformed on both branches
+    Vantage      ★ and the observer question dissolves the same way: resolution
+                 and threshold are **one type**, so observer and observed are one
+                 kind of thing and `Crossed` is the order of a **vantage space**.
+                 There is no position space for them to relate across.  `place`
+                 puts the algebra into that space for the first time
+    Reduction    ★ and the founding statement needs a **group**, not a ring: the
+                 log-derivative is a homomorphism (new), A3 is its inversion law,
+                 and the ring's remaining job is the **bilinear pairing** that
+                 makes the geometry.  Two commitments, carried as one
 
 ────────────────────────────────────────────────────────────────────────
 PART IV — SCALE FLOW AND CONTENT
@@ -291,6 +300,8 @@ import SCD.Valuation
 import SCD.OneParameter
 import SCD.Codimension2
 import SCD.DegreeSource
+import SCD.Vantage
+import SCD.Reduction
 
 -- Part IV — scale flow and content
 import SCD.RG

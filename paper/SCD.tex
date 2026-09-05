@@ -105,8 +105,8 @@
 第 \ref{sec:scope} 节逐条区分定理与外部输入。
 
 \medskip
-\noindent\textbf{形式化规模：}1205 条定理、29863 行 Lean 代码、114 个文件；
-\textbf{全部 1205 条定理}经 \texttt{\#print axioms} 审计
+\noindent\textbf{形式化规模：}1221 条定理、30423 行 Lean 代码、116 个文件；
+\textbf{全部 1221 条定理}经 \texttt{\#print axioms} 审计
 （清单由源码生成而非人工挑选，故无一条能悄悄漏掉），
 仅依赖 \texttt{propext}、\texttt{Classical.choice}、\texttt{Quot.sound}，
 无 \texttt{sorryAx}。
@@ -5216,6 +5216,8 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{OneParameter.lean} & 4 & size 不是第二个自由度：斜率就是 ρ、原点是 A5 的；均匀密度正是让二者合一的那步 \\
 \texttt{Codimension2.lean} & 3 & 余维错配的两条出路封死一条：线缺陷带 ℤ/2，其上无非零可加实源；三个拓扑整数全部出局 \\
 \texttt{DegreeSource.lean} & 8 & 另一条出路也封死：群上可加且非负的源恒为零，所以引力的源不可能是拓扑电荷 \\
+\texttt{Vantage.lean} & 9 & 分辨率与阈值是同一类型，所以观察者与被观察者同种；没有位置空间可关联；place 首次把代数送进视角空间 \\
+\texttt{Reduction.lean} & 7 & 奠基命题只需要群：对数导数是同态，A3 就是它的取逆律；环剩下的活是几何需要的双线性配对 \\
 \midrule
 \multicolumn{3}{l}{\emph{第四部分\quad 各向同性扇区}}\\
 \texttt{Conformal.lean} & 19 & 共形曲率恒等式、Ricci、标量曲率 \\
@@ -5301,14 +5303,14 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \texttt{MassAudit.lean} & 9 & 拓扑不决定质量律（撤回） \\
 \texttt{Audit.lean} & 12 & 登记册：撤回／更正／引用／假设 \\
 \midrule
-\textbf{合计} & \textbf{1205} & 114 个文件，29530 行 Lean 代码 \\
+\textbf{合计} & \textbf{1221} & 116 个文件，30079 行 Lean 代码 \\
 \bottomrule
 \end{longtable}
 \end{center}
 
 \subsection{公理审计}
 
-对全部 1205 条定理执行 \texttt{\#print axioms}，结果全部落在
+对全部 1221 条定理执行 \texttt{\#print axioms}，结果全部落在
 \[
 \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}
 \]
@@ -5396,7 +5398,7 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 
 \clearpage
 \appendix
-\section{定理索引：全部 1205 条}\label{sec:index}
+\section{定理索引：全部 1221 条}\label{sec:index}
 \addcontentsline{toc}{section}{附录：定理索引}
 
 本索引由 \texttt{tools/sync\_report.py} 从源码生成，非人工维护。
@@ -5454,6 +5456,8 @@ qcd\_extraction\_returns\_input, no\_second\_determination}
 \noindent\textbf{\texttt{OneParameter.lean}} (4)\quad \texttt{affine\_\allowbreak size\_\allowbreak determined}, \texttt{origin\_\allowbreak is\_\allowbreak a\_\allowbreak fiducial\_\allowbreak shift}, \texttt{uniform\_\allowbreak size\_\allowbreak one\_\allowbreak observable}, \texttt{size\_\allowbreak adds\_\allowbreak no\_\allowbreak freedom}\par\smallskip
 \noindent\textbf{\texttt{Codimension2.lean}} (3)\quad \texttt{two\_\allowbreak valued\_\allowbreak source\_\allowbreak is\_\allowbreak trivial}, \texttt{block\_\allowbreak cannot\_\allowbreak source}, \texttt{odd\_\allowbreak pairs\_\allowbreak cancel}\par\smallskip
 \noindent\textbf{\texttt{DegreeSource.lean}} (8)\quad \texttt{degree\_\allowbreak gives\_\allowbreak the\_\allowbreak same\_\allowbreak kappa}, \texttt{degree\_\allowbreak admits\_\allowbreak an\_\allowbreak additive\_\allowbreak source}, \texttt{additive\_\allowbreak nonneg\_\allowbreak on\_\allowbreak group\_\allowbreak is\_\allowbreak trivial}, \texttt{signed\_\allowbreak degree\_\allowbreak cannot\_\allowbreak attract}, \texttt{monoid\_\allowbreak source\_\allowbreak exists}, \texttt{ratio\_\allowbreak is\_\allowbreak weight\_\allowbreak zero}, \texttt{two\_\allowbreak pure\_\allowbreak numbers\_\allowbreak where\_\allowbreak there\_\allowbreak was\_\allowbreak one}, \texttt{link\_\allowbreak survives\_\allowbreak only\_\allowbreak if\_\allowbreak equal}\par\smallskip
+\noindent\textbf{\texttt{Vantage.lean}} (9)\quad \texttt{observer\_\allowbreak and\_\allowbreak observed\_\allowbreak are\_\allowbreak one\_\allowbreak type}, \texttt{every\_\allowbreak vantage\_\allowbreak observes\_\allowbreak itself}, \texttt{self\_\allowbreak observation\_\allowbreak is\_\allowbreak exact}, \texttt{empty\_\allowbreak commitment\_\allowbreak records\_\allowbreak everything}, \texttt{commitment\_\allowbreak costs\_\allowbreak content}, \texttt{record\_\allowbreak mono\_\allowbreak in\_\allowbreak resolution}, \texttt{the\_\allowbreak two\_\allowbreak variances\_\allowbreak commute}, \texttt{algebra\_\allowbreak record\_\allowbreak is\_\allowbreak observer\_\allowbreak record}, \texttt{algebra\_\allowbreak record\_\allowbreak mono}\par\smallskip
+\noindent\textbf{\texttt{Reduction.lean}} (7)\quad \texttt{logDeriv\_\allowbreak mul}, \texttt{logDeriv\_\allowbreak one}, \texttt{logDeriv\_\allowbreak inv}, \texttt{sig\_\allowbreak add}, \texttt{gradsq\_\allowbreak add}, \texttt{map\_\allowbreak one}, \texttt{map\_\allowbreak inv}\par\smallskip
 
 \subsection*{第四部分\quad 各向同性扇区}
 \noindent\textbf{\texttt{Conformal.lean}} (19)\quad \texttt{hess\_\allowbreak symm}, \texttt{d\_\allowbreak sig\_\allowbreak comm}, \texttt{sum\_\allowbreak mul\_\allowbreak gradsq}, \texttt{scaleCurv\_\allowbreak eq\_\allowbreak zero}, \texttt{Chr\_\allowbreak symm}, \texttt{d\_\allowbreak Chr\_\allowbreak diff}, \texttt{sum\_\allowbreak d\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak diag}, \texttt{sum\_\allowbreak d\_\allowbreak Chr\_\allowbreak trace}, \texttt{sum\_\allowbreak ChrTrace\_\allowbreak Chr}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr\_\allowbreak full}, \texttt{sum\_\allowbreak Chr\_\allowbreak Chr}, \texttt{Ric\_\allowbreak eq}, \texttt{RscBare\_\allowbreak eq}, \texttt{Defm\_\allowbreak symm}, \texttt{two\_\allowbreak Rm\_\allowbreak eq}, \texttt{Rm\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{Ric\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak Defm\_\allowbreak eq\_\allowbreak zero}, \texttt{two\_\allowbreak Ric\_\allowbreak eq}\par\smallskip

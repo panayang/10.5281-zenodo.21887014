@@ -2667,6 +2667,139 @@ The framework's ambition to derive gravity from topology is closed — not
 refuted from outside, but by its own charge structure and its own commitment to
 universal attraction.
 
+## V.as  The observer question dissolves the way the source question did
+
+The task was "reflect on the relation between the observer and spacetime".  The
+finding is that **the second term does not refer**, and the register should have
+known: `Observer.lean`'s own §0 says *the framework has no space; directions are
+indices at a point, not positions*, and `directionForPositionCount` counts the
+one time that was forgotten.  So there is no position space for an observer to
+stand in, and the question as posed has no second term.
+
+`Vantage.lean` says what there is instead.
+
+**Observer and observed are one type.**  `Observer.Resolution n` and
+`Observer.Threshold n` are both `Fin n → ℝ`, and `Observer.lean` line 148 says
+why: both are "one scale per direction", which is A4′.
+`observer_and_observed_are_one_type` is `rfl` — an empty proof whose *statement*
+is the content.  There is no category of observer distinct from the category of
+thing observed.
+
+And `Crossed` is the order on that space:
+`every_vantage_observes_itself` is reflexivity, `self_observation_is_exact` is
+antisymmetry.  **The vantage space is a poset whose order is observation**, and
+nothing was imported to get that — it is `Crossed` read for what it says.
+
+**The observer is a point and a commitment**, and the two have opposite
+variances.  `record_mono_in_resolution` is new: the development had
+`Observer.crossedSet_mono` for the *detached* observer and never the internal
+one.  With `Internal.record_antitone` it gives
+`the_two_variances_commute` — content is a bifunctor on
+`(ℝⁿ, ≤) × (Finset (Fin n))ᵒᵖ`.  §V.ah found the second variance and held the
+vantage fixed; nobody varied both.
+
+**And the trade is strict.**  `empty_commitment_records_everything`: an observer
+committing no direction records everything.  `record_univ_is_the_detached_observer`:
+committing all of them is detachment.  `commitment_costs_content` exhibits the
+gap.
+
+> **Detachment is maximal commitment, and it sees the least.**
+
+An uncertainty-shaped statement obtained by unfolding an intersection.  It is not
+the uncertainty principle and this register does not claim it is one.
+
+**What is actually new: the algebra now lands somewhere.**  Until this file
+nothing mapped the algebra into the observer's space.  They shared the index type
+`Fin n` and nothing else — the algebra's directions carried ring elements, the
+observer's carried reals — and §V.x records the gap.  `place` is the map: a
+filtration **per direction** gives each element one real per direction, its
+threshold there.  `algebra_record_is_observer_record` then says the algebraic
+resolved set **is** the observer's record.
+
+So ring elements do not sit in a pre-existing space; they **acquire** places, and
+a place is a tuple of thresholds.
+
+**The cost, and it is not small.**  `place` needs `n` filtrations.  §V.ac records
+that a filtration is postulated and that nothing in A1–A7 builds one — G3's
+residue.  This does not discharge that; it **multiplies it by `n`**.
+`unwitnessedStructures` goes 7 → 8.  The gain is that the postulate now does
+visible work in a second place, so one structure pays for two things; the cost is
+that the unwitnessed structure got larger.
+
+And the bridge reaches `Internal.record`, **not** `Spectrum.gaps`.  §V.x's gap has
+two halves and only the first is closed.  The register has been burned before by
+letting "bridged the form" stand in for "bridged the measurement" (§V.ad says so
+about §V.ac), and this is the same shape.
+
+**On the pattern.**  Two sessions running, a question of the form *which X is it*
+has dissolved rather than resolved: which topological charge sources gravity
+(§V.ar — none can), and how the observer relates to spacetime (here — there is no
+spacetime).  Both times the framework's own types already said so and the
+register was reading past them.  That is worth recording as a **method** finding
+and not only as two results: **the types have been ahead of the prose.**
+
+## V.at  The founding statement, and what the ring was doing all along
+
+The question put to this pass was whether the commutative ring is the right
+mathematical form for a framework whose founding statement is **scale × energy =
+constant**.  `Reduction.lean` answers by separating two things that have been
+travelling as one since A1 was written.
+
+**The homomorphism had never been written.**  `Gradient.lean` proved
+`logDeriv_spec` and `logDeriv_closed` and stopped; `logDeriv_mul` is new.  It is
+the founding statement made functorial, and with it come `logDeriv_one` and
+
+> `logDeriv s⁻¹ = − logDeriv s` ,
+
+which **is A3**.  *Scale × energy = constant* says the energy's gradient is minus
+the scale's, and that is inversion in a group, not an independent axiom.  Read A2
+as "the scales form a group and the gradient is a homomorphism" and A3's content
+beyond naming `ε` is discharged.  The register should note that the axiom
+consolidation it has been contemplating had one step available for free and
+unnoticed.
+
+**And the axiom needs nothing else.**  `ScaleHom` is a group, an abelian group,
+and a homomorphism — `map_one` and `map_inv` follow, `ofScaleAlgebra` says every
+scale algebra is one.  **No ring, no commutativity, no multiplication in the
+signature at all.**
+
+**Where the ring enters is now exact.**  `sig_add`: the axiom is linear in the
+gradient.  `gradsq_add`:
+
+        gradsq(σ+τ) = gradsq σ + gradsq τ + 2 ∑ᵢ sig σ ᵢ · sig τ ᵢ .
+
+The geometry is quadratic, and its failure to be a homomorphism is exactly a
+**symmetric bilinear pairing**.  Everything geometric — `Chr`, `Rm`, `Ric` — is
+built from that pairing.
+
+> **The axiom is a homomorphism; the geometry is a bilinear form.  A commutative
+> ring supplies both at once, and this register never recorded that they are two
+> commitments and not one.**
+
+**So the framework needs three things, not one**, and they can be attacked
+separately: a group of scales with the gradient a homomorphism; an abelian group
+of gradients carrying `n` commuting derivations, because `hess` differentiates a
+gradient again and `ScaleHom` does not supply it; and the pairing.
+
+**What is not claimed.**  That the ring is wrong, or that a replacement exists.
+Nothing here exhibits a model meeting the three requirements that is not a ring,
+and this section does not pretend the suspicion has been vindicated — only that
+it has been made *precise enough to test*, which it was not before.
+
+**The sharp form.**  In a ring the multiplication defining `Aˣ` and the
+multiplication supplying the pairing are the **same operation**.  Nothing in
+*scale × energy = constant* says they should be.  That coincidence is a
+substantive commitment, it has never been stated anywhere in this register, and
+it is the place where "the mathematical form may be wrong" would have to bite if
+it bites at all.
+
+**Method, third time.**  §V.ar dissolved *which charge*, §V.as dissolved *how the
+observer relates to spacetime*, and this section finds an axiom discharged and a
+commitment unrecorded — each time by reading what the development's own
+definitions already say rather than by adding anything.  §V.as called this "the
+types have been ahead of the prose".  It is now the most reliable move the
+register has.
+
 ## VI.  What rests on the axioms alone
 
 The scale/rotation split, the Lorentzian signature, the bookkeeping form, the
@@ -2814,8 +2947,11 @@ theorem index_substitutions_still_occur :
 theorems whose physical reading is conditional (§V.b).
 
 Raised to **seven** by §V.ac: `Resolution.Filtration` carries the algebraic
-notion of resolution and nothing in A1–A7 builds one. -/
-def unwitnessedStructures : ℕ := 7
+notion of resolution and nothing in A1–A7 builds one.  Raised to **eight** by
+§V.as: `Vantage.place` needs one such filtration **per direction**, so the
+unwitnessed structure did not stay the same size when it was put to a second
+use. -/
+def unwitnessedStructures : ℕ := 8
 
 /-- Notions that were declared more than once and are now declared once: A1's
 substrate, the geometric objects, isotropy, parallelism, the wedge, the two
@@ -2869,7 +3005,7 @@ theorem sort_totals : freeByConstruction + converterItems + separateItems = 15 :
 
 /-- Number of theorems put through `#print axioms` in `Verify.lean` — **every**
 theorem in the development, generated from the sources rather than curated. -/
-def auditedTheorems : ℕ := 1205
+def auditedTheorems : ℕ := 1221
 
 /-- Occurrences of `sorryAx` in that audit. -/
 def sorryAxCount : ℕ := 0
