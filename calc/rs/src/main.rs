@@ -185,6 +185,10 @@ fn main() {
                 println!();
             }
         }
-        _ => eprintln!("usage: scd-calc nerve [trials] | chains [seeds]"),
+        Some("collapse") => {
+            let seeds: u64 = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(6);
+            chains::collapse(seeds);
+        }
+        _ => eprintln!("usage: scd-calc nerve [trials] | chains [seeds] | collapse [seeds]"),
     }
 }

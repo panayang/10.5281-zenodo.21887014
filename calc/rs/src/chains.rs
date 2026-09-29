@@ -114,3 +114,52 @@ pub fn run(rho: f64, d: f64, ts: &[f64], seeds: u64) {
     println!("wandering scale rho^(-1/6) T^(2/3) at the largest T: {:.0} (vs d = {d})", rho.powf(-1.0 / 6.0) * ts.last().unwrap().powf(2.0 / 3.0));
     println!("fitted exponent of W(N/2) in N (nonzero samples): {:.3}", num / den);
 }
+
+/// One sprinkling, two observers at rest: (chain length of A, fraction of A's elements shared with B,
+/// window at A's middle element).
+fn one_pair(rho: f64, d: f64, t: f64, seed: u64) -> (usize, f64, usize) {
+    let mut rng = SplitMix(seed);
+    let (u0, u1, v0, v1) = (-d, t, 0.0, t + d);
+    let n = poisson(&mut rng, rho / 2.0 * (u1 - u0) * (v1 - v0));
+    let mut a_pts = vec![(0.0, 0.0), (t, t)];
+    let mut b_pts = vec![(-d, d), (t - d, t + d)];
+    for _ in 0..n {
+        let u = rng.unif(u0, u1);
+        let v = rng.unif(v0, v1);
+        if (0.0..=t).contains(&u) && (0.0..=t).contains(&v) {
+            a_pts.push((u, v));
+        }
+        if (-d..=t - d).contains(&u) && (d..=t + d).contains(&v) {
+            b_pts.push((u, v));
+        }
+    }
+    let a = longest_chain(a_pts);
+    let b = longest_chain(b_pts);
+    let bs: std::collections::HashSet<(u64, u64)> = b.iter().map(|p| (p.0.to_bits(), p.1.to_bits())).collect();
+    let shared = a.iter().filter(|p| bs.contains(&(p.0.to_bits(), p.1.to_bits()))).count();
+    (a.len(), shared as f64 / a.len() as f64, window(&b, a[a.len() / 2]))
+}
+
+/// B5: distinguishability of two processes vs resolution. If maximal chains wander like
+/// rho^(-1/6) T^(2/3), the shared fraction should depend on (rho, T, d) only through
+/// x = d rho^(1/6) / T^(2/3): coalescence below x ~ 1, i.e. distinct only if rho >~ T^4 / d^6.
+pub fn collapse(seeds: u64) {
+    println!("B5: shared fraction of two maximal-chain worldlines vs x = d rho^(1/6) / T^(2/3)");
+    println!("{:>6} {:>6} {:>8} {:>8} {:>8} {:>10} {:>14}", "rho", "T", "d", "x", "N", "shared", "W_mid/(N/2)");
+    let combos: [(f64, f64); 6] = [(0.5, 1000.0), (0.5, 4000.0), (2.0, 500.0), (2.0, 2000.0), (8.0, 250.0), (8.0, 1000.0)];
+    let xs = [0.1, 0.25, 0.5, 1.0, 2.0, 4.0];
+    for &(rho, t) in &combos {
+        for &x in &xs {
+            let d = x * t.powf(2.0 / 3.0) * rho.powf(-1.0 / 6.0);
+            let (mut nn, mut sh, mut ww) = (0.0, 0.0, 0.0);
+            for s in 0..seeds {
+                let (na, f, w) = one_pair(rho, d, t, 0xB5 ^ (s * 104729) ^ ((rho * 1000.0) as u64) ^ ((t as u64) << 20) ^ ((x * 100.0) as u64) << 40);
+                nn += na as f64;
+                sh += f;
+                ww += w as f64 / (na as f64 / 2.0);
+            }
+            let k = seeds as f64;
+            println!("{:>6.1} {:>6.0} {:>8.1} {:>8.2} {:>8.0} {:>10.3} {:>14.4}", rho, t, d, x, nn / k, sh / k, ww / k);
+        }
+    }
+}
