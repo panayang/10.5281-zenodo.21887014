@@ -1,0 +1,13 @@
+three receding observers, rapidities 0, 0.5, 1.0; N = 120; middle at A-tick 60
+frame phi=0.5  end (sB, sC) = (1.1276, 1.0000) -> middle (1.1146, 1.0092)
+frame phi=0.0  end (sB, sC) = (0.8868, 0.6481) -> middle (0.8908, 0.6988)
+off-curve      end (sB, sC) = (1.1276, 1.3000) -> middle (1.1231, 1.2811)
+off-curve      end (sB, sC) = (0.8868, 1.3000) -> middle (0.9349, 1.2608)
+
+control: A at x=0 and B at x=-10 at rest (bounded edge), C leaves A's origin at rapidity 0.5
+end (sB, sC) = (1.00, 1.00) -> middle (1.0085, 1.0094)
+end (sB, sC) = (0.93, 1.00) -> middle (1.0045, 1.0387)
+end (sB, sC) = (1.07, 1.00) -> middle (1.0109, 0.9815)
+end (sB, sC) = (1.00, 1.30) -> middle (1.0066, 1.2716)
+end (sB, sC) = (1.00, 0.80) -> middle (1.0101, 0.8333)
+end (sB, sC) = (0.93, 1.30) -> middle (1.0021, 1.3050)

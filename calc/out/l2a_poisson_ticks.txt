@@ -1,0 +1,40 @@
+
+== static pair, redshift 0.8   [expected: rigid at 0.8]  N = 1000
+seed 1: extremes 0.8103 .. 0.8103  (spread 0.0000)
+seed 2: extremes 0.7944 .. 0.7944  (spread 0.0000)
+seed 3: extremes 0.7915 .. 0.7915  (spread 0.0000)
+
+== receding, rapidity 0.5   [expected: not rigid, extremes toward 0.6065 .. 1.6487]  N = 1000
+seed 1: extremes 0.6855 .. 1.5932  (spread 0.9077)
+seed 2: extremes 0.6715 .. 1.5479  (spread 0.8765)
+seed 3: extremes 0.6627 .. 1.4976  (spread 0.8349)
+
+== FRW a = t^0.5, chi = 2   [expected: rigid at 1 (slowly)]  N = 1000
+seed 1: extremes 1.0008 .. 1.0207  (spread 0.0198)
+seed 2: extremes 1.0273 .. 1.0517  (spread 0.0244)
+seed 3: extremes 0.9867 .. 1.0113  (spread 0.0246)
+
+== FRW a = t (Milne), chi = 0.5   [expected: not rigid, extremes toward 0.6065 .. 1.6487]  N = 1000
+seed 1: extremes 0.6794 .. 1.6049  (spread 0.9255)
+seed 2: extremes 0.6636 .. 1.5629  (spread 0.8994)
+seed 3: extremes 0.6564 .. 1.5102  (spread 0.8537)
+
+== static pair, redshift 0.8   [expected: rigid at 0.8]  N = 4000
+seed 1: extremes 0.7987 .. 0.7987  (spread 0.0000)
+seed 2: extremes 0.7956 .. 0.7956  (spread 0.0000)
+seed 3: extremes 0.8004 .. 0.8004  (spread 0.0000)
+
+== receding, rapidity 0.5   [expected: not rigid, extremes toward 0.6065 .. 1.6487]  N = 4000
+seed 1: extremes 0.6462 .. 1.5920  (spread 0.9458)
+seed 2: extremes 0.6449 .. 1.5675  (spread 0.9227)
+seed 3: extremes 0.6302 .. 1.5826  (spread 0.9524)
+
+== FRW a = t^0.5, chi = 2   [expected: rigid at 1 (slowly)]  N = 4000
+seed 1: extremes 0.9891 .. 1.0033  (spread 0.0142)
+seed 2: extremes 0.9837 .. 0.9928  (spread 0.0091)
+seed 3: extremes 0.9843 .. 0.9945  (spread 0.0102)
+
+== FRW a = t (Milne), chi = 0.5   [expected: not rigid, extremes toward 0.6065 .. 1.6487]  N = 4000
+seed 1: extremes 0.6447 .. 1.5953  (spread 0.9506)
+seed 2: extremes 0.6430 .. 1.5709  (spread 0.9279)
+seed 3: extremes 0.6285 .. 1.5853  (spread 0.9569)
