@@ -13,6 +13,7 @@
 - **C4** Goldblatt（1980）：闵氏因果序的模态逻辑 = S4.2；Shapirovsky–Shehtman（2005）：半平面 {t<0} 的逻辑 = S4（1+1 维）。
 - **C5** Helly 定理；Wegner：ℝ^d 中凸集的神经是 d-Leray 复形。
 - **C7** Vorob'ev（1962）；Beeri–Fagin–Maier–Yannakakis（1983）：局部一致 ⟹ 全局一致 ⟺ 超图 α-无环；区间图是弦图，弦图的团超图 α-无环。
+- **C8** Janson（2011）：偏序极限与可交换随机偏序（偏序版 de Finetti，Aldous–Hoover 的特例）；Hladký–Máthé–Patel–Pikhurko（2015）：偏序极限可在 [0,1] 上全序表示。
 - **C6** Johnston（2008–2009）：因果集上的 hop-and-stop 传播子，质量为每个停留元素的权重（D9）。
 
 ## 撤回

@@ -12,7 +12,7 @@
 没有预设的全局事件集、全局时间、全局 σ 场或全局态；它们只在可合并的区域作为**结论**出现。
 
 ## 现状
-十七条结果（其中 F6、F11–F13 为条件性）（[`docs/findings.md`](docs/findings.md)）：
+十八条结果（其中 F6、F11–F13 为条件性）（[`docs/findings.md`](docs/findings.md)）：
 - **F1** 束缚观察者的相对钟速由因果序唯一决定（红移、束缚运动的时间膨胀）；
 - **F2** 退行的两个观察者：Doppler 因子是结构，时间膨胀不是；未定速率恰好铺满 `(e^{−η}, e^{η})`，由标架快度参数化；
 - **F3** FRW：宇宙时由因果序决定 ⟺ 减速膨胀；Milne 是临界点；
@@ -34,12 +34,16 @@
 - **F16** 纯几何的未分辨份额 = 4·(簇尺度/窗口)，指数 1.000：对数型跑动只能来自多尺度内容；
 - **F17** 规律：传递渗流在粗粒化下不封闭（χ² 达数千），且"没有最细层 + 分块"要求律作用在带权重的序上；锐利的绝对因果只是极限性质。
 
+- **F18** 粗粒化后协变与 Bell 因果都不保持，CSG 族不封闭：被删元素是隐藏的时钟；律不能写成逐个元素的增长过程。
+
 **清账（D16）**：框架不引入固定离散尺度，不预设背景流形；只有计数比。"离散"只表示每层记录可数，加密没有最细一层。能标 = 跨层计数比的对数，与 σ 同类型。
 
 与物理实在的逐条对应见 `docs/findings.md` 的"与物理实在的对应"一节。
 
 ## 怎么读
+00. [`docs/review-2026-09-29.md`](docs/review-2026-09-29.md) —— 整体回顾与结构需求（R1–R8；偏序极限作为候选载体）；
 0. [`docs/preprint-short.md`](docs/preprint-short.md) —— 短版预印本草稿（内禀写法，推荐先读）；
+0''. [`docs/law.md`](docs/law.md) —— 规律住在什么对象上（权重序、P1–P4）；
 0'. [`docs/blocking.md`](docs/blocking.md) —— B 的地基：分辨率作为分块（D18，取代嵌入版）；[`docs/refinement.md`](docs/refinement.md) 为嵌入版对照；
 1. [`docs/design.md`](docs/design.md) —— 方案、分层、工作规则；
 2. [`docs/findings.md`](docs/findings.md) —— 结果与证据；
@@ -60,5 +64,5 @@ python calc/t5_confluence.py       # F7
 python calc/t6_coexistence.py      # F8
 python calc/b1_mutual_windows.py   # F14
 ```
-Rust 部分（计算密集）：`cd calc/rs && cargo run --release -- nerve 50000`（F9）、`-- chains 8`（F6 单一撒点）、`-- collapse 6`（F11）、`-- wander D 64`（F12）、`-- perc 2000`（F17）。
+Rust 部分（计算密集）：`cd calc/rs && cargo run --release -- nerve 50000`（F9）、`-- chains 8`（F6 单一撒点）、`-- collapse 6`（F11）、`-- wander D 64`（F12）、`-- perc 2000`（F17）、`-- covbell`（F18）。
 依赖：numpy、sympy、scipy；Rust 工具链。输出写入 `calc/out/`。Lean 部分尚未开始（只用于数学核心，见决策 D3）。

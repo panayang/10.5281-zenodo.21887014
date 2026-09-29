@@ -8,6 +8,7 @@
 //! alpha-acyclic. Prediction: d = 1 always acyclic (interval nerves are chordal); d >= 2 not.
 
 mod chains;
+mod covbell;
 mod geom;
 mod greedy;
 mod perc;
@@ -212,6 +213,12 @@ fn main() {
                 perc::run(p, q, 300, samples);
             }
         }
-        _ => eprintln!("usage: scd-calc nerve [trials] | chains [seeds] | collapse [seeds] | wander D [seeds] | greedy [seeds] | perc [samples]"),
+        Some("covbell") => {
+            let samples: u64 = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(20_000_000);
+            for &(p, q) in &[(0.1, 1.0), (0.3, 1.0), (0.1, 0.5), (0.3, 0.5), (0.1, 0.25), (0.3, 0.25)] {
+                covbell::run(p, q, samples);
+            }
+        }
+        _ => eprintln!("usage: scd-calc nerve [trials] | chains [seeds] | collapse [seeds] | wander D [seeds] | greedy [seeds] | perc [samples] | covbell [samples]"),
     }
 }
