@@ -10,6 +10,7 @@
 mod chains;
 mod geom;
 mod greedy;
+mod perc;
 mod wander;
 
 use geom::{coexist, V};
@@ -205,6 +206,12 @@ fn main() {
             let seeds: u64 = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(32);
             greedy::run(seeds);
         }
-        _ => eprintln!("usage: scd-calc nerve [trials] | chains [seeds] | collapse [seeds] | wander D [seeds] | greedy [seeds]"),
+        Some("perc") => {
+            let samples: u64 = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(2000);
+            for &(p, q) in &[(0.10, 0.5), (0.05, 0.25), (0.02, 0.5)] {
+                perc::run(p, q, 300, samples);
+            }
+        }
+        _ => eprintln!("usage: scd-calc nerve [trials] | chains [seeds] | collapse [seeds] | wander D [seeds] | greedy [seeds] | perc [samples]"),
     }
 }
