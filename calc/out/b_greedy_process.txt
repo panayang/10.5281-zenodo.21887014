@@ -1,0 +1,28 @@
+past-determined process in 1+1 (maximise the height from the origin within the near future)
+K = 0 (interval count bound), local box h = 6
+       T     runs      rms dev
+      50       32       4.0114
+     100       32       4.8747
+     200       32       7.0786
+     400       32       9.8264
+     800       32      12.3659
+fitted exponent: 0.426   (longest chains between endpoints: 2/3)
+
+K = 4 (interval count bound), local box h = 8
+       T     runs      rms dev
+      50       32       5.4873
+     100       32       6.1740
+     200       32       8.0208
+     400       32      14.1307
+     800       32      19.5681
+fitted exponent: 0.486   (longest chains between endpoints: 2/3)
+
+K = 16 (interval count bound), local box h = 12
+       T     runs      rms dev
+      50       32       5.0453
+     100       32       5.7545
+     200       32       8.1191
+     400       32      14.6487
+     800       32      22.0458
+fitted exponent: 0.560   (longest chains between endpoints: 2/3)
+

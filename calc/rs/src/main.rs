@@ -9,6 +9,8 @@
 
 mod chains;
 mod geom;
+mod greedy;
+mod wander;
 
 use geom::{coexist, V};
 use std::env;
@@ -189,6 +191,20 @@ fn main() {
             let seeds: u64 = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(6);
             chains::collapse(seeds);
         }
-        _ => eprintln!("usage: scd-calc nerve [trials] | chains [seeds] | collapse [seeds]"),
+        Some("wander") => {
+            let dim: usize = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(2);
+            let seeds: u64 = args.get(3).and_then(|s| s.parse().ok()).unwrap_or(8);
+            let ts: Vec<f64> = match dim {
+                2 => vec![25.0, 50.0, 100.0, 200.0, 400.0],
+                3 => vec![15.0, 22.0, 33.0, 50.0, 75.0],
+                _ => vec![8.0, 11.0, 16.0, 23.0, 33.0],
+            };
+            wander::run(dim, &ts, seeds);
+        }
+        Some("greedy") => {
+            let seeds: u64 = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(32);
+            greedy::run(seeds);
+        }
+        _ => eprintln!("usage: scd-calc nerve [trials] | chains [seeds] | collapse [seeds] | wander D [seeds] | greedy [seeds]"),
     }
 }

@@ -1,0 +1,8 @@
+D = 3: longest chain in a unit-density causal interval of height T; RMS transverse distance at T/2
+       T     points      chain      rms dev
+    15.0        891       20.0       2.1281
+    22.0       2787       29.4       2.5856
+    33.0       9408       45.1       3.1188
+    50.0      32749       68.8       3.7375
+    75.0     110495      104.2       5.6692
+fitted transverse exponent xi (rms dev ~ T^xi): 0.577
