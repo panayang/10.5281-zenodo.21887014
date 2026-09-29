@@ -1,0 +1,30 @@
+two observers at rest, separation d = 20, density rho = 2; one sprinkling, longest chains
+       T        N     W(N/4)     W(N/2) W(N/2)/(N/2)    shared frac
+     250      490       65.9       70.8       0.2885          0.119
+     500      992       64.9       41.0       0.0826          0.367
+    1000     1984       61.0       59.1       0.0596          0.434
+    2000     3980        7.9        0.0       0.0000          0.758
+    4000     7977      162.1       47.8       0.0120          0.805
+wandering scale rho^(-1/6) T^(2/3) at the largest T: 224 (vs d = 20)
+fitted exponent of W(N/2) in N (nonzero samples): -0.086
+
+two observers at rest, separation d = 100, density rho = 2; one sprinkling, longest chains
+       T        N     W(N/4)     W(N/2) W(N/2)/(N/2)    shared frac
+     250      489      323.0      387.2       1.5838          0.000
+     500      988      394.2      421.6       0.8532          0.000
+    1000     1985      402.6      439.0       0.4424          0.000
+    2000     3980      338.0      265.5       0.1334          0.164
+    4000     7978      421.9      205.5       0.0515          0.243
+wandering scale rho^(-1/6) T^(2/3) at the largest T: 224 (vs d = 100)
+fitted exponent of W(N/2) in N (nonzero samples): -0.248
+
+two observers at rest, separation d = 400, density rho = 2; one sprinkling, longest chains
+       T        N     W(N/4)     W(N/2) W(N/2)/(N/2)    shared frac
+     250      493      493.1      493.1       2.0015          0.000
+     500      990      987.2      987.2       1.9949          0.000
+    1000     1977     1284.4     1599.6       1.6184          0.000
+    2000     3977     1568.9     1500.8       0.7547          0.000
+    4000     7980     1744.9     1801.0       0.4514          0.000
+wandering scale rho^(-1/6) T^(2/3) at the largest T: 224 (vs d = 400)
+fitted exponent of W(N/2) in N (nonzero samples): 0.432
+

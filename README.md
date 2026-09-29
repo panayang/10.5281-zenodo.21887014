@@ -12,13 +12,16 @@
 没有预设的全局事件集、全局时间、全局 σ 场或全局态；它们只在可合并的区域作为**结论**出现。
 
 ## 现状
-六条结果（[`docs/findings.md`](docs/findings.md)）：
+九条结果（[`docs/findings.md`](docs/findings.md)）：
 - **F1** 束缚观察者的相对钟速由因果序唯一决定（红移、束缚运动的时间膨胀）；
 - **F2** 退行的两个观察者：Doppler 因子是结构，时间膨胀不是；未定速率恰好铺满 `(e^{−η}, e^{η})`，由标架快度参数化；
 - **F3** FRW：宇宙时由因果序决定 ⟺ 减速膨胀；Milne 是临界点；
 - **F4** 多个观察者：隐藏参数是渐近切片（多指时间），惯性标架是其中的线性特例；
 - **F5** 坦白：这些速率论断在数学上归结为窗口几何，价值在对应关系；
-- **F6** 只用撒点因果集的序数据，以上图谱依然成立。
+- **F6** 只用撒点因果集的序数据，以上图谱依然成立；
+- **F7** 把 p-ZFC 的记录系统实现为因果过去：汇合（S4.2 的 .2）⟺ 无事件视界；刚性 ⟹ 汇合；减速 / Milne / 加速恰好是三层；
+- **F8** 加速宇宙里，事件族能否被一并记录 = 视界足迹的神经：由 d+1 元组决定（Helly），只允许 d-Leray 模式（Wegner）；
+- **F9** 视界诱导的上下文性至少需要两个空间维度：1+1 维的视界覆盖总是 α-无环，局部一致的统计总能粘成全局律。
 
 ## 怎么读
 1. [`docs/design.md`](docs/design.md) —— 方案、分层、工作规则；
@@ -36,5 +39,8 @@ python calc/l2a_poisson_ticks.py   # Poisson 节拍
 python calc/t4_three_chains.py     # F4
 python calc/l2b_intrinsic.py       # F6（撒点 + 最长链）
 python calc/l2b_window_scaling.py  # F6（窗口标度）
+python calc/t5_confluence.py       # F7
+python calc/t6_coexistence.py      # F8
 ```
-依赖：numpy、sympy。输出写入 `calc/out/`。Lean 部分尚未开始（只用于数学核心，见决策 D3）。
+Rust 部分（计算密集）：`cd calc/rs && cargo run --release -- nerve 50000`（F9）。
+依赖：numpy、sympy、scipy；Rust 工具链。输出写入 `calc/out/`。Lean 部分尚未开始（只用于数学核心，见决策 D3）。

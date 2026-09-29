@@ -1,0 +1,7 @@
+sanity (d=1): candidate test vs exact light-cone formula, 5000 triples: 0 disagreements
+d=1: Helly (every 2 coexist => all 3 coexist): 19230 families, 0 violations;  hollow 2-families (every 1 coexist, all not): 343 of 20000
+d=2: Helly (every 3 coexist => all 4 coexist): 15144 families, 0 violations;  hollow 3-families (every 2 coexist, all not): 46 of 17259
+d=3: Helly (every 4 coexist => all 5 coexist): 8386 families, 0 violations;  hollow 4-families (every 3 coexist, all not): 3 of 11221
+
+regular 2-simplex (circumradius 1, facet circumradius 0.8660) at eta = -0.9330: every 2 coexist: True; all 3 coexist: False
+regular 3-simplex (circumradius 1, facet circumradius 0.9428) at eta = -0.9714: every 3 coexist: True; all 4 coexist: False
