@@ -12,7 +12,7 @@
 没有预设的全局事件集、全局时间、全局 σ 场或全局态；它们只在可合并的区域作为**结论**出现。
 
 ## 现状
-十四条结果（其中 F6、F11–F13 为条件性）（[`docs/findings.md`](docs/findings.md)）：
+十五条结果（其中 F6、F11–F13 为条件性）（[`docs/findings.md`](docs/findings.md)）：
 - **F1** 束缚观察者的相对钟速由因果序唯一决定（红移、束缚运动的时间膨胀）；
 - **F2** 退行的两个观察者：Doppler 因子是结构，时间膨胀不是；未定速率恰好铺满 `(e^{−η}, e^{η})`，由标架快度参数化；
 - **F3** FRW：宇宙时由因果序决定 ⟺ 减速膨胀；Milne 是临界点；
@@ -29,13 +29,15 @@
 
 - **F14** σ 的局部读法：束缚对的速率比 = 互窗口之比（两座钟互相雷达测距的读数之比 = 红移因子，纯序恒等式）。
 
+- **F15** 分辨率改为分块（D18）：连续极限由鞅收敛保证；σ 由份额承载、不跑动；结构逐渐显现（对应形状因子）；纯几何只给幂律型的分辨率依赖。
+
 **清账（D16）**：框架不引入固定离散尺度，不预设背景流形；只有计数比。"离散"只表示每层记录可数，加密没有最细一层。能标 = 跨层计数比的对数，与 σ 同类型。
 
 与物理实在的逐条对应见 `docs/findings.md` 的"与物理实在的对应"一节。
 
 ## 怎么读
 0. [`docs/preprint-short.md`](docs/preprint-short.md) —— 短版预印本草稿（内禀写法，推荐先读）；
-0'. [`docs/refinement.md`](docs/refinement.md) —— B 的地基：离散而无尺度的加密系统（D16）；
+0'. [`docs/blocking.md`](docs/blocking.md) —— B 的地基：分辨率作为分块（D18，取代嵌入版）；[`docs/refinement.md`](docs/refinement.md) 为嵌入版对照；
 1. [`docs/design.md`](docs/design.md) —— 方案、分层、工作规则；
 2. [`docs/findings.md`](docs/findings.md) —— 结果与证据；
 3. [`register.md`](register.md) —— 假设、引用、撤回（一页）；
