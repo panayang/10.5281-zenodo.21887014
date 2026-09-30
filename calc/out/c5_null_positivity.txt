@@ -1,0 +1,4 @@
+outside the source, point r = 3, first order in M:
+  radial null k = (1, 1, 0, 0): R_kk = -2*M*(gamma_ppn - 1)/27
+  tangential null k = (1, 0, 1, 0): R_kk = M*(gamma_ppn - 1)/27
+R_kk >= 0 in both directions (M > 0) only for gamma_ppn = 1, where both vanish; any gamma != 1 defocuses one direction
