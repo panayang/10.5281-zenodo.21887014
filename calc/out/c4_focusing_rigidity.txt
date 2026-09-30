@@ -1,0 +1,8 @@
+flat FRW a = t^p:  R_tt (comoving axis) = -3*p*(p - 1)/t**2,  R = 6*p*(2*p - 1)/t**2,  deceleration q = -(p - 1)/p
+axis-dependent deficit part along the comoving axis R_tt/30 = -p*(p - 1)/(10*t**2)
+sign: R_tt > 0  <=>  p < 1  <=>  q > 0 (decelerating)  <=>  rigid (F3);  R_tt = 0 at p = 1 (critical, Milne-like);  R_tt < 0 for p > 1
+de Sitter (a = e^{Ht}): R_tt = -3 H^2 < 0 (accelerating, rates hidden)
+  p = 1/2: R_tt = 3/(4*t**2)
+  p = 2/3: R_tt = 2/(3*t**2)
+  p = 1: R_tt = 0
+  p = 2: R_tt = -6/t**2
