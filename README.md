@@ -23,6 +23,7 @@
 - **F19** 观察者之间频率一致 ⟺ 窗口比 → 0 ⟺ 速率是事实（锚点 1：宇宙学概率问题的合法性）；
 - **F20** 计数亏损 + P5（空处不区分自由方向）⟹ 内容必须改变序，外部 γ = 1，Λ 允许；源不能是记录数；
 - **F21** P5 独立于全部原则（偶然、可检验）；律本身不跑动，跑动只能来自内容。
+- **F29–F30** 量子的三个位置（原则给出不传信、不限制到量子；候选 P6 = 共存由成对决定）；物质个体 = 刚性内容族，框架产生界（表面速率比 ≥ 1/3）而不产生值。
 - **F22** 内容 = 计数亏损的方向依赖部分；其沿共动轴的聚焦 ⟺ 刚性（时间是事实）；**F23** 放宽后的团可在 D1 中表示；**F24** 框架是非上下文的，上下文性需要加细不有向。
 - 动力学（D23）：P2 + 没有最细层 + 宽度只向上 ⟹ 有序测度空间上的 Cox 型撒点（条件性）；(S, ≺, μ) 是偶然的律。
 
@@ -31,10 +32,11 @@
 与物理实在的逐条对应见 `docs/findings.md` 的"与物理实在的对应"一节。
 
 ## 怎么读
-0. [`docs/framework.md`](docs/framework.md) —— **框架陈述 v0.5（入口）**；[`docs/summary-2026-09-30.md`](docs/summary-2026-09-30.md) —— 阶段性总结；
+0. [`docs/framework.md`](docs/framework.md) —— **框架陈述 v0.5（入口）**；[`docs/assessment-2026-09-30.md`](docs/assessment-2026-09-30.md) —— 解释力与实用性的审视；[`docs/summary-2026-09-30.md`](docs/summary-2026-09-30.md) —— 阶段性总结；
 1. [`docs/design.md`](docs/design.md) —— §0 任务与实用性检验，其后为方案 v0.3；
 2. [`docs/review-2026-09-30.md`](docs/review-2026-09-30.md) —— 借来的词、局域性、测度与信息的重审；
-3. [`docs/anchor-measure.md`](docs/anchor-measure.md) —— 锚点 1：宇宙学概率问题的合法性（F19）；
+3. [`docs/anchor-measure.md`](docs/anchor-measure.md) —— 锚点 1：宇宙学概率问题的合法性（F19）；独立短文草稿 [`docs/note-cosmological-probabilities.md`](docs/note-cosmological-probabilities.md)；
+3'. [`docs/quantum.md`](docs/quantum.md)、[`docs/matter.md`](docs/matter.md) —— 量子与物质的位置；
 4. [`docs/dynamics.md`](docs/dynamics.md) —— 动力学：原则强制了什么（D1–D4，F20–F21）；
 5. [`docs/findings.md`](docs/findings.md) —— 结果与证据；[`register.md`](register.md) —— 假设、引用、撤回；[`docs/decisions.md`](docs/decisions.md) —— 决定与下一步；
 6. 背景与历史：[`docs/extension.md`](docs/extension.md)（扩张律）、[`docs/law.md`](docs/law.md)（规律住在什么对象上）、[`docs/blocking.md`](docs/blocking.md)（分块）、
