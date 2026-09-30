@@ -1,0 +1,5 @@
+deficit coefficient of tau^2 for an axis with relative Lorentz factor gamma to the dust: 4*pi*G*rho*(3*gamma**2 - 2)/45
+  static axis (gamma = 1): 4*pi*G*rho/45   (> 0: more records than the chain baseline)
+  it grows like gamma^2: the content's contribution depends on the axis through (u.w)^2 -- a two-index source, not a count
+  a scalar source (the number of content records, Lorentz invariant) would give an axis-independent (isotropic, Lambda-like) deficit
+  the ratio of the gamma^2 term to the constant term is fixed by conservation of content plus integrability (contracted Bianchi identity)
