@@ -1,0 +1,12 @@
+(i) mu only (conformally flat):  R = 0
+    axis static            : R_uu = 0,  deficit coefficient of tau^2 = 0
+    axis radial v=1/2      : R_uu = 4*M/81,  deficit coefficient of tau^2 = 2*M/1215
+    axis tangential v=1/2  : R_uu = -2*M/81,  deficit coefficient of tau^2 = -M/1215
+(ii) linearized Schwarzschild:  R = 0
+    axis static            : R_uu = 0,  deficit coefficient of tau^2 = 0
+    axis radial v=1/2      : R_uu = 0,  deficit coefficient of tau^2 = 0
+    axis tangential v=1/2  : R_uu = 0,  deficit coefficient of tau^2 = 0
+(iii) general gamma:  R = 0
+    axis static            : R_uu = 0,  deficit coefficient of tau^2 = 0
+    axis radial v=1/2      : R_uu = 2*M*(1 - gamma)/81,  deficit coefficient of tau^2 = M*(1 - gamma)/1215
+    axis tangential v=1/2  : R_uu = M*(gamma - 1)/81,  deficit coefficient of tau^2 = M*(gamma - 1)/2430
