@@ -1,0 +1,2 @@
+R_kk (tangential null, exact) = -2*Derivative(phi(r0), r0)/r0
+i.e. -2 phi'(r0)/r0: negative wherever phi' > 0, which is exactly where free processes fall inward (clocks slower inside)

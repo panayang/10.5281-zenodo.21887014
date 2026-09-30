@@ -1,0 +1,14 @@
+homothety: ds^2 after / before = lam**2   (should be lam^2)
+x-component of the homothety generator: x*(1 - p); vanishes for every x iff p = 1
+
+flat LCDM (Omega_m = 0.315): H t along the history (coasting would give H t = 1 always)
+  a =  0.1:  H t = 0.6671
+  a =  0.3:  H t = 0.6794
+  a =  0.5:  H t = 0.7214
+  a =  0.7:  H t = 0.7972
+  a =  0.9:  H t = 0.8967
+  a =  1.0:  H t = 0.9510
+  a =  1.2:  H t = 1.0620
+  a =  1.5:  H t = 1.2239
+  a =  2.0:  H t = 1.4639
+  H t = 1 at a = 1.088 (today a = 1); observed H0 t0 = 67.4 km/s/Mpc x 13.8 Gyr = 0.951

@@ -6,13 +6,8 @@
 **/*.toc
 **/*.xdv
 **/*.out
-arXiv-2509.08054v1.tar.gz
-arXiv-2510.26931v1.tar.gz
 **/*.fdb_latexmk
 **/*.fls
-paper/preprint/main.blg
-paper/preprint/main.bbl
-tools/__pycache__/sync_report.cpython-314.pyc
-paper/manuscript/cover_letter.pdf
-paper/manuscript/cover_letter.tex
-#SCD.lean#
+**/*.bbl
+**/*.blg
+**/__pycache__/

@@ -1,0 +1,10 @@
+[package]
+name = "scd-calc"
+version = "0.1.0"
+edition = "2021"
+description = "Compute-heavy checks for SCD v2 (outputs go to calc/out/)"
+
+[dependencies]
+
+[profile.release]
+opt-level = 3

@@ -1,0 +1,6 @@
+Minkowski at rest, T=400: chain lengths A=784, B=790; middle rate (B elements per A element) extremes 1.0218 .. 1.0218  spread 0.0000   [expected: rigid, rate 1]
+Minkowski receding eta=0.5, T=400: chain lengths A=786, B=800; middle rate (B elements per A element) extremes 0.5978 .. 1.6296  spread 1.0318   [expected: not rigid, extremes toward 0.607 .. 1.649]
+Minkowski at rest, T=1000: chain lengths A=1983, B=1987; middle rate (B elements per A element) extremes 0.9713 .. 1.0591  spread 0.0877   [expected: rigid, rate 1]
+Minkowski receding eta=0.5, T=1000: chain lengths A=1997, B=1998; middle rate (B elements per A element) extremes 0.6129 .. 1.6972  spread 1.0843   [expected: not rigid, extremes toward 0.607 .. 1.649]
+FRW a=t^0.5, chi=2.0: chain lengths A=2978, B=2943; middle rate (B elements per A element) extremes 0.9296 .. 1.0580  spread 0.1284   [expected: rigid, rate 1]
+FRW a=t^1.0, chi=0.5: chain lengths A=2983, B=2958; middle rate (B elements per A element) extremes 0.6849 .. 1.4099  spread 0.7250   [expected: not rigid, extremes toward 0.607 .. 1.649]

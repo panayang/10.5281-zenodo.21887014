@@ -1,0 +1,42 @@
+TP(p = 0.1) thinned with q = 1: 20000000 runs
+  P2 (3 elements, chain + isolated): {1<2} 0.08101  {1<3} 0.08097  {2<3} 0.08104   chi^2 = 0.5 (2 dof)
+  P2 (4 elements, all classes with several natural labellings): chi^2 = 19.5 for 24 dof
+  P3 Bell ratio P(past={1})/P(past={}): given {1}: 0.11112   given antichain {1,2}: 0.11107   given chain 1<2: 0.11123
+      relative differences from the {1} case: antichain -0.0004 (+- 0.0008), chain +0.0009 (+- 0.0025)
+  no signalling: P(new above 1 | {1}) = 0.10001   P(new above 1 | antichain {1,2}) = 0.09995
+
+TP(p = 0.3) thinned with q = 1: 20000000 runs
+  P2 (3 elements, chain + isolated): {1<2} 0.14705  {1<3} 0.14692  {2<3} 0.14707   chi^2 = 1.9 (2 dof)
+  P2 (4 elements, all classes with several natural labellings): chi^2 = 23.7 for 24 dof
+  P3 Bell ratio P(past={1})/P(past={}): given {1}: 0.42870   given antichain {1,2}: 0.42837   given chain 1<2: 0.42837
+      relative differences from the {1} case: antichain -0.0008 (+- 0.0007), chain -0.0008 (+- 0.0011)
+  no signalling: P(new above 1 | {1}) = 0.30007   P(new above 1 | antichain {1,2}) = 0.29988
+
+TP(p = 0.1) thinned with q = 0.5: 20000000 runs
+  P2 (3 elements, chain + isolated): {1<2} 0.08500  {1<3} 0.09300  {2<3} 0.08501   chi^2 = 9729.9 (2 dof)
+  P2 (4 elements, all classes with several natural labellings): chi^2 = 47047.0 for 24 dof
+  P3 Bell ratio P(past={1})/P(past={}): given {1}: 0.12317   given antichain {1,2}: 0.13292   given chain 1<2: 0.14828
+      relative differences from the {1} case: antichain +0.0792 (+- 0.0008), chain +0.2039 (+- 0.0021)
+  no signalling: P(new above 1 | {1}) = 0.10966   P(new above 1 | antichain {1,2}) = 0.11863
+
+TP(p = 0.3) thinned with q = 0.5: 20000000 runs
+  P2 (3 elements, chain + isolated): {1<2} 0.12781  {1<3} 0.15238  {2<3} 0.12772   chi^2 = 59412.8 (2 dof)
+  P2 (4 elements, all classes with several natural labellings): chi^2 = 216223.3 for 24 dof
+  P3 Bell ratio P(past={1})/P(past={}): given {1}: 0.57305   given antichain {1,2}: 0.60561   given chain 1<2: 0.81263
+      relative differences from the {1} case: antichain +0.0568 (+- 0.0007), chain +0.4181 (+- 0.0009)
+  no signalling: P(new above 1 | {1}) = 0.36429   P(new above 1 | antichain {1,2}) = 0.40331
+
+TP(p = 0.1) thinned with q = 0.25: 20000000 runs
+  P2 (3 elements, chain + isolated): {1<2} 0.09100  {1<3} 0.11850  {2<3} 0.09093   chi^2 = 100941.3 (2 dof)
+  P2 (4 elements, all classes with several natural labellings): chi^2 = 456341.3 for 24 dof
+  P3 Bell ratio P(past={1})/P(past={}): given {1}: 0.15331   given antichain {1,2}: 0.18709   given chain 1<2: 0.26674
+      relative differences from the {1} case: antichain +0.2204 (+- 0.0007), chain +0.7399 (+- 0.0016)
+  no signalling: P(new above 1 | {1}) = 0.13293   P(new above 1 | antichain {1,2}) = 0.16465
+
+TP(p = 0.3) thinned with q = 0.25: 20000000 runs
+  P2 (3 elements, chain + isolated): {1<2} 0.08724  {1<3} 0.12683  {2<3} 0.08722   chi^2 = 208096.0 (2 dof)
+  P2 (4 elements, all classes with several natural labellings): chi^2 = 632892.9 for 24 dof
+  P3 Bell ratio P(past={1})/P(past={}): given {1}: 0.92465   given antichain {1,2}: 0.88595   given chain 1<2: 1.86087
+      relative differences from the {1} case: antichain -0.0419 (+- 0.0009), chain +1.0125 (+- 0.0009)
+  no signalling: P(new above 1 | {1}) = 0.48043   P(new above 1 | antichain {1,2}) = 0.55661
+

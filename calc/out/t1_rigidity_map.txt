@@ -1,0 +1,59 @@
+
+== Minkowski, at rest, d = 20 (analytic F)   [expected: rigid at 1]
+N=  250  extremes 0.9867 .. 1.0165  (spread 0.0299)  | end rate -> middle: 0.800->0.9867, 1.000->1.0029, 1.250->1.0165
+N= 1000  extremes 1.0010 .. 1.0010  (spread 0.0000)  | end rate -> middle: 0.800->1.0010, 1.000->1.0010, 1.250->1.0010
+N= 4000  extremes 1.0002 .. 1.0003  (spread 0.0000)  | end rate -> middle: 0.800->1.0002, 1.000->1.0002, 1.250->1.0003
+
+== Minkowski, at rest, d = 20 (worldline solver, cross-check)   [expected: same as above]
+N=  250  extremes 0.9867 .. 1.0165  (spread 0.0299)
+N= 1000  extremes 1.0010 .. 1.0010  (spread 0.0000)
+
+== Minkowski, B oscillates (amplitude 3.0, speed amplitude 0.6)   [expected: rigid at <1/gamma> = 0.9028]
+N=  250  extremes 0.9083 .. 0.9083  (spread 0.0000)  | end rate -> middle: 0.700->0.9083, 0.900->0.9083, 1.100->0.9083
+N= 1000  extremes 0.9040 .. 0.9040  (spread -0.0000)  | end rate -> middle: 0.700->0.9040, 0.900->0.9040, 1.100->0.9040
+N= 2000  extremes 0.9035 .. 0.9035  (spread 0.0000)  | end rate -> middle: 0.700->0.9035, 0.900->0.9035, 1.100->0.9035
+
+== static pair, redshift 0.8 (lapse ratio a2/a1)   [expected: rigid at 0.8]
+N=  250  extremes 0.7903 .. 0.8111  (spread 0.0208)  | end rate -> middle: 0.700->0.7903, 0.800->0.8016, 1.200->0.8111
+N= 1000  extremes 0.8006 .. 0.8006  (spread 0.0000)  | end rate -> middle: 0.700->0.8006, 0.800->0.8006, 1.200->0.8006
+N= 4000  extremes 0.8001 .. 0.8001  (spread 0.0000)  | end rate -> middle: 0.700->0.8001, 0.800->0.8001, 1.200->0.8001
+
+== receding, rapidity 0.25   [expected: not rigid; extremes -> e^-eta = 0.7788, e^eta = 1.2840]
+N=  250  extremes 0.8850 .. 1.1376  (spread 0.2526)  | end rate -> middle: 0.882->0.9225, 1.000->1.0021, 1.133->1.0935
+N= 1000  extremes 0.8355 .. 1.2033  (spread 0.3678)  | end rate -> middle: 0.882->0.8939, 1.000->1.0001, 1.133->1.1218
+N= 4000  extremes 0.8079 .. 1.2421  (spread 0.4342)  | end rate -> middle: 0.882->0.8853, 1.000->1.0000, 1.133->1.1302
+
+== receding, rapidity 0.5   [expected: not rigid; extremes -> e^-eta = 0.6065, e^eta = 1.6487]
+N=  250  extremes 0.6969 .. 1.4636  (spread 0.7667)  | end rate -> middle: 0.779->0.7985, 1.000->1.0005, 1.284->1.2652
+N= 1000  extremes 0.6541 .. 1.5495  (spread 0.8954)  | end rate -> middle: 0.779->0.7837, 1.000->1.0000, 1.284->1.2790
+N= 4000  extremes 0.6309 .. 1.5975  (spread 0.9666)  | end rate -> middle: 0.779->0.7802, 1.000->1.0000, 1.284->1.2827
+
+== receding, rapidity 1.0   [expected: not rigid; extremes -> e^-eta = 0.3679, e^eta = 2.7183]
+N=  250  extremes 0.4304 .. 2.4363  (spread 2.0058)  | end rate -> middle: 0.607->0.6138, 1.000->1.0001, 1.649->1.6426
+N= 1000  extremes 0.4015 .. 2.5676  (spread 2.1661)  | end rate -> middle: 0.607->0.6085, 1.000->1.0000, 1.649->1.6466
+N= 4000  extremes 0.3852 .. 2.6405  (spread 2.2553)  | end rate -> middle: 0.607->0.6071, 1.000->1.0000, 1.649->1.6481
+
+== FRW a = t^0.5, comoving, chi = 2.0   [expected: rigid (slowly)]
+N=  250  extremes 0.9539 .. 1.0482  (spread 0.0943)  | end rate -> middle: 0.800->0.9539, 1.000->1.0025, 1.250->1.0482
+N= 1000  extremes 0.9805 .. 1.0202  (spread 0.0398)  | end rate -> middle: 0.800->0.9805, 1.000->1.0007, 1.250->1.0202
+N= 4000  extremes 0.9908 .. 1.0094  (spread 0.0185)  | end rate -> middle: 0.800->0.9908, 1.000->1.0002, 1.250->1.0094
+
+== FRW a = t^0.667, comoving, chi = 2.0   [expected: rigid (slowly)]
+N=  250  extremes 0.7600 .. 1.2842  (spread 0.5242)  | end rate -> middle: 0.800->0.8091, 1.000->1.0000, 1.250->1.2368
+N= 1000  extremes 0.8404 .. 1.1794  (spread 0.3389)  | end rate -> middle: 0.800->0.8404, 1.000->1.0000, 1.250->1.1794
+N= 4000  extremes 0.8921 .. 1.1167  (spread 0.2246)  | end rate -> middle: 0.800->0.8921, 1.000->1.0000, 1.250->1.1167
+
+== FRW a = t^1, comoving, chi = 0.5   [expected: critical: extremes -> e^-chi, e^chi]
+N=  250  extremes 0.6671 .. 1.5106  (spread 0.8435)  | end rate -> middle: 0.800->0.8067, 1.000->1.0002, 1.250->1.2442
+N= 1000  extremes 0.6465 .. 1.5619  (spread 0.9154)  | end rate -> middle: 0.800->0.8019, 1.000->1.0000, 1.250->1.2476
+N= 4000  extremes 0.6290 .. 1.6007  (spread 0.9717)  | end rate -> middle: 0.800->0.8005, 1.000->1.0000, 1.250->1.2494
+
+== FRW a = t^1.5, comoving, chi = 0.05   [expected: not rigid (horizon)]
+N=  250  extremes 0.6256 .. 1.9059  (spread 1.2804)  | end rate -> middle: 0.800->0.8184, 1.000->1.0006, 1.250->1.2305
+N= 1000  extremes 0.4122 .. 2.8280  (spread 2.4157)  | end rate -> middle: 0.800->0.8043, 1.000->1.0000, 1.250->1.2447
+N= 4000  extremes 0.2221 .. 2.9629  (spread 2.7408)  | end rate -> middle: 0.800->0.8011, 1.000->1.0000, 1.250->1.2487
+
+== de Sitter, H = 0.002, comoving, horizon at tau = 1000   [expected: windows grow then become infinite: not rigid]
+N=  250  extremes 0.6140 .. 1.4639  (spread 0.8499)  | end rate -> middle: 0.800->0.7992, 1.000->1.0000, 1.250->1.2530
+N= 1000  extremes 0.7283 .. 1.4110  (spread 0.6827)  | end rate -> middle: 0.800->0.8007, 1.000->1.0000, 1.250->1.2489
+N= 4000  extremes 0.4704 .. 2.6624  (spread 2.1920)  | end rate -> middle: 0.800->0.8005, 1.000->1.0000, 1.250->1.2494

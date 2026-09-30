@@ -1,0 +1,13 @@
+check, constant h = a^2 = 0.01, U = 2: numerical 6.349288e-06   closed form a^4 U^4 / 252 = 6.349206e-06
+oscillating h = 0.02 cos(u):  U,  Vol/Vol0 - 1,  divided by eps^2 U^2,  divided by eps^2 U^4
+  U =   0.25    6.0914e-09    2.4366e-04    3.8985e-03
+  U =   0.50    9.2380e-08    9.2380e-04    3.6952e-03
+  U =   1.00    1.1868e-06    2.9671e-03    2.9671e-03
+  U =   2.00    7.3014e-06    4.5634e-03    1.1408e-03
+  U =   5.00    3.4095e-04    3.4095e-02    1.3638e-03
+  U =  10.00    1.6260e-03    4.0651e-02    4.0651e-04
+  U =  20.00    5.7366e-03    3.5854e-02    8.9635e-05
+  U =  40.00    2.2402e-02    3.5004e-02    2.1877e-05
+  U =  80.00    9.7770e-02    3.8191e-02    5.9674e-06
+for omega U << 1 the ratio / U^4 is constant (local tidal, quartic in the axis); for omega U >> 1 the ratio / U^2 tends to a constant:
+an averaged, non-running tau^2 coefficient scaling like U^2 ~ e^{2 eta} -- quadratic in the axis, like content (Isaacson-type effective content)

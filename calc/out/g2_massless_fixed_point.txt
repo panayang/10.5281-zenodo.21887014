@@ -1,0 +1,13 @@
+conditional mean of sigma around content on a 41^3 lattice; fit log(r|sigma|) = c - r/lambda
+  m^2 = 0.000: fitted screening length    14.00  (slope -0.0715; Yukawa length 1/m = inf)
+  m^2 = 0.010: fitted screening length     8.81  (slope -0.1135; Yukawa length 1/m = 10.00)
+  m^2 = 0.040: fitted screening length     4.96  (slope -0.2018; Yukawa length 1/m = 5.00)
+
+coarse-graining by 2x2x2 blocks: the same continuum field on a lattice with spacing doubled
+(a mass m in fine units is m * 2 in coarse units; the screening length in lattice units halves)
+  fine m^2 = 0.00, level 0: m^2 in lattice units  0.000, screening length    14.00 lattice units
+  fine m^2 = 0.00, level 1: m^2 in lattice units  0.000, screening length    14.35 lattice units
+  fine m^2 = 0.00, level 2: m^2 in lattice units  0.000, screening length    14.43 lattice units
+  fine m^2 = 0.01, level 0: m^2 in lattice units  0.010, screening length     8.81 lattice units
+  fine m^2 = 0.01, level 1: m^2 in lattice units  0.040, screening length     4.96 lattice units
+  fine m^2 = 0.01, level 2: m^2 in lattice units  0.160, screening length     2.51 lattice units

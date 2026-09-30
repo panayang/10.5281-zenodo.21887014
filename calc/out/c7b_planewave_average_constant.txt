@@ -1,0 +1,8 @@
+     eps        U    <ratio>/(eps^2 U^2) over 8 phases     spread
+   0.005    31.42                             0.034313   2.36e-05
+   0.005    62.83                             0.033741   1.86e-06
+   0.005   125.66                             0.034038   1.40e-07
+   0.010    31.42                             0.034438   2.37e-05
+   0.010    62.83                             0.034229   1.87e-06
+   0.010   125.66                             0.036128   1.44e-07
+the phase-averaged constant is independent of U and eps: the averaged tidal excess is a non-running tau^2 coefficient

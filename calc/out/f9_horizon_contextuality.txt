@@ -1,0 +1,7 @@
+self-test: GYO reduction ok
+d=1 k=8 spread=1.5: 50000 covers (0 undecided); alpha-acyclic 50000 (100.00%); with a hollow triangle 0
+d=1 k=12 spread=2.5: 50000 covers (0 undecided); alpha-acyclic 50000 (100.00%); with a hollow triangle 0
+d=2 k=8 spread=1.2: 50000 covers (0 undecided); alpha-acyclic 36430 (72.86%); with a hollow triangle 10191
+d=2 k=12 spread=1.8: 50000 covers (0 undecided); alpha-acyclic 31483 (62.97%); with a hollow triangle 13728
+d=3 k=8 spread=1: 50000 covers (0 undecided); alpha-acyclic 28719 (57.44%); with a hollow triangle 17451
+d=3 k=12 spread=1.4: 50000 covers (0 undecided); alpha-acyclic 25624 (51.25%); with a hollow triangle 19707

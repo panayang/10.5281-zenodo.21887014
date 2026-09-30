@@ -1,0 +1,20 @@
+(a) frame map s(phi) = cosh(phi)/cosh(eta-phi)
+    ds/dphi - sinh(eta)/cosh^2(eta-phi) simplifies to: 0
+    limits: phi -> -oo: exp(-eta),  phi -> +oo: exp(eta)
+
+(b) extreme middle rates of the uniform order-invariant measure, fit a + b N^-1/2
+eta=0.25: lower ['0.8571', '0.8355', '0.8196', '0.8079', '0.7995'] -> 0.7800  (e^-eta = 0.7788)
+         upper ['1.1740', '1.2033', '1.2256', '1.2421', '1.2541'] -> 1.2816  (e^eta  = 1.2840)
+eta=0.5: lower ['0.6725', '0.6541', '0.6407', '0.6309', '0.6239'] -> 0.6075  (e^-eta = 0.6065)
+         upper ['1.5122', '1.5495', '1.5773', '1.5975', '1.6122'] -> 1.6461  (e^eta  = 1.6487)
+eta=1.0: lower ['0.4140', '0.4015', '0.3921', '0.3852', '0.3803'] -> 0.3688  (e^-eta = 0.3679)
+         upper ['2.5108', '2.5676', '2.6097', '2.6405', '2.6628'] -> 2.7143  (e^eta  = 2.7183)
+
+(c) end on the slice of frame phi; middle rate vs s(phi)   [eta = 0.5, N = 4000]
+phi=-1.50: s(phi)=0.6253  middle=0.6369
+phi=-0.50: s(phi)=0.7308  middle=0.7328
+phi=+0.00: s(phi)=0.8868  middle=0.8875
+phi=+0.25: s(phi)=1.0000  middle=1.0000
+phi=+0.50: s(phi)=1.1276  middle=1.1272
+phi=+1.00: s(phi)=1.3684  middle=1.3661
+phi=+2.00: s(phi)=1.5993  middle=1.5799

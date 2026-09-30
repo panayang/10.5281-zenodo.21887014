@@ -1,0 +1,7 @@
+check of E'' = B n R^(-n-2) (m - n) at equilibrium: residual 0
+stable iff d (Gamma - 1) > d - 2, i.e. Gamma > 2 - 2/d
+  d = 3: Gamma > 4/3
+  d = 4: Gamma > 3/2
+  d = 5: Gamma > 8/5
+d = 3: radiation-like content (Gamma = 4/3) is exactly marginal; relativistic corrections raise the threshold
+(Chandrasekhar: Gamma > 4/3 + O(GM/Rc^2)), so no stable individual is arbitrarily compact

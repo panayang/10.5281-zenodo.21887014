@@ -1,0 +1,5 @@
+de Sitter: V/V0 - 1 = -H**2*tau**2/6  (to order H^2)
+Einstein static: V/V0 - 1 = -tau**2/(30*A**2)  (leading order)
+coefficients: V = V0 [1 + tau^2 (-1/180 R + 1/30 R_uu)]
+a/b = -1/6; an Einstein space R_ab = L g_ab passes 'no correction for every u' only if a/b = 1/4
+so: correction = 0 for every timelike u  <=>  R_ab u^a u^b = -(a/b) R for all unit u  <=>  R_ab = 0

@@ -1,0 +1,11 @@
+radial infall from rest at r0 = 20M (Newtonian deviation equations, units G = c = M = 1)
+       r  radial xi/xi0  tangential xi/xi0
+   20.00         1.0000             1.0000
+   14.93         1.5877             0.7466
+   10.00         2.4285             0.4999
+    7.04         3.2288             0.3519
+    4.98         4.1061             0.2490
+    4.00         4.7214             0.2000
+radial pairs separate (defocusing tides: rates hidden, like F2); tangential pairs converge (focusing: toward rigidity)
+a circular-orbit pair at fixed separation is bound (F1). One and the same content gives all three regimes, by direction:
+the pair criterion depends on the tidal (Weyl) direction, while the family average (sum of K = R_uu = 0 here) is set by content
