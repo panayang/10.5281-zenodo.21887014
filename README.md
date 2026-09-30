@@ -12,7 +12,7 @@
 没有预设的全局事件集、全局时间、全局 σ 场或全局态；它们只在可合并的区域作为**结论**出现。
 
 ## 现状
-**阶段性总结见 [`docs/summary-2026-09-30.md`](docs/summary-2026-09-30.md)（先读这个）。**
+**框架的统一陈述见 [`docs/framework.md`](docs/framework.md)（先读这个）；阶段性总结见 [`docs/summary-2026-09-30.md`](docs/summary-2026-09-30.md)。**
 
 任务（D22）：地位 + 强制/偶然 + 辨认；不以推出已知物理为任务，但须过实用性检验。二十一条结果（[`docs/findings.md`](docs/findings.md)），摘要：
 - **F1–F6** 束缚 ⟺ 速率是序的事实；退行时速率隐藏在快度区间内；多观察者的隐藏参数是渐近切片；只用序数据依然成立（F6 条件性）；
@@ -31,7 +31,7 @@
 与物理实在的逐条对应见 `docs/findings.md` 的"与物理实在的对应"一节。
 
 ## 怎么读
-0. [`docs/summary-2026-09-30.md`](docs/summary-2026-09-30.md) —— 阶段性总结；
+0. [`docs/framework.md`](docs/framework.md) —— **框架陈述 v0.5（入口）**；[`docs/summary-2026-09-30.md`](docs/summary-2026-09-30.md) —— 阶段性总结；
 1. [`docs/design.md`](docs/design.md) —— §0 任务与实用性检验，其后为方案 v0.3；
 2. [`docs/review-2026-09-30.md`](docs/review-2026-09-30.md) —— 借来的词、局域性、测度与信息的重审；
 3. [`docs/anchor-measure.md`](docs/anchor-measure.md) —— 锚点 1：宇宙学概率问题的合法性（F19）；
@@ -39,7 +39,8 @@
 5. [`docs/findings.md`](docs/findings.md) —— 结果与证据；[`register.md`](register.md) —— 假设、引用、撤回；[`docs/decisions.md`](docs/decisions.md) —— 决定与下一步；
 6. 背景与历史：[`docs/extension.md`](docs/extension.md)（扩张律）、[`docs/law.md`](docs/law.md)（规律住在什么对象上）、[`docs/blocking.md`](docs/blocking.md)（分块）、
    [`docs/gravity-directions.md`](docs/gravity-directions.md)（引力方向，部分撤回）、[`docs/overnight-2026-09-29.md`](docs/overnight-2026-09-29.md)、[`docs/review-2026-09-29.md`](docs/review-2026-09-29.md)、
-   [`docs/preprint-short.md`](docs/preprint-short.md)（短版草稿，早于 30 日的重审）、[`docs/glossary.md`](docs/glossary.md)。
+   [`docs/content.md`](docs/content.md)（内容）、[`docs/contextuality.md`](docs/contextuality.md)（上下文性）、[`docs/identification.md`](docs/identification.md)（辨认）、
+   [`docs/preprint-short.md`](docs/preprint-short.md)（短版草稿，早于 30 日的重审，已被 framework.md 取代）、[`docs/glossary.md`](docs/glossary.md)。
 
 ## 复现
 ```
