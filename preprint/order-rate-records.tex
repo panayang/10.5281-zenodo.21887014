@@ -25,16 +25,18 @@
 
 \title{Order, Rate and Records:\\[2pt]
 \large what a relational record structure forces,\\ and what it leaves contingent}
-\author{[Author list to be decided]\\[2pt]\small Draft, 30 September 2026}
+\author{Xinyu Yang\\[2pt]
+\small ORCID: \href{https://orcid.org/0009-0007-2600-0948}{0009-0007-2600-0948}\\[2pt]
+\small Draft, 30 September 2026}
 \date{}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We study physics from the standpoint of a recorder inside the system, with no global context: records and laws are global, completed totalities and samples are local, following a base theory of worlds without global gluing (p-ZFC). The only primitives are records, their causal order, worlds (causal pasts) and two kinds of extension (adding records above a world; refining it). Four principles are used: records are not disturbed by later recording, individuation carries no information, there is no finest level of resolution, and only ratios are observable. Locality is \emph{not} assumed; its degree is a measured property of a law.
+We study physics from the standpoint of a recorder inside the system, with no global context: records and laws are global, completed totalities and samples are local, following a base theory of worlds without global gluing (p-ZFC) \cite{pzfc}. The only primitives are records, their causal order, worlds (causal pasts) and two kinds of extension (adding records above a world; refining it). Four principles are used: records are not disturbed by later recording, individuation carries no information, there is no finest level of resolution, and only ratios are observable. Locality is \emph{not} assumed; its degree is a measured property of a law.
 
-The task is not to derive known physics but to classify: which statements are record facts, which are properties of the law, which are local completions; which features are forced and which are contingent. We show that the principles force the law to be a Cox-type sprinkling on an ordered measure space (conditionally, via Mecke's characterisation and the Janson/Kallenberg representations), so that sequential-growth laws cannot be fundamental and the law itself does not run under coarse-graining. Relative clock rates are facts of the order exactly when the window ratio of the pair vanishes (in particular for bound pairs); cosmic time is a fact exactly in decelerating expansion; two observers agree on all cosmological frequencies iff their radar-window ratio vanishes, which is the same condition, and absence of event horizons is not enough. A count deficit of small intervals (records versus longest chain) defines content intrinsically; if empty regions do not distinguish directions, the vacuum is an Einstein space with $\Lambda$ allowed and $\gamma=\beta=1$, while every static measure-only (conformally flat) attracting law defocuses some fast free process. For quantum phenomena the principles give no-signalling and nothing more; a single contingent principle, that combinatorial relations among possible records are decided by pairs, covers Specker's condition (hence Tsirelson-type bounds and the theta body) and the absence of third-order interference. Individuals are content families with bounded windows, and the framework yields universal bounds (for example, a static body's surface clocks run at least $1/3$ as fast as distant ones) rather than values. We state plainly what the framework does not do: it makes no new numerical prediction, and this is proved within it.
+The task is not to derive known physics but to classify: which statements are record facts, which are properties of the law, which are local completions; which features are forced and which are contingent. We show that the principles force the law to be a Cox-type sprinkling on an ordered measure space (conditionally, via Mecke's characterisation and the Janson/Kallenberg representations), so that sequential-growth laws cannot be fundamental and the law itself does not run under coarse-graining. Relative clock rates are facts of the order exactly when the window ratio of the pair vanishes (in particular for bound pairs); cosmic time is a fact exactly in decelerating expansion; two observers agree on all cosmological frequencies iff their radar-window ratio vanishes, which is the same condition, and absence of event horizons is not enough. Under horizons, which events can be recorded together is governed by Helly and Wegner theorems, and horizon-induced contextuality needs two spatial dimensions; under changes of resolution, rate ratios do not run while content does. A count deficit of small intervals (records versus longest chain) defines content intrinsically; if empty regions do not distinguish directions, the vacuum is an Einstein space with $\Lambda$ allowed and $\gamma=\beta=1$, while every static measure-only (conformally flat) attracting law defocuses some fast free process. For quantum phenomena the principles give no-signalling and nothing more; a single contingent principle, that combinatorial relations among possible records are decided by pairs, covers Specker's condition (hence Tsirelson-type bounds and the theta body) and the absence of third-order interference. Individuals are content families with bounded windows, and the framework yields universal bounds (for example, a static body's surface clocks run at least $1/3$ as fast as distant ones) rather than values. We state plainly what the framework does not do: it makes no new numerical prediction, and this is proved within it.
 \end{abstract}
 
 \tableofcontents
@@ -55,7 +57,7 @@ Every result is subjected to a usefulness test: who can use it to decide or comp
 
 \paragraph{Relation to causal set theory.} The primitives resemble those of causal sets \cite{blms}, but the stance differs in three ways: there is no fixed discreteness scale (records are countable at every resolution, but resolution has no finest level); no background manifold is given; and locality (Bell causality) is not a principle. The payoffs are a reason for sprinkling that does not presuppose Lorentz invariance or a manifold, an explanation of why sequential growth fails, and a set of status results with no counterpart in that literature.
 
-\paragraph{Summary of results.} Section~\ref{sec:rep} proves (conditionally) that the principles force a Cox-type sprinkling on an ordered measure space. Section~\ref{sec:status} collects status results on rigidity and cosmic time. Section~\ref{sec:freq} gives an exact criterion for when observers agree on cosmological frequencies. Section~\ref{sec:gravity} defines content by counts and derives the vacuum structure under one contingent principle. Section~\ref{sec:quantum} locates quantum contextuality. Section~\ref{sec:matter} treats individuals and universal bounds. Section~\ref{sec:assess} assesses explanatory power and usefulness. Numerical checks are listed in Appendix~\ref{app:numerics}; all scripts are in the accompanying repository.
+\paragraph{Summary of results.} Section~\ref{sec:rep} proves (conditionally) that the principles force a Cox-type sprinkling on an ordered measure space. Section~\ref{sec:status} collects status results on rigidity, cosmic time, confluence and coexistence under horizons. Section~\ref{sec:resolution} treats resolution, Section~\ref{sec:extension} the extension law. Section~\ref{sec:freq} gives an exact criterion for when observers agree on cosmological frequencies. Section~\ref{sec:gravity} defines content by counts and derives the vacuum structure under one contingent principle. Section~\ref{sec:quantum} locates quantum contextuality. Section~\ref{sec:matter} treats individuals and universal bounds. Section~\ref{sec:assess} assesses explanatory power and usefulness. Numerical checks are listed in Appendix~\ref{app:numerics}; all scripts are in the accompanying repository.
 
 %======================================================================
 \section{Primitives and principles}\label{sec:prim}
@@ -92,17 +94,17 @@ w(X,Y)=\frac{1}{\mu(X)\mu(Y)}\iint_{X\times Y} W\,d\mu\,d\mu .
 
 (b) \emph{Mecke's theorem.} If a locally finite point process $\xi$ is, for every $p\in(0,1)$, the $p$-thinning of some $\xi_p$, then $\E e^{-\xi f}=\E\exp(-\xi_p g_p)$ with $g_p=-\log(1-p(1-e^{-f}))$. Put $\eta_p=p\,\xi_p$; then $\xi_p g_p=\eta_p(g_p/p)$ and $g_p/p\to 1-e^{-f}$ uniformly. Given $\xi_p(B)$, $\xi(B)$ is binomial, so tightness of $\xi(B)$ implies tightness of $\eta_p(B)$. A vague subsequential limit $\Lambda$ gives $\E e^{-\xi f}=\E\exp(-\Lambda(1-e^{-f}))$: $\xi$ is Cox with intensity $\Lambda$ \cite{mecke,kallenbergRM}.
 
-(c) \emph{Relations.} In a world of finite measure, the relation matrix is exchangeable (P2) and infinitely extendable (P4), hence a mixture of kernel random posets \cite{janson}; every such limit can be represented on $[0,1]$ with its standard order \cite{hladky}, so a hidden linear order is always available as a \emph{choice} of representation. The $\sigma$-finite case is obtained by first taking the directed limit of the (canonical, unlabelled) laws of records over worlds, then applying Kallenberg's representation of exchangeable random measures in the plane \cite{kallenberg90}, i.e.\ the graphex representation \cite{veitchroy,borgs}, which is exactly the class consistent under vertex sampling \cite{veitchroy19}. In partial orders the extra graphex terms are isolated two-chains and stars whose centres have no kernel relations on the leaf side; for sharp, manifold-like laws both vanish.
+(c) \emph{Relations.} In a world of finite measure, the relation matrix is exchangeable (P2) and infinitely extendable (P4), hence (de Finetti--Aldous--Hoover \cite{aldous,hoover}) a mixture of kernel random posets \cite{janson}; every such limit can be represented on $[0,1]$ with its standard order \cite{hladky}, so a hidden linear order is always available as a \emph{choice} of representation. The $\sigma$-finite case is obtained by first taking the directed limit of the (canonical, unlabelled) laws of records over worlds, then applying Kallenberg's representation of exchangeable random measures in the plane \cite{kallenberg90}, i.e.\ the graphex representation \cite{veitchroy,borgs}, which is exactly the class consistent under vertex sampling \cite{veitchroy19}. In partial orders the extra graphex terms are isolated two-chains and stars whose centres have no kernel relations on the leaf side; for sharp, manifold-like laws both vanish.
 \end{proof}
 
 \begin{remark}
-Sprinkling is forced without bringing back a scale: the Cox intensity is random and appears only through ratios. The space $(S,\prec,\mu)$ is not a stage but the de Finetti-type representation of the law; it exists only within a confluent branch, which is the same fact that makes cross-horizon frequencies meaningless (Section~\ref{sec:freq}).
+Causal set theory motivates Poisson sprinkling by Lorentz invariance \cite{bhs} and by optimal number--volume correspondence, with a given manifold. Here sprinkling is forced without bringing back a scale: the Cox intensity is random and appears only through ratios. The space $(S,\prec,\mu)$ is not a stage but the de Finetti-type representation of the law; it exists only within a confluent branch, which is the same fact that makes cross-horizon frequencies meaningless (Section~\ref{sec:freq}).
 \end{remark}
 
 \subsection{Consequences}
 
 \begin{corollary}[Sequential growth is not fundamental]
-Classical sequential growth laws \cite{rideoutsorkin} are width-only laws; they are not closed under sparsification. Numerically, transitive percolation thinned by $q$ is not transitive percolation for any parameter ($\chi^2$ in the thousands), covariance and Bell causality fail after thinning, and the influence of the hidden gap on coarse relations grows with scale separation (relative spread $0.07\to1.48$ as $1/q$ goes from $2$ to $64$). This is consistent with, and explains, the result that no such law approximates Minkowski space in dimension $\ge2$ \cite{brightwellgeorgiou}.
+Classical sequential growth laws \cite{rideoutsorkin} are width-only laws; they are not closed under sparsification. Numerically, transitive percolation thinned by $q$ is not transitive percolation for any parameter ($\chi^2$ in the thousands), covariance and Bell causality fail after thinning, and the influence of the hidden gap on coarse relations grows with scale separation (relative spread $0.07\to1.48$ as $1/q$ goes from $2$ to $64$). This is consistent with, and explains, the result that no such law approximates Minkowski space in dimension $\ge2$ \cite{brightwellgeorgiou}. (Cosmic renormalisation by posts has transitive percolation as its fixed line \cite{martin}; sparsification is a different coarse-graining, under which it is not a fixed point.)
 \end{corollary}
 
 \begin{corollary}[The law does not run]
@@ -110,29 +112,97 @@ Under sparsification and blocking every law of Theorem~\ref{thm:rep} is a fixed 
 \end{corollary}
 
 \begin{proposition}[What remains contingent]
-$(S,\prec,\mu)$ itself is not constrained by the principles. Translation homogeneity gives orders from closed convex cones; isotropy selects the Lorentz cone; the dimension is not forced.
+$(S,\prec,\mu)$ itself is not constrained by the principles. Translation homogeneity gives orders from closed convex cones; isotropy selects the Lorentz cone (whose order automorphisms are Poincar\'e transformations and dilations \cite{zeeman}, and whose causal order fixes the conformal geometry \cite{malament,hkm}); the dimension is not forced. The hidden-rapidity result does not force isotropy either: diagonal scalings of an orthant cone also change relative rates.
 \end{proposition}
 
 %======================================================================
-\section{Status results: rigidity and cosmic time}\label{sec:status}
+\section{Status results: rigidity, cosmic time and horizons}\label{sec:status}
 
-These results concern two or more processes and the windows between them \cite{pzfc}; the mathematical baseline is the theory of order-invariant measures on natural extensions \cite{brightwellluczak}.
+These results concern two or more processes and the windows between them. The underlying theorem is the hidden-rate theorem of \cite{pzfc}: for partially exchangeable processes the only hidden global parameters beyond the trace are asymptotic rates, present iff the synchronisation is scale-free. The mathematical baseline is the theory of order-invariant measures on natural extensions \cite{brightwellluczak}; the rate statements reduce to the geometry of windows, and their value lies in the correspondences.
 
 \begin{proposition}[Rigidity dichotomy]\label{prop:rigid}
-For two processes with windows $W(t)$ and elapsed ticks $t$, put $\rho=W/t$. If $\rho\to0$ (under a concave-envelope condition) the relative rate is a fact of the order; if $\liminf\rho>0$ a whole interval of rates is consistent with the order. For a receding inertial pair the surviving rates fill exactly $(e^{-\eta},e^{\eta})$, parametrised by the frame rapidity; for three or more processes the hidden parameters are asymptotic slicings.
+For two processes with windows $W(t)$ and elapsed ticks $t$, put $\rho=W/t$. If $\rho\to0$ (under a concave-envelope condition) the relative rate is a fact of the order; if $\liminf\rho>0$ a whole interval of rates is consistent with the order. For a receding inertial pair the surviving rates fill exactly $(e^{-\eta},e^{\eta})$, parametrised by the frame rapidity: the Doppler factor is structural, time dilation is not. Bound pairs (bounded windows) are rigid.
+\end{proposition}
+
+\begin{proposition}[Several processes]
+For three or more pairwise receding processes the hidden parameters form a rate polytope whose dimension is the number of scale-free edges of the synchronisation graph. They are asymptotic slicings (the asymptotic part of many-fingered time), of which inertial frames are the linear special case. Numerically, for three inertial observers with rapidities $0$, $0.5$, $1$ the hidden rates are two-dimensional: end-point constraints off the inertial curve are reproduced in the middle (for example $(1.1276,1.30)\to(1.1273,1.2899)$ at $N=240$); when two of them are at rest the bound rate locks and one parameter remains.
 \end{proposition}
 
 \begin{proposition}[Local reading of rates]
-For a bound pair the rate ratio equals the ratio of mutual windows (a pure order identity; it is the redshift factor).
+For a bound pair the rate ratio equals the ratio of mutual windows, a pure order identity; it is the redshift factor of two clocks that radar-range each other.
 \end{proposition}
 
-\begin{proposition}[Cosmic time]
-In flat FRW with $a\propto t^p$, comoving processes are rigid iff $p<1$ (deceleration); $p=1$ (coasting, Milne) is critical. Worlds being causal pasts, confluence of worlds holds iff there is no event horizon.
+\begin{proposition}[Order data alone; a consistency check at fixed density]
+In sprinkled causal diamonds, taking the longest chain in each observer's diamond as its worldline and reading all relations from the order, the rigidity map persists: receding pairs are non-rigid with extremes close to $e^{\mp\eta}$ ($0.613$ and $1.697$ for $\eta=0.5$), static and decelerating pairs are rigid ($W/m\to0$). On a single sprinkling, nearby longest chains coalesce and share events when their separation is below the fluctuation scale (shared fraction $0.12\to0.81$ at separation $20$ as the duration grows from $250$ to $4000$), a geodesic-coalescence effect of last-passage type. This check uses a fixed density and serves only as a consistency test.
 \end{proposition}
+
+\begin{theorem}[Cosmic time, confluence and modal logic]\label{thm:frw}
+In spatially flat FRW with scale factor $a(t)$:
+(i) any two events have a common future iff conformal time is unbounded to the future iff there is no event horizon, $\int^\infty dt/a=\infty$; for $a\propto t^p$ iff $p\le1$.
+(ii) The comoving synchronisation window is $W(t)=2\chi a(t)(1+o(1))$, so comoving rates are facts of the order iff $a(t)/t\to0$; for power laws iff $p<1$.
+(iii) Rigidity implies confluence, but not conversely (Milne). Hence three strict levels:
+\begin{center}\small
+\begin{tabular}{llll}\toprule
+universe & rates & records (confluence) & modal logic of the order\\\midrule
+decelerating ($p<1$) & fixed by the order & confluent & S4.2\\
+Milne / coasting ($p=1$) & hidden & confluent & S4.2\\
+accelerating ($p>1$), de Sitter & hidden & not confluent (horizon) & S4 (in $1+1$)\\\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+\begin{proof}[Proof sketch]
+The causal order is the Minkowski order restricted to $\{\eta<\eta_{\max}\}$; the earliest common future of $u$, $v$ is at $\eta=(\eta_u+\eta_v+|x_u-x_v|)/2$. From $dt/d\eta=a$, $t_\pm=t\pm\chi a(t)+O(\chi^2)$. If $a=o(t)$ then eventually $1/a\ge c/t$ and $\int dt/a$ diverges. The logic of the Minkowski causal order is S4.2 \cite{goldblatt}; for the chronological and ``after'' modalities see \cite{shapirovsky,lewisschaaf}; the half-plane $\{t<0\}$ has logic S4 in $1+1$ dimensions. Numerically $W$ agrees with $2\chi a(t)$ to three digits.
+\end{proof}
+
+In the language of \cite{pzfc}: forcing extensions have modal logic S4.2 (possibilities converge, objects need not); here S4.2 is ``no event horizon'', and the strict hierarchy of globality is rigid $\subset$ confluent $\subset$ general. Our universe, now accelerating, lives asymptotically in the level where records do not glue globally, and there the final answer to a question depends on the observer's worldline.
 
 \begin{proposition}[Rigidity is a law property]
 ``Window/elapsed $\to0$'' is a conjunction of infinitely many limit-decidable questions; no finite set of records decides it. Whether a universe has a cosmic time is a property of the law, not a record fact.
 \end{proposition}
+
+\begin{theorem}[Coexistence under horizons]\label{thm:nerve}
+Let conformal time be bounded above ($p>1$, de Sitter), $\eta_{\max}=0$, with $d$ spatial dimensions. A family of events coexists (can be recorded together by some observer, i.e.\ has a common future) iff the footprints $D_e=B(x_e,|\eta_e|)$ on future infinity have a common point; the coexistence complex is the nerve of the footprints. By Helly's theorem \cite{helly} a family coexists iff every $d+1$ of its members do; hollow patterns exist (every $d$ coexist, all $d+1$ do not); and by Wegner's theorem \cite{wegner} only $d$-Leray complexes occur, whereas in the base theory every simplicial complex is a possible coexistence pattern. Without a horizon every family coexists. (Exact numerical test: $0$ violations of the Helly property in $19\,230$, $15\,144$, $8\,386$ families for $d=1,2,3$.)
+\end{theorem}
+
+\begin{corollary}[Horizon-induced contextuality needs two spatial dimensions]
+For $d=1$ footprints are intervals, their nerve is the clique complex of a chordal graph, and its maximal cliques form an $\alpha$-acyclic hypergraph; by Vorob'ev \cite{vorobev} and Beeri--Fagin--Maier--Yannakakis \cite{bfmy} every family of locally consistent statistics on the observers' contexts glues into a global law. For $d\ge2$ hollow triangles make non-glueable families possible. (Random covers, $50\,000$ each: $d=1$ always $\alpha$-acyclic; for $k=12$ events $63.0\%$ ($d=2$) and $51.3\%$ ($d=3$).) Horizons provide room for contextuality only when what is recorded depends on who records.
+\end{corollary}
+
+%======================================================================
+\section{Resolution}\label{sec:resolution}
+
+Resolution is the second kind of extension. Under sparsification every record is kept with the same probability; blocking groups the records of one world.
+
+\begin{proposition}[Rates do not run; content does]
+(i) Rate ratios are invariant under sparsification (each chain keeps about a fraction $q$ of its ticks); window classes are invariant and window lengths scale by $q$. The scale $\sigma$ (log rate ratio) does not run with resolution. (ii) What changes is content: a window of length $W$ survives sparsification with probability $1-(1-q)^W\approx1-e^{-qW}$; when it empties, two processes merge into one. The crossover is at $qW\approx1$: resolving a structure of order-theoretic size $W$ needs tick density about $1/W$. This is an intrinsic, count-only form of ``energy scale $\times$ length scale $\approx1$''. (iii) With blocking, the continuum limit exists by martingale convergence, $\sigma$ is carried by shares and does not run, and structure appears gradually over a range of resolutions (as form factors do) rather than at a sharp threshold.
+\end{proposition}
+
+\begin{proposition}[Pure geometry gives power laws]
+For two static processes in $1+1$ with window $100$ and blocking by causal diamonds of size $\delta$, the fuzzy share is $4\,\delta/\text{window}$, with fitted exponent $1.000$ for $\delta/\text{window}\le0.2$ (the codimension of the light cone). Logarithmic running can only come from content spread over many resolutions.
+\end{proposition}
+
+The one precise observational counterpart is that gravitational and cosmological redshifts are achromatic (the same from radio to gamma rays; supernova light-curve dilation matches spectral redshift): rates do not run with resolution.
+
+\begin{proposition}[Longest-chain processes, conditional on a finest level]
+If there were a finest level of density $\rho$, longest-chain processes separated by $d$ over a duration $T$ would be distinguishable only for $\rho\gtrsim cT^4/d^6$ (data collapse in $x=d\rho^{1/6}/T^{2/3}$, transition at $x\approx0.5$--$1$), and single longest chains would wander transversally as $T^{\xi}$ with $\xi\approx0.6\pm0.1$ in $3+1$ ($0.64$ in $1+1$, against the exact $2/3$ \cite{bdj}). With a Planck-length finest level this is a transverse deviation of about $1.5\times10^{-9}$\,m per second for $\xi=0.6$, and process rules that look only at the past fluctuate at the same order. The observed straightness of free fall therefore disfavours a Planck-scale finest level; it does not bear on the present framework, which has none.
+\end{proposition}
+
+%======================================================================
+\section{The extension law}\label{sec:extension}
+
+Dynamics is placed in how worlds extend, since a single description of a completed universe would contradict the openness of worlds.
+
+\begin{proposition}[Time is the logarithm of world size]
+An extension is measured by the share $f=|W|/|W'|\in(0,1]$. If the measure $\varphi(f)$ of extension is additive under composition, $\varphi(f_1f_2)=\varphi(f_1)+\varphi(f_2)$, and monotone, Cauchy's equation gives $\varphi=-c\log f$. The natural time parameter is the logarithm of world size; it is of the same type as $\sigma$ and as the energy scale. Continuous shares are law-level quantities; at the record level shares are discrete. The form coincides with Bousso's light-cone time \cite{bousso}, which uses future rather than past volumes; here the logarithm is forced.
+\end{proposition}
+
+\begin{proposition}[Uniform expansion is the empty baseline]
+In the flat power-law FRW family, the homothety generator $\xi=t\partial_t+(1-p)x\partial_x$ maps every comoving worldline to itself iff $p=1$. No preferred scale (A5) and extensions that do not change which process is which (P1) together select uniform expansion $a\propto t$ as the baseline without content. It is the critical case of Theorem~\ref{thm:frw}: rates are hidden but records are confluent.
+\end{proposition}
+
+\begin{remark}[Beginning, and comparison with $\Lambda$CDM]
+A strictly self-similar law has no smallest world (no first record), yet in the Milne baseline all comoving processes share a limiting past endpoint that belongs to no world. The real universe is not uniformly expanding: in flat $\Lambda$CDM with $\Omega_m=0.315$ \cite{planck} one has $Ht=0.667$ at $a=0.1$, $0.721$ at $a=0.5$ and $0.951$ today, crossing $1$ near $a\approx1.09$. Content breaks the self-similarity; the present near-coincidence $Ht\approx1$ is not taken as evidence.
+\end{remark}
 
 %======================================================================
 \section{Observers and cosmological frequencies}\label{sec:freq}
@@ -181,7 +251,7 @@ It uses no metric and no light. In the comparison family (Lorentzian manifolds w
 \[
 \frac{V}{V_0}=1-\tau^2\Big(\frac{R}{180}-\frac{R_{ab}u^au^b}{30}\Big)+\dots\qquad(\text{signature } -+++),
 \]
-which we recomputed from de Sitter ($V/V_0-1=-H^2\tau^2/6$) and the Einstein static universe ($-\tau^2/30A^2$).
+(close in spirit to Jacobson's use of small diamonds \cite{jacobson}; the vacuum Weyl-squared term is computed in \cite{wang}), which we recomputed from de Sitter ($V/V_0-1=-H^2\tau^2/6$) and the Einstein static universe ($-\tau^2/30A^2$).
 
 \begin{definition}[Content]
 The leading coefficient of $\delta$ is a quadratic function of the axis $u$. \emph{Content} is its direction-dependent part; its flow is the axis of maximal deficit and its amount the corresponding eigenvalue. The direction-independent, everywhere-constant part is the vacuum's own ($\Lambda$), not content.
@@ -193,7 +263,7 @@ The leading coefficient of $\delta$ is a quadratic function of the axis $u$. \em
 (i) P5 holds iff $R_{ab}=\Lambda g_{ab}$ in empty regions; $\Lambda$ is allowed and equals $-18\,\delta/\tau^2$. (ii) A measure-only change (conformally flat, the order kept flat) produces no field outside a source: conformally flat Einstein spaces have constant curvature. Content must change the order itself. (iii) The static spherically symmetric exterior is Schwarzschild--de Sitter; in the weak field $\gamma=\beta=1$. In $d$ spacetime dimensions the same reasoning gives $\gamma=1/(d-3)$.
 \end{theorem}
 \begin{proof}
-(i) The coefficient is independent of $u$ iff $R_{ab}u^au^b$ is constant on unit timelike vectors iff the trace-free Ricci tensor vanishes. (ii) Weyl $=0$ and trace-free Ricci $=0$ imply constant curvature. (iii) Birkhoff's theorem with $\Lambda$.
+(i) The coefficient is independent of $u$ iff $R_{ab}u^au^b$ is constant on unit timelike vectors iff the trace-free Ricci tensor vanishes. (ii) Weyl $=0$ and trace-free Ricci $=0$ imply constant curvature. (iii) Birkhoff's theorem \cite{birkhoff} with $\Lambda$.
 \end{proof}
 
 A first-order check in the family $g=\mathrm{diag}(-(1-2M/r),(1+2\gamma M/r)\mathbb{1})$ gives, outside the source, axis-dependent deficits proportional to $M(1-\gamma)$ with opposite signs for radial and tangential boosts; they vanish iff $\gamma=1$.
@@ -202,12 +272,12 @@ A first-order check in the family $g=\mathrm{diag}(-(1-2M/r),(1+2\gamma M/r)\mat
 A count of content records is a scalar and yields only an axis-independent deficit $R_{ab}=f g_{ab}$; by the contracted Bianchi identity (Schur's lemma) $f$ is constant for $d\ge3$. A varying count cannot source anything. The source depends on the directions of content processes relative to the axis, $a\gamma_{\rm rel}^2+b$; conservation plus integrability fix $a:b$; the coupling $G$ is free. For dust the deficit coefficient is $4\pi G\rho(3\gamma_{\rm rel}^2-2)/45$: content makes an interval hold more records than its longest chain implies.
 \end{proposition}
 
-Pressureless content moves along longest chains by integrability alone (the Einstein--Infeld--Hoffmann mechanism), so the weak equivalence principle is forced.
+Pressureless content moves along longest chains by integrability alone (the Einstein--Infeld--Hoffmann mechanism \cite{eih}), so the weak equivalence principle is forced. Free fall defined as the longest chain is checked directly: in a $1+1$ sprinkling with density $\propto e^{2\sigma}$, $\sigma=gx$, the midpoint displacement of the longest chain between two events is $19.52\pm0.99$ and $36.46\pm0.97$ for $g=0.004,0.008$ ($T=200$), against the exact geodesic values $19.49$ and $36.34$, and $-0.48\pm1.18$ for $g=0$: the longest chain falls toward slower clocks.
 
 \subsection{P5 is contingent, and what excludes measure-only laws}
 
 \begin{proposition}[Independence]
-A flat cone order with an inhomogeneous Cox intensity (a Nordstr\"om-type law) satisfies P1, P2, P4, M4, confluence, the self-similar baseline and ``free process = longest chain'', yet violates P5. P5 is independent of the principles; it is a countable, askable property of the law, supported in the solar system to $\sim10^{-5}$ \cite{cassini,will}.
+A flat cone order with an inhomogeneous Cox intensity (a Nordstr\"om-type law \cite{nordstrom}) satisfies P1, P2, P4, M4, confluence, the self-similar baseline and ``free process = longest chain'', yet violates P5. P5 is independent of the principles; it is a countable, askable property of the law, supported in the solar system to $\sim10^{-5}$ \cite{cassini,will}.
 \end{proposition}
 
 Once content is defined by counts, P5 holds by definition in empty regions, and the substantive question becomes whether the exterior of a source is really empty. In the family above the null focusing outside the source is $R_{kk}=-2(\gamma-1)M/r^3$ (radial) and $(\gamma-1)M/r^3$ (tangential): for $\gamma\neq1$ counted content defocuses fast free processes in one direction. More generally:
@@ -224,7 +294,7 @@ In a vacuum plane wave $ds^2=2\,du\,dv-a^2(x^2-y^2)du^2+dx^2+dy^2$ the world fun
 \[
 \frac{V}{V_0}-1=\frac{a^4\tau^4e^{4\eta}}{1008}+\dots
 \]
-(no $\tau^2$ term, since there is no content). The excess is positive, grows like $\tau^2$ relative to the $\tau^2$ coefficient (it runs), and is \emph{quartic} in the axis rapidity, whereas genuine content is quadratic: the two are distinguishable by counts. For an oscillating profile $h(u)=\varepsilon\cos u$, averaged over many wavelengths, the excess becomes $\varepsilon^2U^2/30$ ($U$ the $u$-extent; phase-averaged, extrapolated, to $0.3\%$), quadratic in the axis and non-running: an effective null-dust component $R_{UU}=2\langle h^2\rangle$, the counterpart of Isaacson's effective energy \cite{isaacson}. Running occurs only across the wavelength scale.
+(no $\tau^2$ term, since there is no content). The excess is positive, grows like $\tau^2$ relative to the $\tau^2$ coefficient (it runs), and is \emph{quartic} in the axis rapidity, whereas genuine content is quadratic: the two are distinguishable by counts. For an oscillating profile $h(u)=\varepsilon\cos u$, averaged over many wavelengths, the excess becomes $\varepsilon^2U^2/30$ ($U$ the $u$-extent; phase-averaged, extrapolated, to $0.3\%$), quadratic in the axis and non-running: an effective null-dust component $R_{UU}=2\langle h^2\rangle$, the counterpart of Isaacson's effective energy \cite{isaacson} and of averaging backreaction in cosmology \cite{buchert}. Running occurs only across the wavelength scale.
 
 \subsection{Focusing and rigidity}
 
@@ -233,7 +303,7 @@ In flat FRW the axis-dependent deficit along the comoving axis is $R_{tt}/30$ wi
 \end{proposition}
 
 \begin{proposition}[Pair criterion]
-For two neighbouring free processes with separation $\xi$, $\xi''=-K\xi$ with $K$ the tidal component along $\xi$, and $\rho\approx2\xi/\tau$. The pair's rate is a fact of the order iff tidal focusing cancels the initial relative velocity, $\int_0^\infty K\xi\,d\tau=\xi'(0)$, or the pair is bound. This unifies bound pairs ($K$ large), receding inertial pairs ($K=0$) and FRW ($K=-\ddot a/a$). Content is the sum of $K$ over separation directions ($R_{uu}$); pairs also feel the tidal (Weyl) direction. In the Schwarzschild exterior (Newtonian limit, fall from $20M$ to $4M$) radial pairs separate by $\times4.72$, tangential pairs converge to $\times0.20$, and circular-orbit pairs stay bound: one source gives all three regimes by direction.
+For two neighbouring free processes with separation $\xi$, $\xi''=-K\xi$ (geodesic deviation; for families, Raychaudhuri \cite{raychaudhuri}) with $K$ the tidal component along $\xi$, and $\rho\approx2\xi/\tau$. The pair's rate is a fact of the order iff tidal focusing cancels the initial relative velocity, $\int_0^\infty K\xi\,d\tau=\xi'(0)$, or the pair is bound. This unifies bound pairs ($K$ large), receding inertial pairs ($K=0$) and FRW ($K=-\ddot a/a$). Content is the sum of $K$ over separation directions ($R_{uu}$); pairs also feel the tidal (Weyl) direction. In the Schwarzschild exterior (Newtonian limit, fall from $20M$ to $4M$) radial pairs separate by $\times4.72$, tangential pairs converge to $\times0.20$, and circular-orbit pairs stay bound: one source gives all three regimes by direction.
 \end{proposition}
 
 %======================================================================
@@ -241,9 +311,11 @@ For two neighbouring free processes with separation $\xi$, $\xi''=-K\xi$ with $K
 
 Quantum theory is used only as comparison: observed Bell violations reach Tsirelson's $2\sqrt2$ \cite{tsirelson}, not the Popescu--Rohrlich value $4$ \cite{pr}.
 
+\paragraph{Order beyond partial orders.} Under the commitments used so far (P1, worlds closed under the past, sharp relations in samples) causal order cannot be indefinite, not even statistically: events that coexist pairwise but not jointly are pairwise spacelike, and any partial order satisfies at most two of $\{a\prec b,\,b\prec c,\,c\prec a\}$, so the three probabilities sum to at most $2$ (checked over the $19$ partial orders on three labelled elements). Relaxing past-closure, the hollow triangle has $27$ locally admissible configurations: $19$ glue into a partial order, $2$ are causal cycles and $6$ are transitivity gaps. Transitivity expresses that influence can be relayed; a gap would need an influence that can in principle not be passed on. Keeping relay, cycles collapse into clusters that never refine into an order. Such permanent clusters are preorder classes of the kernel of Theorem~\ref{thm:rep}, compatible with an atomless intensity; in the quotient they are order-atoms, and they are noncontextual. A second kind of cluster, whose internal order is not yet a fact and is answered by refinement (which only adds facts, so P1 holds), is the one that matters below.
+
 \paragraph{Three loci.}
 (A) \emph{Descriptions of one world.} By Theorem~\ref{thm:rep} all descriptions are marginals of one $(S,\prec,\mu)$: noncontextual. Contextuality here would require refinements without a common refinement.
-(B) \emph{Alternative extensions.} Earlier records choose a question, new records answer it; different choices are mutually exclusive extensions. Observed Bell/Kochen--Specker contextuality lives here.
+(B) \emph{Alternative extensions.} Earlier records choose a question, new records answer it; different choices are mutually exclusive extensions. Observed Bell/Kochen--Specker contextuality \cite{bell,ks} lives here.
 (C) \emph{A global world must be a partial order.} Pairwise answers about precedence must assemble into a poset.
 
 \begin{definition}[Free choice]
@@ -258,12 +330,14 @@ With the law-level reading of P1 (the law of records in a world does not change 
 (i) Blocking weights of any sharp order satisfy $w(A,B)+w(B,C)+w(C,A)\le2$ (the three relations cannot hold simultaneously for any triple). (ii) If pairwise precedence in a three-record cluster is answered by incompatible refinements with $P(a\prec b)=P(b\prec c)=P(c\prec a)=q$, the noncontextual fraction relative to ``the global world is a poset'' is $\min(1,3(1-q))$, so $\eta=\max(0,3q-2)$. (iii) A cyclic kernel (support not contained in a partial order) together with P1 forces refinements to be incompatible.
 \end{proposition}
 
+The two gluing failures of the framework are independent: accelerating universes have horizons (width) while each confluent branch is noncontextual, and a cyclic kernel gives $\eta>0$ in a flat law without horizons (height); horizons can also induce contextuality (Corollary after Theorem~\ref{thm:nerve}). Discreteness of readings is built in, since records are atoms.
+
 This is of causal-inequality type \cite{ocb}; classical tripartite processes without causal order are known \cite{baumelerwolf}. What is specific here is that P1 forces the violation into incompatible refinements, and that its degree is the contextual fraction of \cite{pzfc,abramsky}.
 
 \paragraph{A candidate for the quantum restriction.}
 \begin{candidate}[P6$'$]\label{p6} All combinatorial relations among possible records are decided by pairs: a set of possible records can coexist iff every pair can (Specker's condition \cite{specker}), and interference is determined by pairwise terms.\end{candidate}
 
-With the probability axiom, the first half is the exclusivity principle \cite{cabello13,csw}. On exclusivity graphs, the three natural global requirements give three bounds:
+With the probability axiom, the first half is the exclusivity principle \cite{cabello13,csw}; a variant is local orthogonality \cite{fritz}, and ``almost quantum'' correlations satisfy all such principles \cite{navascues}. On exclusivity graphs (KCBS \cite{kcbs}; CHSH \cite{chsh}), the three natural global requirements give three bounds:
 \begin{center}\small
 \begin{tabular}{lccc}\toprule
 graph & $\alpha$ (one global world) & $\vartheta$ (Lov\'asz) & $\alpha^*$ (exclusivity on cliques)\\\midrule
@@ -280,7 +354,7 @@ The CHSH graph is vertex-transitive with $\vartheta(G)\vartheta(\bar G)=8$; appl
 An individual is a family of content processes with pairwise bounded windows. At resolutions coarser than the bound it blocks into a single process; at finer ones it shows internal structure. In the language of \cite{pzfc} it is a source with records; diffuse content (radiation) has a law but no persistent individual.
 \end{definition}
 
-Mass is the amount of an individual as a source at coarse resolution. It is non-additive (internal motion enters with $\gamma_{\rm rel}^2$ weight; internal tides add positive content), so binding energy is forced. Mass ratios, read as tick ratios, are facts of the order only for bound individuals. The strong equivalence principle shares the status of P5 (contingent, testable by the Nordtvedt effect).
+Relative to the content axis $w$, the part of the deficit's quadratic form in directions orthogonal to $w$ is \emph{stress}; it is read from intervals whose axes move relative to $w$ in different spatial directions, and the relation between stress and amount (the equation of state) is not fixed by integrability. Mass is the amount of an individual as a source at coarse resolution. It is non-additive (internal motion enters with $\gamma_{\rm rel}^2$ weight; internal tides add positive content), so binding energy is forced. Mass ratios, read as tick ratios, are facts of the order only for bound individuals. The strong equivalence principle shares the status of P5 (contingent, testable by the Nordtvedt effect \cite{nordtvedt}, constrained by lunar laser ranging \cite{llr}).
 
 \begin{proposition}[Bounds, not values]
 (i) A static spherical individual with non-increasing density, null-positive content and a P5 exterior satisfies Buchdahl's bound $2GM/Rc^2\le8/9$ \cite{buchdahl}, i.e.\ surface redshift $1+z\le3$: its surface processes run at least $1/3$ as fast as distant ones, a count-readable number independent of the equation of state. (ii) With internal energy $\propto R^{-d(\Gamma-1)}$ and gravitational energy $\propto-R^{-(d-2)}$, equilibrium has $E''=Bn R^{-n-2}(m-n)$ with $m=d(\Gamma-1)$, $n=d-2$: stable individuals need $\Gamma>2-2/d$ ($4/3$ in three dimensions). Radiation-like content is exactly marginal and forms no stable individual; relativistic corrections raise the threshold \cite{chandrasekhar64}. (iii) Binding requires positive stress; stress may not be so negative that content defocuses fast processes.
@@ -291,13 +365,28 @@ The equation of state and the spectrum of species are contingent. ``Why matter c
 %======================================================================
 \section{Identification and assessment}\label{sec:assess}
 
-\paragraph{Contingent parameters.} Dimension (from counts: related-pair fractions, $L\propto N^{1/d}$); isotropy; P5 ($\gamma=1$ to $10^{-5}$); $G$; $\Lambda$ (positive); positivity of content; P6$'$ (Tsirelson-bounded correlations observed); the equation of state. All are askable by records; none is predicted.
+\paragraph{Contingent parameters.} Dimension (readable, e.g., from the fraction of related pairs \cite{myrheim,meyer} and $L\propto N^{1/d}$ \cite{bollobaswinkler}); isotropy; P5 ($\gamma=1$ to $10^{-5}$); $G$; $\Lambda$ (positive); positivity of content; P6$'$ (Tsirelson-bounded correlations observed); the equation of state. All are askable by records; none is predicted.
+
+\paragraph{Correspondence with observation.}
+\begin{center}\small
+\begin{tabular}{p{0.42\textwidth}p{0.33\textwidth}p{0.16\textwidth}}\toprule
+statement & observation & strength\\\midrule
+rates do not run with resolution & achromatic gravitational and cosmological redshift & strong (structural reason)\\
+bound pairs rigid; dilation of receding pairs frame-dependent & secular clock offsets (GPS); invariance of the Doppler factor & restatement\\
+cosmic time a fact iff decelerating & deceleration until $z\approx0.6$, acceleration now & structural reading\\
+horizons break confluence and restrict coexistence & future event horizon of our universe & real, not testable\\
+P5 ($\gamma=1$) & Cassini, $|\gamma-1|\lesssim2\times10^{-5}$ \cite{cassini} & identification\\
+P6$'$ & Tsirelson-bounded Bell violations & identification\\
+no finest level & no Lorentz-violating discreteness; straight free fall & consistent\\\bottomrule
+\end{tabular}
+\end{center}
 
 \paragraph{What the framework does.} It is a \emph{status theory}. It produces status divisions, criteria and bounds; its most useful outputs have identifiable readers:
 \begin{itemize}[nosep]
 \item cosmologists working on the measure problem: the criterion $\rho\to0$ and the classification C1--C4;
 \item causal-set dynamics: a reason for sprinkling without Lorentz invariance or a given manifold, and a reason why sequential growth fails;
-\item modified gravity: the exact defocusing of static measure-only attracting laws.
+\item modified gravity: the exact defocusing of static measure-only attracting laws;
+\item foundations of cosmology and time: when cosmic time and cosmological frequencies are facts, and the strict hierarchy rigid $\subset$ confluent $\subset$ general.
 \end{itemize}
 
 \paragraph{What it does not do.} It makes no new numerical prediction; this is proved within it (the law does not run; P5 and P6$'$ are independent). Most gravitational statements are count restatements of known theorems (Raychaudhuri, Gibbons--Solodukhin, Birkhoff, Isaacson); their value is the status division, and the success of general relativity must not be counted as a success of the framework. A count-based diagnostic separating content (quadratic in the axis) from tides (quartic) is correct in principle but infeasible as a tool: fluctuations of the longest chain require far more than $10^{12}$ records per interval.
@@ -320,6 +409,16 @@ The equation of state and the spectrum of species are contingent. ``Why matter c
 \begin{center}\small
 \begin{tabular}{p{0.34\textwidth}p{0.6\textwidth}}\toprule
 check & result\\\midrule
+three receding observers & two-dimensional hidden rates; $(1.1276,1.30)\to(1.1273,1.2899)$ ($N=240$)\\
+order-only sprinkled check & receding extremes $0.613$, $1.697$ ($\eta=0.5$); coalescence $0.12\to0.81$\\
+FRW confluence & $W=2\chi a(t)$ to three digits; counterexamples for $p=1.5,2$\\
+Helly under horizons & $0$ violations in $19\,230/15\,144/8\,386$ families ($d=1,2,3$)\\
+horizon covers & $d=1$: $100\%$ $\alpha$-acyclic; $d=2,3$ ($k=12$): $63.0\%$, $51.3\%$\\
+fuzzy share under blocking & $4\,\delta/\text{window}$, exponent $1.000$\\
+longest-chain thresholds (conditional) & collapse in $d\rho^{1/6}/T^{2/3}$; wander exponent $\approx0.6$ in $3+1$\\
+free fall as longest chain & $19.52\pm0.99$, $36.46\pm0.97$ vs geodesic $19.49$, $36.34$\\
+homothety & fixes comoving lines iff $p=1$ (symbolic)\\
+relaxed hollow triangle & $27$ configurations: $19$ glue, $2$ cycles, $6$ gaps\\
 thinned transitive percolation & not closed; hidden-gap spread $0.07\to1.48$; stratified by coarse context still grows $0.05\to0.53$\\
 observer pasts in FRW & $S_{AB}\approx\rho$ for small $\rho$ (e.g.\ $0.0200$ vs $0.0201$); coasting constant; de Sitter $\to2$\\
 converse & $1/r_2$ vs $r_1$: $0.9990/1.0010$ ($p=0.5$), $0.3679/2.7183$ (coasting)\\
@@ -343,7 +442,7 @@ Withdrawn during the work: $\sigma$ as a hidden conformal factor; ``hidden param
 
 %======================================================================
 \begin{thebibliography}{99}\small
-\bibitem{pzfc} X.~Yang, \emph{Removing Global Gluing: a multiverse base with a global countable core, probability and processes without a global context}, internal draft (2026).
+\bibitem{pzfc} X.~Yang, \emph{Removing Global Gluing: A Multiverse Base with a Global Countable Core, Probability and Processes without a Global Context}, Zenodo (2026), \href{https://doi.org/10.5281/zenodo.22976691}{doi:10.5281/zenodo.22976691}.
 \bibitem{blms} L.~Bombelli, J.~Lee, D.~Meyer, R.~D.~Sorkin, Space-time as a causal set, Phys.\ Rev.\ Lett.\ 59 (1987) 521.
 \bibitem{rideoutsorkin} D.~P.~Rideout, R.~D.~Sorkin, A classical sequential growth dynamics for causal sets, Phys.\ Rev.\ D 61 (2000) 024002.
 \bibitem{brightwellgeorgiou} G.~Brightwell, N.~Georgiou, Continuum limits for classical sequential growth models, Random Struct.\ Alg.\ 36 (2010) 218.
@@ -378,6 +477,41 @@ Withdrawn during the work: $\sigma$ as a hidden conformal factor; ``hidden param
 \bibitem{cabello13} A.~Cabello, Simple explanation of the quantum violation of a fundamental inequality, Phys.\ Rev.\ Lett.\ 110 (2013) 060402.
 \bibitem{csw} A.~Cabello, S.~Severini, A.~Winter, Graph-theoretic approach to quantum correlations, Phys.\ Rev.\ Lett.\ 112 (2014) 040401.
 \bibitem{sorkin94} R.~D.~Sorkin, Quantum mechanics as quantum measure theory, Mod.\ Phys.\ Lett.\ A 9 (1994) 3119.
+\bibitem{goldblatt} R.~Goldblatt, Diodorean modality in Minkowski spacetime, Studia Logica 39 (1980) 219.
+\bibitem{shapirovsky} I.~Shapirovsky, V.~Shehtman, Chronological future modality in Minkowski spacetime, in \emph{Advances in Modal Logic} 4, College Publications, London (2003) 437.
+\bibitem{lewisschaaf} M.~Lewis, N.~van der Schaaf, Some results on causal modalities in general spacetimes, arXiv:2606.31927.
+\bibitem{helly} E.~Helly, \"Uber Mengen konvexer K\"orper mit gemeinschaftlichen Punkten, Jahresber.\ Deutsch.\ Math.-Verein.\ 32 (1923) 175.
+\bibitem{wegner} G.~Wegner, $d$-collapsing and nerves of families of convex sets, Arch.\ Math.\ 26 (1975) 317.
+\bibitem{vorobev} N.~N.~Vorob'ev, Consistent families of measures and their extensions, Theory Probab.\ Appl.\ 7 (1962) 147.
+\bibitem{bfmy} C.~Beeri, R.~Fagin, D.~Maier, M.~Yannakakis, On the desirability of acyclic database schemes, J.\ ACM 30 (1983) 479.
+\bibitem{bdj} J.~Baik, P.~Deift, K.~Johansson, On the distribution of the length of the longest increasing subsequence of random permutations, J.\ Amer.\ Math.\ Soc.\ 12 (1999) 1119.
+\bibitem{bollobaswinkler} B.~Bollob\'as, P.~Winkler, The longest chain among random points in Euclidean space, Proc.\ Amer.\ Math.\ Soc.\ 103 (1988) 347.
+\bibitem{myrheim} J.~Myrheim, Statistical geometry, CERN preprint TH-2538 (1978).
+\bibitem{meyer} D.~A.~Meyer, The dimension of causal sets, PhD thesis, MIT (1988).
+\bibitem{planck} Planck Collaboration, Planck 2018 results VI: cosmological parameters, Astron.\ Astrophys.\ 641 (2020) A6.
+\bibitem{bhs} L.~Bombelli, J.~Henson, R.~D.~Sorkin, Discreteness without symmetry breaking: a theorem, Mod.\ Phys.\ Lett.\ A 24 (2009) 2579.
+\bibitem{martin} X.~Mart\'in, D.~O'Connor, D.~P.~Rideout, R.~D.~Sorkin, ``Renormalization'' transformations induced by cycles of expansion and contraction in causal set cosmology, Phys.\ Rev.\ D 63 (2001) 084026.
+\bibitem{zeeman} E.~C.~Zeeman, Causality implies the Lorentz group, J.\ Math.\ Phys.\ 5 (1964) 490.
+\bibitem{malament} D.~B.~Malament, The class of continuous timelike curves determines the topology of spacetime, J.\ Math.\ Phys.\ 18 (1977) 1399.
+\bibitem{hkm} S.~W.~Hawking, A.~R.~King, P.~J.~McCarthy, A new topology for curved space-time which incorporates the causal, differential, and conformal structures, J.\ Math.\ Phys.\ 17 (1976) 174.
+\bibitem{aldous} D.~J.~Aldous, Representations for partially exchangeable arrays of random variables, J.\ Multivariate Anal.\ 11 (1981) 581.
+\bibitem{hoover} D.~N.~Hoover, Relations on probability spaces and arrays of random variables, preprint, IAS Princeton (1979).
+\bibitem{eih} A.~Einstein, L.~Infeld, B.~Hoffmann, The gravitational equations and the problem of motion, Ann.\ Math.\ 39 (1938) 65.
+\bibitem{nordtvedt} K.~Nordtvedt, Equivalence principle for massive bodies II: theory, Phys.\ Rev.\ 169 (1968) 1017.
+\bibitem{llr} J.~G.~Williams, S.~G.~Turyshev, D.~H.~Boggs, Progress in lunar laser ranging tests of relativistic gravity, Phys.\ Rev.\ Lett.\ 93 (2004) 261101.
+\bibitem{nordstrom} G.~Nordstr\"om, Zur Theorie der Gravitation vom Standpunkt des Relativit\"atsprinzips, Ann.\ Phys.\ 347 (1913) 533.
+\bibitem{birkhoff} G.~D.~Birkhoff, \emph{Relativity and Modern Physics}, Harvard University Press (1923).
+\bibitem{raychaudhuri} A.~Raychaudhuri, Relativistic cosmology I, Phys.\ Rev.\ 98 (1955) 1123.
+\bibitem{jacobson} T.~Jacobson, Entanglement equilibrium and the Einstein equation, Phys.\ Rev.\ Lett.\ 116 (2016) 201101.
+\bibitem{wang} J.~Wang, Geometry of small causal diamonds, Phys.\ Rev.\ D 100 (2019) 064020.
+\bibitem{buchert} T.~Buchert, On average properties of inhomogeneous fluids in general relativity: dust cosmologies, Gen.\ Rel.\ Grav.\ 32 (2000) 105.
+\bibitem{bell} J.~S.~Bell, On the Einstein Podolsky Rosen paradox, Physics 1 (1964) 195.
+\bibitem{ks} S.~Kochen, E.~P.~Specker, The problem of hidden variables in quantum mechanics, J.\ Math.\ Mech.\ 17 (1967) 59.
+\bibitem{kcbs} A.~A.~Klyachko, M.~A.~Can, S.~Binicio\u{g}lu, A.~S.~Shumovsky, Simple test for hidden variables in spin-1 systems, Phys.\ Rev.\ Lett.\ 101 (2008) 020403.
+\bibitem{chsh} J.~F.~Clauser, M.~A.~Horne, A.~Shimony, R.~A.~Holt, Proposed experiment to test local hidden-variable theories, Phys.\ Rev.\ Lett.\ 23 (1969) 880.
+\bibitem{fritz} T.~Fritz, A.~B.~Sainz, R.~Augusiak, J.~B.~Brask, R.~Chaves, A.~Leverrier, A.~Ac\'in, Local orthogonality as a multipartite principle for quantum correlations, Nat.\ Commun.\ 4 (2013) 2263.
+\bibitem{navascues} M.~Navascu\'es, Y.~Guryanova, M.~J.~Hoban, A.~Ac\'in, Almost quantum correlations, Nat.\ Commun.\ 6 (2015) 6288.
+
 \end{thebibliography}
 
 \end{document}
