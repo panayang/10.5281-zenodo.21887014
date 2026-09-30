@@ -41,6 +41,9 @@
 与物理实在的逐条对应见 `docs/findings.md` 的"与物理实在的对应"一节。
 
 ## 怎么读
+0000. [`docs/overnight-2026-09-29.md`](docs/overnight-2026-09-29.md) —— 晚间自主探索汇总（未提交，待审阅）；
+000. [`docs/extension.md`](docs/extension.md) —— 扩张律：动力学的位置（晚间探索，未审阅）；
+000. [`docs/gravity-directions.md`](docs/gravity-directions.md) —— 引力的几个方向：牛顿势与自由下落的草图、γ 缺口（晚间探索，未审阅）；
 00. [`docs/review-2026-09-29.md`](docs/review-2026-09-29.md) —— 整体回顾与结构需求（R1–R8；偏序极限作为候选载体）；
 0. [`docs/preprint-short.md`](docs/preprint-short.md) —— 短版预印本草稿（内禀写法，推荐先读）；
 0''. [`docs/law.md`](docs/law.md) —— 规律住在什么对象上（权重序、P1–P4）；

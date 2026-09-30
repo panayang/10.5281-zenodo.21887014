@@ -1,0 +1,6 @@
+d=1 local consensus (window < 0.02): relative rms misfit  1/r - 1/R: 1.219  log(R/r): 0.528  R - r: 0.034   local slope of |sigma| vs r: -0.75
+d=1 link exchange (weights 1/window, all pairs): relative rms misfit  1/r - 1/R: 13.694  log(R/r): 9.566  R - r: 6.135   local slope: -0.10; sigma range over shells 0.095
+d=2 local consensus (window < 0.05): relative rms misfit  1/r - 1/R: 0.530  log(R/r): 0.028  R - r: 0.360   local slope of |sigma| vs r: -1.13
+d=2 link exchange (weights 1/window, all pairs): relative rms misfit  1/r - 1/R: 10.869  log(R/r): 7.544  R - r: 4.802   local slope: -0.12; sigma range over shells 0.027
+d=3 local consensus (window < 0.12): relative rms misfit  1/r - 1/R: 0.063  log(R/r): 0.396  R - r: 0.641   local slope of |sigma| vs r: -1.73
+d=3 link exchange (weights 1/window, all pairs): relative rms misfit  1/r - 1/R: nan  log(R/r): nan  R - r: nan   local slope: +0.00; sigma range over shells 0.000

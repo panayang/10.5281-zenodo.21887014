@@ -1,0 +1,5 @@
+hollow triangle, worlds not closed under the past: 27 locally admissible assignments
+  extend to a global partial order: 19
+  causal cycles (a<b<c<a or reverse): 2
+  transitivity gaps (x<y<z but x||z): 6
+with past-closed worlds only the gluing ones can occur (a comparable pair forces the triple to coexist)

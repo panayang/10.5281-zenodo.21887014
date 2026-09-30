@@ -1,0 +1,6 @@
+unconditional vs stratified effect of the hidden gap (gap above vs at-or-below its median) on P(a < b);
+stratified = pair-weighted mean of within-context differences over all contexts (c_b, c_a)
+  q = 0.5     p = 0.0918  pairs   6675  P(a<b) = 0.1008  unconditional diff +0.0136 +- 0.0074   stratified diff +0.0047 +- 0.0070   (relative to P(a<b): +0.13 -> +0.05)
+  q = 0.25    p = 0.079   pairs   9973  P(a<b) = 0.1044  unconditional diff +0.0416 +- 0.0064   stratified diff +0.0198 +- 0.0059   (relative to P(a<b): +0.40 -> +0.19)
+  q = 0.125   p = 0.063   pairs  20171  P(a<b) = 0.0996  unconditional diff +0.0653 +- 0.0044   stratified diff +0.0379 +- 0.0041   (relative to P(a<b): +0.66 -> +0.38)
+  q = 0.0625  p = 0.046   pairs  16556  P(a<b) = 0.0985  unconditional diff +0.0869 +- 0.0046   stratified diff +0.0523 +- 0.0043   (relative to P(a<b): +0.88 -> +0.53)

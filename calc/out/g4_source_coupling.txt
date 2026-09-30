@@ -1,0 +1,12 @@
+dust: h_00 = rho*(a + b),  h_ii = -b*rho,  gamma = h_ii / h_00 = -b/(a + b)
+  scalar (trace) coupling           : gamma = -1   (D = 4: -1; D = 5: -1)
+  massless gauge-invariant tensor   : gamma = 1/(D - 3)   (D = 4: 1; D = 5: 1/2)
+  massive Fierz-Pauli tensor        : gamma = 1/(D - 2)   (D = 4: 1/2; D = 5: 1/3)
+  light deflection relative to the observed value: (1 + gamma) / 2
+
+isotropic radiation: h_00 = a*epsilon, h_ii = a*epsilon/(D - 1)  -> the trace coupling (a = 0) gives nothing:
+  radiation neither gravitates nor is deflected under the Lorentz-invariant event-count source
+
+bound static system (Laue: integrated T_ij = 0): far field h_00 = E*(a + b), h_ii = -E*b
+  every linear coupling, including the scalar one, gives a far field proportional to the total energy E
+  (a box of trapped light gravitates by its energy even in scalar theory); the couplings differ only for UNBOUND massless content

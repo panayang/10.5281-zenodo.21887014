@@ -1,0 +1,4 @@
+1+1, T = 200.0, density rho0 e^(2 g x) with rho0 = 4.0; 48 seeds each
+g = 0.000: mean midpoint displacement   -0.48 +-  1.18   continuum geodesic   +0.00   (spread of single chains 8.2)
+g = 0.004: mean midpoint displacement  +19.52 +-  0.99   continuum geodesic  +20.00   (spread of single chains 6.9)
+g = 0.008: mean midpoint displacement  +36.46 +-  0.97   continuum geodesic  +40.00   (spread of single chains 6.7)
