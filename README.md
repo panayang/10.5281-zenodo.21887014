@@ -32,7 +32,7 @@
 与物理实在的逐条对应见 `docs/findings.md` 的"与物理实在的对应"一节。
 
 ## 怎么读
-0. [`docs/framework.md`](docs/framework.md) —— **框架陈述 v0.5（入口）**；[`docs/assessment-2026-09-30.md`](docs/assessment-2026-09-30.md) —— 解释力与实用性的审视；[`docs/summary-2026-09-30.md`](docs/summary-2026-09-30.md) —— 阶段性总结；
+0. [`docs/framework.md`](docs/framework.md) —— **框架陈述 v0.6（入口，含体系形态图）**；[`docs/results-index.md`](docs/results-index.md) —— 结果索引 F1–F32；[`docs/assessment-2026-09-30.md`](docs/assessment-2026-09-30.md) —— 解释力与实用性的审视；[`docs/summary-2026-09-30.md`](docs/summary-2026-09-30.md) —— 阶段性总结；
 1. [`docs/design.md`](docs/design.md) —— §0 任务与实用性检验，其后为方案 v0.3；
 2. [`docs/review-2026-09-30.md`](docs/review-2026-09-30.md) —— 借来的词、局域性、测度与信息的重审；
 3. [`docs/anchor-measure.md`](docs/anchor-measure.md) —— 锚点 1：宇宙学概率问题的合法性（F19）；独立短文草稿 [`docs/note-cosmological-probabilities.md`](docs/note-cosmological-probabilities.md)；

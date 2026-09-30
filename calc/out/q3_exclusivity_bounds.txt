@@ -1,0 +1,10 @@
+KCBS pentagon: alpha = 2, theta = 2.23607, alpha* = 2.50000
+CHSH (sum of 4 winning probabilities per setting pair, total over 8 events): alpha = 3, theta = 3.41421, alpha* = 4.00000
+    noncontextual             : P(win) = 0.75000,  CHSH = 2.00000
+    quantum (theta)           : P(win) = 0.85355,  CHSH = 2.82843
+    exclusivity single copy   : P(win) = 1.00000,  CHSH = 4.00000
+CHSH graph is vertex-transitive: theta(G) * theta(complement) = 8.00000 (n = 8).
+  Two-copy exclusivity (Cabello's argument): the diagonal events (i, i) of G and its complement are pairwise exclusive, so sum_i p_i q_i <= 1;
+  with uniform p0 on G and a complement experiment reaching q0 = theta(complement)/8 = 0.29289, p0 <= 1/theta(complement) and the total <= theta(G) = Tsirelson.
+CHSH: classical 2, quantum 2 sqrt 2 = 2.82843 from theta, single-copy exclusivity reaches the no-signalling value 4 here;
+the Tsirelson bound needs exclusivity applied also to independent copies (literature), i.e. the flag/pairwise principle used jointly with products
