@@ -1,0 +1,383 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}{Principle}
+\newtheorem{candidate}{Candidate principle}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\status}[1]{\textsf{[#1]}}
+
+\title{Order, Rate and Records:\\[2pt]
+\large what a relational record structure forces,\\ and what it leaves contingent}
+\author{[Author list to be decided]\\[2pt]\small Draft, 30 September 2026}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study physics from the standpoint of a recorder inside the system, with no global context: records and laws are global, completed totalities and samples are local, following a base theory of worlds without global gluing (p-ZFC). The only primitives are records, their causal order, worlds (causal pasts) and two kinds of extension (adding records above a world; refining it). Four principles are used: records are not disturbed by later recording, individuation carries no information, there is no finest level of resolution, and only ratios are observable. Locality is \emph{not} assumed; its degree is a measured property of a law.
+
+The task is not to derive known physics but to classify: which statements are record facts, which are properties of the law, which are local completions; which features are forced and which are contingent. We show that the principles force the law to be a Cox-type sprinkling on an ordered measure space (conditionally, via Mecke's characterisation and the Janson/Kallenberg representations), so that sequential-growth laws cannot be fundamental and the law itself does not run under coarse-graining. Relative clock rates are facts of the order exactly when the window ratio of the pair vanishes (in particular for bound pairs); cosmic time is a fact exactly in decelerating expansion; two observers agree on all cosmological frequencies iff their radar-window ratio vanishes, which is the same condition, and absence of event horizons is not enough. A count deficit of small intervals (records versus longest chain) defines content intrinsically; if empty regions do not distinguish directions, the vacuum is an Einstein space with $\Lambda$ allowed and $\gamma=\beta=1$, while every static measure-only (conformally flat) attracting law defocuses some fast free process. For quantum phenomena the principles give no-signalling and nothing more; a single contingent principle, that combinatorial relations among possible records are decided by pairs, covers Specker's condition (hence Tsirelson-type bounds and the theta body) and the absence of third-order interference. Individuals are content families with bounded windows, and the framework yields universal bounds (for example, a static body's surface clocks run at least $1/3$ as fast as distant ones) rather than values. We state plainly what the framework does not do: it makes no new numerical prediction, and this is proved within it.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+%======================================================================
+\section{Introduction}
+
+\paragraph{Situation.} A physical recorder never sees a completed universe. It holds records, finitely many at any stage, and it can learn laws from them. The base theory of \cite{pzfc} makes this precise for mathematics: countable records are global (invariant under extension), completed totalities and choice objects are local (they exist only relative to a world), laws are global and samples local, and the failure of local data to glue into a global object is a graded, measurable proposition. We take this as the situation of physics.
+
+\paragraph{Task.} Under this reading the traditional task, ``find the global state space and the equation of motion'', is itself an instance of global gluing (a single sample space, a single time line, the state at the next step). We therefore set a different task with three parts:
+\begin{enumerate}[nosep]
+\item \emph{Status}: for each quantity, decide whether it is a record fact, a property of the law (and whether it is decidable in the limit), or a local completion that depends on a choice.
+\item \emph{Forced versus contingent}: which global features follow from recording consistency alone, and which are free parameters of the law.
+\item \emph{Identification}: how an internal recorder determines the contingent parameters.
+\end{enumerate}
+Every result is subjected to a usefulness test: who can use it to decide or compute something they could not before? General relativity and quantum theory enter only as comparison examples: compact descriptions of a contingent law at some resolution, never as the shape of the law.
+
+\paragraph{Relation to causal set theory.} The primitives resemble those of causal sets \cite{blms}, but the stance differs in three ways: there is no fixed discreteness scale (records are countable at every resolution, but resolution has no finest level); no background manifold is given; and locality (Bell causality) is not a principle. The payoffs are a reason for sprinkling that does not presuppose Lorentz invariance or a manifold, an explanation of why sequential growth fails, and a set of status results with no counterpart in that literature.
+
+\paragraph{Summary of results.} Section~\ref{sec:rep} proves (conditionally) that the principles force a Cox-type sprinkling on an ordered measure space. Section~\ref{sec:status} collects status results on rigidity and cosmic time. Section~\ref{sec:freq} gives an exact criterion for when observers agree on cosmological frequencies. Section~\ref{sec:gravity} defines content by counts and derives the vacuum structure under one contingent principle. Section~\ref{sec:quantum} locates quantum contextuality. Section~\ref{sec:matter} treats individuals and universal bounds. Section~\ref{sec:assess} assesses explanatory power and usefulness. Numerical checks are listed in Appendix~\ref{app:numerics}; all scripts are in the accompanying repository.
+
+%======================================================================
+\section{Primitives and principles}\label{sec:prim}
+
+\begin{definition}[Primitives]
+A \emph{record} is a countable, persistent fact. Records carry a partial order $\prec$ (causal precedence). A \emph{world} is the past (down-set) of a record. Worlds are connected by two kinds of extension: \emph{width} extension adds records above a world (no new record lies below an old one); \emph{height} extension (refinement) adds records inside a region, so that the record set of a coarse world is a subset of that of a finer one. A \emph{process} is a chain; its \emph{ticks} are the records on it; a \emph{free process} between two records is a longest chain between them. The \emph{window} $W_i(t)$ of process $i$ relative to process $j$ is the round-trip span, in ticks of $i$, from $i$'s $t$-th record to the first record of $j$ above it and back to the first record of $i$ above that. \emph{Blocking} is a grouping of the records of one world into clusters; relations between clusters are weights in $[0,1]$.
+\end{definition}
+
+\begin{principle}[P1 = M4]\label{p1} Records are not disturbed by later recording; facts are compatible where worlds overlap.\end{principle}
+\begin{principle}[P2]\label{p2} Individuation carries no information: relabelling records changes no fact; in the width direction, the law of an extension depends only on the unlabelled world reached, not on the path of worlds by which it was reached.\end{principle}
+\begin{principle}[P4]\label{p4} There is no finest level: every level of resolution is a coarse-graining of a finer one. Only count ratios appear; there is no fixed discreteness scale.\end{principle}
+\begin{principle}[A5]\label{a5} Only ratios are observable.\end{principle}
+
+\begin{remark}[Locality is not a principle]
+Bell causality in sequential-growth models \cite{rideoutsorkin} is a factorisation with the common past as hidden variable. By \cite{pzfc}, a hidden global structure exists iff local laws glue; Bell causality is therefore a global-gluing assumption on the law. We do not assume it; its degree (the contextual fraction \cite{abramsky}) is a measured property of a law.
+\end{remark}
+
+\paragraph{Vocabulary rule.} A term is admitted only if it can be stated with records, order, chains, counts, worlds and extensions; otherwise it is marked as input or comparison. In particular ``light'', ``energy'' and ``locality'' are not used as primitives.
+
+%======================================================================
+\section{The representation theorem}\label{sec:rep}
+
+\subsection{Statement}
+
+\begin{theorem}[Representation, conditional]\label{thm:rep}
+Within a confluent branch (a directed system of worlds), P1, P2 and P4 imply that the law of records is a Cox-type sprinkling on a (possibly random) ordered measure space $(S,\prec,\mu)$: given $\mu$, records form a Poisson process with intensity $\mu$, and relations are given by a kernel $W$ (in the sharp case, the indicator of $\prec$). Coarse-graining by sparsification multiplies the intensity by a constant; blocking averages the kernel over cells,
+\[
+w(X,Y)=\frac{1}{\mu(X)\mu(Y)}\iint_{X\times Y} W\,d\mu\,d\mu .
+\]
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+(a) \emph{Refinement is a subset relation.} By P1 the records of a coarse world remain records in a finer one; by P2 the coarse subset favours no record. Height coarse-graining is therefore sparsification; blocking is a description within one world, not another world. The two commute in expectation.
+
+(b) \emph{Mecke's theorem.} If a locally finite point process $\xi$ is, for every $p\in(0,1)$, the $p$-thinning of some $\xi_p$, then $\E e^{-\xi f}=\E\exp(-\xi_p g_p)$ with $g_p=-\log(1-p(1-e^{-f}))$. Put $\eta_p=p\,\xi_p$; then $\xi_p g_p=\eta_p(g_p/p)$ and $g_p/p\to 1-e^{-f}$ uniformly. Given $\xi_p(B)$, $\xi(B)$ is binomial, so tightness of $\xi(B)$ implies tightness of $\eta_p(B)$. A vague subsequential limit $\Lambda$ gives $\E e^{-\xi f}=\E\exp(-\Lambda(1-e^{-f}))$: $\xi$ is Cox with intensity $\Lambda$ \cite{mecke,kallenbergRM}.
+
+(c) \emph{Relations.} In a world of finite measure, the relation matrix is exchangeable (P2) and infinitely extendable (P4), hence a mixture of kernel random posets \cite{janson}; every such limit can be represented on $[0,1]$ with its standard order \cite{hladky}, so a hidden linear order is always available as a \emph{choice} of representation. The $\sigma$-finite case is obtained by first taking the directed limit of the (canonical, unlabelled) laws of records over worlds, then applying Kallenberg's representation of exchangeable random measures in the plane \cite{kallenberg90}, i.e.\ the graphex representation \cite{veitchroy,borgs}, which is exactly the class consistent under vertex sampling \cite{veitchroy19}. In partial orders the extra graphex terms are isolated two-chains and stars whose centres have no kernel relations on the leaf side; for sharp, manifold-like laws both vanish.
+\end{proof}
+
+\begin{remark}
+Sprinkling is forced without bringing back a scale: the Cox intensity is random and appears only through ratios. The space $(S,\prec,\mu)$ is not a stage but the de Finetti-type representation of the law; it exists only within a confluent branch, which is the same fact that makes cross-horizon frequencies meaningless (Section~\ref{sec:freq}).
+\end{remark}
+
+\subsection{Consequences}
+
+\begin{corollary}[Sequential growth is not fundamental]
+Classical sequential growth laws \cite{rideoutsorkin} are width-only laws; they are not closed under sparsification. Numerically, transitive percolation thinned by $q$ is not transitive percolation for any parameter ($\chi^2$ in the thousands), covariance and Bell causality fail after thinning, and the influence of the hidden gap on coarse relations grows with scale separation (relative spread $0.07\to1.48$ as $1/q$ goes from $2$ to $64$). This is consistent with, and explains, the result that no such law approximates Minkowski space in dimension $\ge2$ \cite{brightwellgeorgiou}.
+\end{corollary}
+
+\begin{corollary}[The law does not run]
+Under sparsification and blocking every law of Theorem~\ref{thm:rep} is a fixed point. Sample-level exponents (e.g.\ longest-chain fluctuations) are resolution-relative and vanish under refinement. Any running must come from content (Section~\ref{sec:gravity}).
+\end{corollary}
+
+\begin{proposition}[What remains contingent]
+$(S,\prec,\mu)$ itself is not constrained by the principles. Translation homogeneity gives orders from closed convex cones; isotropy selects the Lorentz cone; the dimension is not forced.
+\end{proposition}
+
+%======================================================================
+\section{Status results: rigidity and cosmic time}\label{sec:status}
+
+These results concern two or more processes and the windows between them \cite{pzfc}; the mathematical baseline is the theory of order-invariant measures on natural extensions \cite{brightwellluczak}.
+
+\begin{proposition}[Rigidity dichotomy]\label{prop:rigid}
+For two processes with windows $W(t)$ and elapsed ticks $t$, put $\rho=W/t$. If $\rho\to0$ (under a concave-envelope condition) the relative rate is a fact of the order; if $\liminf\rho>0$ a whole interval of rates is consistent with the order. For a receding inertial pair the surviving rates fill exactly $(e^{-\eta},e^{\eta})$, parametrised by the frame rapidity; for three or more processes the hidden parameters are asymptotic slicings.
+\end{proposition}
+
+\begin{proposition}[Local reading of rates]
+For a bound pair the rate ratio equals the ratio of mutual windows (a pure order identity; it is the redshift factor).
+\end{proposition}
+
+\begin{proposition}[Cosmic time]
+In flat FRW with $a\propto t^p$, comoving processes are rigid iff $p<1$ (deceleration); $p=1$ (coasting, Milne) is critical. Worlds being causal pasts, confluence of worlds holds iff there is no event horizon.
+\end{proposition}
+
+\begin{proposition}[Rigidity is a law property]
+``Window/elapsed $\to0$'' is a conjunction of infinitely many limit-decidable questions; no finite set of records decides it. Whether a universe has a cosmic time is a property of the law, not a record fact.
+\end{proposition}
+
+%======================================================================
+\section{Observers and cosmological frequencies}\label{sec:freq}
+
+An observer's worlds are its causal pasts $P_i(t)$; frequencies are defined by exhausting pasts, without any slicing. Let $\tau_j(t)$ be the first tick of $j$ whose past contains $i$'s $t$-th record, and $W(t)=\tau_i(\tau_j(t))-t$.
+
+\begin{proposition}[Agreement]\label{prop:m1}
+If $V_i(t+u)/V_i(t)\to1$ for $u=o(t)$ and $W(t)/t\to0$, then with $s=\tau_j(t)$, $|P_i(t)\,\triangle\,P_j(s)|/|P_i(t)|\to0$; both observers obtain the same limiting frequency for every record type of bounded density.
+\end{proposition}
+\begin{proof}
+$P_i(t)\subset P_j(s)\subset P_i(t+W)$, so the symmetric difference lies in $P_i(t+W)\setminus P_i(t)$.
+\end{proof}
+
+\begin{proposition}[Converse]\label{prop:m2}
+Let $r_1=\lim\tau_j(t)/t$ and $r_2=\lim\tau_i(s)/s$, so $1+\rho\to r_1r_2$. The frequency of $j$-records per $i$-record is $1/r_2$ along $i$'s pasts and $r_1$ along $j$'s pasts. Agreement on this description holds iff $r_1r_2=1$ iff $\rho\to0$.
+\end{proposition}
+
+Together: two observers agree on all bounded-density descriptions iff $\rho\to0$ iff their relative rate is a fact of the order. \emph{Sharing frequencies is sharing a clock.}
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lccc}\toprule
+FRW (comoving, $d=1$) & $S_{AB}$ at $t=10^2\to10^4$ & $\rho$ & youngness $S_t$\\\midrule
+$a\propto t^{0.5}$ & $0.199\to0.020$ & $0.210\to0.020$ & $\to0$\\
+$a\propto t^{0.8}$ & $0.745\to0.313$ & $1.09\to0.36$ & $\to0$\\
+$a\propto t$ (flat coasting) & $1.459$ (constant) & $6.39$ & $\to0$\\
+Milne & $1.479$ (constant) & $6.39$ & $\to0$\\
+$a\propto t^{1.5}$, de Sitter & $\to2$ (disjoint) & $\infty$ & $\to0$\\\bottomrule
+\end{tabular}
+\caption{Symmetric-difference share $S_{AB}$ of two observers' pasts, window ratio $\rho$, and share of the last proper-time step (4-volume as a stand-in for record counts; by Theorem~\ref{thm:rep} counts agree up to $O(N^{-1/2})$). Absence of event horizons (coasting) is necessary but not sufficient.}
+\end{table}
+
+\paragraph{Classification.} A cosmological frequency question is of one of four kinds: (C1) a count in one world (a record); (C2) a limit along one observer (well defined iff the answer changes finitely often at every precision; otherwise it is a switch and has no fact); (C3) agreement between observers (for all descriptions iff $\rho\to0$); (C4) a fraction over all observers across horizons (no world contains it; it has a value only if the symmetries of the law act on branch types with a unique invariant probability).
+
+\paragraph{Relation to the measure problem.} Cutoff and reordering dependence \cite{winitzki,guthvanchurin,lindenoorbala}, local measures \cite{bousso}, the local--global duality and Olum's no-go theorem \cite{olum} are known. Our additions are the criterion $\rho\to0$ for when the observer ensemble does not matter, its identity with rigidity, and the reading of global cutoffs as individuations. The stationary measure \cite{lvw} is naturally read as answering a C2 question. Exhausting by pasts has no youngness paradox in any of the cases above.
+
+%======================================================================
+\section{Content and gravity}\label{sec:gravity}
+
+\subsection{The count deficit}
+
+For a small interval $I$ (determined by its two tips) there are two counts: the number of records $N(I)$ and the length $L(I)$ of the longest chain between the tips, which is the interval's \emph{axis}. In the self-similar baseline they obey a fixed relation $N=V_0(L)$ in expectation. The \emph{count deficit} is
+\[
+\delta(I)=\frac{N(I)}{V_0(L(I))}-1 .
+\]
+It uses no metric and no light. In the comparison family (Lorentzian manifolds with volume sprinkling; longest chains track proper time \cite{brightwellgregory}) the small-diamond volume gives \cite{gibbonssolodukhin}
+\[
+\frac{V}{V_0}=1-\tau^2\Big(\frac{R}{180}-\frac{R_{ab}u^au^b}{30}\Big)+\dots\qquad(\text{signature } -+++),
+\]
+which we recomputed from de Sitter ($V/V_0-1=-H^2\tau^2/6$) and the Einstein static universe ($-\tau^2/30A^2$).
+
+\begin{definition}[Content]
+The leading coefficient of $\delta$ is a quadratic function of the axis $u$. \emph{Content} is its direction-dependent part; its flow is the axis of maximal deficit and its amount the corresponding eigenvalue. The direction-independent, everywhere-constant part is the vacuum's own ($\Lambda$), not content.
+\end{definition}
+
+\begin{candidate}[P5]\label{p5} In empty regions the leading coefficient of the count deficit does not depend on the axis.\end{candidate}
+
+\begin{theorem}[Vacuum structure, comparison family]\label{thm:vac}
+(i) P5 holds iff $R_{ab}=\Lambda g_{ab}$ in empty regions; $\Lambda$ is allowed and equals $-18\,\delta/\tau^2$. (ii) A measure-only change (conformally flat, the order kept flat) produces no field outside a source: conformally flat Einstein spaces have constant curvature. Content must change the order itself. (iii) The static spherically symmetric exterior is Schwarzschild--de Sitter; in the weak field $\gamma=\beta=1$. In $d$ spacetime dimensions the same reasoning gives $\gamma=1/(d-3)$.
+\end{theorem}
+\begin{proof}
+(i) The coefficient is independent of $u$ iff $R_{ab}u^au^b$ is constant on unit timelike vectors iff the trace-free Ricci tensor vanishes. (ii) Weyl $=0$ and trace-free Ricci $=0$ imply constant curvature. (iii) Birkhoff's theorem with $\Lambda$.
+\end{proof}
+
+A first-order check in the family $g=\mathrm{diag}(-(1-2M/r),(1+2\gamma M/r)\mathbb{1})$ gives, outside the source, axis-dependent deficits proportional to $M(1-\gamma)$ with opposite signs for radial and tangential boosts; they vanish iff $\gamma=1$.
+
+\begin{proposition}[The source is not a record count]
+A count of content records is a scalar and yields only an axis-independent deficit $R_{ab}=f g_{ab}$; by the contracted Bianchi identity (Schur's lemma) $f$ is constant for $d\ge3$. A varying count cannot source anything. The source depends on the directions of content processes relative to the axis, $a\gamma_{\rm rel}^2+b$; conservation plus integrability fix $a:b$; the coupling $G$ is free. For dust the deficit coefficient is $4\pi G\rho(3\gamma_{\rm rel}^2-2)/45$: content makes an interval hold more records than its longest chain implies.
+\end{proposition}
+
+Pressureless content moves along longest chains by integrability alone (the Einstein--Infeld--Hoffmann mechanism), so the weak equivalence principle is forced.
+
+\subsection{P5 is contingent, and what excludes measure-only laws}
+
+\begin{proposition}[Independence]
+A flat cone order with an inhomogeneous Cox intensity (a Nordstr\"om-type law) satisfies P1, P2, P4, M4, confluence, the self-similar baseline and ``free process = longest chain'', yet violates P5. P5 is independent of the principles; it is a countable, askable property of the law, supported in the solar system to $\sim10^{-5}$ \cite{cassini,will}.
+\end{proposition}
+
+Once content is defined by counts, P5 holds by definition in empty regions, and the substantive question becomes whether the exterior of a source is really empty. In the family above the null focusing outside the source is $R_{kk}=-2(\gamma-1)M/r^3$ (radial) and $(\gamma-1)M/r^3$ (tangential): for $\gamma\neq1$ counted content defocuses fast free processes in one direction. More generally:
+
+\begin{theorem}[Measure-only attracting laws defocus]\label{thm:defocus}
+For $g=e^{2\varphi}\eta$ and null $k$,\[R_{kk}=-2\big(k^ak^b\partial_a\partial_b\varphi-(k\cdot\partial\varphi)^2\big).\](i) To first order, static, outside the source, $R_{kk}=-2n^in^j\partial_i\partial_j\varphi$ with a trace-free Hessian, hence negative for some $n$ wherever there are tides. (ii) Static spherical symmetry, exactly: tangentially $R_{kk}=-2\varphi'(r)/r<0$ wherever there is attraction ($\varphi'>0$). (iii) Static, no symmetry, exactly: if $\varphi$ has a regular compact level set $\Sigma$ enclosing an isolated attracting source, then at the point of $\Sigma$ farthest from an interior point all normal curvatures are positive and $R_{kk}=-2|\nabla\varphi|\kappa(n)<0$ for tangential $n$.
+\end{theorem}
+
+Thus the contingent principle ``counted content never defocuses fast free processes'' excludes every static measure-only attracting law and requires content to change the order. It is equivalent, in the one-parameter family, to P5.
+
+\subsection{Tides as running content}
+
+In a vacuum plane wave $ds^2=2\,du\,dv-a^2(x^2-y^2)du^2+dx^2+dy^2$ the world function is explicit and the diamond volume along an observer of rapidity $\eta$ relative to the wave is exactly
+\[
+\frac{V}{V_0}-1=\frac{a^4\tau^4e^{4\eta}}{1008}+\dots
+\]
+(no $\tau^2$ term, since there is no content). The excess is positive, grows like $\tau^2$ relative to the $\tau^2$ coefficient (it runs), and is \emph{quartic} in the axis rapidity, whereas genuine content is quadratic: the two are distinguishable by counts. For an oscillating profile $h(u)=\varepsilon\cos u$, averaged over many wavelengths, the excess becomes $\varepsilon^2U^2/30$ ($U$ the $u$-extent; phase-averaged, extrapolated, to $0.3\%$), quadratic in the axis and non-running: an effective null-dust component $R_{UU}=2\langle h^2\rangle$, the counterpart of Isaacson's effective energy \cite{isaacson}. Running occurs only across the wavelength scale.
+
+\subsection{Focusing and rigidity}
+
+\begin{proposition}[Content decides whether time is a fact]
+In flat FRW the axis-dependent deficit along the comoving axis is $R_{tt}/30$ with $R_{tt}=-3p(p-1)/t^2$: positive iff $p<1$ iff decelerating iff rigid (Section~\ref{sec:status}) iff observers share frequencies (Section~\ref{sec:freq}); zero at the critical $p=1$; negative for acceleration and de Sitter.
+\end{proposition}
+
+\begin{proposition}[Pair criterion]
+For two neighbouring free processes with separation $\xi$, $\xi''=-K\xi$ with $K$ the tidal component along $\xi$, and $\rho\approx2\xi/\tau$. The pair's rate is a fact of the order iff tidal focusing cancels the initial relative velocity, $\int_0^\infty K\xi\,d\tau=\xi'(0)$, or the pair is bound. This unifies bound pairs ($K$ large), receding inertial pairs ($K=0$) and FRW ($K=-\ddot a/a$). Content is the sum of $K$ over separation directions ($R_{uu}$); pairs also feel the tidal (Weyl) direction. In the Schwarzschild exterior (Newtonian limit, fall from $20M$ to $4M$) radial pairs separate by $\times4.72$, tangential pairs converge to $\times0.20$, and circular-orbit pairs stay bound: one source gives all three regimes by direction.
+\end{proposition}
+
+%======================================================================
+\section{Where quantum phenomena can live}\label{sec:quantum}
+
+Quantum theory is used only as comparison: observed Bell violations reach Tsirelson's $2\sqrt2$ \cite{tsirelson}, not the Popescu--Rohrlich value $4$ \cite{pr}.
+
+\paragraph{Three loci.}
+(A) \emph{Descriptions of one world.} By Theorem~\ref{thm:rep} all descriptions are marginals of one $(S,\prec,\mu)$: noncontextual. Contextuality here would require refinements without a common refinement.
+(B) \emph{Alternative extensions.} Earlier records choose a question, new records answer it; different choices are mutually exclusive extensions. Observed Bell/Kochen--Specker contextuality lives here.
+(C) \emph{A global world must be a partial order.} Pairwise answers about precedence must assemble into a poset.
+
+\begin{definition}[Free choice]
+A setting record is \emph{free} relative to another party's world if it is a fresh sample over that world together with the common past (independence is extension \cite{pzfc}).
+\end{definition}
+
+\begin{proposition}[Locus B]
+With the law-level reading of P1 (the law of records in a world does not change when a fresh extension elsewhere is replaced by another), the principles give no-signalling and nothing more: the whole no-signalling polytope, including PR boxes, is allowed.
+\end{proposition}
+
+\begin{proposition}[Locus C]
+(i) Blocking weights of any sharp order satisfy $w(A,B)+w(B,C)+w(C,A)\le2$ (the three relations cannot hold simultaneously for any triple). (ii) If pairwise precedence in a three-record cluster is answered by incompatible refinements with $P(a\prec b)=P(b\prec c)=P(c\prec a)=q$, the noncontextual fraction relative to ``the global world is a poset'' is $\min(1,3(1-q))$, so $\eta=\max(0,3q-2)$. (iii) A cyclic kernel (support not contained in a partial order) together with P1 forces refinements to be incompatible.
+\end{proposition}
+
+This is of causal-inequality type \cite{ocb}; classical tripartite processes without causal order are known \cite{baumelerwolf}. What is specific here is that P1 forces the violation into incompatible refinements, and that its degree is the contextual fraction of \cite{pzfc,abramsky}.
+
+\paragraph{A candidate for the quantum restriction.}
+\begin{candidate}[P6$'$]\label{p6} All combinatorial relations among possible records are decided by pairs: a set of possible records can coexist iff every pair can (Specker's condition \cite{specker}), and interference is determined by pairwise terms.\end{candidate}
+
+With the probability axiom, the first half is the exclusivity principle \cite{cabello13,csw}. On exclusivity graphs, the three natural global requirements give three bounds:
+\begin{center}\small
+\begin{tabular}{lccc}\toprule
+graph & $\alpha$ (one global world) & $\vartheta$ (Lov\'asz) & $\alpha^*$ (exclusivity on cliques)\\\midrule
+KCBS pentagon & $2$ & $\sqrt5$ & $5/2$\\
+CHSH (8 winning events) & $3$ (CHSH $=2$) & $2+\sqrt2$ (CHSH $=2\sqrt2$) & $4$ (CHSH $=4$)\\\bottomrule
+\end{tabular}
+\end{center}
+The CHSH graph is vertex-transitive with $\vartheta(G)\vartheta(\bar G)=8$; applying the pairwise principle to the product with the complementary experiment gives Tsirelson's bound \cite{cabello13}. Quantum-realisable assignments form the theta body \cite{csw}: Hilbert-space geometry appears as the geometry of pairwise exclusivity plus probability, not as input. Blocking weights are additive (Sorkin's $I_2=0$ within one world), so interference can only occur between unrecorded alternatives; quantum theory has $I_3=0$ \cite{sorkin94}. The framework's own mechanisms (horizon coexistence with Helly number $d+1$; cyclic clusters) exceed pairs, so P6$'$ is substantive and contingent. Whether it alone yields the quantum set is open. Since the law has no scale, $\hbar$ can only enter with content, like $G$; the Planck scale is a scale of content, not a finest level of records.
+
+%======================================================================
+\section{Matter}\label{sec:matter}
+
+\begin{definition}[Individual]
+An individual is a family of content processes with pairwise bounded windows. At resolutions coarser than the bound it blocks into a single process; at finer ones it shows internal structure. In the language of \cite{pzfc} it is a source with records; diffuse content (radiation) has a law but no persistent individual.
+\end{definition}
+
+Mass is the amount of an individual as a source at coarse resolution. It is non-additive (internal motion enters with $\gamma_{\rm rel}^2$ weight; internal tides add positive content), so binding energy is forced. Mass ratios, read as tick ratios, are facts of the order only for bound individuals. The strong equivalence principle shares the status of P5 (contingent, testable by the Nordtvedt effect).
+
+\begin{proposition}[Bounds, not values]
+(i) A static spherical individual with non-increasing density, null-positive content and a P5 exterior satisfies Buchdahl's bound $2GM/Rc^2\le8/9$ \cite{buchdahl}, i.e.\ surface redshift $1+z\le3$: its surface processes run at least $1/3$ as fast as distant ones, a count-readable number independent of the equation of state. (ii) With internal energy $\propto R^{-d(\Gamma-1)}$ and gravitational energy $\propto-R^{-(d-2)}$, equilibrium has $E''=Bn R^{-n-2}(m-n)$ with $m=d(\Gamma-1)$, $n=d-2$: stable individuals need $\Gamma>2-2/d$ ($4/3$ in three dimensions). Radiation-like content is exactly marginal and forms no stable individual; relativistic corrections raise the threshold \cite{chandrasekhar64}. (iii) Binding requires positive stress; stress may not be so negative that content defocuses fast processes.
+\end{proposition}
+
+The equation of state and the spectrum of species are contingent. ``Why matter comes in individuals'' becomes: which equations of state allow content to maintain itself as a rigid family stable under coarse-graining.
+
+%======================================================================
+\section{Identification and assessment}\label{sec:assess}
+
+\paragraph{Contingent parameters.} Dimension (from counts: related-pair fractions, $L\propto N^{1/d}$); isotropy; P5 ($\gamma=1$ to $10^{-5}$); $G$; $\Lambda$ (positive); positivity of content; P6$'$ (Tsirelson-bounded correlations observed); the equation of state. All are askable by records; none is predicted.
+
+\paragraph{What the framework does.} It is a \emph{status theory}. It produces status divisions, criteria and bounds; its most useful outputs have identifiable readers:
+\begin{itemize}[nosep]
+\item cosmologists working on the measure problem: the criterion $\rho\to0$ and the classification C1--C4;
+\item causal-set dynamics: a reason for sprinkling without Lorentz invariance or a given manifold, and a reason why sequential growth fails;
+\item modified gravity: the exact defocusing of static measure-only attracting laws.
+\end{itemize}
+
+\paragraph{What it does not do.} It makes no new numerical prediction; this is proved within it (the law does not run; P5 and P6$'$ are independent). Most gravitational statements are count restatements of known theorems (Raychaudhuri, Gibbons--Solodukhin, Birkhoff, Isaacson); their value is the status division, and the success of general relativity must not be counted as a success of the framework. A count-based diagnostic separating content (quadratic in the axis) from tides (quartic) is correct in principle but infeasible as a tool: fluctuations of the longest chain require far more than $10^{12}$ records per interval.
+
+%======================================================================
+\section{Open problems}\label{sec:open}
+\begin{enumerate}[nosep]
+\item Matter: equations of state and species; stability of rigid individuals under coarse-graining in full.
+\item Quantum: whether P6$'$ alone yields the quantum set; a concrete family of extension laws in locus B; interference in record language.
+\item Running content around a spherical source (vacuum Weyl-squared coefficients of the diamond volume).
+\item P5 and Theorem~\ref{thm:defocus} for non-static laws.
+\item The pair criterion in strong fields and general inhomogeneous laws.
+\end{enumerate}
+
+\paragraph{Acknowledgement of method.} The work was carried out as a restart from an earlier, abandoned framework; claims that were withdrawn along the way are listed in Appendix~\ref{app:withdrawn}.
+
+%======================================================================
+\appendix
+\section{Numerical and symbolic checks}\label{app:numerics}
+\begin{center}\small
+\begin{tabular}{p{0.34\textwidth}p{0.6\textwidth}}\toprule
+check & result\\\midrule
+thinned transitive percolation & not closed; hidden-gap spread $0.07\to1.48$; stratified by coarse context still grows $0.05\to0.53$\\
+observer pasts in FRW & $S_{AB}\approx\rho$ for small $\rho$ (e.g.\ $0.0200$ vs $0.0201$); coasting constant; de Sitter $\to2$\\
+converse & $1/r_2$ vs $r_1$: $0.9990/1.0010$ ($p=0.5$), $0.3679/2.7183$ (coasting)\\
+diamond coefficients & de Sitter $-H^2\tau^2/6$, Einstein static $-\tau^2/30A^2$ $\Rightarrow$ $-R/180+R_{uu}/30$\\
+axis dependence outside a source & vanishes iff $\gamma=1$; $R_{kk}$ radial $-2(\gamma-1)M/r^3$, tangential $(\gamma-1)M/r^3$\\
+conformal, spherical, exact & tangential $R_{kk}=-2\varphi'/r$\\
+FRW focusing & $R_{tt}=-3p(p-1)/t^2$\\
+dust deficit & $4\pi G\rho(3\gamma^2-2)/45$\\
+plane wave & $a^4\tau^4e^{4\eta}/1008$ (closed form, checked by hand)\\
+oscillating plane wave & $\propto U^4$ below, $\propto U^2$ above the wavelength; constant $1/30$\\
+Schwarzschild pairs & radial $\times4.72$, tangential $\times0.20$ ($20M\to4M$)\\
+cluster contextuality & $\eta=\max(0,3q-2)$\\
+blocking Condorcet bound & max cyclic sum $1.597$ over $8000$ random triples\\
+exclusivity bounds & CHSH $3$, $2+\sqrt2$, $4$; KCBS $2$, $\sqrt5$, $5/2$; $\vartheta(G)\vartheta(\bar G)=8$\\
+stiffness threshold & $\Gamma>2-2/d$ (residual $0$)\\\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Withdrawn claims}\label{app:withdrawn}
+Withdrawn during the work: $\sigma$ as a hidden conformal factor; ``hidden parameter $=$ frame rapidity'' in general; a Planck-scale finest level; ``geometry is the law, events are samples'' with a given manifold and fixed density; the KPZ reading of windows; a log-interval exponential law for masses; a source-and-$\gamma$ argument that borrowed light and energy from field theory; the harmonic $1/r$ argument as a principled derivation (it assumed a global $\sigma$ sample, Markov locality and three-dimensional isotropy); locality as a principle; ``a single exchangeable kernel is a block universe'' (extra samples landing in the past are refinement, not new causes).
+
+%======================================================================
+\begin{thebibliography}{99}\small
+\bibitem{pzfc} X.~Yang, \emph{Removing Global Gluing: a multiverse base with a global countable core, probability and processes without a global context}, internal draft (2026).
+\bibitem{blms} L.~Bombelli, J.~Lee, D.~Meyer, R.~D.~Sorkin, Space-time as a causal set, Phys.\ Rev.\ Lett.\ 59 (1987) 521.
+\bibitem{rideoutsorkin} D.~P.~Rideout, R.~D.~Sorkin, A classical sequential growth dynamics for causal sets, Phys.\ Rev.\ D 61 (2000) 024002.
+\bibitem{brightwellgeorgiou} G.~Brightwell, N.~Georgiou, Continuum limits for classical sequential growth models, Random Struct.\ Alg.\ 36 (2010) 218.
+\bibitem{brightwellluczak} G.~Brightwell, M.~Luczak, Order-invariant measures on causal sets, Ann.\ Appl.\ Probab.\ 21 (2011) 1493.
+\bibitem{brightwellgregory} G.~Brightwell, R.~Gregory, Structure of random discrete spacetime, Phys.\ Rev.\ Lett.\ 66 (1991) 260.
+\bibitem{mecke} J.~Mecke, Eine charakteristische Eigenschaft der doppelt stochastischen Poissonschen Prozesse, Z.\ Wahrsch.\ verw.\ Geb.\ 11 (1968) 74.
+\bibitem{kallenbergRM} O.~Kallenberg, \emph{Random Measures, Theory and Applications}, Springer (2017).
+\bibitem{janson} S.~Janson, Poset limits and exchangeable random posets, Combinatorica 31 (2011) 529.
+\bibitem{hladky} J.~Hladk\'y, A.~M\'ath\'e, V.~Patel, O.~Pikhurko, Poset limits can be totally ordered, Trans.\ Amer.\ Math.\ Soc.\ 367 (2015) 4319.
+\bibitem{kallenberg90} O.~Kallenberg, Exchangeable random measures in the plane, J.\ Theor.\ Probab.\ 3 (1990) 81.
+\bibitem{veitchroy} V.~Veitch, D.~M.~Roy, The class of random graphs arising from exchangeable random measures, arXiv:1512.03099.
+\bibitem{veitchroy19} V.~Veitch, D.~M.~Roy, Sampling and estimation for (sparse) exchangeable graphs, Ann.\ Statist.\ 47 (2019) 3274.
+\bibitem{borgs} C.~Borgs, J.~T.~Chayes, H.~Cohn, N.~Holden, Sparse exchangeable graphs and their limits via graphon processes, J.\ Mach.\ Learn.\ Res.\ 18 (2018) 1.
+\bibitem{abramsky} S.~Abramsky, A.~Brandenburger, The sheaf-theoretic structure of non-locality and contextuality, New J.\ Phys.\ 13 (2011) 113036.
+\bibitem{winitzki} S.~Winitzki, Predictions in eternal inflation, Lect.\ Notes Phys.\ 738 (2008) 157.
+\bibitem{guthvanchurin} A.~H.~Guth, V.~Vanchurin, Eternal inflation, global time cutoff measures, and a probability paradox, arXiv:1108.0665.
+\bibitem{lindenoorbala} A.~Linde, M.~Noorbala, Measure problem for eternal and non-eternal inflation, JCAP 1009 (2010) 008.
+\bibitem{bousso} R.~Bousso, Complementarity in the multiverse, Phys.\ Rev.\ D 79 (2009) 123524.
+\bibitem{lvw} A.~Linde, V.~Vanchurin, S.~Winitzki, Stationary measure in the multiverse, JCAP 0901 (2009) 031.
+\bibitem{olum} K.~D.~Olum, Is there any coherent measure for eternal inflation?, Phys.\ Rev.\ D 86 (2012) 063509.
+\bibitem{gibbonssolodukhin} G.~W.~Gibbons, S.~N.~Solodukhin, The geometry of small causal diamonds, Phys.\ Lett.\ B 649 (2007) 317.
+\bibitem{isaacson} R.~A.~Isaacson, Gravitational radiation in the limit of high frequency II, Phys.\ Rev.\ 166 (1968) 1272.
+\bibitem{cassini} B.~Bertotti, L.~Iess, P.~Tortora, A test of general relativity using radio links with the Cassini spacecraft, Nature 425 (2003) 374.
+\bibitem{will} C.~M.~Will, The confrontation between general relativity and experiment, Living Rev.\ Rel.\ 17 (2014) 4.
+\bibitem{buchdahl} H.~A.~Buchdahl, General relativistic fluid spheres, Phys.\ Rev.\ 116 (1959) 1027.
+\bibitem{chandrasekhar64} S.~Chandrasekhar, The dynamical instability of gaseous masses approaching the Schwarzschild limit in general relativity, Astrophys.\ J.\ 140 (1964) 417.
+\bibitem{tsirelson} B.~S.~Cirel'son, Quantum generalizations of Bell's inequality, Lett.\ Math.\ Phys.\ 4 (1980) 93.
+\bibitem{pr} S.~Popescu, D.~Rohrlich, Quantum nonlocality as an axiom, Found.\ Phys.\ 24 (1994) 379.
+\bibitem{ocb} O.~Oreshkov, F.~Costa, \v{C}.~Brukner, Quantum correlations with no causal order, Nat.\ Commun.\ 3 (2012) 1092.
+\bibitem{baumelerwolf} \"A.~Baumeler, S.~Wolf, The space of logically consistent classical processes without causal order, New J.\ Phys.\ 18 (2016) 013036.
+\bibitem{specker} E.~Specker, Die Logik nicht gleichzeitig entscheidbarer Aussagen, Dialectica 14 (1960) 239.
+\bibitem{cabello13} A.~Cabello, Simple explanation of the quantum violation of a fundamental inequality, Phys.\ Rev.\ Lett.\ 110 (2013) 060402.
+\bibitem{csw} A.~Cabello, S.~Severini, A.~Winter, Graph-theoretic approach to quantum correlations, Phys.\ Rev.\ Lett.\ 112 (2014) 040401.
+\bibitem{sorkin94} R.~D.~Sorkin, Quantum mechanics as quantum measure theory, Mod.\ Phys.\ Lett.\ A 9 (1994) 3119.
+\end{thebibliography}
+
+\end{document}
