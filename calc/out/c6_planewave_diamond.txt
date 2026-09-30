@@ -1,0 +1,5 @@
+Vol / Vol_flat - 1 = U**4*a**4/252   (in terms of U, the u-extent of the diamond)
+with U = tau e^eta / sqrt 2:  Vol / Vol_flat - 1 = a**4*tau**4*exp(4*eta)/1008
+order a^2 vanishes (Ricci-flat); the leading term is order a^4 tau^4 e^{4 eta}: positive, and it depends on the axis
+(the observer's rapidity relative to the wave) -- read at finite tau it is an apparent, direction-dependent content
+growing like tau^2 relative to the tau^2 coefficient: content runs with the interval size

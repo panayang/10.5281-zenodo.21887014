@@ -1,0 +1,2 @@
+largest cyclic sum w(A,B) + w(B,C) + w(C,A) over 8000 random cluster triples in random posets: 1.5970 (bound 2)
+so a cyclic weight pattern above 2 cannot come from blocking any sharp order: it needs refinements with no common refinement
